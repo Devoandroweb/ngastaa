@@ -198,7 +198,7 @@ class PresensiApiController extends Controller
 
         if (request()->file('image')) {
             $file =  request()->file('image');
-            $foto = $this->uploadImage(public_path("uploads/presensi/$nip"),$file);
+            $foto = uploadImage(public_path("uploads/presensi/$nip"),$file);
         }else{
             $foto = "";
         }
@@ -476,13 +476,5 @@ class PresensiApiController extends Controller
             return response()->json(buildResponseGagal($th->getMessage()), 404);
         }
     }
-    public function uploadImage($dir, $file)
-    {
-        $result = null;
-        $namaFile = time() . "_" . $file->getClientOriginalName();
-        // $ext = $file->getClientOriginalExtension();
-        $filename = $file->move($dir, $namaFile);
-        $result = $filename->getFileName();
-        return $result;
-    }
+    
 }

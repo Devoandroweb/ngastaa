@@ -29,6 +29,7 @@ class DataAbsensi extends Controller
                     'absen' => $p->tanggal_pulang,
                     'status' => 2,
                 ];
+            
             }
             return response()->json([
                 'status' => TRUE, 

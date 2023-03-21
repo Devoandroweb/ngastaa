@@ -23,7 +23,6 @@ yarn-error.log
 /app/Http/Controllers/Api/ReimbursementApiController.php
 /app/Http/Controllers/Api/ShiftApiController.php
 /app/Http/Controllers/Api/UserApiController.php
-/app/Http/Controllers/Api/VisitApiController.php
 custom-sql.txt
 /tunasinti.com
 

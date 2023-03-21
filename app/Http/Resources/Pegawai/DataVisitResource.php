@@ -22,7 +22,7 @@ class DataVisitResource extends JsonResource
             'kordinat' => $this->kordinat,
             'tanggal' => tanggal_indo($this->tanggal),
             'jam' => get_jam($this->tanggal),
-            'foto' => storage($this->foto),
+            'foto' => url("public/uploads".$this->foto),
         ];
     }
 }
