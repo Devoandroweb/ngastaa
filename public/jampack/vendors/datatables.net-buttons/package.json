@@ -1,0 +1,76 @@
+{
+  "_from": "datatables.net-buttons",
+  "_id": "datatables.net-buttons@1.7.1",
+  "_inBundle": false,
+  "_integrity": "sha512-D2OxZeR18jhSx+l0xcfAJzfUH7l3LHCu0e606fV7+v3hMhphOfljjZYLaiRmGiR9lqO/f5xE/w2a+OtG/QMavw==",
+  "_location": "/datatables.net-buttons",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "datatables.net-buttons",
+    "name": "datatables.net-buttons",
+    "escapedName": "datatables.net-buttons",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/datatables.net-buttons/-/datatables.net-buttons-1.7.1.tgz",
+  "_shasum": "b701bda4bf4dd76ebc9238251c62d13c18b2bb34",
+  "_spec": "datatables.net-buttons",
+  "_where": "F:\\aniruddha_themes\\pangong_2.0\\jampack",
+  "author": {
+    "name": "SpryMedia Ltd",
+    "url": "http://datatables.net"
+  },
+  "bugs": {
+    "url": "https://datatables.net/forums"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "datatables.net": "^1.10.15",
+    "jquery": ">=1.7"
+  },
+  "deprecated": false,
+  "description": "Buttons for DataTables",
+  "files": [
+    "js/**/*.js"
+  ],
+  "homepage": "https://datatables.net",
+  "ignore": [
+    "composer.json",
+    "datatables.json",
+    "package.json"
+  ],
+  "keywords": [
+    "Buttons",
+    "Column Visibility",
+    "csv",
+    "excel",
+    "pdf",
+    "print",
+    "Datatables",
+    "jQuery",
+    "table",
+    "filter",
+    "sort"
+  ],
+  "license": "MIT",
+  "main": "js/dataTables.buttons.js",
+  "moduleType": [
+    "globals",
+    "amd",
+    "node"
+  ],
+  "name": "datatables.net-buttons",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DataTables/Dist-DataTables-Buttons.git"
+  },
+  "types": "./types/types.d.ts",
+  "version": "1.7.1"
+}

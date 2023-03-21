@@ -1,0 +1,135 @@
+@font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff2") format("woff2"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+.fimanager:before {
+    display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.flaticon-001-password:before { content: "\f100"; }
+.flaticon-002-server:before { content: "\f101"; }
+.flaticon-003-wall:before { content: "\f102"; }
+.flaticon-004-code:before { content: "\f103"; }
+.flaticon-005-security:before { content: "\f104"; }
+.flaticon-006-upload:before { content: "\f105"; }
+.flaticon-007-server:before { content: "\f106"; }
+.flaticon-008-cpu:before { content: "\f107"; }
+.flaticon-009-cpu:before { content: "\f108"; }
+.flaticon-010-code:before { content: "\f109"; }
+.flaticon-011-code:before { content: "\f10a"; }
+.flaticon-012-folder:before { content: "\f10b"; }
+.flaticon-013-server:before { content: "\f10c"; }
+.flaticon-014-virus:before { content: "\f10d"; }
+.flaticon-015-key:before { content: "\f10e"; }
+.flaticon-016-cpu:before { content: "\f10f"; }
+.flaticon-017-code:before { content: "\f110"; }
+.flaticon-018-magnifying-glass:before { content: "\f111"; }
+.flaticon-019-gear:before { content: "\f112"; }
+.flaticon-020-chronometer:before { content: "\f113"; }
+.flaticon-021-code:before { content: "\f114"; }
+.flaticon-022-keyboard:before { content: "\f115"; }
+.flaticon-023-lightbulb:before { content: "\f116"; }
+.flaticon-024-shield:before { content: "\f117"; }
+.flaticon-025-cloud-computing:before { content: "\f118"; }
+.flaticon-026-modem:before { content: "\f119"; }
+.flaticon-027-server:before { content: "\f11a"; }
+.flaticon-028-virus:before { content: "\f11b"; }
+.flaticon-029-global:before { content: "\f11c"; }
+.flaticon-030-modem:before { content: "\f11d"; }
+.flaticon-031-folder:before { content: "\f11e"; }
+.flaticon-032-cloud-computing:before { content: "\f11f"; }
+.flaticon-033-cpu:before { content: "\f120"; }
+.flaticon-034-ram:before { content: "\f121"; }
+.flaticon-035-code:before { content: "\f122"; }
+.flaticon-036-code:before { content: "\f123"; }
+.flaticon-037-global:before { content: "\f124"; }
+.flaticon-038-server:before { content: "\f125"; }
+.flaticon-039-upload:before { content: "\f126"; }
+.flaticon-040-code:before { content: "\f127"; }
+.flaticon-041-security:before { content: "\f128"; }
+.flaticon-042-firewall:before { content: "\f129"; }
+.flaticon-043-lock:before { content: "\f12a"; }
+.flaticon-044-gear:before { content: "\f12b"; }
+.flaticon-045-download:before { content: "\f12c"; }
+.flaticon-046-code:before { content: "\f12d"; }
+.flaticon-047-mouse:before { content: "\f12e"; }
+.flaticon-048-computer:before { content: "\f12f"; }
+.flaticon-049-code:before { content: "\f130"; }
+.flaticon-050-security:before { content: "\f131"; }
+
+$font-Flaticon-001-password: "\f100";
+$font-Flaticon-002-server: "\f101";
+$font-Flaticon-003-wall: "\f102";
+$font-Flaticon-004-code: "\f103";
+$font-Flaticon-005-security: "\f104";
+$font-Flaticon-006-upload: "\f105";
+$font-Flaticon-007-server: "\f106";
+$font-Flaticon-008-cpu: "\f107";
+$font-Flaticon-009-cpu: "\f108";
+$font-Flaticon-010-code: "\f109";
+$font-Flaticon-011-code: "\f10a";
+$font-Flaticon-012-folder: "\f10b";
+$font-Flaticon-013-server: "\f10c";
+$font-Flaticon-014-virus: "\f10d";
+$font-Flaticon-015-key: "\f10e";
+$font-Flaticon-016-cpu: "\f10f";
+$font-Flaticon-017-code: "\f110";
+$font-Flaticon-018-magnifying-glass: "\f111";
+$font-Flaticon-019-gear: "\f112";
+$font-Flaticon-020-chronometer: "\f113";
+$font-Flaticon-021-code: "\f114";
+$font-Flaticon-022-keyboard: "\f115";
+$font-Flaticon-023-lightbulb: "\f116";
+$font-Flaticon-024-shield: "\f117";
+$font-Flaticon-025-cloud-computing: "\f118";
+$font-Flaticon-026-modem: "\f119";
+$font-Flaticon-027-server: "\f11a";
+$font-Flaticon-028-virus: "\f11b";
+$font-Flaticon-029-global: "\f11c";
+$font-Flaticon-030-modem: "\f11d";
+$font-Flaticon-031-folder: "\f11e";
+$font-Flaticon-032-cloud-computing: "\f11f";
+$font-Flaticon-033-cpu: "\f120";
+$font-Flaticon-034-ram: "\f121";
+$font-Flaticon-035-code: "\f122";
+$font-Flaticon-036-code: "\f123";
+$font-Flaticon-037-global: "\f124";
+$font-Flaticon-038-server: "\f125";
+$font-Flaticon-039-upload: "\f126";
+$font-Flaticon-040-code: "\f127";
+$font-Flaticon-041-security: "\f128";
+$font-Flaticon-042-firewall: "\f129";
+$font-Flaticon-043-lock: "\f12a";
+$font-Flaticon-044-gear: "\f12b";
+$font-Flaticon-045-download: "\f12c";
+$font-Flaticon-046-code: "\f12d";
+$font-Flaticon-047-mouse: "\f12e";
+$font-Flaticon-048-computer: "\f12f";
+$font-Flaticon-049-code: "\f130";
+$font-Flaticon-050-security: "\f131";

@@ -1,0 +1,21 @@
+.line-text{
+    height: 0.3px;
+    background-color: #dad8d8;
+    width: 100%;
+    margin-left: 20px;
+}
+.header-form{
+    display: flex;
+    align-items: center;
+    height: 74px;
+}
+.header-form h4{
+    position: absolute;
+    left: auto;
+    margin-bottom: 0;
+    background-color: #fff;
+    padding-right: 1rem;
+}
+.header-form .line-text{
+
+}

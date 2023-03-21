@@ -1,0 +1,390 @@
+/*__________________________________________________________________;
+[Variables]
+Project:	Jampack
+___________________________________________________________________*/;
+// Color variables
+$red: #FF0000;    
+$green:#00D67F;
+$pink:#E92990;
+$purple:#C02FF3;
+$violet:#7429F8;
+$indigo:#0069F7;
+$blue:#298DFF;
+$sky:#00B0FF;
+$cyan:#18DDEF;
+$teal:#007D88;
+$neon:#81E230;
+$lime:#C2E939;
+$sun:#FFEA00;
+$yellow:#FFC400;
+$orange:#FF9100;
+$pumpkin:#FF5700;
+$brown:#954D15;
+$gold:#C39749;
+$smoke:#5e7d8a;
+$grey:#9e9e9e;
+$black:#2F343A;
+$white:#fff;
+
+// Red color variables
+$red_light_5: mix(white, $red, 92%);
+$red_light_4: mix(white, $red, 78%);
+$red_light_3: mix(white, $red, 60%);
+$red_light_2: mix(white, $red, 42%);
+$red_light_1: mix(white, $red, 24%);
+$red_dark_1: mix(black, $red, 10%);
+$red_dark_2: mix(black, $red, 20%);
+$red_dark_3: mix(black, $red, 30%);
+$red_dark_4: mix(black, $red, 40%);
+$red_dark_5: mix(black, $red, 50%);
+
+// Green color variables
+$green_light_5: mix(white, $green, 92%);
+$green_light_4: mix(white, $green, 78%);
+$green_light_3: mix(white, $green, 60%);
+$green_light_2: mix(white, $green, 42%);
+$green_light_1: mix(white, $green, 24%);
+$green_dark_1: mix(black, $green, 10%);
+$green_dark_2: mix(black, $green, 20%);
+$green_dark_3: mix(black, $green, 30%);
+$green_dark_4: mix(black, $green, 40%);
+$green_dark_5: mix(black, $green, 50%); 
+
+// Pink color variables
+$pink_light_5: mix(white, $pink, 92%);
+$pink_light_4: mix(white, $pink, 78%);
+$pink_light_3: mix(white, $pink, 60%);
+$pink_light_2: mix(white, $pink, 42%);
+$pink_light_1: mix(white, $pink, 24%);
+$pink_dark_1: mix(black, $pink, 10%);
+$pink_dark_2: mix(black, $pink, 20%);
+$pink_dark_3: mix(black, $pink, 30%);
+$pink_dark_4: mix(black, $pink, 40%);
+$pink_dark_5: mix(black, $pink, 50%);
+
+// Purple color variables
+$purple_light_5: mix(white, $purple, 92%);
+$purple_light_4: mix(white, $purple, 78%);
+$purple_light_3: mix(white, $purple, 60%);
+$purple_light_2: mix(white, $purple, 42%);
+$purple_light_1: mix(white, $purple, 24%);
+$purple_dark_1: mix(black, $purple, 10%);
+$purple_dark_2: mix(black, $purple, 20%);
+$purple_dark_3: mix(black, $purple, 30%);
+$purple_dark_4: mix(black, $purple, 40%);
+$purple_dark_5: mix(black, $purple, 50%);
+
+// Violet color variables
+$violet_light_5: mix(white, $violet, 92%);
+$violet_light_4: mix(white, $violet, 78%);
+$violet_light_3: mix(white, $violet, 60%);
+$violet_light_2: mix(white, $violet, 42%);
+$violet_light_1: mix(white, $violet, 24%);
+$violet_dark_1: mix(black, $violet, 10%);
+$violet_dark_2: mix(black, $violet, 20%);
+$violet_dark_3: mix(black, $violet, 30%);
+$violet_dark_4: mix(black, $violet, 40%);
+$violet_dark_5: mix(black, $violet, 50%);
+
+// Indigo color variables
+$indigo_light_5: mix(white, $indigo, 92%);
+$indigo_light_4: mix(white, $indigo, 78%);
+$indigo_light_3: mix(white, $indigo, 60%);
+$indigo_light_2: mix(white, $indigo, 42%);
+$indigo_light_1: mix(white, $indigo, 24%);
+$indigo_dark_1: mix(black, $indigo, 10%);
+$indigo_dark_2: mix(black, $indigo, 20%);
+$indigo_dark_3: mix(black, $indigo, 30%);
+$indigo_dark_4: mix(black, $indigo, 40%);
+$indigo_dark_5: mix(black, $indigo, 50%);
+
+// Blue color variables
+$blue_light_5: mix(white, $blue, 92%);
+$blue_light_4: mix(white, $blue, 78%);
+$blue_light_3: mix(white, $blue, 60%);
+$blue_light_2: mix(white, $blue, 42%);
+$blue_light_1: mix(white, $blue, 24%);
+$blue_dark_1: mix(black, $blue, 10%);
+$blue_dark_2: mix(black, $blue, 20%);
+$blue_dark_3: mix(black, $blue, 30%);
+$blue_dark_4: mix(black, $blue, 40%);
+$blue_dark_5: mix(black, $blue, 50%);
+
+// Sky color variables
+$sky_light_5: mix(white, $sky, 92%);
+$sky_light_4: mix(white, $sky, 78%);
+$sky_light_3: mix(white, $sky, 60%);
+$sky_light_2: mix(white, $sky, 42%);
+$sky_light_1: mix(white, $sky, 24%);
+$sky_dark_1: mix(black, $sky, 10%);
+$sky_dark_2: mix(black, $sky, 20%);
+$sky_dark_3: mix(black, $sky, 30%);
+$sky_dark_4: mix(black, $sky, 40%);
+$sky_dark_5: mix(black, $sky, 50%);
+
+// Cyan color variables
+$cyan_light_5: mix(white, $cyan, 92%);
+$cyan_light_4: mix(white, $cyan, 78%);
+$cyan_light_3: mix(white, $cyan, 60%);
+$cyan_light_2: mix(white, $cyan, 42%);
+$cyan_light_1: mix(white, $cyan, 24%);
+$cyan_dark_1: mix(black, $cyan, 10%);
+$cyan_dark_2: mix(black, $cyan, 20%);
+$cyan_dark_3: mix(black, $cyan, 30%);
+$cyan_dark_4: mix(black, $cyan, 40%);
+$cyan_dark_5: mix(black, $cyan, 50%);
+
+// Teal color variables
+$teal_light_5: mix(white, $teal, 92%);
+$teal_light_4: mix(white, $teal, 78%);
+$teal_light_3: mix(white, $teal, 60%);
+$teal_light_2: mix(white, $teal, 42%);
+$teal_light_1: mix(white, $teal, 24%);
+$teal_dark_1: mix(black, $teal, 10%);
+$teal_dark_2: mix(black, $teal, 20%);
+$teal_dark_3: mix(black, $teal, 30%);
+$teal_dark_4: mix(black, $teal, 40%);
+$teal_dark_5: mix(black, $teal, 50%);
+
+// Neon color variables
+$neon_light_5: mix(white, $neon, 92%);
+$neon_light_4: mix(white, $neon, 78%);
+$neon_light_3: mix(white, $neon, 60%);
+$neon_light_2: mix(white, $neon, 42%);
+$neon_light_1: mix(white, $neon, 24%);
+$neon_dark_1: mix(black, $neon, 10%);
+$neon_dark_2: mix(black, $neon, 20%);
+$neon_dark_3: mix(black, $neon, 30%);
+$neon_dark_4: mix(black, $neon, 40%);
+$neon_dark_5: mix(black, $neon, 50%);
+
+// Lime color variables
+$lime_light_5: mix(white, $lime, 92%);
+$lime_light_4: mix(white, $lime, 78%);
+$lime_light_3: mix(white, $lime, 60%);
+$lime_light_2: mix(white, $lime, 42%);
+$lime_light_1: mix(white, $lime, 24%);
+$lime_dark_1: mix(black, $lime, 10%);
+$lime_dark_2: mix(black, $lime, 20%);
+$lime_dark_3: mix(black, $lime, 30%);
+$lime_dark_4: mix(black, $lime, 40%);
+$lime_dark_5: mix(black, $lime, 50%);
+
+// Sun color variables
+$sun_light_5: mix(white, $sun, 92%);
+$sun_light_4: mix(white, $sun, 78%);
+$sun_light_3: mix(white, $sun, 60%);
+$sun_light_2: mix(white, $sun, 42%);
+$sun_light_1: mix(white, $sun, 24%);
+$sun_dark_1: mix(black, $sun, 10%);
+$sun_dark_2: mix(black, $sun, 20%);
+$sun_dark_3: mix(black, $sun, 30%);
+$sun_dark_4: mix(black, $sun, 40%);
+$sun_dark_5: mix(black, $sun, 50%);
+
+// Yellow color variables
+$yellow_light_5: mix(white, $yellow, 92%);
+$yellow_light_4: mix(white, $yellow, 78%);
+$yellow_light_3: mix(white, $yellow, 60%);
+$yellow_light_2: mix(white, $yellow, 42%);
+$yellow_light_1: mix(white, $yellow, 24%);
+$yellow_dark_1: mix(black, $yellow, 10%);
+$yellow_dark_2: mix(black, $yellow, 20%);
+$yellow_dark_3: mix(black, $yellow, 30%);
+$yellow_dark_4: mix(black, $yellow, 40%);
+$yellow_dark_5: mix(black, $yellow, 50%);
+
+// Orange color variables
+$orange_light_5: mix(white, $orange, 92%);
+$orange_light_4: mix(white, $orange, 78%);
+$orange_light_3: mix(white, $orange, 60%);
+$orange_light_2: mix(white, $orange, 42%);
+$orange_light_1: mix(white, $orange, 24%);
+$orange_dark_1: mix(black, $orange, 10%);
+$orange_dark_2: mix(black, $orange, 20%);
+$orange_dark_3: mix(black, $orange, 30%);
+$orange_dark_4: mix(black, $orange, 40%);
+$orange_dark_5: mix(black, $orange, 50%);
+
+// Pumpkin color variables
+$pumpkin_light_5: mix(white, $pumpkin, 92%);
+$pumpkin_light_4: mix(white, $pumpkin, 78%);
+$pumpkin_light_3: mix(white, $pumpkin, 60%);
+$pumpkin_light_2: mix(white, $pumpkin, 42%);
+$pumpkin_light_1: mix(white, $pumpkin, 24%);
+$pumpkin_dark_1: mix(black, $pumpkin, 10%);
+$pumpkin_dark_2: mix(black, $pumpkin, 20%);
+$pumpkin_dark_3: mix(black, $pumpkin, 30%);
+$pumpkin_dark_4: mix(black, $pumpkin, 40%);
+$pumpkin_dark_5: mix(black, $pumpkin, 50%);
+
+// Brown color variables
+$brown_light_5: mix(white, $brown, 92%);
+$brown_light_4: mix(white, $brown, 78%);
+$brown_light_3: mix(white, $brown, 60%);
+$brown_light_2: mix(white, $brown, 42%);
+$brown_light_1: mix(white, $brown, 24%);
+$brown_dark_1: mix(black, $brown, 10%);
+$brown_dark_2: mix(black, $brown, 20%);
+$brown_dark_3: mix(black, $brown, 30%);
+$brown_dark_4: mix(black, $brown, 40%);
+$brown_dark_5: mix(black, $brown, 50%);
+
+// Gold color variables
+$gold_light_5: mix(white, $gold, 92%);
+$gold_light_4: mix(white, $gold, 78%);
+$gold_light_3: mix(white, $gold, 60%);
+$gold_light_2: mix(white, $gold, 42%);
+$gold_light_1: mix(white, $gold, 24%);
+$gold_dark_1: mix(black, $gold, 10%);
+$gold_dark_2: mix(black, $gold, 20%);
+$gold_dark_3: mix(black, $gold, 30%);
+$gold_dark_4: mix(black, $gold, 40%);
+$gold_dark_5: mix(black, $gold, 50%);
+
+// Smoke color variables
+$smoke_light_5: mix(white, $smoke, 92%);
+$smoke_light_4: mix(white, $smoke, 78%);
+$smoke_light_3: mix(white, $smoke, 60%);
+$smoke_light_2: mix(white, $smoke, 42%);
+$smoke_light_1: mix(white, $smoke, 24%);
+$smoke_dark_1: mix(black, $smoke, 10%);
+$smoke_dark_2: mix(black, $smoke, 20%);
+$smoke_dark_3: mix(black, $smoke, 30%);
+$smoke_dark_4: mix(black, $smoke, 40%);
+$smoke_dark_5: mix(black, $smoke, 50%);
+
+// Grey color variables
+$grey_light_5: mix(white, $grey, 92%);
+$grey_light_4: mix(white, $grey, 78%);
+$grey_light_3: mix(white, $grey, 60%);
+$grey_light_2: mix(white, $grey, 42%);
+$grey_light_1: mix(white, $grey, 24%);
+$grey_dark_1: mix(black, $grey, 10%);
+$grey_dark_2: mix(black, $grey, 20%);
+$grey_dark_3: mix(black, $grey, 30%);
+$grey_dark_4: mix(black, $grey, 40%);
+$grey_dark_5: mix(black, $grey, 50%);
+
+// Dark color variables
+$black_1:mix(black, $black, 10%);
+$black_2:mix(black, $black, 20%);
+$black_3:mix(black, $black, 30%);
+$black_4:mix(black, $black, 40%);
+$black_5:mix(black, $black, 50%);
+
+// Theme color variables
+$primary : $teal;
+$info : $cyan;
+$success : $green;
+$danger : $red;
+$warning : $yellow;
+$secondary : $grey_dark_3;
+
+// Primary color variables 
+$primary_light_5: mix(white, $primary, 92%);
+$primary_light_4: mix(white, $primary, 78%);
+$primary_light_3: mix(white, $primary, 60%);
+$primary_light_2: mix(white, $primary, 42%);
+$primary_light_1: mix(white, $primary, 24%);
+$primary_dark_1: mix(black, $primary, 10%);
+$primary_dark_2: mix(black, $primary, 20%);
+$primary_dark_3: mix(black, $primary, 30%);
+$primary_dark_4: mix(black, $primary, 40%);
+$primary_dark_5: mix(black, $primary, 50%);
+
+// Info color variables
+$info_light_5: mix(white, $info, 92%);
+$info_light_4: mix(white, $info, 78%);
+$info_light_3: mix(white, $info, 60%);
+$info_light_2: mix(white, $info, 42%);
+$info_light_1: mix(white, $info, 24%);
+$info_dark_1: mix(black, $info, 10%);
+$info_dark_2: mix(black, $info, 20%);
+$info_dark_3: mix(black, $info, 30%);
+$info_dark_4: mix(black, $info, 40%);
+$info_dark_5: mix(black, $info, 50%);
+
+// Sucess color variables
+$success_light_5: mix(white, $success, 92%);
+$success_light_4: mix(white, $success, 78%);
+$success_light_3: mix(white, $success, 60%);
+$success_light_2: mix(white, $success, 42%);
+$success_light_1: mix(white, $success, 24%);
+$success_dark_1: mix(black, $success, 10%);
+$success_dark_2: mix(black, $success, 20%);
+$success_dark_3: mix(black, $success, 30%);
+$success_dark_4: mix(black, $success, 40%);
+$success_dark_5: mix(black, $success, 50%);
+
+// Danger color variables
+$danger_light_5: mix(white, $danger, 92%);
+$danger_light_4: mix(white, $danger, 78%);
+$danger_light_3: mix(white, $danger, 60%);
+$danger_light_2: mix(white, $danger, 42%);
+$danger_light_1: mix(white, $danger, 24%);
+$danger_dark_1: mix(black, $danger, 10%);
+$danger_dark_2: mix(black, $danger, 20%);
+$danger_dark_3: mix(black, $danger, 30%);
+$danger_dark_4: mix(black, $danger, 40%);
+$danger_dark_5: mix(black, $danger, 50%);
+
+// Warning color variables
+$warning_light_5: mix(white, $warning, 92%);
+$warning_light_4: mix(white, $warning, 78%);
+$warning_light_3: mix(white, $warning, 60%);
+$warning_light_2: mix(white, $warning, 42%);
+$warning_light_1: mix(white, $warning, 24%);
+$warning_dark_1: mix(black, $warning, 10%);
+$warning_dark_2: mix(black, $warning, 20%);
+$warning_dark_3: mix(black, $warning, 30%);
+$warning_dark_4: mix(black, $warning, 40%);
+$warning_dark_5: mix(black, $warning, 50%);
+
+// Secondary color variables 
+$secondary_light_5: mix(white, $secondary, 92%);
+$secondary_light_4: mix(white, $secondary, 78%);
+$secondary_light_3: mix(white, $secondary, 60%);
+$secondary_light_2: mix(white, $secondary, 42%);
+$secondary_light_1: mix(white, $secondary, 24%);
+$secondary_dark_1: mix(black, $secondary, 10%);
+$secondary_dark_2: mix(black, $secondary, 20%);
+$secondary_dark_3: mix(black, $secondary, 30%);
+$secondary_dark_4: mix(black, $secondary, 40%);
+$secondary_dark_5: mix(black, $secondary, 50%);
+
+// Social Media color variables
+$facebook:#1778F2;
+$twitter:#00acee;
+$dribbble:#ea4c89;
+$pinterest:#E60023;
+$youtube:#FF0000;
+$googleplus:#db4a39;
+$instagram:#f0100f;
+$behance:#053eff;
+$dropbox:#0061ff;
+$linkedin:#0077B5;
+$skype: #00aff0;
+$tumblr: #000000;
+$flickr: #0063dc;
+$behance: #1769ff;
+$github: #24292e;
+
+// scss-docs-start table-loop
+$table-variants: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $grey_light_5,
+  "dark":       $black_2,
+) !default;
+// scss-docs-end table-loop
+
+:root {
+  --bs-body-font-family: 'DM Sans', sans-serif;
+  --bs-text-opacity:1;
+  --bs-bg-opacity: 1;
+}

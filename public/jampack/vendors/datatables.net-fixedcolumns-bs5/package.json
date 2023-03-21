@@ -1,0 +1,79 @@
+{
+  "_from": "datatables.net-fixedcolumns-bs5",
+  "_id": "datatables.net-fixedcolumns-bs5@4.0.2",
+  "_inBundle": false,
+  "_integrity": "sha512-+0GBaI3KOjLPOR8huf6ArE2X3HbHMumWJisRe7T056KSOPBCXA7TYgOZIEv6RZb+Gc4kBK8vhlPanqVHGUj6UQ==",
+  "_location": "/datatables.net-fixedcolumns-bs5",
+  "_phantomChildren": {
+    "jquery": "3.6.0"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "datatables.net-fixedcolumns-bs5",
+    "name": "datatables.net-fixedcolumns-bs5",
+    "escapedName": "datatables.net-fixedcolumns-bs5",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/datatables.net-fixedcolumns-bs5/-/datatables.net-fixedcolumns-bs5-4.0.2.tgz",
+  "_shasum": "ba3e76b548477ad1c3ccd0cfd3a814ada155efbf",
+  "_spec": "datatables.net-fixedcolumns-bs5",
+  "_where": "F:\\aniruddha_themes\\pangong_2.0\\jampack-document",
+  "author": {
+    "name": "SpryMedia Ltd",
+    "url": "http://datatables.net"
+  },
+  "bugs": {
+    "url": "https://datatables.net/forums"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "datatables.net-bs5": ">=1.11.3",
+    "datatables.net-fixedcolumns": ">=4.0.0",
+    "jquery": ">=1.7"
+  },
+  "deprecated": false,
+  "description": "FixedColumns for DataTables with styling for [Bootstrap5](https://getbootstrap.com/)",
+  "files": [
+    "css/**/*.css",
+    "js/**/*.js",
+    "types/**/*.d.ts"
+  ],
+  "homepage": "https://datatables.net",
+  "ignore": [
+    "composer.json",
+    "datatables.json",
+    "package.json"
+  ],
+  "keywords": [
+    "FixedColumns",
+    "Bootstrap",
+    "Bootstrap5",
+    "Datatables",
+    "jQuery",
+    "table",
+    "filter",
+    "sort"
+  ],
+  "license": "MIT",
+  "main": "js/fixedColumns.bootstrap5.js",
+  "moduleType": [
+    "globals",
+    "amd",
+    "node"
+  ],
+  "name": "datatables.net-fixedcolumns-bs5",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DataTables/Dist-DataTables-FixedColumns-Bootstrap5.git"
+  },
+  "style": "css/fixedColumns.bootstrap5.css",
+  "types": "./types/fixedColumns.bootstrap5.d.ts",
+  "version": "4.0.2"
+}

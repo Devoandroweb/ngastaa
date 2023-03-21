@@ -1,0 +1,176 @@
+/*__________________________________________________________________;
+[Mixin]
+Project:	Jampack
+___________________________________________________________________*/;
+
+@mixin background-opacity($color, $opacity: 0.6) {
+    background: rgba($color, $opacity);
+}
+
+@mixin color-opacity($color, $opacity: 0.8) {
+    color: rgba($color, $opacity);
+}
+
+@mixin border-opacity($color, $opacity: 0.8) {
+    border-color: rgba($color, $opacity);
+}
+
+/*Shadow*/
+@mixin boxshadow-badge-link($color, $opacity: 0.3) {
+   box-shadow: 0 .1875rem .5rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-custom-btn-2($color, $opacity: 0.6) {
+   box-shadow: 0 1.25rem 1.875rem -0.625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-custom-btn-2-hover($color, $opacity: 0.4) {
+   box-shadow: 0 1.875rem 2.5rem -0.625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-sm($color, $opacity: 0.1) {
+   box-shadow: 0 .125rem .125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-sm-top($color, $opacity: 0.1) {
+   box-shadow: 0 -0.125rem .125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-sm-bottom($color, $opacity: 0.1) {
+   box-shadow: 0 .125rem .125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-sm-left($color, $opacity: 0.1) {
+   box-shadow: -0.125rem 0 .125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-sm-right($color, $opacity: 0.1) {
+   box-shadow: .125rem 0 .125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow($color, $opacity: 0.1) {
+   box-shadow: 0 .25rem .3125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-top($color, $opacity: 0.1) {
+   box-shadow: 0 -0.25rem .3125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-bottom($color, $opacity: 0.1) {
+   box-shadow: 0 .25rem .3125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-left($color, $opacity: 0.1) {
+   box-shadow: -0.25rem 0 .3125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-right($color, $opacity: 0.1) {
+   box-shadow: .25rem 0 .3125rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-lg($color, $opacity: 0.1) {
+   box-shadow: 0 .375rem .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-lg-top($color, $opacity: 0.1) {
+   box-shadow: 0 -0.375rem .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-lg-bottom($color, $opacity: 0.1) {
+   box-shadow: 0 .375rem .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-lg-left($color, $opacity: 0.1) {
+   box-shadow: -0.375rem 0 .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-lg-right($color, $opacity: 0.1) {
+   box-shadow: .375rem 0 .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-xl($color, $opacity: 0.1) {
+   box-shadow: 0 .5rem .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-xl-top($color, $opacity: 0.1) {
+   box-shadow: 0 -0.5rem .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-xl-bottom($color, $opacity: 0.1) {
+   box-shadow: 0 .5rem .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-xl-left($color, $opacity: 0.1) {
+   box-shadow: -0.5rem 0 .625rem rgba($color, $opacity)!important;
+}
+@mixin boxshadow-xl-right($color, $opacity: 0.1) {
+   box-shadow: .5rem 0 .625rem rgba($color, $opacity)!important;
+}
+@mixin clear() {
+	overflow:hidden;
+	clear:both;
+	float:none;
+}
+
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+@mixin bg-linear-gradient($direction, $color-stops...) {
+  background: nth(nth($color-stops, 1), 1);
+  background: linear-gradient($direction, $color-stops)!important;
+}
+@mixin bdr-linear-gradient($direction, $color-stops...) {
+  border-color: nth(nth($color-stops, 1), 1);
+  border-color: linear-gradient($direction, $color-stops)!important;
+}
+
+/*Table Variants*/
+@mixin table-variant($state, $background) {
+   @if $state == 'dark' {
+
+      .table-#{$state} {
+         $color: $white;
+         $hover-bg: $black_1;
+         $striped-bg: $black_1;
+         $active-bg: mix($color, $background, percentage(.1));
+         $table-bg: $background;
+         $border-color: $black_1;
+     
+         --bs-table-bg: #{$table-bg};
+         --bs-table-striped-bg: #{$striped-bg};
+         --bs-table-striped-color: #{color-contrast($striped-bg)};
+         --bs-table-active-bg: #{$active-bg};
+         --bs-table-active-color: #{color-contrast($active-bg)};
+         --bs-table-hover-bg: #{$hover-bg};
+         --bs-table-hover-color: #{color-contrast($hover-bg)};
+     
+         color: $color;
+         border-color: $border-color;
+       }
+  
+     } 
+     @else if $state == 'light' {
+
+      .table-#{$state} {
+         $color: $grey_dark_3;
+         $hover-bg: $grey_light_3;
+         $striped-bg: $grey_light_4;
+         $active-bg: mix($color, $background, percentage(.1));
+         $table-bg: $grey_light_5;
+         $border-color: $grey_light_3;
+     
+         --bs-table-bg: #{$table-bg};
+         --bs-table-striped-bg: #{$striped-bg};
+         --bs-table-striped-color: #{color-contrast($striped-bg)};
+         --bs-table-active-bg: #{$active-bg};
+         --bs-table-active-color: #{color-contrast($active-bg)};
+         --bs-table-hover-bg: #{$hover-bg};
+         --bs-table-hover-color: #{color-contrast($hover-bg)};
+     
+         color: $color;
+         border-color: $border-color;
+      }
+  
+     } @else {
+      .table-#{$state} {
+         $color: $background;
+         $hover-bg: mix(white, $background, 80%);
+         $striped-bg: mix(white, $background, 70%);
+         $active-bg: mix(white, $background, 85%);
+         $table-bg: mix(white, $background, 90%);
+         $border-color: mix(white, $background, 50%);
+     
+         --bs-table-bg: #{$table-bg};
+         --bs-table-striped-bg: #{$striped-bg};
+         --bs-table-striped-color: #{color-contrast($striped-bg)};
+         --bs-table-active-bg: #{$active-bg};
+         --bs-table-active-color: #{color-contrast($active-bg)};
+         --bs-table-hover-bg: #{$hover-bg};
+         --bs-table-hover-color: #{color-contrast($hover-bg)};
+     
+         color: $color;
+         border-color: $border-color;
+       }
+     }
+}
