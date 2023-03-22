@@ -44,8 +44,12 @@ class User extends Controller
     public function detail($nip)
     {
         try{
-            $data = MUser::where('nip', $nip)->first();
-            unset($data->images);
+            $user = MUser::where('nip', $nip)->first();
+            unset($data->user);
+            
+            $data['data_pribadi'] = $user;
+            $data['data_pribadi'] = $user;
+
             // dd($data);
             return response()->json([
                     'status' => TRUE,
