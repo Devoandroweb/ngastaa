@@ -38,6 +38,7 @@ class PegawaiResource extends JsonResource
             'shift' =>  $shift,
             'image' => "public/{$this->image}",
             'tanggal_tmt' => tanggal_indo($this->tanggal_tmt),
+            'visit' => false
         ];
 
         return $data;
