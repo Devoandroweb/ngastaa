@@ -22,6 +22,7 @@ class PegawaiResource extends JsonResource
         $tingkat = $jabatan?->tingkat;
         $nama_jabatan =  $tingkat?->nama;
         $eselon =  $tingkat?->eselon?->nama;
+        $kode_eselon =  $tingkat?->eselon?->kode_level;
         $skpd = $jabatan?->skpd?->nama;
 
         $data = [
@@ -31,6 +32,7 @@ class PegawaiResource extends JsonResource
             'name' => ($this->gelar_depan ? $this->gelar_depan .". " : "-") . $this->name . ($this->gelar_belakang ? ", " . $this->gelar_belakang : ""),
             'nama_jabatan' => $nama_jabatan ?? "-",
             'eselon' => $eselon ?? "-",
+            'kode_eselon' => $kode_eselon ?? 0,
             'skpd' => $skpd ?? "-",
             'images' => $this->images,
             'shift' =>  $shift,

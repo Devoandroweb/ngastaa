@@ -55,10 +55,19 @@ class AuthController extends Controller
         }
 
         $authToken = $user->createToken('auth-token')->plainTextToken;
+        $role = ["visit" => true];
+        $dataUser = $data;
+        $dataRole = $role;
+
+        $dataResponse = [
+            "user"=>$dataUser,
+            "role"=>$dataRole
+        ];
+
         return response()->json([
              'status' => TRUE,
             'message' => "Auth Success !!",
-            'data' => $data,
+            'data' => $dataResponse,
             'access_token' => $authToken,
         ], 200);
     }

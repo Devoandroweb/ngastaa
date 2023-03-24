@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Pegawai\PosisiResource;
+use App\Models\Pegawai\RiwayatBahasa;
+use App\Models\Pegawai\RiwayatPendidikan;
+use App\Models\Pegawai\RiwayatPmk;
 use Illuminate\Http\Request;
 use App\Models\User as MUser;
 class User extends Controller
@@ -44,11 +48,34 @@ class User extends Controller
     public function detail($nip)
     {
         try{
+            // pegawai
             $user = MUser::where('nip', $nip)->first();
-            unset($data->user);
+
+            // posisi
+            PosisiResource::withoutWrapping();
+            $posisi = PosisiResource::make($user);
             
-            $data['data_pribadi'] = $user;
-            $data['data_pribadi'] = $user;
+            // pendidikan
+            $Rpendidikan = RiwayatPendidikan::where('nip', $nip)
+            ->orderByDesc('kode_pendidikan')
+            ->get();
+
+            // bahasa
+            $Rbahasa = RiwayatBahasa::where('nip', $nip)
+            ->get();
+
+            // pengalaman kerja
+            $Rpmk = RiwayatPmk::where('nip', $nip)
+            ->orderByDesc('tanggal_sk')
+            ->get();
+
+            unset($user->image);
+            $data['pribadi'] = $user;
+            $data['posisi'] = $posisi;
+            $data['lokasi_kerja'] = $user->koordinat;
+            $data['pendidikan'] = $Rpendidikan;
+            $data['bahasa'] = $Rbahasa;
+            $data['pengalaman_kerja'] = $Rpmk;
 
             // dd($data);
             return response()->json([
@@ -64,4 +91,5 @@ class User extends Controller
             ], 404);
         }
     }
+    
 }
