@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PosisiResource;
+use App\Http\Resources\Pegawai\RiwayatPendidikanResource;
 use App\Models\Pegawai\RiwayatBahasa;
 use App\Models\Pegawai\RiwayatPendidikan;
 use App\Models\Pegawai\RiwayatPmk;
@@ -59,7 +60,7 @@ class User extends Controller
             $Rpendidikan = RiwayatPendidikan::where('nip', $nip)
             ->orderByDesc('kode_pendidikan')
             ->get();
-
+            $Rpendidikan = RiwayatPendidikanResource::make($Rpendidikan);
             // bahasa
             $Rbahasa = RiwayatBahasa::where('nip', $nip)
             ->get();
