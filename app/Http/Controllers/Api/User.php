@@ -60,7 +60,8 @@ class User extends Controller
             $Rpendidikan = RiwayatPendidikan::where('nip', $nip)
             ->orderByDesc('kode_pendidikan')
             ->get();
-            $Rpendidikan = RiwayatPendidikanResource::make($Rpendidikan);
+            // dd($Rpendidikan);
+            $Rpendidikan = RiwayatPendidikanResource::collection($Rpendidikan);
             // bahasa
             $Rbahasa = RiwayatBahasa::where('nip', $nip)
             ->get();
