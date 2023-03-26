@@ -4,6 +4,7 @@ namespace App\Repositories\Password;
 
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Password;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class PasswordRepositoryImplement extends Eloquent implements PasswordRepository{
@@ -41,10 +42,11 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
         
         $user = User::where('nip',$nip)->first();
 
-        $cek = Hash::check($password_lama, $auth->user()->password);
+        $cek = Hash::check($password_lama, $user->password);
         if($cek){
-            $user->password = password_hash($password_baru, PASSWORD_BCRYPT)
-            return $user->update();
+            $user->password = password_hash($password_baru, PASSWORD_BCRYPT);
+            $user->update();
+            return true;
         }else{
             return false;
         }
