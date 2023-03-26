@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Pegawai\RiwayatShift;
 use App\Repositories\Password\PasswordRepository;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -68,6 +69,20 @@ class AuthController extends Controller
             'data' => $data,
             'access_token' => $authToken,
         ], 200);
+    }
+    function passwordCheck(){
+        $user = User::where('nip',request("nip"))->first();
+        if(!Hash::check(request("nip"), $user->password)){
+            return response()->json(buildResponseSukses([
+                'message'=>'Password telah di ubah',
+                'status'=>1
+            ]),200);
+        }else{
+            return response()->json(buildResponseSukses([
+                'message'=>'Password belum di ubah',
+                'status'=>0
+            ]),200);
+        }
     }
     function changePassword(){
         try {
