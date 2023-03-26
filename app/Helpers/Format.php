@@ -594,3 +594,14 @@ function uploadImage($dir, $file)
     $result = $filename->getFileName();
     return $result;
 }
+function roleFormat(){
+    if(role('owner')){
+        return "DIRUT";
+    }elseif(role('admin')){
+        return "HRD";
+    }elseif(role('opd')){
+        return "PIC";
+    }else{
+        return "PGW";
+    }
+}

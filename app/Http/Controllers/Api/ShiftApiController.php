@@ -28,7 +28,7 @@ class ShiftApiController extends Controller
 
        if (request()->file('file')) {
             $file =  request()->file('file');
-            $namaFile = uploadImage(public_path("reimbursement/$nip"),$file);
+            $namaFile = uploadImage(public_path("shift/$nip"),$file);
         }else{
             $namaFile = "";
         }
@@ -39,7 +39,7 @@ class ShiftApiController extends Controller
                     'nip' => $nip,
                     'kode_shift' => $kode_shift,
                     'keterangan' => $keterangan,
-                    'file' => "reimbursement/$nip/".$namaFile,
+                    'file' => "shift/$nip/".$namaFile,
                 ];
 
                 $cek = RiwayatShift::where('nip', $nip)->where('status', 0)->count();

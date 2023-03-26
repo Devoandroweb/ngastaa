@@ -101,7 +101,7 @@ Route::middleware(['auth'])
     ->group(function () {
 
         Route::get('dashboard', DashboardController::class)->name('dashboard');
-        Route::post('payrollStatistic', [DashboardController::class,'payrollStatistic'])->name('payrollStatistic');
+        // Route::post('payrollStatistic', [DashboardController::class,'payrollStatistic'])->name('payrollStatistic');
         Route::get('dashboard-datatable', [DashboardController::class,'datatable'])->name('dashboard_datatable');
         Route::get('dashboard-statstik-payroll', [DashboardController::class,"payrollStatistic"])->name('payrollStatistic');
         Route::get('logs', [LogController::class, 'index'])->name('logs');

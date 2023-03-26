@@ -1,5 +1,10 @@
 /node_modules
 /public/hot
+/public/perizinan
+/public/reimbursement
+/public/shift
+/public/lembur
+/public/uploads
 /public/storage
 /storage/*.key
 /vendor

@@ -23,5 +23,9 @@ class StatusPegawai extends Model
     function pegawai(){
         return $this->hasMany(User::class, 'kode_status', 'kode_status');
     }
+    
+
+
+
 
 }

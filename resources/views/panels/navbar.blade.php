@@ -9,7 +9,9 @@
             <li class="nav-item dropdown d-none d-md-block">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><small>Perusahaan</small><br><span class="fw-bold text-primary">{{$perusahaan->nama}}</span></a>
                 <div class="dropdown-menu">
+                    @if(role('owner'))
                     <a class="dropdown-item" href="{{route('perusahaan.index')}}">Profil Perusahaan</a>
+                    @endif
                     <a class="dropdown-item" href="{{$perusahaan->website}}">Website</a>
                 </div>
             </li>
@@ -46,6 +48,7 @@
                 </div>
                 {{-- END CLOCK --}}
             </li>
+            @if(role('owner'))
             <li class="nav-item d-none d-md-block">
                 <div class="btn-group dropdown me-2">
                     <button type="button" class="btn btn-flush-dark flush-outline-hover dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,6 +63,7 @@
                     </div>
                 </div>
             </li>
+            @endif
             <li class="nav-item">
                 <div class="dropdown dropdown-notifications">
                     <a href="#" class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover dropdown-toggle no-caret" data-bs-toggle="dropdown" data-dropdown-animation role="button" aria-haspopup="true" aria-expanded="false"><span class="icon"><span class="position-relative"><i class="far fa-bell"></i><span class="badge badge-danger badge-indicator position-top-end-overflow-1"></span></span></span></a>
@@ -196,7 +200,7 @@
                             <div class="media">
                                 <div class="media-head me-2 d-flex align-items-center">
                                     <div class="avatar avatar-primary avatar-sm avatar-rounded">
-                                        <span class="initial-wrap">DSM</span>
+                                        <span class="initial-wrap">{{roleFormat()}}</span>
                                     </div>
                                 </div>
                                 <div class="media-body">

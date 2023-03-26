@@ -5,8 +5,8 @@ HRD (Setup CRUD)
 - Divisi Kerja *
 - Lokasi Kerja *
 - Melihat Pegawai berdasarkan divisi *
-- Semua Fitur Abseni (Kecuali pengajuan)
-- Dashboard Semua Divisi
+- Semua Fitur Abseni (Kecuali pengajuan) *
+- Dashboard Semua Divisi *
 
 PIC / Kepala Divisi
 - Dashboard Berdasarkan Divisi

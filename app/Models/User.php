@@ -146,4 +146,19 @@ class User extends Authenticatable
     function statusPegawai(){
         return $this->hasOne(StatusPegawai::class,'kode_status','kode_status');
     }
+    public function riwayatJabatan()
+    {
+        $user = auth()->user()->jabatan_akhir;
+        $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+        $skpd = '';
+        if ($jabatan) {
+            $skpd = $jabatan->kode_skpd;
+        }
+
+        return $this->join('riwayat_jabatan', function ($qt) use ($skpd) {
+            $qt->on('riwayat_jabatan.nip', 'users.nip')
+                ->where('riwayat_jabatan.kode_skpd', $skpd)
+                ->where('riwayat_jabatan.is_akhir', 1);
+        });
+    }
 }

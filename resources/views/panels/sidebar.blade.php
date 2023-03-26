@@ -68,7 +68,9 @@
                         </a>
                     </li>
                     {{-- FOR HRD --}}
+                    @if(role('admin'))
                     @include('panels.sidebar-hrd')
+                    @endif
                     <li class="nav-item d-none"> 
                         {{-- {{activeMenu("pegawai")}} --}}
                         <a class="nav-link" href="{{route('presensi.penjadwalanshift.index')}}">
@@ -89,7 +91,7 @@
                             <span class="nav-link-text">Penjadwalan Shift</span>
                         </a>
                     </li>
-                    @if(role('admin') || role('owner'))
+                    @if(role('admin') || role('owner') || role('opd'))
                     {{-- Master --}}
                     @if(role('owner'))
                     <div class="menu-gap"></div>
@@ -419,11 +421,13 @@
                             <span class="nav-link-text">Visit</span>
                         </a>
                     </li>
+                    @if(role('owner'))
                     {{-- Menu Informasi --}}
                     <div class="menu-gap"></div>
                     <div class="nav-header">
                         <span>Informasi</span>
                     </div>
+                    
                     {{-- Pengumuman --}}
                     <li class="nav-item {{activeMenu("pengumuman")}}">
                         <a class="nav-link" href="{{route('pengumuman.index')}}">
@@ -465,6 +469,7 @@
                         </ul>	
                     </li>
                     {{-- Profile Perusahaan --}}
+                    
                     <li class="nav-item d-block d-md-none {{activeMenu("perusahaan")}}">
                         <a class="nav-link" href="{{route('perusahaan.index')}}">
                             <span class="nav-icon-wrap">
@@ -474,7 +479,8 @@
                             </span>
                             <span class="nav-link-text">Profile Perusahaan</span>
                         </a>
-                    </li>	
+                    </li>
+                    @endif	
                 </ul>
             </div>
             @endif

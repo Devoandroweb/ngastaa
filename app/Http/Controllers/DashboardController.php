@@ -20,34 +20,49 @@ class DashboardController extends Controller
     {
     
         $role = role('opd');
-        // dd($role);
-        // Card
-        $pegawai = User::role('pegawai')
-            ->when($role, function ($qr) {
-                $user = auth()->user()->jabatan_akhir;
-                $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                $skpd = '';
-                if ($jabatan) {
-                    $skpd = $jabatan->kode_skpd;
-                }
 
-                $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                        ->where('riwayat_jabatan.kode_skpd', $skpd)
-                        ->where('riwayat_jabatan.is_akhir', 1);
-                });
-            });
+        $pegawai = User::role('pegawai')->where('owner',0)
+                    ->when($role,function($q){
+                        $user = auth()->user()->jabatan_akhir;
+                        $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+                        $skpd = '';
+                        if ($jabatan) {
+                            $skpd = $jabatan->kode_skpd;
+                        }
+                
+                        return $q->join('riwayat_jabatan', function ($qt) use ($skpd) {
+                            $qt->on('riwayat_jabatan.nip', 'users.nip')
+                                ->where('riwayat_jabatan.kode_skpd', $skpd)
+                                ->where('riwayat_jabatan.is_akhir', 1);
+                        });
+                    });
         $jumlah_pegawai = $pegawai->count();
-        $get_pegawai = User::where('owner',0);
-        // dd($get_pegawai);
-        $status_pegawai = StatusPegawai::with('pegawai')->get();
+        $get_pegawai = User::role('pegawai')->where('owner',0);
+
+        $status_pegawai = StatusPegawai::all();
         $status_pegawai_statistic = [];
         $total_status_pegawai = [];
         $nama_status_pegawai = [];
         $color_status_pegawai = [];
-        // dd($status_pegawai);
+
         foreach ($status_pegawai as $key => $value) {
-            $total_status = $value->pegawai->count();
+            $pegawai = User::role('pegawai')->where('owner',0)
+                        ->when($role,function($q){
+                            $user = auth()->user()->jabatan_akhir;
+                            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+                            $skpd = '';
+                            if ($jabatan) {
+                                $skpd = $jabatan->kode_skpd;
+                            }
+
+                            return $q->join('riwayat_jabatan', function ($qt) use ($skpd) {
+                                $qt->on('riwayat_jabatan.nip', 'users.nip')
+                                    ->where('riwayat_jabatan.kode_skpd', $skpd)
+                                    ->where('riwayat_jabatan.is_akhir', 1);
+                            });
+                        });
+            $total_status = $pegawai->where('kode_status',$value->kode_status)->count();
+            // echo $total_status->toSql();
             $nama = $value->nama;
             
             array_push($total_status_pegawai,$total_status);
@@ -146,7 +161,7 @@ class DashboardController extends Controller
         }
         // dd($mapsRadar);
         // Data Yang Akan Selesai Kontrak
-        $selesai_kontrak = User::selectRaw('users.*, riwayat_jabatan.tanggal_tmt')
+        $selesai_kontrak = User::role('opd')->selectRaw('users.*, riwayat_jabatan.tanggal_tmt')
                                     ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
                                     ->where('riwayat_jabatan.is_akhir', 1)
                                     ->whereMonth('riwayat_jabatan.tanggal_tmt', date("m"))

@@ -76,7 +76,7 @@ class ManagerController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $users = User::role('admin')->orderBy('name')->get();
+        $users = User::role('opd')->orderBy('name')->get();
         $users = PegawaiResource::collection($users);
         return $dataTables->of($users)
             ->addColumn('images', function ($row) {
@@ -90,14 +90,18 @@ class ManagerController extends Controller
                 return '<b class="text-primary">' . $row['nip'] . '</b><br>' . $row['name'];
             })
             ->addColumn('nama_jabatan', function ($row) {
-                return '<p>' . $row['nama_jabatan'] . '</p><p>' . $row['skpd'] . '</p>';
+                $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
+                $tingkat = $jabatan?->tingkat;
+                $nama_jabatan =  $tingkat?->nama;
+                $skpd = $jabatan?->skpd?->nama;
+                return '<p>' . $nama_jabatan . '</p><p>' . $skpd . '</p>';
             })
             ->addColumn('no_hp', function ($row) {
                 return '<p class="text-success">' . $row['no_hp'] . '</p><i>' . $row['email'] . '</i>';
             })
             ->addColumn('opsi', function ($row) {
                 // $html = "<a class='me-2 text-success' tooltip='Edit' href='" . route('pengajuan.cuti.approved', $row->id) . "'>" . icons('c-check', 17) . "</a>";
-                $html = "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('users.hrd.delete', $row['nip']) . "'>" . icons('trash', 17) . "</a>";
+                $html = "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('users.manager.delete', $row['nip']) . "'>" . icons('trash', 17) . "</a>";
                 return $html;
             })
             ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'no_hp'])
