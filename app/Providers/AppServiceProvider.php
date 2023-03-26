@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\Izin\IzinRepository;
 use App\Repositories\Izin\IzinRepositoryImplement;
+use App\Repositories\Password\PasswordRepository;
+use App\Repositories\Password\PasswordRepositoryImplement;
 use App\Repositories\Pegawai\PegawaiRepository;
 use App\Repositories\Pegawai\PegawaiRepositoryImplement;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TotalPresensiRepository::class,TotalPresensiRepositoryImplement::class);
         $this->app->bind(PegawaiRepository::class,PegawaiRepositoryImplement::class);
         $this->app->bind(IzinRepository::class,IzinRepositoryImplement::class);
+        $this->app->bind(PasswordRepository::class,PasswordRepositoryImplement::class);
     }
 
     /**

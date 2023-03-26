@@ -2,32 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Password\PasswordRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UbahPassword extends Controller
 {
-    
+    private $passwordRepository; 
+    function __construct(PasswordRepository $passwordRepository)
+    {
+        $this->passwordRepository = $passwordRepository;
+    }
     public function index()
     {
-        // return inertia('UbahPassword');
         return view('ubah-password');
     }
 
     public function update()
     {
-        $password = request('password');
-        $password_baru = request('password_baru');
-
-        $cek = Hash::check($password, auth()->user()->password);
-        if($cek){
-            $pass = password_hash($password_baru, PASSWORD_BCRYPT);
-            $up = auth()->user()->update(['password' => $pass]);
-        }else{
-            $up = null;
-        }
-
-        if($up){
+        if($this->passwordRepository->changePassword(auth())){
             return redirect(route('password.index'))->with([
                 'type' => 'success',
                 'messages' => 'Berhasil!'
@@ -35,7 +28,7 @@ class UbahPassword extends Controller
         }else{
             return redirect(route('password.index'))->with([
                 'type' => 'error',
-                'messages' => 'Gagal!'
+                'messages' => 'Gagal!, Password lama yang anda masukkan salah'
             ]);
         }
     }

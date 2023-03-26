@@ -1,10 +1,10 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Management User HRD</h2>
-    {{ Breadcrumbs::render('management-user-hrd') }}
+    <h2 class="pg-title">Management User Direksi</h2>
+    {{ Breadcrumbs::render('management-user-direksi') }}
 @endsection
 @section('header_action')
-<a href="{{route('users.hrd.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+<a href="{{route('users.direksi.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endsection
 
 @section('content')
@@ -18,10 +18,8 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>No</th>
-            <th> Foto </th>
-            <th> No. Pegawai & Nama Lengkap </th>
-            <th> Jabatan & Divisi </th>
-            <th> No HP / WA & Email </th>
+            <th> Nama </th>
+            <th> Email </th>
             <th>Opsi</th>
         </tr>
     </thead>
@@ -35,7 +33,7 @@
     <script >
                 
         var _TABLE = null;
-        var _URL_DATATABLE = '{{route("users.hrd.datatable")}}';
+        var _URL_DATATABLE = '{{route("users.direksi.datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
         // SESUAIKAN FIELD EDIT MODAL
         setDataTable();
@@ -59,17 +57,11 @@
                         orderable: false,
                         searchable: false,
                     },{
-                        data: 'images',
-                        name: 'images',
+                        data: 'name',
+                        name: 'name',
                     },{
-                        data: 'nama',
-                        name: 'nama',
-                    },{
-                        data: 'nama_jabatan',
-                        name: 'nama_jabatan',
-                    },{
-                        data: 'no_hp',
-                        name: 'no_hp',
+                        data: 'email',
+                        name: 'email',
                     },{
                         data: 'opsi',
                         name: 'opsi',

@@ -465,6 +465,16 @@ Breadcrumbs::for('tambah-management-user-divisi', function (BreadcrumbTrail $tra
     $trail->parent('management-user-divisi');
     $trail->push('Tambah Management User Kepala Divisi');
 });
+// Management User | Direksi
+Breadcrumbs::for('management-user-direksi', function (BreadcrumbTrail $trail) {
+    $trail->push('User', "#");
+    $trail->push('Management User Direksi', route('users.manager.index'));
+
+});
+Breadcrumbs::for('tambah-management-user-direksi', function (BreadcrumbTrail $trail) {
+    $trail->parent('management-user-direksi');
+    $trail->push('Tambah Management User Direksi');
+});
 
 // Profile Perusahaan
 Breadcrumbs::for('profile-perusahaan', function (BreadcrumbTrail $trail) {

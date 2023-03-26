@@ -87,7 +87,7 @@
                             <span class="nav-link-text">Penjadwalan Shift</span>
                         </a>
                     </li>
-                    @if(role('admin'))
+                    @if(role('admin') || role('owner'))
                     {{-- Master --}}
 
                     <div class="menu-gap"></div>

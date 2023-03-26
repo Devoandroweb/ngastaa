@@ -8,9 +8,15 @@ use App\Models\Pegawai\Imei;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Pegawai\RiwayatShift;
+use App\Repositories\Password\PasswordRepository;
 
 class AuthController extends Controller
 {
+    private $passwordRepository; 
+    function __construct(PasswordRepository $passwordRepository)
+    {
+        $this->passwordRepository = $passwordRepository;
+    }
     public function login(Request $request)
     {
         $request->validate([
@@ -63,7 +69,23 @@ class AuthController extends Controller
             'access_token' => $authToken,
         ], 200);
     }
-
+    function changePassword(){
+        try {
+            if($this->passwordRepository->changePassword(auth())){
+                return response()->json(buildResponseSukses([
+                    'message'=>'Password Berhasil di ubah',
+                    'status'=>1
+                ]),200);
+            }else{
+                return response()->json(buildResponseSukses([
+                    'message'=>'Password lama tidak sesuai',
+                    'status'=>0
+                ]),200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal(['message'=>$th->getMessage()]),500);
+        }
+    }
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

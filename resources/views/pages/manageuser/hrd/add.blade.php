@@ -1,7 +1,7 @@
 @extends('app')
 @section('breadcrumps')
     <h2 class="pg-title">Management User HRD</h2>
-    {{ Breadcrumbs::render('management-user-hrd') }}
+    {{ Breadcrumbs::render('tambah-management-user-hrd') }}
 @endsection
 @section('content')
 @php

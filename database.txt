@@ -1,0 +1,1 @@
+ALTER TABLE `users` CHANGE `kode_status` `kode_status` VARCHAR(20) UNSIGNED NULL DEFAULT NULL;

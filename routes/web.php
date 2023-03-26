@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
@@ -621,6 +621,7 @@ Route::middleware(['auth'])
                         Route::get('add', 'add')->name('add');
                         Route::post('store', 'store')->name('store');
                         Route::get('delete/{direksi}', 'delete')->name('delete');
+                        Route::get('datatable', 'datatable')->name('datatable');
                     });
 
                 Route::controller(HrdController::class)

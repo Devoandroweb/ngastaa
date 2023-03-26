@@ -12,6 +12,7 @@ use App\Models\Pegawai\DataPresensi;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+// use ZipStream\Bigint;
 
 class DashboardController extends Controller
 {
@@ -37,17 +38,19 @@ class DashboardController extends Controller
                 });
             });
         $jumlah_pegawai = $pegawai->count();
-        $get_pegawai = $pegawai->get();
-        $status_pegawai = StatusPegawai::all();
+        $get_pegawai = User::where('owner',0);
+        // dd($get_pegawai);
+        $status_pegawai = StatusPegawai::with('pegawai')->get();
         $status_pegawai_statistic = [];
         $total_status_pegawai = [];
         $nama_status_pegawai = [];
         $color_status_pegawai = [];
+        // dd($status_pegawai);
         foreach ($status_pegawai as $key => $value) {
-            $data = $pegawai->where('kode_status',$value->kode_status)->count();
+            $total_status = $value->pegawai->count();
             $nama = $value->nama;
             
-            array_push($total_status_pegawai,$data);
+            array_push($total_status_pegawai,$total_status);
             array_push($nama_status_pegawai,$nama);
             array_push($color_status_pegawai,getColor($key));
             // $status_pegawai_statistic[]= [

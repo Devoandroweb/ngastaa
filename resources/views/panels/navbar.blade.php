@@ -55,6 +55,8 @@
                         <a class="dropdown-item" href="{{route('users.hrd.index')}}"><i class="dropdown-icon las la-user"></i><span>HRD</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{route('users.manager.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Kepala Divisi</span></a>                       
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{route('users.direksi.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Direksi</span></a>                       
                     </div>
                 </div>
             </li>

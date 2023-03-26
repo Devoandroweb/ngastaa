@@ -3,6 +3,7 @@
 namespace App\Models\Master;
 
 use App\Models\Pegawai\RiwayatStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,6 +19,9 @@ class StatusPegawai extends Model
     public function riwayat_status()
     {
         return $this->hasMany(RiwayatStatus::class, 'kode_status', 'kode_status');
+    }
+    function pegawai(){
+        return $this->hasMany(User::class, 'kode_status', 'kode_status');
     }
 
 }
