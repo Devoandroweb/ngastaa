@@ -28,12 +28,10 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
         $cek = Hash::check($password, $auth->user()->password);
         if($cek){
             $pass = password_hash($password_baru, PASSWORD_BCRYPT);
-            $up = $auth->user()->update(['password' => $pass]);
+            return $auth->user()->update(['password' => $pass]);
         }else{
-            $up = false;
+            return false;
         }
-
-        return $up;
     }
     function changePasswordMobile(){
         // Write something awesome :)
@@ -46,11 +44,9 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
         $cek = Hash::check($password_lama, $auth->user()->password);
         if($cek){
             $user->password = password_hash($password_baru, PASSWORD_BCRYPT)
-            $up = $user->update();
+            return $user->update();
         }else{
-            $up = false;
+            return false;
         }
-
-        return $up;
     }
 }
