@@ -71,7 +71,7 @@ class AuthController extends Controller
     }
     function changePassword(){
         try {
-            if($this->passwordRepository->changePassword(auth())){
+            if($this->passwordRepository->changePasswordMobile()){
                 return response()->json(buildResponseSukses([
                     'message'=>'Password Berhasil di ubah',
                     'status'=>1

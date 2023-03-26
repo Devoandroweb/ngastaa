@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function(){
     
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('getUser', [AuthController::class, 'getUser']);
+    Route::post('ubah-password', [AuthController::class,'changePassword']);
     Route::post('home-user', [HomeUser::class,'index']);
     Route::get('riwayat-presensi/{nip}', [DataAbsensi::class,'index']);
     Route::get('total-presensi/{nip}', [DataAbsensi::class,'totalAbasensi']);
