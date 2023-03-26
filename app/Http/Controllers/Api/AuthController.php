@@ -71,17 +71,25 @@ class AuthController extends Controller
         ], 200);
     }
     function passwordCheck(){
-        $user = User::where('nip',request("nip"))->first();
-        if(!Hash::check(request("nip"), $user->password)){
-            return response()->json(buildResponseSukses([
-                'message'=>'Password telah di ubah',
-                'status'=>1
-            ]),200);
-        }else{
-            return response()->json(buildResponseSukses([
-                'message'=>'Password belum di ubah',
+        try {
+            //code...
+            $user = User::where('nip',request("nip"))->first();
+            if(!Hash::check(request("nip"), $user->password)){
+                return response()->json(buildResponseSukses([
+                    'message'=>'Password telah di ubah',
+                    'status'=>1
+                ]),200);
+            }else{
+                return response()->json(buildResponseSukses([
+                    'message'=>'Password belum di ubah',
+                    'status'=>0
+                ]),200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal([
+                'message'=>$th->getMessage(),
                 'status'=>0
-            ]),200);
+            ]),500);
         }
     }
     function changePassword(){
