@@ -18,12 +18,12 @@ class VisitApiController extends Controller
         $kordinat = request('kordinat');
         $kode_visit = request('kode_visit');
 
-        $image_64 = request('image');
-        $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
-        $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
-        $image = str_replace($replace, '', $image_64);
-        $image = str_replace(' ', '+', $image);
-        $imageName = date("YmdHis") .  Str::random(10) . '.' . $extension;
+        // $image_64 = request('image');
+        // $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
+        // $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
+        // $image = str_replace($replace, '', $image_64);
+        // $image = str_replace(' ', '+', $image);
+        // $imageName = date("YmdHis") .  Str::random(10) . '.' . $extension;
 
         if (request()->file('image')) {
             $file =  request()->file('image');

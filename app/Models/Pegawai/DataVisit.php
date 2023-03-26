@@ -3,6 +3,7 @@
 namespace App\Models\Pegawai;
 
 use App\Models\Master\Visit;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,5 +19,8 @@ class DataVisit extends Model
     public function visit()
     {
         return $this->belongsTo(Visit::class, 'kode_visit', 'kode_visit');
+    }
+    function pegawai(){
+        return $this->hasOne(User::class,'nip','nip');
     }
 }

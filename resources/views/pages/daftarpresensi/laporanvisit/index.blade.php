@@ -1,9 +1,9 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Presensi Harian</h2>
-    {{ Breadcrumbs::render('presensi-harian') }}
+    <h2 class="pg-title">Laporan VIsit</h2>
+    {{ Breadcrumbs::render('laporan-visit') }}
 @endsection
-@section('header_action')
+{{-- @section('header_action')
 <div class="input-group">
     <span class="input-affix-wrapper">
         <div class="row w-300p">
@@ -19,7 +19,7 @@
         </div>
     </span>
 </div>
-@endsection
+@endsection --}}
 @section('content')
 <style>
     tbody tr:hover {
@@ -37,12 +37,8 @@
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
             <th>{{__('No. Pegawai Nama')}}</th>
-            <th>{{__('Shift')}}</th>
             <th>{{__('Jabatan')}}</th>
             <th>{{__('Tanggal')}}</th>
-            <th>{{__('Jam Datang')}}</th>
-            <th>{{__('Jam Istirahat')}}</th>
-            <th>{{__('Jam Pulang')}}</th>
         </tr>
     </thead>
     <tbody>
@@ -70,21 +66,8 @@
                         <tr>
                             <td class="fw-bold">Jabatan</td>
                             <td class="jabatan"></td>
-                            <td class="fw-bold">Jam Datang</td>
-                            <td class="jam_datang"></td>
-                            
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Shift</td>
-                            <td class="shift"></td>
-                            <td class="fw-bold">Jam Istirahat</td>
-                            <td class="jam_istirahat"></td>
-                        </tr>
-                        <tr>
                             <td class="fw-bold">Lokasi</td>
                             <td class="lokasi"></td>
-                            <td class="fw-bold">Jam Pulang</td>
-                            <td class="jam_pulang"></td>
                         </tr>
                     </table>
                 </div> 
@@ -95,32 +78,16 @@
                             <td class="nama_pegawai"></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Jabatan</td>
-                            <td class="jabatan"></td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Shift</td>
-                            <td class="shift"></td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Lokasi</td>
-                            <td class="lokasi"></td>
-                        </tr>
-                        <tr>
                             <td width="15%" class="fw-bold">Tanggal</td>
                             <td class="tanggal"></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Jam Datang</td>
-                            <td class="jam_datang"></td>
+                            <td class="fw-bold">Jabatan</td>
+                            <td class="jabatan"></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Jam Istirahat</td>
-                            <td class="jam_istirahat"></td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Jam Pulang</td>
-                            <td class="jam_pulang"></td>
+                            <td class="fw-bold">Lokasi</td>
+                            <td class="lokasi"></td>
                         </tr>
                     </table>
                 </div>
@@ -132,7 +99,7 @@
                         {{-- end maps --}}
                     </div>
                     <div class="col-12 col-md-5">
-                        <img src="" id="foto_datang" class="img-fluid" alt="" srcset="">
+                        <img src="" id="foto" class="img-fluid" alt="" srcset="">
                     </div>
                 </div>
 			</div>
@@ -154,11 +121,11 @@
     <script >
         
         var _TABLE = null;
-        var _URL_DATATABLE = '{{url("pengajuan/presensi/datatable")}}';
+        var _URL_DATATABLE = '{{route("presensi.laporan_visit.datatable")}}';
         $(".divisi").select2();
         $(".divisi").on("select2:select",function(e){
             var data = e.params.data;
-            _URL_DATATABLE = '{{url("pengajuan/presensi/datatable")}}?skpd='+data.id;
+            _URL_DATATABLE = '{{route("presensi.laporan_visit.datatable")}}';
             _TABLE.ajax.url(_URL_DATATABLE).load()
         });
         // SESUAIKAN COLUMN DATATABLE
@@ -188,23 +155,11 @@
                         data: 'nama',
                         name: 'nama',
                     },{
-                        data: 'shift',
-                        name: 'data_presensi.kode_shift',
-                    },{
                         data: 'jabatan',
                         name: 'jabatan',
                     },{
                         data: 'tanggal',
                         name: 'tanggal',
-                    },{
-                        data: 'jam_datang',
-                        name: 'jam_datang',
-                    },{
-                        data: 'jam_istirahat',
-                        name: 'jam_istirahat',
-                    },{
-                        data: 'jam_pulang',
-                        name: 'jam_pulang',
                     }],
             });
         }
@@ -227,20 +182,16 @@
         function shootToModal(data){
             $(".nama_pegawai").html(data.nama)
             $(".jabatan").text(data.jabatan)
-            $(".jam_datang").text(data.jam_datang)
-            $(".jam_pulang").text(data.jam_pulang)
-            $(".jam_istirahat").text(data.jam_istirahat)
             $(".tanggal").text(data.tanggal)
-            $(".shift").text(data.shift)
-            $("#foto_datang").attr("src","{{url('public/images')}}/"+data.foto_datang)
+            $("#foto").attr("src","{{url('public/uploads')}}/"+data.foto)
             // $("#keterangan").text(data.keterangan)
-            if(data.kordinat_datang != null){
-                $(".lokasi").text(checkLokasi(data.kordinat_datang))
+            if(data.kordinat != null){
+                $(".lokasi").text(checkVisitLokasi(data.kordinat))
             }
         }
         let lokasi = @json($dataLokasi);
-        
-        function checLokasi(location_target){
+        console.log(lokasi);
+        function checkVisitLokasi(location_target){
             var namaLokasi = "-";
             var location_target = (location_target).split(",");
             lokasi.forEach(e => {

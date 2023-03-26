@@ -69,6 +69,7 @@ use App\Http\Controllers\Pengajuan\ShiftPengajuanController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PenjadwalanShiftController;
 use App\Http\Controllers\PerusahaanController;
+use App\Http\Controllers\Presensi\LaporanVisitController;
 use App\Http\Controllers\Presensi\RekapAbsensHarianController;
 use App\Http\Controllers\Presensi\TotalPresensiController;
 use App\Http\Controllers\UbahPassword;
@@ -140,6 +141,14 @@ Route::middleware(['auth'])
                 Route::prefix('rekapabsen')
                 ->controller(RekapAbsensHarianController::class)
                     ->name("rekapabsen.")
+                    ->middleware('role:admin|owner')
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('datatable', 'datatable')->name('datatable');
+                    });
+                Route::prefix('laporan-visit')
+                ->controller(LaporanVisitController::class)
+                    ->name("laporan_visit.")
                     ->middleware('role:admin|owner')
                     ->group(function () {
                         Route::get('', 'index')->name('index');

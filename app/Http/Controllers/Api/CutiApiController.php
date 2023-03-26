@@ -33,15 +33,23 @@ class CutiApiController extends Controller
         $tanggal_mulai = request('tanggal_mulai') ?? date("Y-m-d");
         $tanggal_selesai = request('tanggal_selesai') ?? date("Y-m-d");
 
-        if (request()->file('file')) {
-            $file =  request()->file('file');
-            $namaFile = uploadImage(public_path("perizinan/$nip"),$file);
-        }else{
-            $namaFile = "";
-        }
 
         $user = User::where('nip', $nip)->first();
         if($user){
+                // dd($nip);
+
+                $cek = DataPengajuanCuti::where('nip', $nip)->where('status', 0)->count();
+                // dd($cek);
+                if($cek > 0){
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
+                }
+                if (request()->file('file')) {
+                    $file =  request()->file('file');
+                    $namaFile = uploadImage(public_path("perizinan/$nip"),$file);
+                }else{
+                    $namaFile = "";
+                }
+
                 $data = [
                     'nip' => $nip,
                     'kode_cuti' => $kode_cuti,
@@ -50,11 +58,6 @@ class CutiApiController extends Controller
                     'keterangan' => $keterangan,
                     'file' => "perizinan/$nip/".$namaFile,
                 ];
-
-                $cek = DataPengajuanCuti::where('nip', $nip)->where('status', 0)->count();
-                if($cek > 0){
-                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
-                }
 
                 $cr = DataPengajuanCuti::create($data);
                 if($cr){

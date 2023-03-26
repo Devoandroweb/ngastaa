@@ -413,6 +413,12 @@ Breadcrumbs::for('laporan-divisi', function (BreadcrumbTrail $trail) {
     $trail->push('Laporan Divisi', route('pengajuan.presensi.laporan_divisi'));
 });
 
+// Pengajuan | Laporan Visit
+Breadcrumbs::for('laporan-visit', function (BreadcrumbTrail $trail) {
+    $trail->push('Laporan', "#");
+    $trail->push('Laporan Visit', route('presensi.laporan_visit.index'));
+});
+
 // Presensi | Rekap Harian 
 Breadcrumbs::for('presensi-rekap-harian', function (BreadcrumbTrail $trail) {
     $trail->push('Presensi', "#");

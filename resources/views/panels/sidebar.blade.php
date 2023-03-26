@@ -405,6 +405,17 @@
                             <span class="nav-link-text">Divisi</span>
                         </a>
                     </li>
+                    <li class="nav-item {{activeMenu("laporan-visit")}}">
+                        <a class="nav-link" href="{{route('presensi.laporan_visit.index')}}">
+                            <span class="nav-icon-wrap">
+                                <span class="svg-icon">
+                                    {!!icons('paper')!!}
+                                </span>
+                                </span>
+                            </span>
+                            <span class="nav-link-text">Visit</span>
+                        </a>
+                    </li>
                     {{-- Menu Informasi --}}
                     <div class="menu-gap"></div>
                     <div class="nav-header">
