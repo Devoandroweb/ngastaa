@@ -2,10 +2,15 @@
 
 use App\Models\Perusahaan;
 use Illuminate\Support\Facades\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 function role($string)
 {
+    // auth()->user()->assignRole('pegawai');
     $arrayRole = auth()->user()->getRoleNames()->toArray();
+    
+    // dd($arrayRole);
     if(in_array($string, $arrayRole)){
         return true;
     }else{

@@ -67,6 +67,8 @@
                             <span class="nav-link-text">Pegawai</span>
                         </a>
                     </li>
+                    {{-- FOR HRD --}}
+                    @include('panels.sidebar-hrd')
                     <li class="nav-item d-none"> 
                         {{-- {{activeMenu("pegawai")}} --}}
                         <a class="nav-link" href="{{route('presensi.penjadwalanshift.index')}}">
@@ -89,7 +91,7 @@
                     </li>
                     @if(role('admin') || role('owner'))
                     {{-- Master --}}
-
+                    @if(role('owner'))
                     <div class="menu-gap"></div>
                     <div class="nav-header">
                         <span>Master</span>
@@ -300,7 +302,7 @@
                             </li>	
                         </ul>	
                     </li>
-
+                    @endif
                     {{-- Menu Riwayat --}}
                     <div class="menu-gap"></div>
                     <div class="nav-header">
@@ -347,7 +349,7 @@
                             <span class="nav-link-text">Total Presensi</span>
                         </a>
                     </li>
-                    
+                    @if(role('owner'))
                     {{-- Pengajuan --}}
                     <li class="nav-item {{activeMenu("pengajuan")}}">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#data_pengajuan">
@@ -379,6 +381,7 @@
                             </li>	
                         </ul>	
                     </li>
+                    @endif
                     <div class="menu-gap"></div>
                     <div class="nav-header">
                         <span>Laporan</span>

@@ -48,11 +48,11 @@ class HrdController extends Controller
     public function store()
     {
         $pegawai = request('pegawai');
-
+        // dd($pegawai);
         if (count($pegawai) > 0) {
 
             foreach ($pegawai as $p) {
-                $user = User::where('nip', json_decode($p)->value)->first();
+                $user = User::where('nip', json_decode($p)->value)->where('owner',0)->first();
                 $user->assignRole('admin');
             }
 
@@ -78,8 +78,9 @@ class HrdController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $users = User::role('admin')->orderBy('name')->get();
-        $users = PegawaiResource::collection($users);
+        $users = User::role('admin')->orderBy('name');
+        // $users = PegawaiResource::collection($users);
+        // dd($users);
         return $dataTables->of($users)
             ->addColumn('images', function ($row) {
                 return '<div>	
@@ -91,7 +92,11 @@ class HrdController extends Controller
                 return '<b class="text-primary">' . $row['nip'] . '</b><br>' . $row['name'];
             })
             ->addColumn('nama_jabatan', function ($row) {
-                return '<p>' . $row['nama_jabatan'] . '</p><p>' . $row['skpd'] . '</p>';
+                $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
+                $tingkat = $jabatan?->tingkat;
+                $nama_jabatan =  $tingkat?->nama;
+                $skpd = $jabatan?->skpd?->nama;
+                return '<p>' . $nama_jabatan . '</p><p>' . $skpd . '</p>';
             })
             ->addColumn('no_hp', function ($row) {
                 return '<p class="text-success">' . $row['no_hp'] . '</p><i>' . $row['email'] . '</i>';

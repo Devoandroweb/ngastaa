@@ -24,7 +24,7 @@ class PegawaiResource extends JsonResource
         $eselon =  $tingkat?->eselon?->nama;
         $kode_eselon =  $tingkat?->eselon?->kode_level;
         $skpd = $jabatan?->skpd?->nama;
-
+        
         $data = [
             'nip' => $this->nip,
             'no_hp' => $this->no_hp ?? "-",

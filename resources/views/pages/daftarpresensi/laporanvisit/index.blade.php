@@ -168,8 +168,8 @@
             var data = _TABLE.row(this).data();
             console.log(data);
             var ltlg = [0,0];
-            if(data.kordinat_datang != null){
-                ltlg = (data.kordinat_datang).split(",");
+            if(data.kordinat != null){
+                ltlg = (data.kordinat).split(",");
             }
             shootToModal(data);
             var myModal = new bootstrap.Modal($("#located-panel"))
@@ -192,7 +192,7 @@
         let lokasi = @json($dataLokasi);
         console.log(lokasi);
         function checkVisitLokasi(location_target){
-            var namaLokasi = "-";
+            var namaLokasi = "Lokasi tidak di temukan";
             var location_target = (location_target).split(",");
             lokasi.forEach(e => {
                 if((e.polygon).length == 0){

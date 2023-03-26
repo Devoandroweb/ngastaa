@@ -456,8 +456,8 @@ Breadcrumbs::for('management-user-hrd', function (BreadcrumbTrail $trail) {
     $trail->push('Management User HRD', route('users.hrd.index'));
 
 });
-Breadcrumbs::for('tambah-management-user', function (BreadcrumbTrail $trail) {
-    $trail->parent('management-user');
+Breadcrumbs::for('tambah-management-user-hrd', function (BreadcrumbTrail $trail) {
+    $trail->parent('management-user-hrd');
     $trail->push('Tambah Management User HRD');
 });
 

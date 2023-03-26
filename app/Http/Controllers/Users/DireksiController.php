@@ -31,6 +31,7 @@ class DireksiController extends Controller
         ];
         $data = request()->validate($rules);
         $data['password'] = password_hash(request('password'), PASSWORD_BCRYPT);
+        $data['owner'] = 1;
         $user = User::create($data);
         $user->assignRole('owner');
         return redirect(route('users.direksi.index'))->with([

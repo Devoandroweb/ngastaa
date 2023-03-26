@@ -28,11 +28,12 @@ class CutiApiController extends Controller
     public function store()
     {
         $nip = request('nip');
+        // return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => $nip]),200);
+
         $keterangan = request('keterangan');
         $kode_cuti = request('kode_cuti');
         $tanggal_mulai = request('tanggal_mulai') ?? date("Y-m-d");
         $tanggal_selesai = request('tanggal_selesai') ?? date("Y-m-d");
-
 
         $user = User::where('nip', $nip)->first();
         if($user){
@@ -59,15 +60,21 @@ class CutiApiController extends Controller
                     'file' => "perizinan/$nip/".$namaFile,
                 ];
 
-                $cr = DataPengajuanCuti::create($data);
+                try {
+                    $cr = DataPengajuanCuti::create($data);
+                } catch (\Exception $e) {
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => $e->getMessage()]),200);
+
+                }
+
                 if($cr){
                     tambah_log($cr->nip, "App\Pegawai\DataPengajuanCuti", $cr->id, 'diajukan');    
-                    return response()->json(buildResponseSukses(['status' => TRUE]),200);
+                    return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Berhasil di ajukan']),200);
                 }else{
-                    return response()->json(buildResponseSukses(['status' => FALSE]),200);
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Gagal di ajukan']),200);
                 }
         }else{
-            return response()->json(buildResponseSukses(['status' => FALSE]),200);
+            return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Pegawai tidak di temukan']),200);
         }
     }
 

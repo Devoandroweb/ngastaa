@@ -2,9 +2,9 @@ Ubah Password Mobile
 Laporan Visit
 
 HRD (Setup CRUD)
-- Divisi Kerja
-- Lokasi Kerja
-- Melihat Pegawai berdasarkan divisi
+- Divisi Kerja *
+- Lokasi Kerja *
+- Melihat Pegawai berdasarkan divisi *
 - Semua Fitur Abseni (Kecuali pengajuan)
 - Dashboard Semua Divisi
 

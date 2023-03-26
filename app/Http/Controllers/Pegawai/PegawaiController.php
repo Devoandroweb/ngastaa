@@ -16,34 +16,6 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $role = role('opd');
-
-        $pegawai = User::role('pegawai')
-            ->when($search, function ($qr, $search) {
-                $qr->where('name', 'LIKE', "%$search%");
-            })
-            ->when($role, function ($qr) {
-                $user = auth()->user()->jabatan_akhir;
-                $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                $skpd = '';
-                if ($jabatan) {
-                    $skpd = $jabatan->kode_skpd;
-                }
-
-                $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                        ->where('kode_skpd', $skpd)
-                        ->where('is_akhir', 1);
-                });
-            })
-            ->paginate($limit);
-
-        $pegawai->appends(request()->all());
-        
-        $pegawai = PegawaiResource::collection($pegawai);
         // dd($pegawai);
         // return inertia('Pegawai/Pegawai/index', compact('pegawai'));
         return view('pages/pegawai/pegawai/index');
