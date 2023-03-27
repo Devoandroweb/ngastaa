@@ -53,7 +53,7 @@
 													<div class="form-label-group">
 														<label>Email</label>
 													</div>
-													<input class="form-control" placeholder="Enter username or email ID" name="email" value="zilong@example.com" type="text" autocomplete="off">
+													<input class="form-control" placeholder="Enter username or email ID" name="email" value="" type="text" autocomplete="off">
 												</div>
 												<div class="form-group col-lg-12">
 													<div class="form-label-group">
@@ -62,7 +62,7 @@
 													</div>
 													<div class="input-group password-check">
 														<span class="input-affix-wrapper affix-wth-text">
-															<input class="form-control" placeholder="Enter your password" value="zilong@example.com" name="password" type="password" autocomplete="off">
+															<input class="form-control" placeholder="Enter your password" value="" name="password" type="password" autocomplete="off">
 															<a href="#" class="input-suffix text-primary text-uppercase fs-8 fw-medium">
 																<span>Show</span>
 																<span class="d-none">Hide</span>
