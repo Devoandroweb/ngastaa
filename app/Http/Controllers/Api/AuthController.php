@@ -112,16 +112,16 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-
+        $imei = request('imei');
+        Imei::where('kode',$imei)->first()->delete();
         return response()->json(buildResponseSukses(['status' => TRUE]),200);
     }
 
     public function getUser()
     {
         $nip = request('nip');
-        $imei = request('imei');
         $user = User::where('nip', $nip)->first();
-        Imei::where('kode',$imei)->first()->delete();
+        
         return response()->json(buildResponseSukses($user),200);
     }
 }
