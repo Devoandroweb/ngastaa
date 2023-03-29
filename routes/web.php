@@ -149,7 +149,7 @@ Route::middleware(['auth'])
                 Route::prefix('laporan-visit')
                 ->controller(LaporanVisitController::class)
                     ->name("laporan_visit.")
-                    ->middleware('role:admin|owner')
+                    ->middleware('role:admin|owner|opd')
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::get('datatable', 'datatable')->name('datatable');
