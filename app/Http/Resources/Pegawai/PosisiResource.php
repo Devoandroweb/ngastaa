@@ -23,7 +23,7 @@ class PosisiResource extends JsonResource
         $nama_jabatan        =  $jabatan?->tingkat?->nama;
 
         $sk_jabatan_terlama = $this->riwayat_jabatan()->orderBy('tanggal_sk')->value('tanggal_sk');
-
+        
         $data = [
             'nip' => $this->nip,
             'name' => $this->name,

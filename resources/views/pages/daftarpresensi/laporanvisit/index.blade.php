@@ -1,6 +1,6 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Laporan VIsit</h2>
+    <h2 class="pg-title">Laporan Visit</h2>
     {{ Breadcrumbs::render('laporan-visit') }}
 @endsection
 {{-- @section('header_action')
