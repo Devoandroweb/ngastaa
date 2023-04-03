@@ -131,7 +131,7 @@ class PegawaiJabatanController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-jabatan-" . date("YmdHis") . ".pdf");
+            $data['file'] = request()->file('file')->storeAs('data_pegawai/'.$pegawai->nip.'/riwayat_jabatan', $pegawai->nip . "-jabatan-" . date("YmdHis") . ".pdf");
         }
 
         $cr = RiwayatJabatan::updateOrCreate(
@@ -198,7 +198,7 @@ class PegawaiJabatanController extends Controller
             })
             ->addColumn('file', function ($row) {
 
-                return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
+                return '<a class="badge badge-primary badge-outline" href="' . url('/'.$row['file']) . '">Lihat Berkas</a>';
             })
             ->addColumn('opsi', function ($row) {
 

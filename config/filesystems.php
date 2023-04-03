@@ -71,6 +71,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('../data_pegawai') => storage_path('app/public/data_pegawai'),
         public_path('../visit_qr') => storage_path('app/public/visit_qr'),
         public_path('../uploads') => storage_path('app/public/uploads'),
     ],
