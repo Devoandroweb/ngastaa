@@ -139,7 +139,9 @@ class RiwayatCutiController extends Controller
         // dd($Rcuti);
         return $dataTables->of($Rcuti)
             ->addColumn('cuti', function ($row) {
-
+                if(is_null($row['cuti'])){
+                    return "-";
+                }
                 return  $row['cuti']['nama'] ;
             })
             ->addColumn('tanggal_surat', function ($row) {
