@@ -27,15 +27,17 @@ class ReimbursementApiController extends Controller
         $nilai = request('nilai');
         $keterangan = request('keterangan');
 
-        if (request()->file('file')) {
-            $file =  request()->file('file');
-            $namaFile = uploadImage(public_path("reimbursement/$nip"),$file);
-        }else{
-            $namaFile = "";
-        }
+        
 
         $user = User::where('nip', $nip)->first();
         if($user){
+                if (request()->file('file')) {
+                    $file =  request()->file('file');
+                    $namaFile = uploadImage(public_path("reimbursement/$nip"),$file);
+                }else{
+                    $namaFile = "";
+                }
+                
                 $data = [
                     'nip' => $nip,
                     'kode_reimbursement' => $kode_reimbursement,
@@ -48,9 +50,10 @@ class ReimbursementApiController extends Controller
                 if($cek > 0){
                     return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
                 }
-                if (request()->file('file')) {
-                    $data['file'] = request()->file('file')->storeAs($nip, $nip . "-reimbursement-" . request('nomor_surat') . ".pdf");
-                }
+                
+                // if (request()->file('file')) {
+                //     $data['file'] = request()->file('file')->storeAs($nip, $nip . "-reimbursement-" . request('nomor_surat') . ".pdf");
+                // }
                 $cr = DataPengajuanReimbursement::create($data);
                 if($cr){
                     tambah_log($cr->nip, "App\Pegawai\DataPengajuanReimbursement", $cr->id, 'diajukan');    
