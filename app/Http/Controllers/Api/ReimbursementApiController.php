@@ -31,13 +31,19 @@ class ReimbursementApiController extends Controller
 
         $user = User::where('nip', $nip)->first();
         if($user){
+                
+                $cek = DataPengajuanReimbursement::where('nip', $nip)->where('status', 0)->count();
+                if($cek > 0){
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
+                }
+
                 if (request()->file('file')) {
                     $file =  request()->file('file');
                     $namaFile = uploadImage(public_path("reimbursement/$nip"),$file);
                 }else{
                     $namaFile = "";
                 }
-                
+
                 $data = [
                     'nip' => $nip,
                     'kode_reimbursement' => $kode_reimbursement,
@@ -45,12 +51,7 @@ class ReimbursementApiController extends Controller
                     'keterangan' => $keterangan,
                     'file' => "reimbursement/$nip/".$namaFile,
                 ];
-                
-                $cek = DataPengajuanReimbursement::where('nip', $nip)->where('status', 0)->count();
-                if($cek > 0){
-                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
-                }
-                
+
                 // if (request()->file('file')) {
                 //     $data['file'] = request()->file('file')->storeAs($nip, $nip . "-reimbursement-" . request('nomor_surat') . ".pdf");
                 // }
