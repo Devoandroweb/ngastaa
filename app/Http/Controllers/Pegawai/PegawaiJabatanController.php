@@ -131,7 +131,9 @@ class PegawaiJabatanController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs('data_pegawai/'.$pegawai->nip.'/riwayat_jabatan', $pegawai->nip . "-jabatan-" . date("YmdHis") . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
+            // $data['file'] = request()->file('file')->storeAs('data_pegawai/'.$pegawai->nip.'/riwayat_jabatan', $pegawai->nip . "-jabatan-" . date("YmdHis") . ".pdf");
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatJabatan::updateOrCreate(

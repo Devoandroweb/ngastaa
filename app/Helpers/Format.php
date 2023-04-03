@@ -594,6 +594,15 @@ function uploadImage($dir, $file)
     $result = $filename->getFileName();
     return $result;
 }
+function uploadFile($dir, $file)
+{
+    $result = null;
+    $namaFile = time() . "_" . $file->getClientOriginalName();
+    // $ext = $file->getClientOriginalExtension();
+    $filename = $file->move($dir, $namaFile);
+    $result = $filename->getFileName();
+    return $result;
+}
 function roleFormat(){
     if(role('owner')){
         return "DIRUT";
