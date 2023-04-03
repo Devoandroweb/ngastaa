@@ -93,5 +93,24 @@ class User extends Controller
             ], 404);
         }
     }
-    
+    function updateProfile(){
+        try {
+            $nip = request('nip');
+            $name = request('name'); // nama colom
+            $value = request('value'); // isi colom
+
+            $user = MUser::where('nip', $nip)->first();
+            $user->{$name} = $value;
+            $user->update();
+            return response()->json(buildResponseSukses([
+                'message' => 'Update Profile Berhasil'
+            ]),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal([
+                'message' => $th->getMessage()
+            ]),500);
+
+        }
+
+    }
 }

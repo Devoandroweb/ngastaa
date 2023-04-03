@@ -32,7 +32,7 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => FALSE,
                     'message' => 'Nomor pegawai atau password tidak benar.',
-                ], 422);
+                ], 200);
             }
         }
         $imei = $request->imei;
@@ -44,7 +44,7 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => FALSE,
                     'message' => "Maaf, 1 Device hanya dapat digunakan untuk 1 Pegawai!",
-                ], 422);
+                ], 200);
             }
         }else{
             Imei::create([
