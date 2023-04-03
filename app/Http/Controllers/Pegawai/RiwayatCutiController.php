@@ -132,7 +132,7 @@ class RiwayatCutiController extends Controller
     public function datatable($pegawai, DataTables $dataTables)
     {
         
-        $Rcuti = RiwayatCuti::where('nip', $pegawai)
+        $Rcuti = RiwayatCuti::where('nip', $pegawai)->with('cuti')->has('cuti')
             ->orderByDesc('tanggal_mulai')
             ->get();
         $Rcuti = RiwayatCutiResource::collection($Rcuti);
