@@ -21,9 +21,12 @@ function get_masa_kerja($tanggal)
 
 function tambah_log($target_nip, $model_type, $model_id, $action)
 {
-
+    $user_nip = auth()->user()->nip;
+    if(is_null($user_nip)){
+        $nip = 000;
+    }
     $data = [
-        'user_nip' => auth()->user()->nip,
+        'user_nip' => $user_nip,
         'target_nip' => $target_nip,
         'model_type' => $model_type,
         'model_id' => $model_id,
