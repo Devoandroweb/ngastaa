@@ -23,7 +23,7 @@ function tambah_log($target_nip, $model_type, $model_id, $action)
 {
     $user_nip = auth()->user()->nip;
     if(is_null($user_nip)){
-        $nip = 000;
+        $user_nip = 000;
     }
     $data = [
         'user_nip' => $user_nip,
