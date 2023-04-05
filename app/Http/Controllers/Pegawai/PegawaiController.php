@@ -264,5 +264,9 @@ class PegawaiController extends Controller
             'messages' => "Berhasil meng-import pegawai"
         ]);
     }
-
+    public function aksesAkun(User $pegawai)
+    {
+        $view = view("pages.pegawai.pegawai.datautama.akses-akun",compact("pegawai"))->render();
+        return response()->json(["view"=>$view]);
+    }
 }

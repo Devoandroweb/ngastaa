@@ -1,8 +1,4 @@
-<div class="card mt-3">
-    {{-- @section('header_action')
-    <a href="{{route('pegawai.pegawai.edit.'.$pegawai.'')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Edit')}}</a>
-    @endsection --}}
-    <div class="card-body p-6">
+
         <div class="d-flex flex-wrap justify-content-between flex-1">
             <div class="mb-lg-0 mb-2 me-8">
                 <h4 class="fw-bold">Personal Detail</h4>
@@ -70,8 +66,8 @@
                 <b>{{$pegawai->alamat_ktp}}</b>
             </div>
         </div>
-    </div>
-</div>
+    
+
 
 
 

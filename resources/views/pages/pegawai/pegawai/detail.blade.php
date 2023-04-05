@@ -59,7 +59,7 @@
             </div>
         </div>
         {{-- tabs --}}
-        <ul class="nav nav-tabs nav-line nav-icon nav-light w-auto border-bottom">
+        <ul class="nav nav-tabs nav-line nav-icon nav-light w-auto d-none">
             <li class="nav-item">
                 <a class="d-flex align-items-center nav-link active h-100" data-bs-toggle="tab" href="#data_utama">
                     <span class="nav-link-text">Data Utama</span>
@@ -86,10 +86,10 @@
                 </a>
             </li>
         </ul>
-        <div class="tab-content mb-2 mt-0">
+        <div class="tab-content mb-2 mt-0 d-none">
             <div class="tab-pane fade show active" id="data_utama">
                 @include('pages.pegawai.pegawai.menu-pane.data-utama')
-                
+
             </div>
             <div class="tab-pane fade" id="data_riwayat">
                 @include('pages.pegawai.pegawai.menu-pane.data-riwayat')
@@ -104,18 +104,8 @@
                 @include('pages.pegawai.pegawai.menu-pane.unduh-berkas')
             </div>
         </div>
-        <div class="loading text-center mb-5">
-            <div class="loadingio-spinner-ellipsis-ul1uzlc5yan"><div class="ldio-cvh2xv40fr">
-            <div></div><div></div><div></div><div></div><div></div>
-            </div></div>
-            <p>Tunggu sebentar, sedang memuat halaman ....</p>
-        </div>
-        <div id="data_pribadi" class="view-data-utama"></div>
-        <div id="posisi_jabatan" class="view-data-utama"></div>
-        <div id="data_koor" class="view-data-utama"></div>
-        <div class="target-view">
-            
-        </div>
+        @include('pages.pegawai.pegawai.sidebar-content')
+        
         {{-- end tabs --}}
     </div>
 </div>
@@ -133,7 +123,13 @@ $(document).ready(function () {
     var _ID_UPDATE = "";
     var _TIPE_PAGE = 0;
     var _IGNORE_VALIDATE = ["unggah_ktp","unggah_bpjs","file","gelar_belakang","gelar_depan","kode_umk"]
-    $('.navbar-toggle').click();
+    $('.navbar-toggle').click()
+    $('[href="#data_pribadi"]').click()
+    $('#sidebar-content .nav-item').click(function(){
+        $('#sidebar-content .nav-item').removeClass('active')
+        $(this).addClass('active')
+        $("#title-content").text($(this).find('.nav-link-text').text())
+    });
     $('[data-bs-toggle="tab"]').click(function(){
         _TIPE_PAGE = $(this).data("tipepage");
     })

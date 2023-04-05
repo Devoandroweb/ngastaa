@@ -199,6 +199,7 @@ Route::middleware(['auth'])
                         Route::get('import_add', 'import_add')->name('import_add');
                         Route::post('import_pegawai', 'import_pegawai')->name('import_pegawai');
                         Route::get('shift/{pegawai}', 'shift')->name('shift');
+                        Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
 
                     });
 
