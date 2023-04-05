@@ -95,7 +95,9 @@ class RiwayatPmkController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-pmk-" . request('jenis_pmk') . date("His") . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-pmk-" . request('jenis_pmk') . date("His") . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/pengalaman_kerja';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatPmk::updateOrCreate(
@@ -139,6 +141,9 @@ class RiwayatPmkController extends Controller
             return "Tahun ".$row['masa_kerja_tahun']." Bulan ".$row['masa_kerja_bulan'] ;
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {

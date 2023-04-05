@@ -200,13 +200,19 @@ class KeluargaController extends Controller
         }
 
         if (request()->file('file_ktp')) {
-            $data['file_ktp'] = request()->file('file_ktp')->storeAs($pegawai->nip, $pegawai->nip . "-ktp-" . request('status') . ".pdf");
+            // $data['file_ktp'] = request()->file('file_ktp')->storeAs($pegawai->nip, $pegawai->nip . "-ktp-" . request('status') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/keluarga/ktp';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
         if (request()->file('file_bpjs')) {
-            $data['file_bpjs'] = request()->file('file_bpjs')->storeAs($pegawai->nip, $pegawai->nip . "-bpjs-" . request('status') . ".pdf");
+            // $data['file_bpjs'] = request()->file('file_bpjs')->storeAs($pegawai->nip, $pegawai->nip . "-bpjs-" . request('status') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/keluarga/bpjs';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
         if (request()->file('file_akta_kelahiran')) {
-            $data['file_akta_kelahiran'] = request()->file('file_akta_kelahiran')->storeAs($pegawai->nip, $pegawai->nip . "-akta-" . request('status') . ".pdf");
+            // $data['file_akta_kelahiran'] = request()->file('file_akta_kelahiran')->storeAs($pegawai->nip, $pegawai->nip . "-akta-" . request('status') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/keluarga/akta';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
         // dd($data);
         $cr = Keluarga::updateOrCreate(
@@ -251,6 +257,9 @@ class KeluargaController extends Controller
                 return $row['tempat_lahir']." ". tanggal_indo($row['tanggal_lahir']);
             })
             ->addColumn('file', function ($row) {
+                if(is_null($row['file'])){
+                        return "-";
+                }
                 return '<a class="badge badge-primary badge-outline" href="' . storage($row['file']) . '">Lihat Berkas</a>';
             })
             ->addColumn('opsi', function ($row) {
@@ -281,6 +290,9 @@ class KeluargaController extends Controller
             return $row['tempat_lahir'] . " " . $row['tanggal_lahir'];
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {
@@ -311,6 +323,9 @@ class KeluargaController extends Controller
             return $row['tempat_lahir'] . " " . $row['tanggal_lahir'];
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {
@@ -341,6 +356,9 @@ class KeluargaController extends Controller
             return $row['tempat_lahir'] . " " . $row['tanggal_lahir'];
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {

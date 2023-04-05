@@ -94,7 +94,9 @@ class RiwayatReimbursementController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-reimbursement-" . request('nomor_surat') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-reimbursement-" . request('nomor_surat') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/reimbursement';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = DataPengajuanReimbursement::updateOrCreate(
@@ -148,10 +150,9 @@ class RiwayatReimbursementController extends Controller
                 return  $row['keterangan'] ;
             })
             ->addColumn('file', function ($row) {
-                return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
-            })
-            ->addColumn('file', function ($row) {
-
+                if(is_null($row['file'])){
+                        return "-";
+                }
                 return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
             })
             ->addColumn('opsi', function ($row) {

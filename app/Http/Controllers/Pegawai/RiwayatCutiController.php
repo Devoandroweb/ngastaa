@@ -92,7 +92,9 @@ class RiwayatCutiController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-cuti-" . request('nomor_surat') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-cuti-" . request('nomor_surat') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/perizinan';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatCuti::updateOrCreate(
@@ -161,7 +163,9 @@ class RiwayatCutiController extends Controller
                 return  $row['nomor_surat'] ;
             })
             ->addColumn('file', function ($row) {
-
+                if(is_null($row['file'])){
+                        return "-";
+                }
                 return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
             })
             ->addColumn('opsi', function ($row) {

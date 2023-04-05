@@ -88,7 +88,9 @@ class RiwayatKursusController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-kursus-" . request('no_sertifikat') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-kursus-" . request('no_sertifikat') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/kursus';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatKursus::updateOrCreate(
@@ -137,6 +139,9 @@ class RiwayatKursusController extends Controller
             return tanggal_indo($row['tanggal_sertifikat']) ;
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {

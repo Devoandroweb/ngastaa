@@ -95,7 +95,9 @@ class RiwayatSptController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-spt-" . request('tahun') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-spt-" . request('tahun') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/spt';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatSpt::updateOrCreate(
@@ -143,6 +145,9 @@ class RiwayatSptController extends Controller
             return  $row['nomor_tanda_terima_elektronik'];
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {

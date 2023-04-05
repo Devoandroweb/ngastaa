@@ -59,7 +59,10 @@ class PegawaiJabatanController extends Controller
     public function delete(User $pegawai, RiwayatJabatan $Rjabatan)
     {
         if ($Rjabatan->file) {
-            Storage::delete($Rjabatan->file);
+            // $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
+            // dd($dir."/".$Rjabatan->file);
+            @unlink($Rjabatan->file);
+            // Storage::delete($Rjabatan->file);
         }
         $cr = $Rjabatan->delete();
         if ($cr) {
@@ -121,17 +124,17 @@ class PegawaiJabatanController extends Controller
         }
 
         $id = request('id');
+        $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
         if ($id) {
             if (request()->file('file')) {
                 $file = RiwayatJabatan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($dir."/".$file);
                 }
             }
         }
 
         if (request()->file('file')) {
-            $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
             // $data['file'] = request()->file('file')->storeAs('data_pegawai/'.$pegawai->nip.'/riwayat_jabatan', $pegawai->nip . "-jabatan-" . date("YmdHis") . ".pdf");
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
@@ -199,7 +202,9 @@ class PegawaiJabatanController extends Controller
                 
             })
             ->addColumn('file', function ($row) {
-
+                if(is_null($row['file'])){
+                    return "-";
+                }
                 return '<a class="badge badge-primary badge-outline" href="' . url('/'.$row['file']) . '">Lihat Berkas</a>';
             })
             ->addColumn('opsi', function ($row) {

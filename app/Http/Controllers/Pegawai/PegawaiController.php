@@ -249,10 +249,20 @@ class PegawaiController extends Controller
         return view('pages.pegawai.pegawai.import');
     }
 
-    public function import_pegawai(User $pegawai)
-    {
-        Excel::import(new ImportPegawaiExcell, $pegawai->file('file')->store('file'));
-        return redirect(route('pegawai.pegawai.index'));
+    public function import_pegawai()
+    {   
+        $import = new ImportPegawaiExcell;
+        Excel::import($import, request()->file('file')->store('file'));
+        if($import->errorStatus()){
+            return to_route('pegawai.pegawai.import_add')->with([
+                'type' => 'error',
+                'messages' => $import->errorMessage()
+            ]);
+        }
+        return to_route('pegawai.pegawai.index')->with([
+            'type' => 'success',
+            'messages' => "Berhasil meng-import pegawai"
+        ]);
     }
 
 }

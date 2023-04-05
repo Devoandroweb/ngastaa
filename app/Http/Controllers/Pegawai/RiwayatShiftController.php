@@ -95,7 +95,9 @@ class RiwayatShiftController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-shift-" . request('nomor_surat') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-shift-" . request('nomor_surat') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/shift';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatShift::updateOrCreate(
@@ -159,6 +161,9 @@ class RiwayatShiftController extends Controller
                 return  $row['keterangan'];
             })
             ->addColumn('file', function ($row) {
+                if(is_null($row['file'])){
+                        return "-";
+                }
 
                 return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
             })

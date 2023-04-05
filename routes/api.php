@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('total-presensi/{nip}', [DataAbsensi::class,'totalAbasensi']);
     Route::get('profil/{nip}', [User::class,'index']);
     Route::get('profil-detail/{nip}', [User::class,'detail']);
+    Route::post('edit-profil', [User::class,'updateProfile']);
     Route::get('absen/{nip}', [Presensi::class,'index']);
     Route::get('list-lokasi-visit', [VisitApiController::class,'list_lokasi_visit']);
 

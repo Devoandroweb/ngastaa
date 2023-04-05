@@ -128,7 +128,9 @@ class RiwayatKgbController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-kgb-" . request('nomor_surat') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-kgb-" . request('nomor_surat') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/gaji_pokok';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatKgb::updateOrCreate(
@@ -179,6 +181,9 @@ class RiwayatKgbController extends Controller
             return $row['masa_kerja_tahun'] ." Tahun - " .$row['masa_kerja_bulan'] ." Bulan";
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('is_private', function ($row) {

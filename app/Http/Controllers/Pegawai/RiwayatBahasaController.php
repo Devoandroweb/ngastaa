@@ -84,7 +84,9 @@ class RiwayatBahasaController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-bahasa-" . request('no_sertifikat') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-bahasa-" . request('no_sertifikat') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/bahasa';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatBahasa::updateOrCreate(
@@ -125,6 +127,9 @@ class RiwayatBahasaController extends Controller
             return  ucfirst($row['penguasaan']);
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {

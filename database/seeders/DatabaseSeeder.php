@@ -16,11 +16,18 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-
-        \App\Models\User::create([
-            'name' => 'admin',
-            'email' => 'admin@mail.com',
-            'password' => Hash::make('admin'),
+        
+        // \App\Models\User::create([
+        //     'name' => 'admin',
+        //     'email' => 'admin@mail.com',
+        //     'password' => Hash::make('admin'),
+        // ]);
+        $user = \App\Models\User::create([
+            'name' => 'owner',
+            'email' => 'owner@gmail.com',
+            'password' => Hash::make('owner'),
+            'owner' => 1
         ]);
+        $user->assignRole('owner');
     }
 }

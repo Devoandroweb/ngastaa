@@ -119,7 +119,9 @@ class RiwayatPendidikanController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-pendidikan-" . request('nomor_ijazah') . request('kode_pendidikan') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-pendidikan-" . request('nomor_ijazah') . request('kode_pendidikan') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/pendidikan';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatPendidikan::updateOrCreate(
@@ -166,7 +168,9 @@ class RiwayatPendidikanController extends Controller
         })->addColumn('jurusan', function ($row) {
             return (($row['is_akhir'] == 1)?'<i class="bi bi-bookmark-star-fill text-danger fs-4"></i>' : '').$row['pendidikan']['nama'];
         })->addColumn('file', function ($row) {
-
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {

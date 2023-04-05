@@ -95,7 +95,9 @@ class RiwayatLemburController extends Controller
         }
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-lembur-" . request('nomor_surat') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-lembur-" . request('nomor_surat') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/lembur';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = DataPengajuanLembur::updateOrCreate(
@@ -146,6 +148,9 @@ class RiwayatLemburController extends Controller
                 return  $row['keterangan'] ;
             })
             ->addColumn('file', function ($row) {
+                if(is_null($row['file'])){
+                        return "-";
+                }
                 return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
             })
             ->addColumn('opsi', function ($row) {

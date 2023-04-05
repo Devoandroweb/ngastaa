@@ -113,7 +113,9 @@ class RiwayatTunjanganController extends Controller
             tambah_log($pegawai->nip, "App\Pegawai\RiwayatTunjangan", $id, 'diubah');
         }
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-tunjangan-" . date("Ymdhis") . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-tunjangan-" . date("Ymdhis") . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/tunjangan';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatTunjangan::updateOrCreate(
@@ -170,7 +172,9 @@ class RiwayatTunjanganController extends Controller
             return ($row['status'] == 0) ? "<span class='badge badge-danger'>Tidak Aktif</span>" : "<span class='badge badge-success'>Aktif</span>";
         })
         ->addColumn('file', function ($row) {
-
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {

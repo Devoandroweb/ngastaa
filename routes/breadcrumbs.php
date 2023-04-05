@@ -10,7 +10,7 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // Profil Pegawai
 Breadcrumbs::for('profile-pegawai', function (BreadcrumbTrail $trail) {
-    $trail->push('Profil Pegawai', route('pegawai.pegawai.index'));
+    $trail->push('Data Pegawai', route('pegawai.pegawai.index'));
 });
 
 Breadcrumbs::for('detail-pegawai', function (BreadcrumbTrail $trail) {
@@ -19,7 +19,12 @@ Breadcrumbs::for('detail-pegawai', function (BreadcrumbTrail $trail) {
 });
 Breadcrumbs::for('tambah-pegawai', function (BreadcrumbTrail $trail) {
     $trail->parent('profile-pegawai');
-    $trail->push('Tambah', route('pegawai.pegawai.add'));
+    $trail->push('Tambah Pegawai', route('pegawai.pegawai.add'));
+});
+
+Breadcrumbs::for('import-pegawai', function (BreadcrumbTrail $trail) {
+    $trail->parent('profile-pegawai');
+    $trail->push('Import Pegawai', route('pegawai.pegawai.index'));
 });
 
 Breadcrumbs::for('tambah-shift-pegawai', function (BreadcrumbTrail $trail,$pegawai) {

@@ -87,7 +87,9 @@ class RiwayatLainnyaController extends Controller
 
 
         if (request()->file('file')) {
-            $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-lainnya-" . request('tanggal_sk') . ".pdf");
+            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-lainnya-" . request('tanggal_sk') . ".pdf");
+            $dir = 'data_pegawai/'.$pegawai->nip.'/lainnya';
+            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatLainnya::updateOrCreate(
@@ -125,6 +127,9 @@ class RiwayatLainnyaController extends Controller
             return  tanggal_indo($row['tanggal_sk']);
         })
         ->addColumn('file', function ($row) {
+            if(is_null($row['file'])){
+                    return "-";
+            }
             return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
         })
         ->addColumn('opsi', function ($row) {
