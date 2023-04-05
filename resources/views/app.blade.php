@@ -40,7 +40,7 @@
 		@include('panels.sidebar')
 		<!-- Main Content -->
 		<div class="hk-pg-wrapper">
-			<div class="container-xxl px-4">
+			<div class="container-fluid px-4">
 				@include('panels.content')
 			</div>
             @include('panels.footer')

@@ -17,8 +17,61 @@
             <span class="nav-link-text">Data Koordinat</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link tab-utama" data-bs-toggle="tab" href="#data_pribadi" data-ajax="{{route('pegawai.pegawai.detail_pribadi',$pegawai->nip)}}">
+            <span class="nav-icon-wrap"><span class="feather-icon"><i class="fas fa-user-tie"></i></span></span>
+            <span class="nav-link-text">Akses Akun</span>
+        </a>
+    </li>
 </ul>
 
+{{-- <div class="integrationsapp-wrap">
+	<nav class="integrationsapp-sidebar">
+		<div data-simplebar="init" class="nicescroll-bar"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
+			<div class="menu-content-wrap">
+				<div class="menu-group">
+					<ul class="nav nav-light navbar-nav flex-column">
+						<li class="nav-item active">
+							<a class="nav-link tab-utama" data-bs-toggle="tab" href="#posisi_jabatan" data-ajax="{{route('pegawai.posisi.index',$pegawai->nip)}}">
+								<span class="nav-icon-wrap">{!!icons('c-arror-right')!!}</span>
+								<span class="nav-link-text">Data Pribadi</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link tab-utama" data-bs-toggle="tab" href="#data_koor" id="tab-koor" data-ajax="{{route('pegawai.kordinat.index',$pegawai->nip)}}">
+								<span class="nav-icon-wrap">{!!icons('c-arror-right')!!}</span>
+								<span class="nav-link-text">Posisi dan Jabatan</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="menu-gap"></div>
+			</div>
+		</div></div></div></div><div class="simplebar-placeholder" style="width: 269px; height: 153px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; transform: translate3d(0px, 47px, 0px); display: none;"></div></div></div>
+		<!--Sidebar Fixnav-->
+		
+		<!--/ Sidebar Fixnav-->
+	</nav>
+	<div class="integrationsapp-content">
+		<div class="integrationsapp-detail-wrap">
+			<header class="integrations-header">
+				<div class="d-flex align-items-center flex-1">
+					<a href="#" class="integrationsapp-title link-dark flex-shrink-0">
+						<h1>Data Pribadi</h1>
+					</a>
+				</div>
+				<div class="hk-sidebar-togglable"></div>
+			</header>
+			<div class="integrations-body">
+				<div data-simplebar="init" class="nicescroll-bar"><div class="simplebar-wrapper" style="margin: -20px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 20px;">
+                <div class="container mt-md-7 mt-3">
+                        
+                </div>
+				</div></div></div></div><div class="simplebar-placeholder" style="width: 1194px; height: 40px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div></div>
+			</div>
+		</div>
+	</div>
+</div> --}}
 
 @push("js")
 <script>

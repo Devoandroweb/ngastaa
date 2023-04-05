@@ -54,7 +54,7 @@ class RiwayatGolonganController extends Controller
     public function akhir(User $pegawai, RiwayatGolongan $Rgolongan)
     {
         if ($Rgolongan->file) {
-            Storage::delete($Rgolongan->file);
+            @unlink($Rgolongan->file);
         }
         RiwayatGolongan::where('nip', $pegawai->nip)->update(['is_akhir' => 0]);
 
@@ -102,7 +102,7 @@ class RiwayatGolonganController extends Controller
             if (request()->file('file')) {
                 $file = RiwayatGolongan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
         }

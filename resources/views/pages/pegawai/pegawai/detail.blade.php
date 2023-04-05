@@ -22,7 +22,7 @@
     }
 </style>
 
-<div class="container-xxl mt-4">
+<div class="container-fluid mt-4">
     <div class="profile-wrap">
         <div class="profile-img-wrap">
             <img class="img-fluid rounded-5" src="{{asset('/')}}dist/img/profile-bg.jpg" alt="Image Description">
@@ -59,7 +59,7 @@
             </div>
         </div>
         {{-- tabs --}}
-        <ul class="nav nav-tabs nav-line nav-icon nav-light w-auto">
+        <ul class="nav nav-tabs nav-line nav-icon nav-light w-auto border-bottom">
             <li class="nav-item">
                 <a class="d-flex align-items-center nav-link active h-100" data-bs-toggle="tab" href="#data_utama">
                     <span class="nav-link-text">Data Utama</span>
@@ -86,9 +86,10 @@
                 </a>
             </li>
         </ul>
-        <div class="tab-content mb-2">
+        <div class="tab-content mb-2 mt-0">
             <div class="tab-pane fade show active" id="data_utama">
                 @include('pages.pegawai.pegawai.menu-pane.data-utama')
+                
             </div>
             <div class="tab-pane fade" id="data_riwayat">
                 @include('pages.pegawai.pegawai.menu-pane.data-riwayat')
@@ -132,6 +133,7 @@ $(document).ready(function () {
     var _ID_UPDATE = "";
     var _TIPE_PAGE = 0;
     var _IGNORE_VALIDATE = ["unggah_ktp","unggah_bpjs","file","gelar_belakang","gelar_depan","kode_umk"]
+    $('.navbar-toggle').click();
     $('[data-bs-toggle="tab"]').click(function(){
         _TIPE_PAGE = $(this).data("tipepage");
     })

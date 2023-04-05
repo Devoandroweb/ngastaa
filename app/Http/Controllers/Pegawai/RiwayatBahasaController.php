@@ -45,6 +45,7 @@ class RiwayatBahasaController extends Controller
 
     public function delete(User $pegawai, RiwayatBahasa $Rbahasa)
     {
+        @unlink($Rbahasa->file);
         $cr = $Rbahasa->delete();
         if ($cr) {
             return redirect(route('pegawai.bahasa.index', $pegawai->nip))->with([
@@ -78,7 +79,7 @@ class RiwayatBahasaController extends Controller
             if (request()->file('file')) {
                 $file = RiwayatBahasa::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
         }

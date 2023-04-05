@@ -55,7 +55,7 @@ class RiwayatPotonganController extends Controller
     {
         tambah_log($pegawai->nip, "App\Pegawai\RiwayatPotongan", $Rpotongan->id, 'dihapus');
         if ($Rpotongan->file) {
-            Storage::delete($Rpotongan->file);
+            @unlink($Rpotongan->file);
         }
         $cr = $Rpotongan->delete();
         if ($cr) {
@@ -109,7 +109,7 @@ class RiwayatPotonganController extends Controller
             if (request()->file('file')) {
                 $file = RiwayatPotongan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
             tambah_log($pegawai->nip, "App\Pegawai\RiwayatPotongan", $id, 'diubah');

@@ -107,13 +107,13 @@ class KeluargaController extends Controller
     {
         // dd($Rkeluarga);
         if ($Rkeluarga->file_ktp) {
-            Storage::delete($Rkeluarga->file_ktp);
+            @unlink($Rkeluarga->file_ktp);
         }
         if ($Rkeluarga->file_bpjs) {
-            Storage::delete($Rkeluarga->file_bpjs);
+            @unlink($Rkeluarga->file_bpjs);
         }
         if ($Rkeluarga->file_akta_kelahiran) {
-            Storage::delete($Rkeluarga->file_akta_kelahiran);
+            @unlink($Rkeluarga->file_akta_kelahiran);
         }
         $cr = $Rkeluarga->delete();
         if ($cr) {
@@ -182,19 +182,19 @@ class KeluargaController extends Controller
             if (request()->file('file_ktp')) {
                 $file = Keluarga::where('id', $id)->where('nip', $pegawai->nip)->value('file_ktp');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
             if (request()->file('file_bpjs')) {
                 $file = Keluarga::where('id', $id)->where('nip', $pegawai->nip)->value('file_bpjs');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
             if (request()->file('file_akta_kelahiran')) {
                 $file = Keluarga::where('id', $id)->where('nip', $pegawai->nip)->value('file_akta_kelahiran');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
         }

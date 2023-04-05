@@ -38,7 +38,7 @@ class RiwayatStatusController extends Controller
     public function delete(User $pegawai, RiwayatStatus $Rstatus)
     {
         if ($Rstatus->file) {
-            Storage::delete($Rstatus->file);
+            @unlink($Rstatus->file);
         }
         $cr = $Rstatus->delete();
         if ($cr) {
@@ -97,7 +97,7 @@ class RiwayatStatusController extends Controller
             if (request()->file('file')) {
                 $file = RiwayatStatus::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
         }

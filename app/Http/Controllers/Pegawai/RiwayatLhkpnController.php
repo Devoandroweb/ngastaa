@@ -70,7 +70,7 @@ class RiwayatLhkpnController extends Controller
             if (request()->file('file')) {
                 $file = RiwayatLhkpn::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
         }

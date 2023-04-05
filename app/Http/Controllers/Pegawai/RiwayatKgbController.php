@@ -54,7 +54,7 @@ class RiwayatKgbController extends Controller
     public function delete(User $pegawai, RiwayatKgb $Rkgb)
     {
         if ($Rkgb->file) {
-            Storage::delete($Rkgb->file);
+            @unlink($Rkgb->file);
         }
         $cr = $Rkgb->delete();
         if ($cr) {
@@ -122,7 +122,7 @@ class RiwayatKgbController extends Controller
             if (request()->file('file')) {
                 $file = RiwayatKgb::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
         }

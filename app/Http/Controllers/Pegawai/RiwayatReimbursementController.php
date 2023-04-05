@@ -87,7 +87,7 @@ class RiwayatReimbursementController extends Controller
             if (request()->file('file')) {
                 $file = DataPengajuanReimbursement::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
             tambah_log($pegawai->nip, "App\Pegawai\DataPengajuanReimbursement", $id, 'diubah');

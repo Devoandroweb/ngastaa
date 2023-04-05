@@ -159,8 +159,8 @@ class PegawaiController extends Controller
             if ($cek->image) {
                 Storage::delete($cek->image);
             }
-            $ext = request()->file('file')->getClientOriginalExtension();
-            $file =  request()->file('file')->storeAs($nip, $nip . "-foto" . ".$ext");
+            // $ext = request()->file('file')->getClientOriginalExtension();
+            $file =  uploadImage("data_pegawai/".$nip."/foto",request()->file('file'));
             $cr = $cek->update(['image' => $file]);
             if ($file != "" && $cr) {
                 return response()->json(['status' => TRUE, 'file' => $file]);

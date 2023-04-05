@@ -83,7 +83,7 @@ class RiwayatPenghargaanController extends Controller
             if (request()->file('file')) {
                 $file = RiwayatPenghargaan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
-                    Storage::delete($file);
+                    @unlink($file);
                 }
             }
         }

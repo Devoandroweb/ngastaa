@@ -62,7 +62,7 @@ class PegawaiJabatanController extends Controller
             // $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
             // dd($dir."/".$Rjabatan->file);
             @unlink($Rjabatan->file);
-            // Storage::delete($Rjabatan->file);
+            // @unlink($Rjabatan->file);
         }
         $cr = $Rjabatan->delete();
         if ($cr) {
