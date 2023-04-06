@@ -33,7 +33,7 @@
                                     <input type="file" class="upload upload-image" name="image" data-target="show-image" data-ext="png,jpg,jpeg">
                                 </div>
                                 <div class="form-text text-muted">
-                                    Untuk pratinjau yang lebih baik, ukuran yang disarankan adalah 450px x 450px. Ukuran maksimal 5 MB.
+                                    Untuk pratinjau yang lebih baik, ukuran yang disarankan adalah 450px x 450px. Ukuran maksimal 1 MB.
                                 </div>
                             </div>
                         </div>
