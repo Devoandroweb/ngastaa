@@ -25,14 +25,14 @@
 <div class="container-fluid mt-4">
     <div class="profile-wrap">
         <div class="profile-img-wrap">
-            <img class="img-fluid rounded-5" src="{{asset('/')}}dist/img/profile-bg.jpg" alt="Image Description">
+            <img class="img-fluid rounded-5" src="{{asset('/')}}dist/img/profile-bg.png" alt="Image Description">
         </div>
         <div class="profile-intro">
             <div class="card card-flush w-100 bg-transparent">
                 <div class="card-body">
                     <div class="avatar avatar-xxl avatar-rounded position-relative mb-2">
                         {{-- <img src="{{$pegawai->images}}" alt="user" class="avatar-img border border-4 border-white"> --}}
-                        <img src="{{asset('/')}}dist/img/avatar3.jpg" alt="user" class="avatar-img border border-4 border-white">
+                        <img src="{{$pegawai->foto()}}" alt="user" class="avatar-img border border-4 border-white">
                         <span class="badge badge-indicator badge-success  badge-indicator-xl position-bottom-end-overflow-1 me-1"></span>
                     </div>
                     <h4>{{$pegawai->name}}

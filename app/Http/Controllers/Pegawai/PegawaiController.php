@@ -127,9 +127,11 @@ class PegawaiController extends Controller
 
         $data = request()->validate($rules);
         $data['tanggal_lahir'] = date("Y-m-d",strtotime($data['tanggal_lahir']));
+        $dir = "data_pegawai/".$data['nip']."/foto";
         if(request()->hasFile('image')){
-            $image =  uploadImage("data_pegawai/".$data['nip']."/foto",request()->file('image'));
-            $data['image'] = $image;
+            
+            $image =  uploadImage($dir,request()->file('image'));
+            $data['image'] = $dir.'/'.$image;
         }
         if (!request('id')) {
             
@@ -137,7 +139,9 @@ class PegawaiController extends Controller
             $cr = User::create($data);
             $cr->assignRole('pegawai');
         } else {
-            $cr = User::where('nip', request('nip'))->update($data);
+            $user =  User::where('nip', request('nip'));
+            @unlink($user->first()->image);
+            $cr = $user->update($data);
         }
 
         if ($cr) {
