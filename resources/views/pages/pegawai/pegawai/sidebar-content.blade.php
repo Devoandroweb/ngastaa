@@ -265,7 +265,7 @@
 				<div class="hk-sidebar-togglable"></div>
 			</header>
 			<div class="integrations-body">
-				<div data-simplebar="init" class="nicescroll-bar"><div class="simplebar-wrapper" style="margin: -20px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 20px;">
+				<div data-simplebar class="nicescroll-bar">
                 <div class="container mt-md-3">
                     <div class="loading text-center mb-2">
                         <div class="loadingio-spinner-ellipsis-ul1uzlc5yan"><div class="ldio-cvh2xv40fr">
@@ -276,9 +276,10 @@
                     <div id="data_pribadi" class="view-data-utama"></div>
                     <div id="posisi_jabatan" class="view-data-utama"></div>
                     <div id="data_koor" class="view-data-utama"></div>
+                    <div id="akses_akun" class="view-data-utama"></div>
                     <div class="target-view"></div>
                 </div>
-				</div></div></div></div><div class="simplebar-placeholder" style="width: 1194px; height: 40px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div></div>
+				
 			</div>
 		</div>
 	</div>
