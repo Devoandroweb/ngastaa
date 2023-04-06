@@ -148,7 +148,7 @@ $(document).ready(function () {
         $(this).addClass('active')
         $("#title-content").text($(this).find('.nav-link-text').text())
     });
-    $('[data-bs-toggle="tab"]').click(function(){
+    $('.item-sidebar-content').click(function(){
         _TIPE_PAGE = $(this).data("tipepage");
     })
     $(".tab-datatable").click(function (e) { 
