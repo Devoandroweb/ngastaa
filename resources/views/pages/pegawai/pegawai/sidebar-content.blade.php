@@ -11,7 +11,7 @@
 							</a>
 						</li>
                         <li class="nav-item">
-							<a class="nav-link tab-utama" href="#data_pribadi" data-ajax="{{route('pegawai.pegawai.akses_akun',$pegawai->nip)}}">
+							<a class="nav-link tab-utama" href="#akses_akun" data-ajax="{{route('pegawai.pegawai.akses_akun',$pegawai->nip)}}">
 								<span class="nav-icon-wrap">{!!icons('c-arror-right')!!}</span>
 								<span class="nav-link-text">Akses Akun</span>
 							</a>
@@ -151,7 +151,7 @@
                 <div class="menu-group">
                     <ul class="nav nav-light navbar-nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link tab-datatable" href="#data_pribadi"
+                            <a class="nav-link tab-datatable" href="#keluarga"
                                 data-tableurl="{{konfigSemuaKeluarga($pegawai['nip'])['url']}}"
                                 data-tablecolumn='{!!json_encode(konfigSemuaKeluarga($pegawai['nip'])['data'])!!}'
                                 data-tableadd="{{konfigSemuaKeluarga($pegawai['nip'])['url_add']}}"
