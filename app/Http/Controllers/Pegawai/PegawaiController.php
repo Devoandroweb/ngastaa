@@ -117,6 +117,7 @@ class PegawaiController extends Controller
             'email' => 'nullable',
             'alamat' => 'nullable',
             'alamat_ktp' => 'nullable',
+            'image' => 'nullable',
         ];
 
         if (!request('id')) {
@@ -126,7 +127,12 @@ class PegawaiController extends Controller
 
         $data = request()->validate($rules);
         $data['tanggal_lahir'] = date("Y-m-d",strtotime($data['tanggal_lahir']));
+        if(request()->hasFile('image')){
+            $image =  uploadImage("data_pegawai/".$data['nip']."/foto",request()->file('image'));
+            $data['image'] = $image;
+        }
         if (!request('id')) {
+            
             $data['password'] = password_hash(request('nip'), PASSWORD_BCRYPT);
             $cr = User::create($data);
             $cr->assignRole('pegawai');
@@ -204,7 +210,7 @@ class PegawaiController extends Controller
             ->addColumn('images', function ($row) {
                 return '<div>	
                         <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
-                        <img src="' . asset('dist/img/businessman.png') . '" alt="user" class="avatar-img">
+                        <img src="' . $row->foto() . '" alt="user" class="avatar-img">
                     </div>';
             })
             ->addColumn('nama', function ($row) {

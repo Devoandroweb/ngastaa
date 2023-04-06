@@ -21,6 +21,10 @@ Breadcrumbs::for('tambah-pegawai', function (BreadcrumbTrail $trail) {
     $trail->parent('profile-pegawai');
     $trail->push('Tambah Pegawai', route('pegawai.pegawai.add'));
 });
+Breadcrumbs::for('edit-pegawai', function (BreadcrumbTrail $trail,$nip) {
+    $trail->parent('profile-pegawai');
+    $trail->push('Edit Pegawai', route('pegawai.pegawai.edit',$nip));
+});
 
 Breadcrumbs::for('import-pegawai', function (BreadcrumbTrail $trail) {
     $trail->parent('profile-pegawai');

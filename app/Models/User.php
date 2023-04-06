@@ -161,4 +161,18 @@ class User extends Authenticatable
                 ->where('riwayat_jabatan.is_akhir', 1);
         });
     }
+    function foto(){
+        $jk = str_replace(" ","",$this->jenis_kelamin);
+        $foto = $this->image;
+        if($foto == null || $foto == "" || $foto == "NULL"){
+            if(strtolower($jk) == "laki-laki"){
+                return asset('/dist/img/man.png');
+            }elseif(strtolower($jk) == "perempuan"){
+                return asset('/dist/img/woman.png');
+            }else{
+                return asset('/dist/img/man.png');
+            }
+        }
+        return url("/$foto");
+    }
 }

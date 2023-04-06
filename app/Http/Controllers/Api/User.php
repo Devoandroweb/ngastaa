@@ -98,7 +98,9 @@ class User extends Controller
             $nip = request('nip');
             $name = request('name'); // nama colom
             $value = request('value'); // isi colom
-
+            if($name == 'tanggal_lahir'){
+                $value = date("Y-m-d",strtotime($value));
+            }
             $user = MUser::where('nip', $nip)->first();
             $user->{$name} = $value;
             $user->update();

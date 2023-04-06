@@ -111,3 +111,41 @@ function formatRupiah(nominal) {
 
     return rupiah;
 }
+
+$(document).on('change','.upload-image',function() {
+    var _EXT = $(this).data('ext').toLowerCase();
+    var _ID_TARGET = $(this).data('target')
+    var file = $(this);
+    var files_obj = file[0].files;
+    var file_size = files_obj[0].size;
+    var file_extention = (files_obj[0].name).split(".");
+    var canExtention = (_EXT).split(","); //png,jpeg -> this format data-ext in html image-live
+    // console.log(extention.at(-1));
+    var _IMG_LIVE = $("#show-image")
+    _IMG_LIVE.siblings('.text-danger').remove();
+    if(inExt(file_extention.at(-1),canExtention)){
+        if (file_size > 1024000) {
+            _IMG_LIVE.after('<div class="text-danger"><i>File Tidak Boleh Lebih besar dari 1Mb ya</i></div>');
+            return;
+        }
+        readURL(this,_ID_TARGET);
+    }else{
+         _IMG_LIVE.after('<div class="text-danger"><i>Format Image Wajib '+_EXT+'</i></div>');
+    }
+});
+function readURL(input,_ID_TARGET) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            console.log(_ID_TARGET);
+            $("#"+_ID_TARGET).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function inExt(value, array) {
+    for(var i = 0; i < array.length; i++) {
+        if(array[i] == value) return true;
+    }
+    return false;
+}

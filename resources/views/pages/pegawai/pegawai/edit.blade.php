@@ -1,15 +1,15 @@
 @extends('app')
 @section('breadcrumps')
-    {{-- {{ Breadcrumbs::render('status-pegawai') }} --}}
-    <h4>Edit Pegawai</h4>
+<h4>Edit Pegawai</h4>
+{{ Breadcrumbs::render('edit-pegawai',$pegawai->nip) }}
 @endsection
 @section('content')
-<form class="edit-post-form" action="{{route('pegawai.pegawai.store')}}" method="post">
+<form class="edit-post-form" action="{{route('pegawai.pegawai.store')}}" method="post" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="id" value="{{$pegawai->id}}">
     <div class="row mb-4">
         <div class="col-md-12">
-            <div class="hk-pg-header pg-header-wth-tab pb-2 mb-2">
+            <div class="hk-pg-header pg-header-wth-tab pb-2 mb-4">
                 <div class="d-flex">
                     <div class="d-flex flex-wrap justify-content-between flex-1">
                         <div class="mb-lg-0 mb-2 me-8">
@@ -18,6 +18,29 @@
                     </div>
                 </div>
             </div>
+            <div class="row gx-3">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="media align-items-center">
+                            <div class="media-head me-5">
+                                <div class="avatar avatar-rounded avatar-xxl">
+                                    <img src="{{$pegawai->foto()}}" alt="user" class="avatar-img" id="show-image">
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <div class="btn btn-soft-primary btn-file mb-1">
+                                    Upload Photo
+                                    <input type="file" class="upload upload-image" name="image" data-target="show-image" data-ext="png,jpg,jpeg">
+                                </div>
+                                <div class="form-text text-muted">
+                                    Untuk pratinjau yang lebih baik, ukuran yang disarankan adalah 450px x 450px. Ukuran maksimal 5 MB.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
             <div class="row">
                 <div class="col">
                     <div class="form-group has-validation">
@@ -223,6 +246,6 @@
 <script>
     initDatePickerSingle();
 
-$("select").select2();
+    $("select").select2();
 </script>    
 @endpush
