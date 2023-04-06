@@ -28,7 +28,7 @@ class User extends Controller
             }
             $data = [
                 'nama' => $user->getFullName(),
-                'foto' => "/public/{$user->image}",
+                'foto' => $this->foto(),
                 'jabatan' => $jabatan,
                 'status_pegawai' => $status_pegawai,
                 'divisi' => $divisi,
