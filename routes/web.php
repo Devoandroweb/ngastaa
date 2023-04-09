@@ -589,7 +589,7 @@ Route::middleware(['auth'])
                     ->name("shift.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
-                        Route::post('reject/{shift}', 'reject')->name('reject');
+                        Route::get('reject/{shift}', 'reject')->name('reject');
                         Route::get('approved/{shift}', 'approved')->name('approved');
                         Route::post('update', 'update')->name('update');
                         Route::get('datatable', 'datatable')->name('datatable');

@@ -102,6 +102,7 @@ class DataPresensiController extends Controller
         $tahun = request('tahun') ?? date('Y');
         $nip = request('pegawai');
         $xl = request('xl');
+        // dd($xl);
         $role = role('opd');
         $pegawai = User::where('nip', $nip)
             ->when($role, function ($qr) {
@@ -126,12 +127,15 @@ class DataPresensiController extends Controller
                 'messages' => 'Data Laporan tidak di temukan'
             ]);
         }else{
-            if ($xl) {
+            if ($xl == "true") {
                 $date = date("YmdHis");
-                return Excel::download(new LaporanPegawaiExport($bulan, $tahun, $xl, $pegawai), "pegawai-$nip-$date.xlsx")->format("xlsx");
+                $response = Excel::download(new LaporanPegawaiExport($bulan, $tahun, $xl, $pegawai), "pegawai-$nip-$date.xlsx", \Maatwebsite\Excel\Excel::XLSX);
+                ob_end_clean();
+                return $response;
                 // return view('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'));
             } else {
                 $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'))->setPaper('a4', 'potrait');
+                // ob_end_clean();
                 return $pdf->stream();
             }
         }

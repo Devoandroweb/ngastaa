@@ -48,17 +48,17 @@ class UnduhBerkasController extends Controller
         $zip = new ZipArchive;
 
         if (true === ($zip->open("public/file-pegawai-$nip.zip", ZipArchive::CREATE | ZipArchive::OVERWRITE))) {
-            // $pathFoto = public_path("../data_pegawai/$nip/foto");
-            // $pathFoto = public_path("../data_pegawai/$nip/foto");
-            // $files = File::allFiles($path);
-            // foreach ($files as $file) {
-            //     $name = basename($file);
-            //     if ($name !== '.gitignore') {
-            //         $zip->addFile(public_path("../data_pegawai/$nip/foto/$name"), $name);
-            //         // dd($zip);
-            //     }
-            // }
-            // $zip->close();
+            $pathFoto = public_path("../data_pegawai/$nip/foto");
+            $pathFoto = public_path("../data_pegawai/$nip/foto");
+            $files = File::allFiles($path);
+            foreach ($files as $file) {
+                $name = basename($file);
+                if ($name !== '.gitignore') {
+                    $zip->addFile(public_path("../data_pegawai/$nip/foto/$name"), $name);
+                    // dd($zip);
+                }
+            }
+            $zip->close();
         }
         // return response()->download()
         return redirect(url("public/file-pegawai-$nip.zip"));

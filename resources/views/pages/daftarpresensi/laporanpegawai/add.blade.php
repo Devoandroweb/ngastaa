@@ -130,11 +130,12 @@ function initSelectPegawai(data,value_skpd,element = null){
 }
 $(".btn-submit").on("click", function (e) {
     if($(this).attr("id") == "pdf"){
-        $("[name=xl]").val(true);
+        $("[name=xl]").val(false);
         $(".form-laporan").attr("action","{{route('pengajuan.presensi.laporan_pegawai_download')}}").submit();
     }
     if($(this).attr("id") == "excel"){
-        $(".form-laporan").attr("action","{{route('pengajuan.presensi.laporan_pegawai_download')}}").submit();
+        $("[name=xl]").val(true);
+        $(".form-laporan").attr("action","{{route('pengajuan.presensi.laporan_pegawai_download')}}?xl=true").submit();
     }
 });
 // =============================

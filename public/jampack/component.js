@@ -1,12 +1,13 @@
 
 function initDatePickerSingle(){
+    // console.log($('.datepicker-single').val())
     $('.datepicker-single').daterangepicker({
             singleDatePicker: true,
-            startDate: $('.datepicker-single').val(),
             showDropdowns: true,
             autoApply:true,
             minYear: 1970,
             maxYear: new Date().getFullYear() + 15,
+            // startDate: $(this).val(),
             locale: {
                 format: 'DD/MM/YYYY'
             }

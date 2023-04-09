@@ -20,7 +20,7 @@ $(document).on('click','.approv', function (e) {
     }).then((result) => {
         console.log(result)
         if (result.value) {
-                redirect(approv.attr("href"));
+            redirect(approv.attr("href"));
         }
     })
     

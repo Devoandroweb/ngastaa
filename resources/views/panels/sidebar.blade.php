@@ -358,7 +358,7 @@
                             <span class="nav-icon-wrap">
                                 <span class="svg-icon">
                                     <span class="svg-icon">
-                                        {!!icons('package')!!}
+                                        {!!icons('plane')!!}
                                     </span>
                                 </span>
                             </span>

@@ -14,9 +14,10 @@ class LogResource extends JsonResource
      */
     public function toArray($request)
     {
+        // dd($this->user->name);
         return [
             'user' => $this->user->name,
-            'foto' => $this->user->images,
+            'foto' => $this->user->foto(),
             'target' => optional($this->target)->name,
             'action' => badgeApproval($this->action),
             // 'action' => $this->action,
