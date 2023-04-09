@@ -36,23 +36,6 @@
         </div>
     </div>
     @endif
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label class="form-label">Pilihan<span class="text-danger">*</span></label>
-        </div>
-        <div class="col-md-4">
-            <div class="form-check">
-                <input type="radio" id="is_aktif_1" name="is_aktif" class="form-check-input" value="1" {{$Rpotongan?->is_akhir == 1 ? 'checked':'' }}>
-                <label class="form-check-label" for="is_aktif_1">Aktif (Terhitung pada Payroll)</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-check">
-                <input type="radio" id="is_aktif_2" name="is_aktif" class="form-check-input" value="0" {{$Rpotongan?->is_akhir == 0 ? 'checked':'' }}>
-                <label class="form-check-label" for="is_aktif_2">Tidak Aktif (Tidak terhitung pada Payroll)</label>
-            </div>    
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-4">
             <label class="form-label">Jenis Potongan<span class="text-danger">*</span></label>

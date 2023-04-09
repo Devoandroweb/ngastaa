@@ -192,16 +192,12 @@ class PresensiApiController extends Controller
         // $image = str_replace(' ', '+', $image);
         // $imageName = date("YmdHis") . Str::random(10) . '.' . $extension;
 
-        $date = request('date');
+        // $date = request('date');
+        $date = request("date");
         $toler1Min = strtotime("-5 minutes");
         $dateSend = strtotime($date);
 
-        if (request()->file('image')) {
-            $file =  request()->file('image');
-            $foto = uploadImage(public_path("uploads/presensi/$nip"),$file);
-        }else{
-            $foto = "";
-        }
+        
 
         // if($image_64){
         //     $foto = "presensi/$nip/$imageName";
@@ -223,11 +219,15 @@ class PresensiApiController extends Controller
             $tanggalIn = date('Y-m-d H:i:s');
         }
         // dd(date("H:i:s",$toler1Min));
+        // dd(date("Y-m-d H:i:s",$dateSend));
+        // dd(date("Y-m-d H:i:s",$toler1Min));
+        $user = User::where('nip', $nip)->with('riwayat_shift')->has('riwayat_shift')->first();
+        
         if ($dateSend < $toler1Min) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Harap memperbaiki jam Handphone Anda!']),400);
         }
-
-        $user = User::where('nip', $nip)->first();
+        
+        
         if (!$user) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'User tidak ditemukan!']),400);
         }
@@ -237,28 +237,33 @@ class PresensiApiController extends Controller
         // if ($perizinan) {
         //     return response()->json(['status' => 'Error', 'messages' => 'Anda sedang dalam masa perizinan!']);
         // }
+        $kode_shift = null;
+        if($user->riwayat_shift->count() > 0){
+            // dd($user->riwayat_shift[0]);
+            $kode_shift = $user->riwayat_shift[0]->kode_shift;
+        }
 
         $shift = Shift::where('kode_shift', $kode_shift)->first();
-        
         if($shift == null){
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Shift Tidak Temukan !!', 'keterangan' => '']),200);
         }
-        $bukaPagiTime = strtotime(date('Y-m-d') . " " . $shift->jam_buka_datang);
-        $tutupPagiTime = strtotime(date('Y-m-d') . " " . $shift->jam_tutup_datang);
+        $bukaPagiTime = strtotime($shift->jam_buka_datang);
+        $tutupPagiTime = strtotime($shift->jam_tutup_datang);
 
-        $bukaSiangTime = strtotime(date('Y-m-d') . " " . $shift->jam_buka_istirahat);
-        $tutupSiangTime = strtotime(date('Y-m-d') . " " . $shift->jam_tutup_istirahat);
+        $bukaSiangTime = strtotime($shift->jam_buka_istirahat);
+        $tutupSiangTime = strtotime($shift->jam_tutup_istirahat);
 
-        $bukaSoreTime = strtotime(date('Y-m-d') . " " . $shift->jam_buka_pulang);
-        $tutupSoreTime = strtotime(date('Y-m-d') . " " . $shift->jam_tutup_pulang);
+        $bukaSoreTime = strtotime($shift->jam_buka_pulang);
+        $tutupSoreTime = strtotime($shift->jam_tutup_pulang);
         
-
+        // dd($dateSend <= $tutupPagiTime);
 
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) {
             $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', date('Y-m-d'))->count();
             if ($cek > 0) {
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pagi ini!']),200);
             } else {
+                $foto = $this->uploadFotoAbsen($nip);
                 $data = [
                     'nip' => $nip, 
                     'kordinat_datang' => $kordinat,
@@ -301,6 +306,7 @@ class PresensiApiController extends Controller
                 if ($cekSiang > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi siang ini!']),200);
                 } else {
+                    $foto = $this->uploadFotoAbsen($nip);
                     $data = [
                         'kordinat_istirahat' => $kordinat,
                         'foto_istirahat' => $foto,
@@ -318,6 +324,7 @@ class PresensiApiController extends Controller
                 if ($cekSiang2 > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi siang ini!']),200);
                 } else {
+                    $foto = $this->uploadFotoAbsen($nip);
                     $data = [
                         'nip' => $nip,
                         'kordinat_istirahat' => $kordinat,
@@ -345,6 +352,7 @@ class PresensiApiController extends Controller
                 if ($cekSore > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi sore ini!']),200);
                 } else {
+                    $foto = $this->uploadFotoAbsen($nip);
                     $data = [
                         'kordinat_pulang' => $kordinat,
                         'foto_pulang' => $foto,
@@ -370,6 +378,7 @@ class PresensiApiController extends Controller
                 if ($cekSore3 > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi sore ini!']),200);
                 } else {
+                    $foto = $this->uploadFotoAbsen($nip);
                     $data = [
                         'kordinat_pulang' => $kordinat,
                         'foto_pulang' => $foto,
@@ -395,6 +404,7 @@ class PresensiApiController extends Controller
                 if ($cekSore2 > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi sore ini!']));
                 } else {
+                    $foto = $this->uploadFotoAbsen($nip);
                     $data = [
                         'nip' => $nip,
                         'kordinat_pulang' => $kordinat,
@@ -425,7 +435,12 @@ class PresensiApiController extends Controller
                 }
             }
         } else {
-            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda tidak berada diwaktu presensi']),200);
+            // $dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime
+
+            // $dateSend = date("Y-m-d H:i:s",$dateSend);
+            // $dateO = ($dateSend <= $tutupPagiTime);
+            // $tutupPagiTime = $shift->jam_tutup_datang;
+            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => "Anda tidak berada diwaktu presensi"]),200);
         }
     }
 
@@ -476,5 +491,15 @@ class PresensiApiController extends Controller
             return response()->json(buildResponseGagal($th->getMessage()), 404);
         }
     }
-    
+    function uploadFotoAbsen($nip){
+        if (request()->file('image')) {
+            $file =  request()->file('image');
+            $path = "uploads/presensi/$nip";
+            $foto = $path."/".uploadImage(public_path($path),$file);
+        }else{
+            $foto = "";
+        }
+
+        return $foto;
+    }
 }

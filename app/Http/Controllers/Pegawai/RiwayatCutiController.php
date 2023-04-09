@@ -96,7 +96,9 @@ class RiwayatCutiController extends Controller
             $dir = 'data_pegawai/'.$pegawai->nip.'/perizinan';
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
-
+        $data['tanggal_surat'] = date("Y-m-d",strtotime($data['tanggal_surat']));
+        $data['tanggal_mulai'] = date("Y-m-d",strtotime($data['tanggal_mulai']));
+        $data['tanggal_selesai'] = date("Y-m-d",strtotime($data['tanggal_selesai']));
         $cr = RiwayatCuti::updateOrCreate(
             [
                 'id' => $id,

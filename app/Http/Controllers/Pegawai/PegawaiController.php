@@ -124,12 +124,11 @@ class PegawaiController extends Controller
             $rules['nik'] = 'required|unique:users';
             $rules['nip'] = 'required|unique:users';
         }
-
         $data = request()->validate($rules);
-        $data['tanggal_lahir'] = date("Y-m-d",strtotime($data['tanggal_lahir']));
+        // dd($data);
+        $data['tanggal_lahir'] = date("Y-m-d",strtotime(str_replace("/","-",$data['tanggal_lahir'])));
         $dir = "data_pegawai/".$data['nip']."/foto";
         if(request()->hasFile('image')){
-            
             $image =  uploadImage($dir,request()->file('image'));
             $data['image'] = $dir.'/'.$image;
         }
@@ -140,7 +139,9 @@ class PegawaiController extends Controller
             $cr->assignRole('pegawai');
         } else {
             $user =  User::where('nip', request('nip'));
-            @unlink($user->first()->image);
+            if(request()->hasFile('image')){
+                @unlink($user->first()->image);
+            }
             $cr = $user->update($data);
         }
 
@@ -261,6 +262,9 @@ class PegawaiController extends Controller
 
     public function import_pegawai()
     {   
+        request()->validate([
+            'file' => 'required|mimes:xlsx',
+        ]);
         $import = new ImportPegawaiExcell;
         Excel::import($import, request()->file('file')->store('file'));
         if($import->errorStatus()){

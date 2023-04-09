@@ -89,24 +89,20 @@ function validateInput(form,ingoneInputName = [], errorMessage = []){
             var ignoreInput = checkInputIgnore(ingoneInputName,name);
             var nameElement = v.text+"[name='"+name+"']";
             if(!ignoreInput){
-                console.log(element.type)
+                // console.log(element.type)
 
                 if(element.type != "radio"){
+                    console.log(element.value)
                     if(element.value == "" || element.value == 0){
-                        // array[indexInArray].addClass("is-invalid");
                         $(nameElement).addClass("is-invalid");
                         $(nameElement).siblings(".select2-container").find(".select2-selection--single").addClass("is-invalid");
-                        console.log(element);
-                        // console.log(name);
-                        // console.log(nameElement.val());
-
                         validateInput++;
-                    }else{
+                    }else{  
                         $(nameElement).siblings(".select2-container").find(".select2-selection--single").removeClass("is-invalid");
                         $(nameElement).removeClass("is-invalid");
                     }
                 }else{
-                    console.log("Radio Check e piro ? : "+$(v.text+"[name='"+name+"']:checked").length)
+                    // console.log("Radio Check e piro ? : "+$(v.text+"[name='"+name+"']:checked").length)
                     if($(nameElement+":checked").length > 0){
                         $(nameElement).removeClass("is-invalid");
                     }else{

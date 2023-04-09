@@ -93,7 +93,7 @@ class RiwayatPotonganController extends Controller
             'nomor_sk' => 'nullable',
             'tanggal_sk' => 'nullable',
             'kode_kurang' => 'required',
-            'is_aktif' => 'required',
+            // 'is_aktif' => 'required',
             'is_private' => 'nullable',
         ];
 

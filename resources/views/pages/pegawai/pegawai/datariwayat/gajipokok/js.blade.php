@@ -67,7 +67,7 @@ function initGajiUMK(kode_umk = null){
                     }
                 })
                 
-                if(kode_umk == null && data.length != 0){
+                if(kode_umk != null && data.length != 0){
                     kode_umk = data[0].id;
                     $("#gaji_umk_value").val(data[0].nominal)
                 }

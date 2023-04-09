@@ -10,6 +10,12 @@
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
+@error('file')
+<div class="alert alert-inv alert-inv-danger alert-wth-icon alert-dismissible fade show" role="alert">
+	<span class="alert-icon-wrap"><i class="zmdi zmdi-bug"></i></span> {{ $errors->first('file') }}
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@enderror
 <form class="edit-post-form" action="{{route('pegawai.pegawai.import_pegawai')}}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="row">

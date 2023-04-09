@@ -57,7 +57,8 @@ class TotalPresensiController extends Controller
         $skpd = request()->query('skpd');
         $skpd = ($skpd == 0) ? null : $skpd;
         // dd($skpd);
-        $mdTotalPresensi = User::role('pegawai');
+        $mdTotalPresensi = User::role('pegawai')->with('totalPresensi')->has('totalPresensi');
+        // dd($mdTotalPresensi);
         if($role){
             $mdTotalPresensi->when($role, function ($qr) {
                 $user = auth()->user()->jabatan_akhir;
@@ -71,7 +72,7 @@ class TotalPresensiController extends Controller
                         ->where('riwayat_jabatan.kode_skpd', $skpd)
                         ->where('riwayat_jabatan.is_akhir', 1);
                 });
-            })->with('totalPresensi')->get();
+            })->get();
         }else{
             $mdTotalPresensi->when($skpd, function ($qr) use ($skpd) {
                 $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
@@ -79,8 +80,7 @@ class TotalPresensiController extends Controller
                         ->where('riwayat_jabatan.kode_skpd', $skpd)
                         ->where('riwayat_jabatan.is_akhir', 1);
                 });
-            })
-            ->with('totalPresensi')->get();
+            })->get();
         }
         // dd($mdTotalPresensi[3]->jabatan_akhir()->first());
         return $dataTables->of($mdTotalPresensi)

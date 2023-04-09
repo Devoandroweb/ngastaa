@@ -232,7 +232,7 @@
             $(".jam_istirahat").text(data.jam_istirahat)
             $(".tanggal").text(data.tanggal)
             $(".shift").text(data.shift)
-            $("#foto_datang").attr("src","{{url('public/images')}}/"+data.foto_datang)
+            $("#foto_datang").attr("src","{{url('public')}}/"+data.foto_datang)
             // $("#keterangan").text(data.keterangan)
             if(data.kordinat_datang != null){
                 $(".lokasi").text(checkLokasi(data.kordinat_datang))
@@ -240,7 +240,7 @@
         }
         let lokasi = @json($dataLokasi);
         
-        function checLokasi(location_target){
+        function checkLokasi(location_target){
             var namaLokasi = "-";
             var location_target = (location_target).split(",");
             lokasi.forEach(e => {
