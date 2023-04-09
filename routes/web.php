@@ -198,6 +198,7 @@ Route::middleware(['auth'])
                         Route::get('datatable', 'datatable')->name('datatable');
                         Route::get('import_add', 'import_add')->name('import_add');
                         Route::post('import_pegawai', 'import_pegawai')->name('import_pegawai');
+                        Route::get('download-template-import', 'donwloadTemplate')->name('donwload_template_import');
                         Route::get('shift/{pegawai}', 'shift')->name('shift');
                         Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
 

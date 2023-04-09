@@ -7,6 +7,7 @@ use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
 use App\Models\User;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
@@ -282,5 +283,14 @@ class PegawaiController extends Controller
     {
         $view = view("pages.pegawai.pegawai.datautama.akses-akun",compact("pegawai"))->render();
         return response()->json(["view"=>$view]);
+    }
+    function donwloadTemplate(){
+        $filename = "template-import-pegawai.xlsx";
+        $response = Response::download(public_path($filename), $filename, [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ]);
+        ob_end_clean();
+        return $response;
     }
 }

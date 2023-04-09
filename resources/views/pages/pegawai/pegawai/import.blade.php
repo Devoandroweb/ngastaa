@@ -20,7 +20,14 @@
     @csrf
     <div class="row">
         <div class="form-group has-validation">
-            <label class="form-label">Import File disini<span class="text-danger">*</span></label>
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Import File disini<span class="text-danger">*</span></label>
+                </div>
+                <div class="col text-md-end">
+                    <a href="{{route('pegawai.pegawai.donwload_template_import')}}">{!!icons('download')!!} Unduh Template Excel</a>
+                </div>
+            </div>
             <input class="form-control mb-3 @error('file') is-invalid @enderror" name="file" type="file" required>
         </div>
     </div>
