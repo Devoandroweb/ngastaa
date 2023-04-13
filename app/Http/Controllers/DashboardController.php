@@ -154,8 +154,8 @@ class DashboardController extends Controller
         foreach ($lokasiVisit as $lokasi) {
             array_push($mapsRadar,[
                 'title' => $lokasi->nama,
-                'latitude' => (int)$lokasi->latitude,
-                'longitude' => (int)$lokasi->longitude,
+                'latitude' => (float)$lokasi->latitude,
+                'longitude' => (float)$lokasi->longitude,
                 'color' => '#007D88'
             ]);
         }

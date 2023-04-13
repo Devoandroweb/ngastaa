@@ -50,6 +50,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 $item->email = $row[13];
                 $item->alamat = $row[14];
                 $item->alamat_ktp = $row[15];
+                $item->kode_status = $row[16]; // harus sesuai kode pada table status_pegawai
                 $item->save();
                 $item->assignRole('pegawai');
                 $i++;

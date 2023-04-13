@@ -86,7 +86,7 @@
     <div class="col-md-12 mb-md-4 mb-3">
         <div class="card card-border border-info mb-0 h-100">
             <div class="card-header  border-bottom border-info shadow card-header-action">
-                <h6 class="text-bold">Lokasi Visit</h6>
+                <h6 class="text-bold">Lokasi Kerja</h6>
                 <div class="card-action-wrap">
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover full-screen"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="maximize"></i></span><span class="feather-icon d-none"><i data-feather="minimize"></i></span></span></a>
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover"  data-bs-toggle="collapse" href="#collapse_4" aria-expanded="true"><span class="icon"><span class="feather-icon"><i data-feather="chevron-down"></i></span></span></a>
@@ -501,7 +501,7 @@ am4core.ready(function() {
 	}
 	
 	var colorSet = new am4core.ColorSet();
-	
+	console.log(@json($mapsRadar))
 	imageSeries.data = @json($mapsRadar);
 }); // end am4core.ready()
 
