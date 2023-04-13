@@ -113,7 +113,8 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         $imei = request('imei');
-        Imei::where('kode',$imei)->first()->delete();
+        $nip = request('nip');
+        Imei::where('nip',$nip)->first()->delete();
         return response()->json(buildResponseSukses(['status' => TRUE]),200);
     }
 
