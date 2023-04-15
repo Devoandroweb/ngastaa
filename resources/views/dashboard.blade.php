@@ -169,9 +169,6 @@
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover"  data-bs-toggle="collapse" href="#collapse_2" aria-expanded="true"><span class="icon"><span class="feather-icon"><i data-feather="chevron-down"></i></span></span></a>
                 </div>
             </div>
-            <div class="hk-ribbon-type-1 hk-ribbon-danger end-over">
-                    <span>Coming Soon</span>
-            </div>
             <div id="collapse_2" class="collapse show">
                 <div class="card-body">
                     <div id="column_chart_5"></div>
@@ -383,10 +380,11 @@ var initLineChart = (categories = [],data = [],max = 0) => {
 // ===========================
 													
 /*Distributed Column*/
-var colors = ['#00E396','#FF4560', '#008FFB', '#FEB019'];
+var colors = @json($colorTotalPresensi);
+console.log(@json($dataTotalPresensi));
 var options4 = {
 	series: [{
-		data: [21, 10, 5, 15]
+		data: @json($dataTotalPresensi)
 	}],
 	chart: {
 		height: 350,
@@ -411,12 +409,7 @@ var options4 = {
 		show: false
 	},
 	xaxis: {
-		categories: [
-			'Masuk',
-			'Tidak Masuk',
-			'Sakit',
-			'Izin',
-		],
+		categories: @json($textTotalPresensi),
 		labels: {
 			style: {
 				colors: colors,

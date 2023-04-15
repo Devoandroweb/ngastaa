@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Resources\Pegawai\PegawaiResource;
+use App\Models\Master\Cuti;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Pendidikan;
 use App\Models\Master\StatusPegawai;
 use App\Models\Payroll\DataPayroll;
 use App\Models\Pegawai\DataPresensi;
+use App\Models\Presensi\TotalPresensi;
+use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 // use ZipStream\Bigint;
@@ -20,7 +24,7 @@ class DashboardController extends Controller
     {
     
         $role = role('opd');
-
+        $periode_bulan = date("Y-m");
         $pegawai = User::role('pegawai')->where('owner',0)
                     ->when($role,function($q){
                         $user = auth()->user()->jabatan_akhir;
@@ -130,25 +134,7 @@ class DashboardController extends Controller
                 })
                 ->count();
 
-        // $status_pegawai = User::role('pegawai')->where('status_pegawai.kode_status')
-        //         ->when($role, function ($qr) {
-        //             $user = auth()->user()->jabatan_akhir;
-        //             $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-        //             $skpd = '';
-        //             if ($jabatan) {
-        //                 $skpd = $jabatan->kode_skpd;
-        //             }
-    
-        //             $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-        //                 $qt->on('riwayat_jabatan.nip', 'users.nip')
-        //                     ->where('riwayat_jabatan.kode_skpd', $skpd)
-        //                     ->where('riwayat_jabatan.is_akhir', 1);
-        //             });
-        //         })
-        //         ->count();
-
-
-         // Lokasi visit
+        # Lokasi Kerja
         $lokasiVisit = Lokasi::all();
         $mapsRadar = [];
         foreach ($lokasiVisit as $lokasi) {
@@ -159,8 +145,28 @@ class DashboardController extends Controller
                 'color' => '#007D88'
             ]);
         }
-        // dd($mapsRadar);
-        // Data Yang Akan Selesai Kontrak
+        # Total Presensi
+        $totalPresensi = TotalPresensi::where('periode_bulan',$periode_bulan)->get();
+
+        $masuk = $totalPresensi->sum("masuk");
+        $alfa = $totalPresensi->sum("alfa");
+        
+        $dataTotalPresensi = [$masuk,$alfa];
+        $textTotalPresensi = ['Masuk', 'Tidak Masuk'];
+        $colorTotalPresensi = ['#00E396','#FF4560'];
+
+        $jenisIzin = Cuti::all();
+
+        foreach ($jenisIzin as $i => $ji) {
+            $detailPresensi = TotalPresensiDetail::where('kode_cuti',$ji->kode_cuti)->where('periode_bulan',$periode_bulan)->get();
+            if(!is_null($detailPresensi)){
+                array_push($dataTotalPresensi,$detailPresensi->count());
+                array_push($textTotalPresensi,$ji->nama);
+                array_push($colorTotalPresensi,getColor($i));
+            }
+        }
+
+        # Data Yang Akan Selesai Kontrak
         $selesai_kontrak = User::role('opd')->selectRaw('users.*, riwayat_jabatan.tanggal_tmt')
                                     ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
                                     ->where('riwayat_jabatan.is_akhir', 1)
@@ -170,7 +176,20 @@ class DashboardController extends Controller
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
         $titlePage = "Dashboard ".env('app_name');
 
-        return view('dashboard',compact('status_pegawai_statistic','titlePage','jumlah_pegawai', 'presensi', 'bulan', 'tahun', 'selesai_kontrak','mapsRadar','lokasiVisit'));
+        return view('dashboard',compact(
+            'status_pegawai_statistic',
+            'titlePage',
+            'jumlah_pegawai', 
+            'presensi', 
+            'bulan', 
+            'tahun', 
+            'selesai_kontrak',
+            'mapsRadar',
+            'lokasiVisit',
+            'dataTotalPresensi',
+            'textTotalPresensi',
+            'colorTotalPresensi'
+        ));
     }
     public function datatable(DataTables $dataTables)
     {
@@ -194,7 +213,7 @@ class DashboardController extends Controller
         ->addColumn('images', function ($row) {
             return '<div>	
                     <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
-                    <img src="' . asset('dist/img/businessman.png') . '" alt="user" class="avatar-img">
+                    <img src="' . $row->foto() . '" alt="user" class="avatar-img">
                 </div>';
         })
         ->rawColumns(['images'])
