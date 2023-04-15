@@ -17,7 +17,7 @@ class HomeUser extends Controller
             //code...
             $nip = request('nip');
            
-            $user = User::role('pegawai')->with('jabatan_akhir')->first();
+            $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir')->first();
             $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
             if( $jabatan == null){
                 $jabatan = "-";
