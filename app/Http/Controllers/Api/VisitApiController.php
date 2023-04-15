@@ -25,12 +25,7 @@ class VisitApiController extends Controller
         // $image = str_replace(' ', '+', $image);
         // $imageName = date("YmdHis") .  Str::random(10) . '.' . $extension;
 
-        if (request()->file('image')) {
-            $file =  request()->file('image');
-            $foto = uploadImage(public_path("visit/$nip"),$file);
-        }else{
-            $foto = "";
-        }
+        
 
         // if($image_64){
         //     $foto = "visit/$nip/$imageName";
@@ -50,7 +45,6 @@ class VisitApiController extends Controller
             $tanggalIn = date('Y-m-d H:i:s');
         }
 
-
         $user = User::where('nip', $nip)->first();
         if (!$user) {
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'User tidak ditemukan!']),200);
@@ -61,6 +55,12 @@ class VisitApiController extends Controller
         if ($cek > 0) {
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan Visit Ke Lokasi Ini!']),200);
         } else {
+            if (request()->file('image')) {
+                $file =  request()->file('image');
+                $foto = uploadImage(public_path("visit/$nip"),$file);
+            }else{
+                $foto = "";
+            }
             $data = [
                 'nip' => $nip,
                 'kode_visit' => $kode_visit,

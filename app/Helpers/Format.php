@@ -447,7 +447,7 @@ function activeMenu($key = "")
     $urlPath = Request::path();
     $urlPathArray = explode("/",$urlPath);
     if("presensi" == $key){
-        $menuIngore = ["laporan-pegawai","laporan-divisi","total_presensi","rekapabsen","laporan-visit"];
+        $menuIngore = ["laporan-pegawai","laporan-divisi","total_presensi","rekapabsen","laporan-visit","aktifitas"];
         foreach ($menuIngore as $v) {
             $index = array_search($v,$urlPathArray);
             if($index){

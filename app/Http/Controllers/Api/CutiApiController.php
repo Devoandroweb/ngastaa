@@ -38,7 +38,9 @@ class CutiApiController extends Controller
         $user = User::where('nip', $nip)->first();
         if($user){
                 // dd($nip);
-
+                if($user->maks_cuti == 0){
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Kuota Cuti sudah habis!']),200);
+                }
                 $cek = DataPengajuanCuti::where('nip', $nip)->where('status', 0)->count();
                 // dd($cek);
                 if($cek > 0){

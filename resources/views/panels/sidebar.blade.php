@@ -420,6 +420,17 @@
                             </span>
                             <span class="nav-link-text">Visit</span>
                         </a>
+                    </li> 
+                    <li class="nav-item {{activeMenu("laporan-aktifitas")}}">
+                        <a class="nav-link" href="{{route('presensi.aktifitas.index')}}">
+                            <span class="nav-icon-wrap">
+                                <span class="svg-icon">
+                                    {!!icons('paper')!!}
+                                </span>
+                                </span>
+                            </span>
+                            <span class="nav-link-text">Aktifitas</span>
+                        </a>
                     </li>
                     @if(role('owner'))
                     {{-- Menu Informasi --}}

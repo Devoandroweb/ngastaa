@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CApiAktifitas;
 use App\Http\Controllers\Api\CutiApiController;
 use App\Http\Controllers\Api\DataAbsensi;
 use App\Http\Controllers\Api\HomeUser;
@@ -41,6 +42,13 @@ Route::middleware('auth:sanctum')->group(function(){
         ->name('perusahaan.')
         ->group(function(){
             Route::get('', 'index');
+        });
+    Route::controller(CApiAktifitas::class)
+        ->prefix('aktifitas')
+        ->name('aktifitas.')
+        ->group(function(){
+            Route::get('', 'index');
+            Route::post('store', 'store');
         });
 
     Route::controller(PresensiApiController::class)

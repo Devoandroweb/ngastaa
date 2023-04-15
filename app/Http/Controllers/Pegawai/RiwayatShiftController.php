@@ -100,6 +100,34 @@ class RiwayatShiftController extends Controller
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
+        
+
+        
+        if(request()->query('front')){
+            $cr = RiwayatShift::updateOrCreate(
+                [
+                    'id' => $id,
+                    'nip' => $pegawai->nip,
+                    'status' => 1,
+                    'is_akhir' => 1
+                ],
+                $data
+            );
+            if (!$id) {
+                tambah_log($pegawai->nip, "App\Pegawai\RiwayatShift", $cr->id, 'ditambahkan');
+            }
+            if($cr){
+                return redirect(route('pegawai.pegawai.index'))->with([
+                    'type' => 'success',
+                    'messages' => "Berhasil, memberikan shift!"
+                ]);
+            }else{
+                return redirect(route('pegawai.pegawai.index'))->with([
+                    'type' => 'error',
+                    'messages' => "Gagal, memberikan shift!"
+                ]);
+            }
+        }
         $cr = RiwayatShift::updateOrCreate(
             [
                 'id' => $id,
@@ -107,22 +135,8 @@ class RiwayatShiftController extends Controller
             ],
             $data
         );
-
         if (!$id) {
             tambah_log($pegawai->nip, "App\Pegawai\RiwayatShift", $cr->id, 'ditambahkan');
-        }
-        if(request()->query('front')){
-            if($cr){
-                return redirect(route('pegawai.pegawai.index'))->with([
-                    'type' => 'success',
-                    'messages' => "Berhasil, ditambahkan!"
-                ]);
-            }else{
-                return redirect(route('pegawai.pegawai.index'))->with([
-                    'type' => 'error',
-                    'messages' => "Gagal, ditambahkan!"
-                ]);
-            }
         }
         if(request()->query("for") == 0){
             if ($cr) {

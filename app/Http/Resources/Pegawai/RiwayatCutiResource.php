@@ -17,7 +17,7 @@ class RiwayatCutiResource extends JsonResource
         return [
             'id' => $this->id,
             'nip' => $this->nip,
-            'cuti' => $this->cuti->nama,
+            'cuti' => $this->cuti?->nama,
             'nomor_surat' => $this->nomor_surat,
             'file' => storage($this->file),
             'tanggal_surat' => tanggal_indo($this->tanggal_surat),

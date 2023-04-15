@@ -16,7 +16,7 @@
     @if($Rshift != null)
     <input type="hidden" name="id" value="{{$Rshift->id}}">
     @endif
-    <div class="row mb-3">
+    <div class="row mb-3 {{(isset($front)) ? 'd-none' : '' }}">
         <div class="col-md-4">
             <label class="form-label">Pilihan<span class="text-danger">*</span></label>
         </div>

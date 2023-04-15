@@ -8,6 +8,7 @@ use App\Jobs\ProcessWaNotif;
 use App\Models\Master\Cuti;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\RiwayatCuti;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -128,7 +129,9 @@ class CutiPengajuanController extends Controller
                 'nomor_surat' => request('nomor_surat'),
                 'tanggal_surat' => request('tanggal_surat'),
             ]);
-
+            $pegawai = User::where("nip",$cuti->nip)->first();
+            $pegawai->maks_cuti = (int)$pegawai->maks_cuti - 1;
+            $pegawai->update();
             $no_hp = $cuti?->user?->no_hp;
             if ($no_hp) {
                 $catatan = "";

@@ -1,5 +1,6 @@
  <?php
 
+use App\Http\Controllers\CAktifitas;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\Master\BidangController;
@@ -154,6 +155,14 @@ Route::middleware(['auth'])
                         Route::get('', 'index')->name('index');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
+                Route::prefix('aktifitas')
+                ->controller(CAktifitas::class)
+                    ->name("aktifitas.")
+                    ->middleware('role:admin|owner|opd')
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('datatable', 'datatable')->name('datatable');
+                    });
             });
         Route::prefix('pengumuman')
         ->controller(PengumumanController::class)
@@ -212,6 +221,7 @@ Route::middleware(['auth'])
                         Route::get('reset', 'reset')->name('reset');
                         Route::post('store', 'store')->name('store');
                     });
+                
 
                 Route::controller(PegawaiJabatanController::class)
                     ->prefix('jabatan/{pegawai}')

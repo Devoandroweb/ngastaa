@@ -1,25 +1,9 @@
+
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Laporan Visit</h2>
-    {{ Breadcrumbs::render('laporan-visit') }}
+    <h2 class="pg-title">Laporan Aktifitas</h2>
+    {{ Breadcrumbs::render('laporan-aktifitas') }}
 @endsection
-{{-- @section('header_action')
-<div class="input-group">
-    <span class="input-affix-wrapper">
-        <div class="row w-300p">
-            <label for="" class="col-sm-3 col-form-label">Divisi : </label>
-            <div class="col-sm-9 ps-0">
-                <select name="skpd" class="form-control divisi px-2" id="">
-                    <option selected value="0">Semua Divisi</option>
-                    @foreach ($skpd as $s)
-                        <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </span>
-</div>
-@endsection --}}
 @section('content')
 <style>
     tbody tr:hover {
@@ -36,6 +20,7 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
+            <th>{{__('Nama Aktifitas')}}</th>
             <th>{{__('No. Pegawai Nama')}}</th>
             <th>{{__('Jabatan')}}</th>
             <th>{{__('Tanggal')}}</th>
@@ -49,7 +34,7 @@
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Lokasi Absen</h5>
+				<h5 class="modal-title">Lokasi Aktifitas</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -57,6 +42,10 @@
 			<div class="modal-body">
                 <div class="d-none d-md-block">
                     <table class="table table-bordered w-100">
+                        <tr>
+                            <td width="15%" class="fw-bold">Nama Aktifitas</td>
+                            <td colspan="3" class="nama_aktifitas"></td>
+                        </tr>
                         <tr>
                             <td width="15%" class="fw-bold">Nama Pegawai</td>
                             <td class="nama_pegawai"></td>
@@ -73,6 +62,10 @@
                 </div> 
                 <div class="d-block d-md-none">
                     <table class="table table-bordered w-100">
+                        <tr>
+                            <td width="15%" class="fw-bold">Nama Aktifitas</td>
+                            <td colspan="3" class="nama_aktifitas"></td>
+                        </tr>
                         <tr>
                             <td width="15%" class="fw-bold">Nama Pegawai</td>
                             <td class="nama_pegawai"></td>
@@ -121,13 +114,9 @@
     <script >
         
         var _TABLE = null;
-        var _URL_DATATABLE = '{{route("presensi.laporan_visit.datatable")}}';
+        var _URL_DATATABLE = '{{route("presensi.aktifitas.datatable")}}';
         $(".divisi").select2();
-        $(".divisi").on("select2:select",function(e){
-            var data = e.params.data;
-            _URL_DATATABLE = '{{route("presensi.laporan_visit.datatable")}}';
-            _TABLE.ajax.url(_URL_DATATABLE).load()
-        });
+       
         // SESUAIKAN COLUMN DATATABLE
         // SESUAIKAN FIELD EDIT MODAL
         setDataTable();
@@ -155,18 +144,22 @@
                         data: 'nama',
                         name: 'nama',
                     },{
+
+                        data: 'nama_pegawai',
+                        name: 'pegawai.nama',
+                    },{
                         data: 'jabatan',
                         name: 'jabatan',
                     },{
-                        data: 'tanggal',
-                        name: 'tanggal',
+                        data: 'created_at',
+                        name: 'created_at',
                     }],
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
         $('#data tbody').on('click', 'tr', function (e) {
             var data = _TABLE.row(this).data();
-            console.log(data);
+
             var ltlg = [0,0];
             if(data.kordinat != null){
                 ltlg = (data.kordinat).split(",");
@@ -180,22 +173,26 @@
             }, 1000);
         });
         function shootToModal(data){
-            $(".nama_pegawai").html(data.nama)
+            $(".nama_aktifitas").html(data.nama)
+            $(".nama_pegawai").html(data.nama_pegawai)
             $(".jabatan").text(data.jabatan)
-            $(".tanggal").text(data.tanggal)
+            $(".tanggal").text(data.created_at)
             $("#foto").attr("src","{{url('public')}}/"+data.foto)
             // $("#keterangan").text(data.keterangan)
-            if(data.kordinat != null){
-                $(".lokasi").text(checkVisitLokasi(data.kordinat))
+            if(data.koordinat != null){
+                $(".lokasi").text(checkVisitLokasi(data.koordinat))
             }
         }
-        let lokasi = @json($dataLokasi);
-        console.log(lokasi);
+        
+        
         function checkVisitLokasi(location_target){
             var namaLokasi = "Lokasi tidak di temukan";
             var location_target = (location_target).split(",");
-            lokasi.forEach(e => {
-                if((e.polygon).length == 0){
+            let lokasi = @json($dataLokasi);
+            console.log("data lokasi",lokasi);
+            
+            lokasi.forEach(lok => {
+                if((lok.polygon).length == 0){
                     return;
                 }
                 // return;
@@ -204,7 +201,7 @@
                     geometry: {
                         type: 'Polygon',
                         // Note order: longitude, latitude.
-                        coordinates: [e.polygon]
+                        coordinates: [lok.polygon]
                     },
                     properties: {}
                 };
@@ -216,13 +213,14 @@
         
                 var point = turf.point(turfKoor);
                 var isInside = turf.booleanPointInPolygon(point, polygon);
-                console.log(isInside);
-                if((e.polygon).length != 0){
-                    L.polygon(JSON.parse(e.polygonAsli), { color: "red" }).addTo(drawnItems);
+                // console.log(isInside);
+                if((lok.polygon).length != 0){
+                    L.polygon(JSON.parse(lok.polygonAsli), { color: "red" }).addTo(drawnItems);
                 }
                 
                 if(isInside){
-                    namaLokasi = e.nama
+                    console.log("lokasi ketemu",lok)
+                    namaLokasi = lok.nama
                 }
             });
             return namaLokasi;
