@@ -64,12 +64,43 @@
 	<script src="{{asset('/')}}custom.js"></script>
 	<script src="{{asset('/')}}component.js"></script>
 	<script src="{{asset('/')}}clock.js"></script>
+	<script type="module" src="{{asset('/')}}my-firebase.js"></script>
 	{{-- <script src="{{asset('/')}}dist/js/dashboard-data.js"></script> --}}
 	<script src="{{asset('/')}}vendors/select2/dist/js/select2.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js" integrity="sha512-ozq8xQKq6urvuU6jNgkfqAmT7jKN2XumbrX1JiB3TnF7tI48DPI4Gy1GXKD/V3EExgAs1V+pRO7vwtS1LHg0Gw==" crossorigin="anonymous" referrerpolicy="no-referrer" ></script>;
 	<script>
-		"use strict";
 		$(".select2").select2();
 		setNumeric();
 		
+		$(".btn-calculate-presensi").click(function(e){
+			e.preventDefault();
+			var contentDefault = $(this).html()
+			var contentLoading = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+									Menghitung...`;
+			var el = $(this)
+			el.html(contentLoading)
+			el.attr('disabled','disabled')
+			$.ajax({
+				type: "get",
+				url: el.attr('href'),
+				success: function (response) {
+					if(response.status){
+						Swal.fire({
+							title: '<strong>Berhasil !!</strong>',
+							icon: 'success',
+							html: response.message
+						})
+					}else{
+						Swal.fire({
+							title: '<strong>Gagal !!</strong>',
+							icon: 'error',
+							html: `<span class="text-danger">${response.message}</span>`
+						})
+					}
+					el.html(contentDefault)
+					el.removeAttr('disabled')
+					
+				}
+			});
+		})
 	</script>

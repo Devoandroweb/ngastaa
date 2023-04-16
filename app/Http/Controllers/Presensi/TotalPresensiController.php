@@ -152,4 +152,5 @@ class TotalPresensiController extends Controller
             ->addIndexColumn()
             ->toJson();
     }
+    
 }

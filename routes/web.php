@@ -1,6 +1,7 @@
  <?php
 
 use App\Http\Controllers\CAktifitas;
+use App\Http\Controllers\CCronjobs;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\Master\BidangController;
@@ -94,6 +95,13 @@ Route::get('/getroute', function () {
     }
     dd($routeFilter);
 });
+# CRONJOBS
+Route::controller(CCronjobs::class)
+        ->group(function(){
+            Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
+            Route::get('reset-app-status-calculate-presensi','resetAppStatusCalculatePresensi')->name('reset-app-status-calculate-presensi');
+        });
+
 Route::get('/maintenance', function () {
     return inertia("Maintenance");
 })->name('maintenance');

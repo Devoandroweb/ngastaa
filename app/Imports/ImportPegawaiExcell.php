@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Collection;
@@ -25,7 +26,8 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         try {
             //code...
             $i = 2;
-            $data = [];
+            $insertIntoTotalPresensi = [];
+
             foreach ($collection as $row ) {
                 if($row[0] == null || $row[6] == ""){
                     continue;
@@ -55,8 +57,14 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 $item->assignRole('pegawai');
                 $i++;
                 
+                array_push($insertIntoTotalPresensi,[
+                    'nip' => $item->nip,
+                    'periode_bulan' =>  date("Y-m")
+                ]);
             }
+            # Insert Into Total Presensi
             // dd($data);
+            TotalPresensi::insert($insertIntoTotalPresensi);
             DB::commit();
         } catch (\Throwable $th) {
             

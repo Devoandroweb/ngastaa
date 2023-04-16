@@ -24,12 +24,15 @@
         <ul class="navbar-nav flex-row">
             
             <li class="nav-item d-none d-md-block">
+                <a href="{{route('calculate-presensi')}}" class="btn btn-gradient-info btn-calculate-presensi px-4 py-2 me-2 fw-bold">{!! icons('git-pull') !!} HITUNG PRESENSI</a>
+            </li>
+            <li class="nav-item d-none d-md-block">
                 {{-- CLOCK --}}
                 <div class="clock-container bg-primary text-white p-2 me-2 fw-bold">
                     <div class="clock-col">
-                        <p class="clock-day clock-timer">
+                        <p class="clock-timer">
+                            {!! icons('clock') !!} <span class="clock-day"></span>
                         </p>
-                        
                     </div>
                     <div class="clock-col">
                         <p class="clock-hours clock-timer">

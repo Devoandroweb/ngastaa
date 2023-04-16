@@ -1,1 +1,4 @@
 ALTER TABLE `users` CHANGE `kode_status` `kode_status` VARCHAR(20) UNSIGNED NULL DEFAULT NULL;
+
+CREATE TABLE `ngastaa`.`app_status_function` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(200) NOT NULL , `value` TINYINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+INSERT INTO `app_status_function` (`id`, `name`, `value`) VALUES (NULL, 'calculate_presensi', '0');

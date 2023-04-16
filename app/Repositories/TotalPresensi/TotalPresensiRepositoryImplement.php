@@ -2,6 +2,7 @@
 
 namespace App\Repositories\TotalPresensi;
 
+use App\Models\AppStatusFunction;
 use App\Models\Master\Shift;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPresensi;
@@ -62,100 +63,120 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         
     }
 
-    function calculatePresensi($role)
+    function calculatePresensi()
     {
-        // dd($this->dataTotalIzin);
-        $dataInsertTotalPresensiDetail = [];
-        $dataInsertTotalIzinDetail = [];
-        $this->allPegawai = $this->pegawaiRepository->getAllPegawaiRoleOPD($role);
-        // foreach ($this->allPegawai as $a) {
-        //     TotalPresensi::create([
-        //         'nip'=>$a->nip,
-        //         'periode_bulan'=>$this->periodeBulan,
-        //     ]);
-        // }
-        // dd($this->allPegawai);
-        
-        foreach ($this->allPegawai as $pegawai) {
-            $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
-            // dd($indexTotalPegawai);
-            $presensi = $this->existingPresensi($pegawai->nip);
-            //cek pegawai di data_presensi
- 
-            if($presensi == null){
-                // cek pegawai di izin/cuti
-                // dd($pegawai);
-                $izin = $this->existingIzin($pegawai->nip);
-                if($izin != null){
-                    // $this->dataTotalPresensi[$indexTotalPegawai]['izin']++;
-                    $indexTotalIzin = $this->searchIndexIzin($this->dataTotalIzin,'nip','kode_cuti',$pegawai->nip,$izin->kode_cuti);
-                    $this->dataTotalIzin[$indexTotalIzin]['total']++;
-                    if(!$this->existingTotalDetail(date("Y-m-d"),4)){
-                        array_push($dataInsertTotalPresensiDetail,[
+        try {
+            if($this->checkAppStatusCalculate()){
+                return 0;
+            }
+            // dd($this->dataTotalIzin);
+            $dataInsertTotalPresensiDetail = [];
+            $dataInsertTotalIzinDetail = [];
+            $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
+            // foreach ($this->allPegawai as $a) {
+            //     TotalPresensi::create([
+            //         'nip'=>$a->nip,
+            //         'periode_bulan'=>$this->periodeBulan,
+            //     ]);
+            // }
+            // dd($this->dataTotalPresensi);
+            foreach ($this->allPegawai as $pegawai) {
+                $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
+                // if($indexTotalPegawai == "" || $indexTotalPegawai == null){
+                //     array_push($dataInsertTotalPresensiDetail,[
+                //         'nip' => $pegawai->nip,
+                //         'tanggal' => date("Y-m-d"),
+                //         'status' => 0,
+                //         'kode_cuti' => 0,
+                //         'periode_bulan' => $this->periodeBulan,
+                //     ]);
+                // }
+                $presensi = $this->existingPresensi($pegawai->nip);
+                //cek pegawai di data_presensi
+     
+                if($presensi == null){
+                    // cek pegawai di izin/cuti
+                    // dd($pegawai);
+                    $izin = $this->existingIzin($pegawai->nip);
+                    if($izin != null){
+                        // $this->dataTotalPresensi[$indexTotalPegawai]['izin']++;
+                        $indexTotalIzin = $this->searchIndexIzin($this->dataTotalIzin,'nip','kode_cuti',$pegawai->nip,$izin->kode_cuti);
+                        $this->dataTotalIzin[$indexTotalIzin]['total']++;
+                        if(!$this->existingTotalDetail(date("Y-m-d"),4)){
+                            array_push($dataInsertTotalPresensiDetail,[
+                                'nip' => $pegawai->nip,
+                                'tanggal' => date("Y-m-d"),
+                                'status' => 4,
+                                'kode_cuti' => $izin->kode_cuti,
+                                'periode_bulan' => $this->periodeBulan,
+                            ]);
+                        }
+                        array_push($dataInsertTotalIzinDetail,[
                             'nip' => $pegawai->nip,
                             'tanggal' => date("Y-m-d"),
-                            'status' => 4,
                             'kode_cuti' => $izin->kode_cuti,
                             'periode_bulan' => $this->periodeBulan,
                         ]);
-                    }
-                    array_push($dataInsertTotalIzinDetail,[
-                        'nip' => $pegawai->nip,
-                        'tanggal' => date("Y-m-d"),
-                        'kode_cuti' => $izin->kode_cuti,
-                        'periode_bulan' => $this->periodeBulan,
-                    ]);
-                    TotalIzin::where('nip',$pegawai->nip)->where('kode_cuti',$izin->kode_cuti)->update($this->dataTotalIzin[$indexTotalIzin]);
-                    TotalIzinDetail::insert($dataInsertTotalIzinDetail);
-                }else{
-                    $this->dataTotalPresensi[$indexTotalPegawai]['alfa']++;
-                    if(!$this->existingTotalDetail(date("Y-m-d"),3)){
-                        array_push($dataInsertTotalPresensiDetail,[
-                            'nip' => $pegawai->nip,
-                            'tanggal' => date("Y-m-d"),
-                            'status' => 3,
-                            'kode_cuti' => null,
-                            'periode_bulan' => $this->periodeBulan,
-                        ]);
-                    }
-                }
-            }else{
-                // masuk
-                // cek telat
-                if($this->existingTelat($presensi->tanggal_datang,$presensi->kode_shift)){
-                    $this->dataTotalPresensi[$indexTotalPegawai]['telat']++;
-                    if(!$this->existingTotalDetail(date("Y-m-d"),2)){
-                        array_push($dataInsertTotalPresensiDetail,[
-                            'nip' => $pegawai->nip,
-                            'tanggal' => date("Y-m-d"),
-                            'status' => 2,
-                            'kode_cuti' => null,
-                            'periode_bulan' => $this->periodeBulan,
-                        ]);
+                        TotalIzin::where('nip',$pegawai->nip)->where('kode_cuti',$izin->kode_cuti)->update($this->dataTotalIzin[$indexTotalIzin]);
+                        TotalIzinDetail::insert($dataInsertTotalIzinDetail);
+                    }else{
+                        
+                        $this->dataTotalPresensi[$indexTotalPegawai]['alfa']++;
+                        if(!$this->existingTotalDetail(date("Y-m-d"),3)){
+                            array_push($dataInsertTotalPresensiDetail,[
+                                'nip' => $pegawai->nip,
+                                'tanggal' => date("Y-m-d"),
+                                'status' => 3,
+                                'kode_cuti' => null,
+                                'periode_bulan' => $this->periodeBulan,
+                            ]);
+                        }
                     }
                 }else{
-                    try {
-                        //code...
-                        $this->dataTotalPresensi[$indexTotalPegawai]['masuk']++;
-                    } catch (\Throwable $th) {
-                        dd($indexTotalPegawai);
-                    }
-                    if(!$this->existingTotalDetail(date("Y-m-d"),1)){
-                        array_push($dataInsertTotalPresensiDetail,[
-                            'nip' => $pegawai->nip,
-                            'tanggal' => date("Y-m-d"),
-                            'status' => 1,
-                            'kode_cuti' => null,
-                            'periode_bulan' => $this->periodeBulan,
-                        ]);
+                    // masuk
+                    // cek telat
+                    if($this->existingTelat($presensi->tanggal_datang,$presensi->kode_shift)){
+                        $this->dataTotalPresensi[$indexTotalPegawai]['telat']++;
+                        if(!$this->existingTotalDetail(date("Y-m-d"),2)){
+                            array_push($dataInsertTotalPresensiDetail,[
+                                'nip' => $pegawai->nip,
+                                'tanggal' => date("Y-m-d"),
+                                'status' => 2,
+                                'kode_cuti' => null,
+                                'periode_bulan' => $this->periodeBulan,
+                            ]);
+                        }
+                    }else{
+                        try {
+                            //code...
+                            $this->dataTotalPresensi[$indexTotalPegawai]['masuk']++;
+                        } catch (\Throwable $th) {
+                            dd($indexTotalPegawai);
+                        }
+                        if(!$this->existingTotalDetail(date("Y-m-d"),1)){
+                            array_push($dataInsertTotalPresensiDetail,[
+                                'nip' => $pegawai->nip,
+                                'tanggal' => date("Y-m-d"),
+                                'status' => 1,
+                                'kode_cuti' => null,
+                                'periode_bulan' => $this->periodeBulan,
+                            ]);
+                        }
                     }
                 }
+                TotalPresensi::where('nip',$pegawai->nip)->update($this->dataTotalPresensi[$indexTotalPegawai]);
+                
             }
-            TotalPresensi::where('nip',$pegawai->nip)->update($this->dataTotalPresensi[$indexTotalPegawai]);
-            
+            // dd($dataInsertTotalPresensiDetail);
+            TotalPresensiDetail::insert($dataInsertTotalPresensiDetail);
+
+            # UPDATE APP STATUS FUNCTION
+            AppStatusFunction::where('name','calculate_presensi')->update(['value' => 1]);
+            return 1;
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
-        // dd($dataInsertTotalPresensiDetail);
-        TotalPresensiDetail::insert($dataInsertTotalPresensiDetail);
+        
     }
     
     function existingPresensi($nip){
@@ -220,10 +241,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     }
     function searchIndex($array,$key,$value){
         foreach($array as $index => $arr){
-            if($arr[$key] == $value){
+            if($arr[$key] === $value){
                 return $index;
             }
         }
+        // dd($array,$value);  
         return null;
     }
     function searchIndexIzin($array,$key1,$key2,$value1,$value2){
@@ -233,5 +255,12 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             }
         }
         return null;
+    }
+    function checkAppStatusCalculate(){
+        $value = AppStatusFunction::where('name','calculate_presensi')->first();
+        if($value->value == 1){
+            return true;
+        }
+        return false;
     }
 }

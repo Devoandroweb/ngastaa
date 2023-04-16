@@ -7,5 +7,5 @@ use LaravelEasyRepository\Repository;
 interface TotalPresensiRepository extends Repository{
 
     // Write something awesome :)
-    public function calculatePresensi($role);
+    public function calculatePresensi();
 }
