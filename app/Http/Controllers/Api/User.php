@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 use App\Models\User as MUser;
 class User extends Controller
 {
-    function index(){
+    function index($nip){
             try{
-            $user = MUser::role('pegawai')->with('jabatan_akhir','statusPegawai')->first();
+            $user = MUser::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','statusPegawai')->first();
             $dataJabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
             $jabatan = "-";
             $divisi = "-";
