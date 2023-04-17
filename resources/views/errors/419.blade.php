@@ -25,10 +25,10 @@ Contact: contact@hencework.com
 <div class="row mb-4">
     <div class="col-xl-7 col-lg-6 d-lg-block d-none">
         <div class="auth-content py-md-0 py-8">
-            <div class="row">
+            <div class="row" style="height:100vh">
                 <div class="col-xl-12 text-center">
-                    <img src="{{asset('dist/img/404.svg')}}" class="img-fluid w-sm-80 w-50" alt="login">
-                    <p class="p-xs mt-5 text-light">Illustrations powered by <a href="https://icons8.com/ouch/" target="_blank" class="text-light"><u>Icons8</u></a></p>
+                    <img src="{{asset('dist/img/error.svg')}}" class="img-fluid w-sm-80 h-100 w-50" alt="login">
+                    <p class="p-xs mt-5 text-light">Illustrations powered by <a href="https://freepik.com" target="_blank" class="text-light"><u>Icons8</u></a></p>
                 </div>
             </div>
         </div>
@@ -39,8 +39,8 @@ Contact: contact@hencework.com
                 <div class="row">
                     <div class="col-xxl-9 col-xl-8 col-lg-11 d-flex align-items-center" style="height:100vh">
                         <div>
-                            <h1 class="display-4 fw-bold mb-2">404</h1>
-                            <p class="p-lg">Maaf, halaman yang anda cari tidak tersedia.</p>
+                            <h1 class="display-4 fw-bold mb-2">419</h1>
+                            <p class="p-lg">Halaman Sudah Kadaluarsa.</p>
                             <a href="{{url('/')}}" class="btn btn-gradient-primary btn-animate mt-4">Ke Halaman Utama</a>
                         </div>
                     </div>

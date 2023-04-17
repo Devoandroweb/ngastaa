@@ -1,42 +1,60 @@
 <!DOCTYPE html>
+<!-- 
+Jampack
+Author: Hencework
+Contact: contact@hencework.com
+-->
 <html lang="en">
-
 <head>
-    <title>HR System</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700" />
-    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-</head>
+    <!-- Meta Tags -->
+	<meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{config('app.name')}}</title>
+    <meta name="description" content=""/>
+    
+	<!-- Favicon -->
+    <link rel="shortcut icon" href="{{asset('/')}}dist/img/logo-dsm.ico">
+    <link rel="icon" href="{{asset('/')}}dist/img/logo-dsm.ico" type="image/x-icon">
 
-<body id="kt_body" class="bg-body">
-    <div class="d-flex flex-column flex-root">
-        <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed"
-            style="background-image: url(assets/media/illustrations/dozzy-1/18.png)">
-            <div class="d-flex flex-column flex-column-fluid text-center p-10 py-lg-20">
-                <a href="{{ url('/') }}" class="mb-10 pt-lg-20" style="font-size:60px">
-                    HR System
-                </a>
-                <div class="pt-lg-10">
-                    <h1 class="fw-bolder fs-4x text-gray-800 mb-10">Halaman Tidak ditemukan!</h1>
-                    <div class="fw-bold fs-3 mb-15 text-gray-800">Halaman yang anda cari tidak ditemukan!
-                        <br /> atau anda tidak dapat mengakses halaman ini
-                    </div>
-                    <div class="text-center">
-                        <a href="{{ url('/') }}" class="btn btn-lg btn-primary fw-bolder">Kembali ke Menu Utama</a>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex flex-center flex-column-auto p-10">
-                <div class="d-flex align-items-center fw-bold fs-6">
-                    <a href="http://wa.me/6282396151291" class="text-muted text-hover-primary px-2">About</a>
-                    <a href="http://wa.me/6282396151291" class="text-muted text-hover-primary px-2">Contact</a>
-                    <a href="http://wa.me/6282396151291" class="text-muted text-hover-primary px-2">Support</a>
+	<!-- CSS -->
+    <link href="{{asset('/')}}dist/css/style.css" rel="stylesheet" type="text/css">
+
+</head>
+<div class="row mb-4">
+    <div class="col-xl-7 col-lg-6 d-lg-block d-none">
+        <div class="auth-content py-md-0 py-8">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <img src="{{asset('dist/img/403.svg')}}" class="img-fluid w-sm-80 w-50" alt="login">
+                    <p class="p-xs mt-5 text-light">Illustrations powered by <a href="https://freepik.com/" target="_blank" class="text-light"><u>Icons8</u></a></p>
                 </div>
             </div>
         </div>
     </div>
-    <script src="/assets/plugins/global/plugins.bundle.js"></script>
-    <script src="/assets/js/scripts.bundle.js"></script>
-</body>
+    <div class="col-xl-5 col-lg-6 col-md-7 col-sm-10">
+        <div class="auth-content py-md-0 py-8">
+            <div class="w-100">
+                <div class="row">
+                    <div class="col-xxl-9 col-xl-8 col-lg-11 d-flex align-items-center" style="height:100vh">
+                        <div>
+                            <h1 class="display-4 fw-bold mb-2">403</h1>
+                            <p class="p-lg">Maaf, halaman yang anda cari tidak tersedia.</p>
+                            <a href="{{url('/')}}" class="btn btn-gradient-primary btn-animate mt-4">Ke Halaman Utama</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+
+@include("panels.footer")
+
+<!-- Bootstrap Core JS -->
+<script src="{{asset('/')}}vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
+
