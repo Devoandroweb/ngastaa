@@ -16,8 +16,8 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::get('updatfcm', [AuthenticatedSessionController::class, 'updateFCM'])->name('fcmTokenWeb');
 
     Route::post('auth', [AuthenticatedSessionController::class, 'store'])->name('auth-admin');;
     // Route::post('auth',function(){

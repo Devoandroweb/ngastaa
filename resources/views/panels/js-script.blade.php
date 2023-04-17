@@ -64,8 +64,9 @@
 	<script src="{{asset('/')}}custom.js"></script>
 	<script src="{{asset('/')}}component.js"></script>
 	<script src="{{asset('/')}}clock.js"></script>
-	{{-- <script type="module" src="{{asset('/')}}my-firebase.js"></script> --}}
-	{{-- <script src="{{asset('/')}}dist/js/dashboard-data.js"></script> --}}
+
+	<script type="module" src="{{url('/')}}/public/firebaseConfig.js"></script>
+
 	<script src="{{asset('/')}}vendors/select2/dist/js/select2.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js" integrity="sha512-ozq8xQKq6urvuU6jNgkfqAmT7jKN2XumbrX1JiB3TnF7tI48DPI4Gy1GXKD/V3EExgAs1V+pRO7vwtS1LHg0Gw==" crossorigin="anonymous" referrerpolicy="no-referrer" ></script>;
 	<script>

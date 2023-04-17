@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.11
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Waktu pembuatan: 21 Mar 2023 pada 08.39
--- Versi server: 10.3.38-MariaDB-cll-lve
--- Versi PHP: 7.4.33
+-- Host: 127.0.0.1:3307
+-- Waktu pembuatan: 17 Apr 2023 pada 06.24
+-- Versi server: 10.4.24-MariaDB
+-- Versi PHP: 8.0.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,8 +18,51 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ngaq5629_absen-bigtalen`
+-- Database: `ngastaa`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `aktifitas`
+--
+
+CREATE TABLE `aktifitas` (
+  `id` int(11) NOT NULL,
+  `nip` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` text NOT NULL,
+  `koordinat` text NOT NULL,
+  `foto` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `aktifitas`
+--
+
+INSERT INTO `aktifitas` (`id`, `nip`, `nama`, `koordinat`, `foto`, `created_at`, `updated_at`) VALUES
+(1, '28', 'Cek gudang belakang', '-7.006793068102385,110.41733718795163\n', 'aktifitas/28/1679856335_image.png', '2023-04-15 09:58:32', '2023-04-15 04:57:08'),
+(5, '28', 'cek gudang 2', '-7.006793068102385,110.41733718795163', 'aktifitas/28/1681537352_ss.jpg', '2023-04-15 12:42:32', '2023-04-15 12:42:32');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `app_status_function`
+--
+
+CREATE TABLE `app_status_function` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `value` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `app_status_function`
+--
+
+INSERT INTO `app_status_function` (`id`, `name`, `value`) VALUES
+(1, 'calculate_presensi', 1);
 
 -- --------------------------------------------------------
 
@@ -30,8 +72,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `cuti` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_cuti` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_cuti` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -42,7 +84,11 @@ CREATE TABLE `cuti` (
 --
 
 INSERT INTO `cuti` (`id`, `kode_cuti`, `nama`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(3, '1', 'Sakit', '2023-02-26 06:53:47', '2023-02-26 06:53:47', NULL);
+(3, '1', 'Sakit', '2023-02-26 06:53:47', '2023-04-03 14:27:16', '2023-04-03 14:27:16'),
+(4, 'M', 'CAP (Cuti Menikah)', '2023-04-03 14:27:32', '2023-04-03 14:27:32', NULL),
+(5, 'I', 'Izin', '2023-04-03 14:27:44', '2023-04-03 14:27:44', NULL),
+(6, 'S', 'Sakit', '2023-04-03 14:28:01', '2023-04-03 14:28:01', NULL),
+(7, 'C', 'Cuti Tahunan', '2023-04-03 14:28:08', '2023-04-03 14:28:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -52,12 +98,12 @@ INSERT INTO `cuti` (`id`, `kode_cuti`, `nama`, `created_at`, `updated_at`, `dele
 
 CREATE TABLE `daftar_kurang_payroll` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_kurang` varchar(191) NOT NULL,
+  `kode_kurang` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_periode` tinyint(4) DEFAULT 0 COMMENT '0 berarti selamanya',
   `bulan` tinyint(4) DEFAULT NULL,
   `tahun` year(4) DEFAULT NULL,
-  `keterangan` varchar(191) NOT NULL COMMENT '0 Semua Pegawai, 1 Pegawai Terpilih, 2 Jabatan Terpilih, 3 Level Jabatan, 4 Divisi Kerja',
-  `kode_keterangan` varchar(191) DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '0 Semua Pegawai, 1 Pegawai Terpilih, 2 Jabatan Terpilih, 3 Level Jabatan, 4 Divisi Kerja',
+  `kode_keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -81,12 +127,12 @@ INSERT INTO `daftar_kurang_payroll` (`id`, `kode_kurang`, `is_periode`, `bulan`,
 
 CREATE TABLE `daftar_tambah_payroll` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_tambah` varchar(191) NOT NULL,
+  `kode_tambah` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_periode` tinyint(4) DEFAULT 0 COMMENT '0 berarti selamanya',
   `bulan` tinyint(4) DEFAULT NULL,
   `tahun` year(4) DEFAULT NULL,
-  `keterangan` varchar(191) NOT NULL COMMENT '0 Semua Pegawai, 1 Pegawai Terpilih, 2 Jabatan Terpilih, 3 Level Jabatan, 4 Divisi Kerja',
-  `kode_keterangan` varchar(191) DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '0 Semua Pegawai, 1 Pegawai Terpilih, 2 Jabatan Terpilih, 3 Level Jabatan, 4 Divisi Kerja',
+  `kode_keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -114,13 +160,13 @@ INSERT INTO `daftar_tambah_payroll` (`id`, `kode_tambah`, `is_periode`, `bulan`,
 
 CREATE TABLE `data_payroll` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_payroll` varchar(191) NOT NULL,
+  `kode_payroll` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bulan` tinyint(4) NOT NULL,
   `tahun` year(4) NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_tingkat` varchar(191) NOT NULL,
-  `jabatan` varchar(191) DEFAULT NULL,
-  `divisi` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_tingkat` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jabatan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `divisi` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gaji_pokok` double DEFAULT 0,
   `tunjangan` double DEFAULT NULL,
   `total_penambahan` double DEFAULT NULL,
@@ -155,14 +201,14 @@ INSERT INTO `data_payroll` (`id`, `kode_payroll`, `bulan`, `tahun`, `nip`, `kode
 
 CREATE TABLE `data_pengajuan_cuti` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_cuti` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_cuti` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_mulai` date NOT NULL,
   `tanggal_selesai` date NOT NULL,
-  `keterangan` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
-  `status` varchar(191) NOT NULL DEFAULT '0',
-  `komentar` varchar(191) DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `komentar` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -173,9 +219,7 @@ CREATE TABLE `data_pengajuan_cuti` (
 --
 
 INSERT INTO `data_pengajuan_cuti` (`id`, `nip`, `kode_cuti`, `tanggal_mulai`, `tanggal_selesai`, `keterangan`, `file`, `status`, `komentar`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '66', '1', '2023-02-25', '2023-02-26', NULL, '', '1', 'bagus mi', '2022-06-30 07:38:48', '2022-07-17 02:15:56', NULL),
-(7, '28', '1', '1970-01-01', '1970-01-01', 'androidx.appcompat.widget.AppCompatEditText{13f9809 VFED..CL. ........ 54,122-954,507 #7f0a0120 app:id/et_keterangan}', NULL, '0', NULL, '2023-03-13 04:58:00', '2023-03-13 04:58:00', NULL),
-(8, '66', '1', '1970-01-01', '2023-03-13', NULL, NULL, '0', NULL, '2023-03-13 13:06:32', '2023-03-13 13:06:32', NULL);
+(13, '28', 'M', '2023-04-14', '2023-04-15', NULL, '', '1', NULL, NULL, '2023-04-14 00:32:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -185,16 +229,16 @@ INSERT INTO `data_pengajuan_cuti` (`id`, `nip`, `kode_cuti`, `tanggal_mulai`, `t
 
 CREATE TABLE `data_pengajuan_lembur` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal` date DEFAULT NULL,
-  `jam_mulai` varchar(191) NOT NULL,
-  `jam_selesai` varchar(191) NOT NULL,
-  `keterangan` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
-  `nomor_surat` varchar(191) DEFAULT NULL,
+  `jam_mulai` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jam_selesai` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor_surat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_surat` date DEFAULT NULL,
-  `status` varchar(191) NOT NULL DEFAULT '0',
-  `komentar` varchar(191) DEFAULT NULL,
+  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `komentar` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -205,11 +249,9 @@ CREATE TABLE `data_pengajuan_lembur` (
 --
 
 INSERT INTO `data_pengajuan_lembur` (`id`, `nip`, `tanggal`, `jam_mulai`, `jam_selesai`, `keterangan`, `file`, `nomor_surat`, `tanggal_surat`, `status`, `komentar`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(4, '66', '2022-07-01', '20:0', '22:48', 'ok mi', '', 'terim', '2022-07-06', '1', 'tes', '2022-07-01 15:48:23', '2022-07-03 07:24:13', NULL),
-(5, '66', '2007-01-09', '12:30', '14:00', 'Et eius possimus qu', NULL, 'Culpa ipsum aperiam', '1986-07-07', '0', NULL, '2022-07-03 09:46:21', '2022-07-03 09:54:58', '2022-07-03 09:54:58'),
-(6, '66', '2022-07-04', '10:10', '12:12', 'tes', NULL, 'ok', '2022-07-05', '0', NULL, '2022-07-03 09:55:24', '2022-07-03 09:56:03', '2022-07-03 09:56:03'),
-(7, '66', '2022-07-04', '10:10', '12:12', 'tes', NULL, 'ok', '2022-07-05', '0', NULL, '2022-07-03 09:55:51', '2022-07-03 09:55:51', NULL),
-(8, '28', '2023-03-14', '08:00', '08:00', 'ufifufiv', NULL, NULL, NULL, '0', NULL, '2023-03-13 05:03:00', '2023-03-13 05:03:00', NULL);
+(9, '28', '1970-01-01', '28', '28', '28', 'lembur/28/1680496850_image.png', NULL, NULL, '2', 'tolak', '2023-04-03 04:40:50', '2023-04-03 06:54:11', NULL),
+(10, '28', '1970-01-01', '28', '28', '28', 'lembur/28/1680505006_image.png', NULL, NULL, '0', NULL, '2023-04-03 06:56:46', '2023-04-03 06:56:46', NULL),
+(11, '123', '2023-04-06', '08:00', '20:00', 'update', '123/123-lembur-2231.pdf', '22333', '2023-04-06', '0', NULL, '2023-04-05 07:55:12', '2023-04-05 07:58:06', '2023-04-05 07:58:06');
 
 -- --------------------------------------------------------
 
@@ -219,15 +261,15 @@ INSERT INTO `data_pengajuan_lembur` (`id`, `nip`, `tanggal`, `jam_mulai`, `jam_s
 
 CREATE TABLE `data_pengajuan_reimbursement` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_reimbursement` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_reimbursement` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nilai` double NOT NULL,
-  `keterangan` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
-  `nomor_surat` varchar(191) DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor_surat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_surat` date DEFAULT NULL,
-  `status` varchar(191) NOT NULL DEFAULT '0',
-  `komentar` varchar(191) DEFAULT NULL,
+  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `komentar` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -238,43 +280,10 @@ CREATE TABLE `data_pengajuan_reimbursement` (
 --
 
 INSERT INTO `data_pengajuan_reimbursement` (`id`, `nip`, `kode_reimbursement`, `nilai`, `keterangan`, `file`, `nomor_surat`, `tanggal_surat`, `status`, `komentar`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '66', '44', 15000000, 'tes', NULL, '1234', '2022-07-03', '0', NULL, '2022-06-30 08:09:02', '2022-07-03 10:11:26', NULL),
-(2, '66', '44', 15000000, NULL, NULL, NULL, NULL, '0', NULL, '2022-06-30 12:02:43', '2022-07-03 10:11:43', '2022-07-03 10:11:43'),
-(5, '66', '44', 1200000, 'me makassar', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:40:20', '2022-07-03 10:11:48', '2022-07-03 10:11:48'),
-(6, '66', '44', 12312.12, 'pinjam', NULL, NULL, NULL, '2', 'cascas', '2022-07-02 13:41:44', '2022-07-03 07:32:20', NULL),
-(7, '66', '44', 312.31, '323', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:13', '2022-07-02 13:43:13', NULL),
-(8, '66', '44', 32123.31, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:50', '2022-07-02 13:43:50', NULL),
-(9, '66', '44', 31231.11, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:46:12', '2022-07-02 13:46:12', NULL),
-(10, '66', '44', 32.31, '2313', NULL, NULL, NULL, '2', 'gege', '2022-07-02 13:46:40', '2022-07-03 07:31:58', NULL),
-(11, '66', '44', 15000000, NULL, NULL, NULL, NULL, '0', NULL, '2022-06-30 08:09:02', '2022-06-30 08:09:02', NULL),
-(12, '66', '44', 15000000, NULL, NULL, NULL, NULL, '0', NULL, '2022-06-30 12:02:43', '2022-06-30 12:02:43', NULL),
-(13, '66', '44', 1200000, 'me makassar', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:40:20', '2022-07-02 13:40:20', NULL),
-(14, '66', '44', 12312.12, 'pinjam', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:41:44', '2022-07-02 13:41:44', NULL),
-(15, '66', '44', 312.31, '323', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:13', '2022-07-02 13:43:13', NULL),
-(16, '66', '44', 32123.31, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:50', '2022-07-02 13:43:50', NULL),
-(17, '66', '44', 31231.11, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:46:12', '2022-07-02 13:46:12', NULL),
-(18, '66', '44', 32.31, '2313', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:46:40', '2022-07-02 13:46:40', NULL),
-(19, '66', '43', 15000000, NULL, NULL, NULL, NULL, '0', NULL, '2022-06-30 08:09:02', '2022-06-30 08:09:02', NULL),
-(20, '66', '43', 15000000, NULL, NULL, NULL, NULL, '0', NULL, '2022-06-30 12:02:43', '2022-06-30 12:02:43', NULL),
-(21, '66', '43', 1200000, 'me makassar', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:40:20', '2022-07-02 13:40:20', NULL),
-(22, '66', '43', 12312.12, 'pinjam', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:41:44', '2022-07-02 13:41:44', NULL),
-(23, '66', '43', 312.31, '323', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:13', '2022-07-02 13:43:13', NULL),
-(24, '66', '43', 32123.31, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:50', '2022-07-02 13:43:50', NULL),
-(25, '66', '43', 31231.11, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:46:12', '2022-07-02 13:46:12', NULL),
-(26, '66', '43', 32.31, '2313', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:46:40', '2022-07-02 13:46:40', NULL),
-(27, '66', '43', 15000000, NULL, NULL, NULL, NULL, '0', NULL, '2022-06-30 08:09:02', '2022-06-30 08:09:02', NULL),
-(28, '66', '43', 15000000, NULL, NULL, NULL, NULL, '0', NULL, '2022-06-30 12:02:43', '2022-06-30 12:02:43', NULL),
-(29, '66', '43', 1200000, 'me makassar', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:40:20', '2022-07-02 13:40:20', NULL),
-(30, '66', '43', 12312.12, 'pinjam', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:41:44', '2022-07-02 13:41:44', NULL),
-(31, '66', '43', 312.31, '323', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:13', '2022-07-02 13:43:13', NULL),
-(32, '66', '43', 32123.31, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:43:50', '2022-07-02 13:43:50', NULL),
-(33, '66', '43', 31231.11, '32', NULL, NULL, NULL, '0', NULL, '2022-07-02 13:46:12', '2022-07-02 13:46:12', NULL),
-(34, '66', '43', 32.31, '2313', NULL, NULL, NULL, '2', 'acd', '2022-07-02 13:46:40', '2022-07-03 07:31:52', NULL),
-(35, '66', '44', 123231321, 'number', '66/66-reimbursement-123213.pdf', '123213', '2022-07-06', '0', NULL, '2022-07-03 10:10:42', '2022-07-03 10:10:42', NULL),
-(36, '28', '100', 8000000, 'iioooii', NULL, NULL, NULL, '2', 'a', '2023-03-13 16:41:18', '2023-03-13 16:46:40', NULL),
-(37, '28', '100', 8000000, 'sfsdfds', NULL, NULL, NULL, '2', 'a', '2023-03-13 16:46:45', '2023-03-13 16:47:53', NULL),
-(38, '28', '100', 7900000, 'poli', NULL, NULL, NULL, '2', 'a', '2023-03-13 16:48:21', '2023-03-13 16:52:44', NULL),
-(39, '28', '100', 800000, 'fsfsfsdf', NULL, NULL, NULL, '0', NULL, '2023-03-13 16:53:22', '2023-03-13 16:53:22', NULL);
+(40, '28', '100', 5677, 'xjxjxjx', 'reimbursement/28/1680509764_image.png', NULL, NULL, '2', 'Tolak', '2023-04-03 08:16:04', '2023-04-03 08:39:05', NULL),
+(41, '28', '102', 50000, 'kereta api', 'reimbursement/28/1680511198_image.png', NULL, NULL, '2', 'Tolak', '2023-04-03 08:39:58', '2023-04-03 08:40:49', NULL),
+(42, '28', '100', 20000, 'telkomsel', 'reimbursement/28/1680511309_image.png', NULL, NULL, '2', 'Tolak', '2023-04-03 08:41:49', '2023-04-03 08:43:27', NULL),
+(43, '123', '103', 1000000, 'update', '123/123-reimbursement-2311.pdf', '23122', '2023-01-04', '0', NULL, '2023-04-05 08:01:22', '2023-04-05 08:44:59', '2023-04-05 08:44:59');
 
 -- --------------------------------------------------------
 
@@ -284,29 +293,23 @@ INSERT INTO `data_pengajuan_reimbursement` (`id`, `nip`, `kode_reimbursement`, `
 
 CREATE TABLE `data_presensi` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_shift` varchar(191) DEFAULT NULL,
-  `kode_tingkat` varchar(191) DEFAULT NULL,
+  `periode_bulan` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_shift` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_tingkat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_datang` timestamp NULL DEFAULT NULL,
-  `kordinat_datang` varchar(191) DEFAULT NULL,
-  `foto_datang` varchar(255) DEFAULT NULL,
+  `kordinat_datang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto_datang` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_istirahat` timestamp NULL DEFAULT NULL,
-  `kordinat_istirahat` varchar(191) DEFAULT NULL,
-  `foto_istirahat` varchar(255) DEFAULT NULL,
+  `kordinat_istirahat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto_istirahat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_pulang` timestamp NULL DEFAULT NULL,
-  `kordinat_pulang` varchar(191) DEFAULT NULL,
-  `foto_pulang` varchar(255) DEFAULT NULL,
+  `kordinat_pulang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto_pulang` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `data_presensi`
---
-
-INSERT INTO `data_presensi` (`id`, `nip`, `kode_shift`, `kode_tingkat`, `tanggal_datang`, `kordinat_datang`, `foto_datang`, `tanggal_istirahat`, `kordinat_istirahat`, `foto_istirahat`, `tanggal_pulang`, `kordinat_pulang`, `foto_pulang`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(17, '28', '11', '102104', '2023-02-25 23:00:32', '-4.008623719794147, 119.62394763518633', 'pegawai/absen/man.jpg', NULL, NULL, NULL, '2023-02-26 07:40:06', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -316,11 +319,11 @@ INSERT INTO `data_presensi` (`id`, `nip`, `kode_shift`, `kode_tingkat`, `tanggal
 
 CREATE TABLE `data_visit` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(255) NOT NULL,
-  `kode_visit` varchar(255) NOT NULL,
+  `nip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_visit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `kordinat` varchar(255) DEFAULT NULL,
-  `foto` varchar(255) DEFAULT NULL,
+  `kordinat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -331,8 +334,9 @@ CREATE TABLE `data_visit` (
 --
 
 INSERT INTO `data_visit` (`id`, `nip`, `kode_visit`, `tanggal`, `kordinat`, `foto`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(3, '66', '4e4d902a-37a1-4005-839b-fce03784ef29', '2022-09-01 02:40:53', '-2.5147247, 119.0776249', '/visit/66/20220901094053YKGBWhlzKz.png', '2022-09-01 02:40:53', '2022-09-01 02:40:53', NULL),
-(4, '66', '578b7d6c-4300-4fbc-8cd5-e5eba61046a6', '2022-09-01 03:04:09', '-2.5146705, 119.077653', '/visit/66/20220901100409PIG7BRzKRp.png', '2022-09-01 03:04:09', '2022-09-01 03:04:09', NULL);
+(3, '28', '4e4d902a-37a1-4005-839b-fce03784ef29', '2023-03-26 15:58:32', '-4.008623719794147, 119.62394763518633', '/visit/28/fida2.png', '2022-09-01 02:40:53', '2022-09-01 02:40:53', NULL),
+(4, '28', '578b7d6c-4300-4fbc-8cd5-e5eba61046a6', '2023-03-26 15:58:35', '-4.008623719794147, 119.62394763518633', '/visit/28/fida3.png', '2022-09-01 03:04:09', '2022-09-01 03:04:09', NULL),
+(5, '28', 'fauzan sans', '2023-04-02 18:04:41', '-7.9720515, 112.5995652', '', '2023-04-02 18:04:41', '2023-04-02 18:04:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -341,9 +345,9 @@ INSERT INTO `data_visit` (`id`, `nip`, `kode_visit`, `tanggal`, `kordinat`, `fot
 --
 
 CREATE TABLE `districts` (
-  `id` char(7) NOT NULL,
-  `regency_id` char(4) NOT NULL,
-  `name` varchar(50) NOT NULL
+  `id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `regency_id` char(4) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -354,13 +358,13 @@ CREATE TABLE `districts` (
 
 CREATE TABLE `eselon` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_eselon` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
-  `kordinat` varchar(191) DEFAULT NULL,
-  `latitude` varchar(191) DEFAULT NULL,
-  `longitude` varchar(191) DEFAULT NULL,
+  `kode_eselon` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kordinat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jarak` int(11) NOT NULL DEFAULT 0,
-  `polygon` text DEFAULT NULL,
+  `polygon` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -371,10 +375,11 @@ CREATE TABLE `eselon` (
 --
 
 INSERT INTO `eselon` (`id`, `kode_eselon`, `nama`, `kordinat`, `latitude`, `longitude`, `jarak`, `polygon`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '1', 'Level 1', '2.1389616477968745, 117.50275430755585', '2.1389616477969', '117.50275430756', 100, NULL, '2022-06-24 15:13:19', '2022-10-22 04:02:24', NULL),
+(1, '1', 'Level 1', '-7.006793068102385, 110.41733718795163', '-7.006793068102385', '110.41733718795163', 100, NULL, '2022-06-24 15:13:19', '2023-04-03 14:30:54', NULL),
 (2, '2', 'Level 2', '-8.1277966,112.7509655', '-8.1277966', '112.7509655', 100, NULL, '2022-06-24 15:13:25', '2023-02-24 07:33:02', NULL),
 (3, '3', 'Level 3', '-8.1093477,112.7086424', '-8.1093477', '112.7086424', 100, NULL, '2023-02-03 01:39:44', '2023-02-28 11:57:52', NULL),
-(4, '4', 'Level 4', NULL, NULL, NULL, 100, NULL, '2023-02-28 11:58:08', '2023-02-28 11:58:08', NULL);
+(4, '4', 'Level 4', NULL, NULL, NULL, 100, NULL, '2023-02-28 11:58:08', '2023-02-28 11:58:08', NULL),
+(5, '5', 'Level 5', NULL, NULL, NULL, 100, NULL, '2023-04-03 14:31:57', '2023-04-03 14:32:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -384,11 +389,11 @@ INSERT INTO `eselon` (`id`, `kode_eselon`, `nama`, `kordinat`, `latitude`, `long
 
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(191) NOT NULL,
-  `connection` text NOT NULL,
-  `queue` text NOT NULL,
-  `payload` longtext NOT NULL,
-  `exception` longtext NOT NULL,
+  `uuid` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -400,8 +405,8 @@ CREATE TABLE `failed_jobs` (
 
 CREATE TABLE `generate_payroll` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_payroll` varchar(191) NOT NULL,
-  `kode_skpd` varchar(191) DEFAULT NULL COMMENT 'null berarti semua dinas',
+  `kode_payroll` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_skpd` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'null berarti semua dinas',
   `bulan` tinyint(4) NOT NULL,
   `tahun` year(4) NOT NULL,
   `is_aktif` tinyint(4) NOT NULL DEFAULT 0,
@@ -431,7 +436,7 @@ CREATE TABLE `hari_libur` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `tanggal_mulai` date NOT NULL,
   `tanggal_selesai` date NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -452,8 +457,8 @@ INSERT INTO `hari_libur` (`id`, `tanggal_mulai`, `tanggal_selesai`, `nama`, `cre
 
 CREATE TABLE `imei` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(255) NOT NULL,
-  `kode` varchar(255) NOT NULL,
+  `nip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -463,35 +468,8 @@ CREATE TABLE `imei` (
 --
 
 INSERT INTO `imei` (`id`, `nip`, `kode`, `created_at`, `updated_at`) VALUES
-(5, '10', 'Redmi/lime_id/lime:11/RKQ1.201004.002/V12.5.8.0.RJQIDXM:user/release-keys', '2022-08-03 09:10:28', '2022-08-03 09:10:28'),
-(6, '28', 'samsung/a32xx/a32:12/SP1A.210812.016/A325FXXU2BVG1:user/release-keys', '2022-08-03 09:11:19', '2022-08-03 09:11:19'),
-(7, '10', '1234567', '2022-08-03 09:12:07', '2022-08-03 09:12:07'),
-(8, '66', 'DB5626A9-B3CD-44F8-B796-7C012D76E42A', '2022-08-03 16:58:13', '2022-08-03 16:58:13'),
-(9, '66', 'aae1beaed3be7080.Redmi/lime_id/lime:11/RKQ1.201004.002/V12.5.8.0.RJQIDXM:user/release-keys', '2022-08-04 00:47:59', '2022-08-04 00:47:59'),
-(10, '66', 'Redmi/sunny_id/sunny:11/RKQ1.201022.002/V12.5.6.0.RKGIDXM:user/release-keys', '2022-08-04 04:14:23', '2022-08-04 04:14:23'),
-(11, '66', 'c783f2864f5a480b.OPPO/CPH1937/OP4B80L1:11/RKQ1.200903.002/1656498236709:user/release-keys', '2022-08-28 02:48:20', '2022-08-28 02:48:20'),
-(12, '123', 'd789ba0c5a637358.Infinix/X682C-GL/Infinix-X682C:10/QP1A.190711.020/220510V360:user/release-keys', '2022-09-02 14:14:23', '2022-09-02 14:14:23'),
-(13, '66', '5fe654751ab7139f.ADVAN/G9/ADVAN_G9:10/Q00711/1600082041:user/release-keys', '2022-09-04 04:29:53', '2022-09-04 04:29:53'),
-(14, '123', 'e593b43285d5db7b.Xiaomi/dipper/dipper:10/QKQ1.190828.002/V12.0.3.0.QEAMIXM:user/release-keys', '2022-09-05 09:27:43', '2022-09-05 09:27:43'),
-(15, '66', 'b8ca73c20a5aa007.samsung/star2lteks/star2lteks:10/QP1A.190711.020/G965NKSU5FVG2:user/release-keys', '2022-09-20 07:09:18', '2022-09-20 07:09:18'),
-(16, '66', 'c73dff03f878ca5e.OPPO/CPH1933/OP4B79L1:11/RKQ1.200903.002/1662212765538:user/release-keys', '2022-10-20 05:42:22', '2022-10-20 05:42:22'),
-(17, '66', 'aae1beaed3be7080.Redmi/lime_id/lime:11/RKQ1.201004.002/V12.5.9.0.RJQIDXM:user/release-keys', '2022-10-20 05:42:51', '2022-10-20 05:42:51'),
-(18, '66', 'c783f2864f5a480b.OPPO/CPH1937/OP4B80L1:11/RKQ1.200903.002/1662212765538:user/release-keys', '2022-11-19 06:02:11', '2022-11-19 06:02:11'),
-(19, '66', 'e3518dcc7631a68a.POCO/citrus_id/citrus:10/QKQ1.200830.002/V12.0.9.0.QJFIDXM:user/release-keys', '2023-03-01 21:16:37', '2023-03-01 21:16:37'),
-(20, '66', '66', '2023-03-01 21:16:51', '2023-03-01 21:16:51'),
-(21, '66', '1248ef892a7bdd69.OPPO/CPH1901/CPH1901:8.1.0/OPM1.171019.026/2021030000:user/release-keys', '2023-03-01 23:04:55', '2023-03-01 23:04:55'),
-(22, '66', '1e494ed6700940b8.Redmi/sunny_id/sunny:11/RKQ1.201022.002/V12.5.6.0.RKGIDXM:user/release-keys', '2023-03-02 02:11:57', '2023-03-02 02:11:57'),
-(23, '28', '67', '2023-03-08 07:55:25', '2023-03-08 07:55:25'),
-(24, '66', '1221122', '2023-03-13 00:06:10', '2023-03-13 00:06:10'),
-(25, '66', '666666', '2023-03-13 01:54:31', '2023-03-13 01:54:31'),
-(26, '28', 'e3518dcc7631a68a', '2023-03-13 04:57:01', '2023-03-13 04:57:01'),
-(27, '66', '358240051111110', '2023-03-13 11:21:58', '2023-03-13 11:21:58'),
-(28, '28', '1f864e0876a79e56', '2023-03-13 16:29:41', '2023-03-13 16:29:41'),
-(29, '66', '867299041610403', '2023-03-14 07:04:24', '2023-03-14 07:04:24'),
-(30, '28', '845b63bbb68c8e5b', '2023-03-14 07:09:58', '2023-03-14 07:09:58'),
-(31, '28', '122111', '2023-03-14 07:45:51', '2023-03-14 07:45:51'),
-(32, '28', '08986742', '2023-03-14 08:00:32', '2023-03-14 08:00:32'),
-(33, '28', 'e980414bb4b3c923', '2023-03-14 08:34:08', '2023-03-14 08:34:08');
+(69, '28', '122133', '2023-04-15 04:54:38', '2023-04-15 04:54:38'),
+(70, '28', 'f57a5768a3aa9548', '2023-04-15 13:11:36', '2023-04-15 13:11:36');
 
 -- --------------------------------------------------------
 
@@ -501,8 +479,8 @@ INSERT INTO `imei` (`id`, `nip`, `kode`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `queue` varchar(191) NOT NULL,
-  `payload` longtext NOT NULL,
+  `queue` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `attempts` tinyint(3) UNSIGNED NOT NULL,
   `reserved_at` int(10) UNSIGNED DEFAULT NULL,
   `available_at` int(10) UNSIGNED NOT NULL,
@@ -538,7 +516,13 @@ INSERT INTO `jobs` (`id`, `queue`, `payload`, `attempts`, `reserved_at`, `availa
 (94, 'default', '{\"uuid\":\"86cca143-e455-4f6d-b1e3-47a600408a37\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:12:\\\"085316787777\\\";s:5:\\\"pesan\\\";s:157:\\\"Hallo, Payroll telah digenerate anda dapat memeriksa payroll anda, jika terdapat keselahan silahkan komunikasi ke HR paling lambat 3 hari setelah digenerate!\\\";}\"}}', 0, NULL, 1678315781, 1678315781),
 (95, 'default', '{\"uuid\":\"c5c426c8-9767-4b32-8292-125d7481046d\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:157:\\\"Hallo, Payroll telah digenerate anda dapat memeriksa payroll anda, jika terdapat keselahan silahkan komunikasi ke HR paling lambat 3 hari setelah digenerate!\\\";}\"}}', 0, NULL, 1678315781, 1678315781),
 (96, 'default', '{\"uuid\":\"582965bd-ac01-4528-a494-8a9cc133a2d2\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:14:\\\"08571212121211\\\";s:5:\\\"pesan\\\";s:157:\\\"Hallo, Payroll telah digenerate anda dapat memeriksa payroll anda, jika terdapat keselahan silahkan komunikasi ke HR paling lambat 3 hari setelah digenerate!\\\";}\"}}', 0, NULL, 1678315782, 1678315782),
-(97, 'default', '{\"uuid\":\"e06f137e-ce1d-457b-bdfe-2dcc1d008403\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:63:\\\"Hallo, Anda Berhasil Melakukan Absensi Tepat Waktu Sore ini! :D\\\";}\"}}', 0, NULL, 1678794075, 1678794075);
+(97, 'default', '{\"uuid\":\"e06f137e-ce1d-457b-bdfe-2dcc1d008403\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:63:\\\"Hallo, Anda Berhasil Melakukan Absensi Tepat Waktu Sore ini! :D\\\";}\"}}', 0, NULL, 1678794075, 1678794075),
+(98, 'default', '{\"uuid\":\"3a388653-e951-4991-a136-450ecde573ea\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:35:\\\"Pengajuan Sakit Ditolak karena coba\\\";}\"}}', 0, NULL, 1680499301, 1680499301),
+(99, 'default', '{\"uuid\":\"ad45f516-b677-478b-93fc-978b18b95261\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:36:\\\"Pengajuan Sakit Ditolak karena cobak\\\";}\"}}', 0, NULL, 1680499334, 1680499334),
+(100, 'default', '{\"uuid\":\"e5566baf-4af4-417c-8b9e-1f8813915710\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:47:\\\"Pengajuan Sakit telah diterima , Catatan : oke!\\\";}\"}}', 0, NULL, 1680502780, 1680502780),
+(101, 'default', '{\"uuid\":\"e9cc5a96-e837-4c5d-b91c-6e5b6f4d43b1\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:37:\\\"Pengajuan Lembur Ditolak karena tolak\\\";}\"}}', 0, NULL, 1680504851, 1680504851),
+(102, 'default', '{\"uuid\":\"2c7d64e4-8b0b-46a7-9e8d-11b83d6027ca\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:63:\\\"Hallo, Anda Berhasil Melakukan Absensi Tepat Waktu Sore ini! :D\\\";}\"}}', 0, NULL, 1680612726, 1680612726),
+(103, 'default', '{\"uuid\":\"11ebfbb9-77c7-4dd3-8228-db0739eaf142\",\"displayName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\ProcessWaNotif\",\"command\":\"O:23:\\\"App\\\\Jobs\\\\ProcessWaNotif\\\":2:{s:4:\\\"nohp\\\";s:13:\\\"6285712893128\\\";s:5:\\\"pesan\\\";s:45:\\\"Pengajuan CAP (Cuti Menikah) telah diterima !\\\";}\"}}', 0, NULL, 1681432871, 1681432871);
 
 -- --------------------------------------------------------
 
@@ -548,9 +532,9 @@ INSERT INTO `jobs` (`id`, `queue`, `payload`, `attempts`, `reserved_at`, `availa
 
 CREATE TABLE `jurusan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_pendidikan` varchar(191) NOT NULL,
-  `kode_jurusan` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_pendidikan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_jurusan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -637,26 +621,26 @@ INSERT INTO `jurusan` (`id`, `kode_pendidikan`, `kode_jurusan`, `nama`, `created
 
 CREATE TABLE `keluarga` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `status` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
-  `tempat_lahir` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tempat_lahir` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `nip_keluarga` varchar(191) DEFAULT NULL,
-  `status_kehidupan` varchar(191) NOT NULL DEFAULT 'hidup',
-  `status_pernikahan` varchar(191) DEFAULT NULL,
-  `id_ibu` varchar(191) DEFAULT NULL,
-  `status_anak` varchar(191) DEFAULT NULL,
+  `nip_keluarga` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_kehidupan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'hidup',
+  `status_pernikahan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_ibu` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_anak` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `anak_ke` tinyint(4) DEFAULT NULL,
-  `jenis_kelamin` varchar(191) DEFAULT NULL,
-  `alamat` varchar(191) DEFAULT NULL,
-  `nomor_telepon` varchar(191) DEFAULT NULL,
-  `nomor_ktp` varchar(191) DEFAULT NULL,
-  `file_ktp` varchar(191) DEFAULT NULL,
-  `nomor_bpjs` varchar(191) DEFAULT NULL,
-  `file_bpjs` varchar(191) DEFAULT NULL,
-  `nomor_akta_kelahiran` varchar(191) DEFAULT NULL,
-  `file_akta_kelahiran` varchar(191) DEFAULT NULL,
+  `jenis_kelamin` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alamat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor_telepon` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor_ktp` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_ktp` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor_bpjs` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_bpjs` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor_akta_kelahiran` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_akta_kelahiran` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -688,8 +672,8 @@ INSERT INTO `keluarga` (`id`, `nip`, `status`, `nama`, `tempat_lahir`, `tanggal_
 
 CREATE TABLE `kursus` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_kursus` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_kursus` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -710,8 +694,8 @@ INSERT INTO `kursus` (`id`, `kode_kursus`, `nama`, `created_at`, `updated_at`, `
 
 CREATE TABLE `lainnya` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_lainnya` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_lainnya` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -725,11 +709,11 @@ CREATE TABLE `lainnya` (
 
 CREATE TABLE `logs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `user_nip` varchar(191) NOT NULL,
-  `target_nip` varchar(191) NOT NULL,
-  `model_type` varchar(191) NOT NULL,
-  `model_id` varchar(191) NOT NULL,
-  `action` varchar(191) NOT NULL,
+  `user_nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `target_nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -804,7 +788,50 @@ INSERT INTO `logs` (`id`, `user_nip`, `target_nip`, `model_type`, `model_id`, `a
 (64, '123', '28', 'App\\Pegawai\\RiwayatShift', '8', 'ditambahkan', '2023-03-14 07:31:04', '2023-03-14 07:31:04'),
 (65, '123', '28', 'App\\Pegawai\\RiwayatShift', '8', 'terima', '2023-03-14 07:32:16', '2023-03-14 07:32:16'),
 (66, '123', '28', 'App\\Pegawai\\RiwayatShift', '9', 'ditambahkan', '2023-03-14 07:32:31', '2023-03-14 07:32:31'),
-(67, '123', '28', 'App\\Pegawai\\RiwayatShift', '9', 'terima', '2023-03-14 10:09:52', '2023-03-14 10:09:52');
+(67, '123', '28', 'App\\Pegawai\\RiwayatShift', '9', 'terima', '2023-03-14 10:09:52', '2023-03-14 10:09:52'),
+(68, '28', '28', 'App\\Pegawai\\DataPengajuanCuti', '9', 'diajukan', '2023-03-26 17:13:01', '2023-03-26 17:13:01'),
+(69, '28', '28', 'App\\Pegawai\\DataPengajuanCuti', '10', 'diajukan', '2023-03-26 17:17:20', '2023-03-26 17:17:20'),
+(70, '28', '28', 'App\\Pegawai\\DataPengajuanCuti', '11', 'diajukan', '2023-04-03 04:39:38', '2023-04-03 04:39:38'),
+(71, '28', '28', 'App\\Pegawai\\DataPengajuanLembur', '9', 'diajukan', '2023-04-03 04:40:50', '2023-04-03 04:40:50'),
+(72, '0', '28', 'App\\Pegawai\\DataPengajuanCuti', '11', 'terima', '2023-04-03 06:19:39', '2023-04-03 06:19:39'),
+(73, '0', '28', 'App\\Pegawai\\DataPengajuanLembur', '9', 'tolak', '2023-04-03 06:54:11', '2023-04-03 06:54:11'),
+(74, '28', '28', 'App\\Pegawai\\DataPengajuanCuti', '12', 'diajukan', '2023-04-03 06:55:30', '2023-04-03 06:55:30'),
+(75, '28', '28', 'App\\Pegawai\\DataPengajuanLembur', '10', 'diajukan', '2023-04-03 06:56:46', '2023-04-03 06:56:46'),
+(76, '28', '28', 'App\\Pegawai\\DataPengajuanReimbursement', '40', 'diajukan', '2023-04-03 08:16:04', '2023-04-03 08:16:04'),
+(77, '0', '28', 'App\\Pegawai\\DataPengajuanReimbursement', '40', 'tolak', '2023-04-03 08:39:05', '2023-04-03 08:39:05'),
+(78, '28', '28', 'App\\Pegawai\\DataPengajuanReimbursement', '41', 'diajukan', '2023-04-03 08:39:58', '2023-04-03 08:39:58'),
+(79, '0', '28', 'App\\Pegawai\\DataPengajuanReimbursement', '41', 'tolak', '2023-04-03 08:40:49', '2023-04-03 08:40:49'),
+(80, '28', '28', 'App\\Pegawai\\DataPengajuanReimbursement', '42', 'diajukan', '2023-04-03 08:41:49', '2023-04-03 08:41:49'),
+(81, '0', '28', 'App\\Pegawai\\DataPengajuanReimbursement', '42', 'tolak', '2023-04-03 08:43:27', '2023-04-03 08:43:27'),
+(82, '0', '28', 'App\\Pegawai\\RiwayatShift', '10', 'ditambahkan', '2023-04-03 15:05:30', '2023-04-03 15:05:30'),
+(83, '0', '123', 'App\\Pegawai\\RiwayatTunjangan', '5', 'ditambahkan', '2023-04-05 06:45:26', '2023-04-05 06:45:26'),
+(84, '0', '123', 'App\\Pegawai\\RiwayatPotongan', '4', 'ditambahkan', '2023-04-05 07:29:02', '2023-04-05 07:29:02'),
+(85, '0', '123', 'App\\Pegawai\\RiwayatPotongan', '4', 'diubah', '2023-04-05 07:29:18', '2023-04-05 07:29:18'),
+(86, '0', '123', 'App\\Pegawai\\RiwayatPotongan', '4', 'diubah', '2023-04-05 07:29:27', '2023-04-05 07:29:27'),
+(87, '0', '123', 'App\\Pegawai\\RiwayatPotongan', '4', 'diubah', '2023-04-05 07:29:48', '2023-04-05 07:29:48'),
+(88, '0', '123', 'App\\Pegawai\\RiwayatPotongan', '4', 'dihapus', '2023-04-05 07:32:10', '2023-04-05 07:32:10'),
+(89, '0', '123', 'App\\Pegawai\\RiwayatTunjangan', '5', 'dihapus', '2023-04-05 07:35:57', '2023-04-05 07:35:57'),
+(90, '0', '123', 'App\\Pegawai\\DataPengajuanLembur', '11', 'ditambahkan', '2023-04-05 07:55:12', '2023-04-05 07:55:12'),
+(91, '0', '123', 'App\\Pegawai\\DataPengajuanLembur', '11', 'diubah', '2023-04-05 07:57:29', '2023-04-05 07:57:29'),
+(92, '0', '123', 'App\\Pegawai\\DataPengajuanLembur', '11', 'dihapus', '2023-04-05 07:58:06', '2023-04-05 07:58:06'),
+(93, '0', '123', 'App\\Pegawai\\DataPengajuanReimbursement', '43', 'ditambahkan', '2023-04-05 08:01:22', '2023-04-05 08:01:22'),
+(94, '0', '123', 'App\\Pegawai\\DataPengajuanReimbursement', '43', 'diubah', '2023-04-05 08:01:45', '2023-04-05 08:01:45'),
+(95, '0', '123', 'App\\Pegawai\\DataPengajuanReimbursement', '43', 'diubah', '2023-04-05 08:42:44', '2023-04-05 08:42:44'),
+(96, '0', '123', 'App\\Pegawai\\DataPengajuanReimbursement', '43', 'diubah', '2023-04-05 08:44:35', '2023-04-05 08:44:35'),
+(97, '0', '123', 'App\\Pegawai\\DataPengajuanReimbursement', '43', 'dihapus', '2023-04-05 08:44:59', '2023-04-05 08:44:59'),
+(98, '0', '004', 'App\\Pegawai\\RiwayatShift', '11', 'ditambahkan', '2023-04-12 05:20:48', '2023-04-12 05:20:48'),
+(99, '0', '004', 'App\\Pegawai\\RiwayatShift', '11', 'terima', '2023-04-12 05:21:59', '2023-04-12 05:21:59'),
+(100, '0', '28', 'App\\Pegawai\\RiwayatShift', '8', 'dihapus', '2023-04-14 00:03:42', '2023-04-14 00:03:42'),
+(101, '0', '28', 'App\\Pegawai\\RiwayatShift', '5', 'dihapus', '2023-04-14 00:03:49', '2023-04-14 00:03:49'),
+(102, '0', '28', 'App\\Pegawai\\RiwayatShift', '9', 'dihapus', '2023-04-14 00:03:52', '2023-04-14 00:03:52'),
+(103, '0', '28', 'App\\Pegawai\\RiwayatShift', '12', 'ditambahkan', '2023-04-14 00:04:41', '2023-04-14 00:04:41'),
+(104, '0', '28', 'App\\Pegawai\\RiwayatShift', '13', 'ditambahkan', '2023-04-14 00:12:41', '2023-04-14 00:12:41'),
+(105, '0', '28', 'App\\Pegawai\\DataPengajuanCuti', '13', 'terima', '2023-04-14 00:32:51', '2023-04-14 00:32:51'),
+(106, '0', '28', 'App\\Pegawai\\DataPengajuanCuti', '13', 'terima', '2023-04-14 00:34:21', '2023-04-14 00:34:21'),
+(107, '0', '28', 'App\\Pegawai\\DataPengajuanCuti', '13', 'terima', '2023-04-14 00:36:45', '2023-04-14 00:36:45'),
+(108, '0', '28', 'App\\Pegawai\\DataPengajuanCuti', '13', 'terima', '2023-04-14 00:39:47', '2023-04-14 00:39:47'),
+(109, '0', '28', 'App\\Pegawai\\DataPengajuanCuti', '13', 'terima', '2023-04-14 00:40:27', '2023-04-14 00:40:27'),
+(110, '0', '28', 'App\\Pegawai\\DataPengajuanCuti', '13', 'terima', '2023-04-14 00:41:05', '2023-04-14 00:41:05');
 
 -- --------------------------------------------------------
 
@@ -814,15 +841,15 @@ INSERT INTO `logs` (`id`, `user_nip`, `target_nip`, `model_type`, `model_id`, `a
 
 CREATE TABLE `lokasi` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_lokasi` varchar(191) NOT NULL,
-  `kode_shift` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
-  `kordinat` varchar(191) DEFAULT NULL,
-  `latitude` varchar(191) DEFAULT NULL,
-  `longitude` varchar(191) DEFAULT NULL,
+  `kode_lokasi` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_shift` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kordinat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jarak` int(11) NOT NULL DEFAULT 0,
   `keterangan` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 memilih pegawai, 1 berdasarkan atasan dan bawahannya, 2 berdasarkan jabatan itu saja',
-  `polygon` text DEFAULT NULL,
+  `polygon` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -833,8 +860,10 @@ CREATE TABLE `lokasi` (
 --
 
 INSERT INTO `lokasi` (`id`, `kode_lokasi`, `kode_shift`, `nama`, `kordinat`, `latitude`, `longitude`, `jarak`, `keterangan`, `polygon`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(6, '0100', '01', 'Head Office Semarang', '-7.006793068102385, 110.41733718795163', '-7.006793068102385', '110.41733718795163', 1268, 3, '[[{\"lat\":-7.97261888221635,\"lng\":112.59557463340913},{\"lat\":-7.9759764112458775,\"lng\":112.59737722617726},{\"lat\":-7.975041405930768,\"lng\":112.60171203259593},{\"lat\":-7.971343863972851,\"lng\":112.60252749122914},{\"lat\":-7.968921318364716,\"lng\":112.59862187356477},{\"lat\":-7.970578851119622,\"lng\":112.5966476052949}]]', '2022-06-28 12:53:56', '2023-03-02 05:11:41', NULL),
-(14, '0202', '11', 'Gedung G', '-7.973120, 112.598246', '-7.973120', '112.598246', 1268, 1, '', '2022-06-28 12:53:56', '2023-02-23 03:40:17', NULL);
+(6, '01', '01', 'Deta Sukses Makmur Head Office', '-7.006793068102385, 110.41733718795163', '-7.006793068102385', '110.41733718795163', 1268, 3, '[[{\"lat\":-7.97261888221635,\"lng\":112.59557463340913},{\"lat\":-7.9759764112458775,\"lng\":112.59737722617726},{\"lat\":-7.975041405930768,\"lng\":112.60171203259593},{\"lat\":-7.971343863972851,\"lng\":112.60252749122914},{\"lat\":-7.968921318364716,\"lng\":112.59862187356477},{\"lat\":-7.970578851119622,\"lng\":112.5966476052949}]]', '2022-06-28 12:53:56', '2023-04-03 14:14:53', NULL),
+(14, '02', '01', 'DSM DKP', '-7.430180, 110.804071', '-7.430180', '110.804071', 1268, 3, NULL, '2022-06-28 12:53:56', '2023-04-03 14:15:57', NULL),
+(15, '03', '01', 'DSM JMP', '-7.4285714909850435, 110.80366654414584', '-7.4285714909850435', '110.80366654414584', 100, 3, NULL, '2023-04-03 14:21:59', '2023-04-03 14:21:59', NULL),
+(16, 'Grapari Telkomsel Yogyakarta', '01', 'Grapari Telkomsel Yogyakarta', '-7.782966,110.361411', '-7.782966', '110.361411', 100, 1, NULL, '2023-04-09 02:29:25', '2023-04-09 02:29:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -844,9 +873,9 @@ INSERT INTO `lokasi` (`id`, `kode_lokasi`, `kode_shift`, `nama`, `kordinat`, `la
 
 CREATE TABLE `lokasi_detail` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_lokasi` varchar(191) NOT NULL,
-  `keterangan_tipe` varchar(191) NOT NULL DEFAULT '0' COMMENT '0 memilih pegawai, 1 berdasarkan atasan dan bawahannya, 2 berdasarkan jabatan itu saja',
-  `keterangan_id` varchar(191) NOT NULL,
+  `kode_lokasi` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keterangan_tipe` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0 memilih pegawai, 1 berdasarkan atasan dan bawahannya, 2 berdasarkan jabatan itu saja',
+  `keterangan_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -888,7 +917,12 @@ INSERT INTO `lokasi_detail` (`id`, `kode_lokasi`, `keterangan_tipe`, `keterangan
 (33, '0100', '1', '66', '2023-03-02 03:08:18', '2023-03-02 03:08:38', '2023-03-02 03:08:38'),
 (34, '0100', '1', '28', '2023-03-02 03:08:38', '2023-03-02 05:11:41', '2023-03-02 05:11:41'),
 (35, '0100', '1', '66', '2023-03-02 03:08:38', '2023-03-02 05:11:41', '2023-03-02 05:11:41'),
-(36, '0100', '3', '01', '2023-03-02 05:11:41', '2023-03-02 05:11:41', NULL);
+(36, '0100', '3', '01', '2023-03-02 05:11:41', '2023-03-02 05:11:41', NULL),
+(37, '01', '3', '01', '2023-04-03 14:14:53', '2023-04-03 14:14:53', NULL),
+(38, '02', '3', '04', '2023-04-03 14:15:37', '2023-04-03 14:15:57', '2023-04-03 14:15:57'),
+(39, '02', '3', '04', '2023-04-03 14:15:57', '2023-04-03 14:15:57', NULL),
+(40, '03', '3', '03', '2023-04-03 14:21:59', '2023-04-03 14:21:59', NULL),
+(41, 'Grapari Telkomsel Yogyakarta', '1', '111111', '2023-04-09 02:29:25', '2023-04-09 02:29:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -898,7 +932,7 @@ INSERT INTO `lokasi_detail` (`id`, `kode_lokasi`, `keterangan_tipe`, `keterangan
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(191) NOT NULL,
+  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -990,7 +1024,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `model_has_permissions` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
-  `model_type` varchar(191) NOT NULL,
+  `model_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1002,7 +1036,7 @@ CREATE TABLE `model_has_permissions` (
 
 CREATE TABLE `model_has_roles` (
   `role_id` bigint(20) UNSIGNED NOT NULL,
-  `model_type` varchar(191) NOT NULL,
+  `model_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1011,18 +1045,53 @@ CREATE TABLE `model_has_roles` (
 --
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(1, 'App\\Models\\User', 1),
 (1, 'App\\Models\\User', 2),
-(1, 'App\\Models\\User', 6),
-(2, 'App\\Models\\User', 2),
 (2, 'App\\Models\\User', 4),
-(2, 'App\\Models\\User', 6),
 (3, 'App\\Models\\User', 2),
 (3, 'App\\Models\\User', 3),
 (3, 'App\\Models\\User', 4),
 (3, 'App\\Models\\User', 5),
 (3, 'App\\Models\\User', 6),
-(3, 'App\\Models\\User', 7);
+(3, 'App\\Models\\User', 7),
+(3, 'App\\Models\\User', 9),
+(3, 'App\\Models\\User', 10),
+(3, 'App\\Models\\User', 11),
+(3, 'App\\Models\\User', 12),
+(3, 'App\\Models\\User', 13),
+(3, 'App\\Models\\User', 14),
+(3, 'App\\Models\\User', 15),
+(3, 'App\\Models\\User', 16),
+(3, 'App\\Models\\User', 17),
+(3, 'App\\Models\\User', 18),
+(3, 'App\\Models\\User', 19),
+(3, 'App\\Models\\User', 20),
+(3, 'App\\Models\\User', 21),
+(3, 'App\\Models\\User', 23),
+(3, 'App\\Models\\User', 24),
+(3, 'App\\Models\\User', 25),
+(3, 'App\\Models\\User', 26),
+(3, 'App\\Models\\User', 27),
+(3, 'App\\Models\\User', 28),
+(3, 'App\\Models\\User', 29),
+(3, 'App\\Models\\User', 30),
+(3, 'App\\Models\\User', 31),
+(3, 'App\\Models\\User', 32),
+(3, 'App\\Models\\User', 33),
+(3, 'App\\Models\\User', 34),
+(3, 'App\\Models\\User', 59),
+(3, 'App\\Models\\User', 60),
+(3, 'App\\Models\\User', 61),
+(3, 'App\\Models\\User', 62),
+(3, 'App\\Models\\User', 63),
+(3, 'App\\Models\\User', 64),
+(3, 'App\\Models\\User', 65),
+(3, 'App\\Models\\User', 66),
+(3, 'App\\Models\\User', 67),
+(3, 'App\\Models\\User', 68),
+(3, 'App\\Models\\User', 69),
+(3, 'App\\Models\\User', 70),
+(4, 'App\\Models\\User', 8),
+(4, 'App\\Models\\User', 22);
 
 -- --------------------------------------------------------
 
@@ -1034,8 +1103,8 @@ CREATE TABLE `ms_absensi` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `menit` tinyint(4) NOT NULL,
   `keterangan` tinyint(4) DEFAULT NULL COMMENT '1 : datang, 2 : pulang',
-  `kode_tunjangan` varchar(191) DEFAULT NULL,
-  `pengali` varchar(191) DEFAULT NULL,
+  `kode_tunjangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pengali` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1069,8 +1138,8 @@ INSERT INTO `ms_absensi` (`id`, `menit`, `keterangan`, `kode_tunjangan`, `pengal
 CREATE TABLE `ms_lembur` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `jam` tinyint(4) NOT NULL,
-  `kode_tunjangan` varchar(191) DEFAULT NULL,
-  `pengali` varchar(191) DEFAULT NULL,
+  `kode_tunjangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pengali` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1113,11 +1182,11 @@ INSERT INTO `ms_lembur` (`id`, `jam`, `kode_tunjangan`, `pengali`, `created_at`,
 
 CREATE TABLE `ms_pengurangan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_kurang` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_kurang` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `satuan` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1: Rupiah, 2: Persen',
   `nilai` double NOT NULL,
-  `kode_persen` varchar(191) DEFAULT NULL COMMENT '1 : gaji pokok, selainnya dari kode tambah',
+  `kode_persen` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '1 : gaji pokok, selainnya dari kode tambah',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1141,8 +1210,8 @@ INSERT INTO `ms_pengurangan` (`id`, `kode_kurang`, `nama`, `satuan`, `nilai`, `k
 
 CREATE TABLE `ms_potongan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_potongan` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_potongan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1156,11 +1225,11 @@ CREATE TABLE `ms_potongan` (
 
 CREATE TABLE `ms_tambahan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_tambah` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_tambah` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `satuan` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0: Rupiah, 1: Persen',
   `nilai` double NOT NULL,
-  `kode_persen` varchar(191) DEFAULT NULL COMMENT '1 : gaji pokok, selainnya dari kode tambah',
+  `kode_persen` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '1 : gaji pokok, selainnya dari kode tambah',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1181,8 +1250,8 @@ INSERT INTO `ms_tambahan` (`id`, `kode_tambah`, `nama`, `satuan`, `nilai`, `kode
 
 CREATE TABLE `ms_tunjangan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_tunjangan` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_tunjangan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1216,8 +1285,8 @@ INSERT INTO `ms_tunjangan` (`id`, `kode_tunjangan`, `nama`, `created_at`, `updat
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(191) NOT NULL,
-  `token` varchar(191) NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1229,10 +1298,10 @@ CREATE TABLE `password_resets` (
 
 CREATE TABLE `payroll_kurang` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_payroll` varchar(191) NOT NULL,
-  `nip` varchar(191) DEFAULT NULL,
-  `kode_kurang` varchar(191) DEFAULT NULL,
-  `keterangan` varchar(191) DEFAULT NULL,
+  `kode_payroll` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_kurang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nilai` double NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -1269,10 +1338,10 @@ INSERT INTO `payroll_kurang` (`id`, `kode_payroll`, `nip`, `kode_kurang`, `keter
 
 CREATE TABLE `payroll_tambah` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_payroll` varchar(191) NOT NULL,
-  `nip` varchar(191) DEFAULT NULL,
-  `kode_tambahan` varchar(191) DEFAULT NULL,
-  `keterangan` varchar(191) DEFAULT NULL,
+  `kode_payroll` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_tambahan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nilai` double NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -1307,8 +1376,8 @@ INSERT INTO `payroll_tambah` (`id`, `kode_payroll`, `nip`, `kode_tambahan`, `ket
 
 CREATE TABLE `pendidikan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_pendidikan` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_pendidikan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1336,12 +1405,19 @@ INSERT INTO `pendidikan` (`id`, `kode_pendidikan`, `nama`, `created_at`, `update
 
 CREATE TABLE `penghargaan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_penghargaan` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_penghargaan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `penghargaan`
+--
+
+INSERT INTO `penghargaan` (`id`, `kode_penghargaan`, `nama`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, '01', 'Best Employee', '2023-04-03 14:43:32', '2023-04-03 14:43:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -1351,9 +1427,9 @@ CREATE TABLE `penghargaan` (
 
 CREATE TABLE `pengumuman` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `judul` varchar(255) NOT NULL,
-  `deskripsi` varchar(255) NOT NULL,
-  `file` varchar(255) NOT NULL,
+  `judul` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deskripsi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1366,7 +1442,8 @@ INSERT INTO `pengumuman` (`id`, `judul`, `deskripsi`, `file`, `created_at`, `upd
 (1, 'Aplikasi HR System V.1.0', 'Aplikasi HR System V.1.0\r\n\r\nAplikasi HR System terlengkap', 'uploads/pengumuman/jY81ZqrUTiBO3eXc4yrqDZ3TF3mYDTCpMtNRT7FB.png', '2022-08-03 01:35:01', '2023-02-02 00:54:04'),
 (2, 'Presensi Berdasarkan Radius Lokasi Kerja', 'Presensi Berdasarkan Radius Lokasi Kerja', 'uploads/pengumuman/nR4IXSWtQcNHMLyBuY2J8If8ilzsdHC6RPHhSEhL.jpg', '2022-08-03 01:34:24', '2022-08-03 01:34:24'),
 (3, 'Besuk Libur', 'Hallo Besuk libur yah', 'uploads/pengumuman/eLrbSs4QcTN4eBmsZiIdTqz8LPXpMDyqXLf0oNEa.jpg', '2022-08-25 14:25:28', '2022-08-25 14:25:28'),
-(5, 'Test Aplikasi', 'Test Aplikasi', 'uploads/pengumuman/iVorgdELfUO6WiLhhTGjoPwDHN1ralB8z6qIgMsw.jpg', '2023-02-18 08:01:11', '2023-03-02 02:31:56');
+(7, 'Testing', 'testing', 'uploads/pengumuman/MLZn73jSNf1EvFVs8JB8CGbFLHgEchoxccI82TlM.png', '2023-04-05 06:39:42', '2023-04-05 06:39:42'),
+(8, 'Test', 'Makan sahur dengan yang cantik', 'uploads/pengumuman/9ZvBirBMGtRnqhpRehFD373K0khgQLBHJHB7KJxo.jpg', '2023-04-11 12:47:36', '2023-04-11 12:47:36');
 
 -- --------------------------------------------------------
 
@@ -1376,8 +1453,8 @@ INSERT INTO `pengumuman` (`id`, `judul`, `deskripsi`, `file`, `created_at`, `upd
 
 CREATE TABLE `permissions` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(191) NOT NULL,
-  `guard_name` varchar(191) NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1390,11 +1467,11 @@ CREATE TABLE `permissions` (
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(191) NOT NULL,
+  `tokenable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(191) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -1542,7 +1619,7 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (168, 'App\\Models\\User', 3, 'auth-token', '0a481fbffd9f9e01a616e201043d40074c2b0beea6f5ae60679e1bb55a92a3e3', '[\"*\"]', '2023-03-14 07:06:42', '2023-03-14 07:02:36', '2023-03-14 07:06:42'),
 (169, 'App\\Models\\User', 3, 'auth-token', 'be696659086391083613d98df2e08d8915dfc4896008a27f73aece0b7ff70a57', '[\"*\"]', '2023-03-14 07:27:02', '2023-03-14 07:04:24', '2023-03-14 07:27:02'),
 (170, 'App\\Models\\User', 2, 'auth-token', '0ac3e471651c8ba51d754865dd1e83e9a209179869598445e4a97b52a2abfb47', '[\"*\"]', '2023-03-14 07:57:01', '2023-03-14 07:09:58', '2023-03-14 07:57:01'),
-(171, 'App\\Models\\User', 2, 'auth-token', '1efc811d55bf1fdbe06337482e04d31cb6c173a3676c838f3ffb58994c3e409a', '[\"*\"]', '2023-03-14 10:26:39', '2023-03-14 07:45:51', '2023-03-14 10:26:39'),
+(171, 'App\\Models\\User', 2, 'auth-token', '1efc811d55bf1fdbe06337482e04d31cb6c173a3676c838f3ffb58994c3e409a', '[\"*\"]', '2023-03-28 06:48:08', '2023-03-14 07:45:51', '2023-03-28 06:48:08'),
 (172, 'App\\Models\\User', 2, 'auth-token', 'b5eac877310379a1ea4434b011515b3970ab3fecbc51b437f5d06ab5edd001da', '[\"*\"]', NULL, '2023-03-14 08:02:00', '2023-03-14 08:02:00'),
 (173, 'App\\Models\\User', 2, 'auth-token', '881d999eb168c3a3d6eac85a0bd5e3a8028ae51e537d02200ba15cbad895aa00', '[\"*\"]', '2023-03-14 08:05:43', '2023-03-14 08:02:03', '2023-03-14 08:05:43'),
 (174, 'App\\Models\\User', 2, 'auth-token', '30b1b0483d9517c1ff0e767b7c25cc1ce8b067656cf9689b9575641c351e08b7', '[\"*\"]', NULL, '2023-03-14 08:04:42', '2023-03-14 08:04:42'),
@@ -1551,7 +1628,68 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (177, 'App\\Models\\User', 2, 'auth-token', '48a18e558615bcdf535eba0495932c8d3e938f7e9a56c7840410058d61644390', '[\"*\"]', '2023-03-14 08:15:58', '2023-03-14 08:15:09', '2023-03-14 08:15:58'),
 (178, 'App\\Models\\User', 2, 'auth-token', 'cd3f9db03e58400247f102a3ac4903e203d20d34ef87feb137801b606058dbd7', '[\"*\"]', '2023-03-14 08:16:45', '2023-03-14 08:16:43', '2023-03-14 08:16:45'),
 (179, 'App\\Models\\User', 2, 'auth-token', '1dcca15b4ec8f806317cd25f572d97654c990445ba0b0faa4877d81f832d46b9', '[\"*\"]', '2023-03-21 00:24:47', '2023-03-14 08:18:14', '2023-03-21 00:24:47'),
-(180, 'App\\Models\\User', 2, 'auth-token', '75755550e1fb32582ac07cb15d8c8cbd83d1d30e3ab18c1331024ce8f249eebf', '[\"*\"]', '2023-03-14 09:00:38', '2023-03-14 08:34:08', '2023-03-14 09:00:38');
+(180, 'App\\Models\\User', 2, 'auth-token', '75755550e1fb32582ac07cb15d8c8cbd83d1d30e3ab18c1331024ce8f249eebf', '[\"*\"]', '2023-04-03 06:38:09', '2023-03-14 08:34:08', '2023-04-03 06:38:09'),
+(181, 'App\\Models\\User', 2, 'auth-token', 'b957370479c183be2edc2d2396c2386d6b266711eedd55ea4eadf805ec0b6072', '[\"*\"]', '2023-03-21 02:45:51', '2023-03-21 02:01:51', '2023-03-21 02:45:51'),
+(182, 'App\\Models\\User', 2, 'auth-token', 'd0ae323fe753633a00b380edc1c080cd57af9980b5cc23d6c28809d0dbae889d', '[\"*\"]', '2023-03-26 20:28:26', '2023-03-22 02:11:37', '2023-03-26 20:28:26'),
+(183, 'App\\Models\\User', 2, 'auth-token', '054aca242eb073243d906294bd19c00a44cdd4b6edb1232a3930096206326667', '[\"*\"]', '2023-03-22 04:19:46', '2023-03-22 04:10:11', '2023-03-22 04:19:46'),
+(184, 'App\\Models\\User', 2, 'auth-token', 'f41e5ab527b4c46dd10bcec0e720682b642f24553ba8a563e5d3c27f076cd83c', '[\"*\"]', '2023-03-22 04:11:24', '2023-03-22 04:11:19', '2023-03-22 04:11:24'),
+(185, 'App\\Models\\User', 2, 'auth-token', 'e228d6b5e3c56320a07f96f7f42dce173a928b3954b2feec4106315a9eb02ec3', '[\"*\"]', NULL, '2023-03-22 08:30:06', '2023-03-22 08:30:06'),
+(186, 'App\\Models\\User', 2, 'auth-token', 'ce3432a238a30f4326ac97b464d7d1579dccf571a0b68b4259fc37d80266c4b2', '[\"*\"]', NULL, '2023-03-26 12:57:52', '2023-03-26 12:57:52'),
+(187, 'App\\Models\\User', 2, 'auth-token', '7a5ae309fb796fec5ac46e190acb3de997753d2eec88abfd15c7ed5919a35dc0', '[\"*\"]', NULL, '2023-03-26 13:14:29', '2023-03-26 13:14:29'),
+(188, 'App\\Models\\User', 2, 'auth-token', '0ba7ee80763ca07ca253e206e06e6029898b4e6a6a1276abfa3fe2bc6a271284', '[\"*\"]', '2023-03-26 17:35:02', '2023-03-26 16:58:11', '2023-03-26 17:35:02'),
+(189, 'App\\Models\\User', 4, 'auth-token', '3a0236ab5f26d1ba4c6e86a0c44bcca639bfa2cf0ff95b96f1047335d24a7607', '[\"*\"]', '2023-03-26 20:30:29', '2023-03-26 20:30:07', '2023-03-26 20:30:29'),
+(190, 'App\\Models\\User', 2, 'auth-token', '9ada781f6caab3345d266acf59cf9d6a3b07b8d06206de429f760e6931d004f7', '[\"*\"]', '2023-03-27 03:18:47', '2023-03-27 03:17:19', '2023-03-27 03:18:47'),
+(191, 'App\\Models\\User', 2, 'auth-token', 'd91b55d25eba22aa257797d8b905f0189c5a9ea023d9cd74e7d9fb9f972b1715', '[\"*\"]', '2023-03-27 03:45:01', '2023-03-27 03:19:26', '2023-03-27 03:45:01'),
+(192, 'App\\Models\\User', 2, 'auth-token', 'e25a0c88af2e9988b1eb48372c2398fee617a3f0a15169852ee595dec8718d34', '[\"*\"]', '2023-03-28 04:20:18', '2023-03-28 04:19:31', '2023-03-28 04:20:18'),
+(193, 'App\\Models\\User', 2, 'auth-token', '45af39d2d7ff34721bf2150dd2c85dc9acd8c18b5a2018314ddd79d6788a23eb', '[\"*\"]', '2023-04-13 02:31:38', '2023-03-28 05:16:53', '2023-04-13 02:31:38'),
+(194, 'App\\Models\\User', 2, 'auth-token', 'de3c09dc24ffbb4381d559e4822aceee05ed61e5aeb3e1cd8ae8d146967e8c71', '[\"*\"]', '2023-03-28 05:44:36', '2023-03-28 05:43:58', '2023-03-28 05:44:36'),
+(196, 'App\\Models\\User', 2, 'auth-token', '14d9c2ce73bb7d06b61a1b5231dc8a0cf6eff5e4b7c6bcc6f5ae6bbeb11fc3ef', '[\"*\"]', NULL, '2023-03-28 07:14:25', '2023-03-28 07:14:25'),
+(198, 'App\\Models\\User', 2, 'auth-token', 'c3db90313ea0980345e46693ac65e3ca357f92f29b9c0cc60e5142e626140831', '[\"*\"]', '2023-03-28 13:23:47', '2023-03-28 07:26:20', '2023-03-28 13:23:47'),
+(203, 'App\\Models\\User', 4, 'auth-token', '37bea83c54902997d85c2006129a48f6ea5fdd14d7a8fe00fb93a6a5fc99bcec', '[\"*\"]', '2023-04-03 04:19:51', '2023-03-28 14:14:40', '2023-04-03 04:19:51'),
+(204, 'App\\Models\\User', 2, 'auth-token', '20da8b2f3353ea57720e15505542a2f83e97a676e953c6f34e1caf9da2296cfb', '[\"*\"]', '2023-04-03 07:14:50', '2023-03-28 18:04:13', '2023-04-03 07:14:50'),
+(205, 'App\\Models\\User', 2, 'auth-token', '35c9773a6d82eeb181d1dbb729e3f9c9e811a3b8be49beb85e685aba86449008', '[\"*\"]', '2023-04-03 01:10:44', '2023-04-03 01:09:41', '2023-04-03 01:10:44'),
+(206, 'App\\Models\\User', 2, 'auth-token', '1e78568aab757a9787857d00d69fcfcdff61cabeb5d99b99943a42bd05118dbe', '[\"*\"]', '2023-04-03 05:10:01', '2023-04-03 04:26:14', '2023-04-03 05:10:01'),
+(207, 'App\\Models\\User', 2, 'auth-token', '6785728256acdeb460f51dc7e9362394353fb7cd3661a820053568ce95cd4aea', '[\"*\"]', '2023-04-03 07:00:01', '2023-04-03 05:12:42', '2023-04-03 07:00:01'),
+(208, 'App\\Models\\User', 2, 'auth-token', 'c378ce482dacf6bdb48bd87d3e56695d0b89ddd813e3c8d0fef6812d2c776d4a', '[\"*\"]', '2023-04-06 08:14:33', '2023-04-03 06:26:18', '2023-04-06 08:14:33'),
+(209, 'App\\Models\\User', 2, 'auth-token', '10c4bff40376df07e39877fbbce5d6b449be48ad91bebd291a4019dff14acc0c', '[\"*\"]', '2023-04-05 06:34:44', '2023-04-03 06:39:32', '2023-04-05 06:34:44'),
+(210, 'App\\Models\\User', 2, 'auth-token', '08cafabcc3bca9a4fa22a6561e80613a9fc7c21457c4049ca514daf6329b8164', '[\"*\"]', '2023-04-03 07:19:35', '2023-04-03 07:00:44', '2023-04-03 07:19:35'),
+(211, 'App\\Models\\User', 2, 'auth-token', '657d5e1ae3778e348d7a00e65a8e4f6dcc643feb9342ee87ff124fd2ea0bec3b', '[\"*\"]', '2023-04-03 14:07:09', '2023-04-03 07:17:06', '2023-04-03 14:07:09'),
+(212, 'App\\Models\\User', 2, 'auth-token', '29c9393937c498010e3bc93461b1271e2a1ee5cc5f5900d4d0f093855bd6302c', '[\"*\"]', '2023-04-03 07:21:50', '2023-04-03 07:20:20', '2023-04-03 07:21:50'),
+(213, 'App\\Models\\User', 2, 'auth-token', 'a529d8501f2041bed57952ad2f8010e2bd024802e5e9180cd93a8b76ff69c661', '[\"*\"]', '2023-04-03 07:56:01', '2023-04-03 07:55:15', '2023-04-03 07:56:01'),
+(214, 'App\\Models\\User', 2, 'auth-token', '8897acb9cbe5e8e0b9733b9f5743f66905dcc835654003772869273f4d2bd5a9', '[\"*\"]', '2023-04-05 07:25:26', '2023-04-03 08:37:17', '2023-04-05 07:25:26'),
+(215, 'App\\Models\\User', 2, 'auth-token', '9cb2afa0eb47559ff63d11e9e804d339559c79f20bff3b229b70f092d3c61648', '[\"*\"]', '2023-04-12 14:43:16', '2023-04-04 01:24:45', '2023-04-12 14:43:16'),
+(216, 'App\\Models\\User', 2, 'auth-token', 'bbc7131c6a01d2d7fa6e59d430f925b21d2b3e3c2d0b108cf7b6ffa719823c1a', '[\"*\"]', NULL, '2023-04-05 02:35:42', '2023-04-05 02:35:42'),
+(217, 'App\\Models\\User', 2, 'auth-token', '559f39b80ba58ee4f2511a542fccff5974bbb8ae26525cf6e62eea6504248966', '[\"*\"]', NULL, '2023-04-05 02:38:21', '2023-04-05 02:38:21'),
+(218, 'App\\Models\\User', 2, 'auth-token', '1d5d7fe8e5a2274251910309744584609cb6586c74b9d93f46c9591e1aa7b1b9', '[\"*\"]', '2023-04-06 08:36:32', '2023-04-06 07:34:51', '2023-04-06 08:36:32'),
+(219, 'App\\Models\\User', 2, 'auth-token', '30b7ee20749fe72bde7e985712acfa182cf38921f3b19ea23f9f888f4d7cd3df', '[\"*\"]', '2023-04-06 07:55:05', '2023-04-06 07:43:01', '2023-04-06 07:55:05'),
+(220, 'App\\Models\\User', 2, 'auth-token', '55f793145cad9bd1d25830726e516a6a2ed6e7ba5fbe6f31ec4f3ab0c15d3ca9', '[\"*\"]', '2023-04-06 07:58:28', '2023-04-06 07:48:25', '2023-04-06 07:58:28'),
+(221, 'App\\Models\\User', 2, 'auth-token', 'f175df7135963e56001f8a49f4a9f518125aa499de93211f737e267903e339dd', '[\"*\"]', '2023-04-06 08:06:56', '2023-04-06 07:56:31', '2023-04-06 08:06:56'),
+(222, 'App\\Models\\User', 2, 'auth-token', '7f40346c083272deb319c4dc355d089d25e4ac69d4c9ff84fbf5d998cb223e5c', '[\"*\"]', NULL, '2023-04-06 08:01:52', '2023-04-06 08:01:52'),
+(223, 'App\\Models\\User', 2, 'auth-token', 'b74ed72f29e4bf65e9d7caba245788f5ca8407d9773e879a274326de0c6304f3', '[\"*\"]', '2023-04-08 03:32:12', '2023-04-06 08:07:11', '2023-04-08 03:32:12'),
+(224, 'App\\Models\\User', 2, 'auth-token', '3f120f0ba336a9d974b319066f35d69bd9473deda7af8f2dba909ef84e199e32', '[\"*\"]', '2023-04-08 14:31:09', '2023-04-06 08:38:42', '2023-04-08 14:31:09'),
+(225, 'App\\Models\\User', 2, 'auth-token', '9b92e4abfad3d256ebb1e45be905c523b1769f117ec617c0ab2a3b3b37d46a6f', '[\"*\"]', '2023-04-09 14:01:16', '2023-04-09 13:58:34', '2023-04-09 14:01:16'),
+(226, 'App\\Models\\User', 2, 'auth-token', '6de7966a8a74fcf917031da1d03f2633240eee59b25d21cde6d3e0de7d958edc', '[\"*\"]', '2023-04-12 07:36:47', '2023-04-09 14:11:37', '2023-04-12 07:36:47'),
+(227, 'App\\Models\\User', 2, 'auth-token', '27ffb72f1a6355286fbc36659ddb87af1cbc139767f5e25a4de5f53a7eac42ef', '[\"*\"]', '2023-04-10 03:19:35', '2023-04-10 03:19:34', '2023-04-10 03:19:35'),
+(228, 'App\\Models\\User', 2, 'auth-token', '045b48bcf4c368d620b6184f1d46fe573e1adac2af140d84397956857a844f88', '[\"*\"]', '2023-04-10 03:24:57', '2023-04-10 03:20:01', '2023-04-10 03:24:57'),
+(229, 'App\\Models\\User', 2, 'auth-token', '2435a53e5c69f5eb8524917ae1d7cde755bbd710cb65d5c486781963dccc66be', '[\"*\"]', '2023-04-10 03:23:22', '2023-04-10 03:23:21', '2023-04-10 03:23:22'),
+(230, 'App\\Models\\User', 2, 'auth-token', 'e5b7527bede5dd2305dbfc576b7d023340b213405f983fcf3c312cb0805cd03a', '[\"*\"]', '2023-04-10 03:28:42', '2023-04-10 03:24:51', '2023-04-10 03:28:42'),
+(231, 'App\\Models\\User', 2, 'auth-token', '0aeee26ea94162825be9c63eaae0c2f54d2cb416626d8fb8dd4193cf3bd79fc7', '[\"*\"]', '2023-04-11 00:31:13', '2023-04-11 00:30:07', '2023-04-11 00:31:13'),
+(232, 'App\\Models\\User', 13, 'auth-token', 'a29b1260321c90ab2d1f41d51efb984d25f674d2d41de33de0c272fd4d72e65f', '[\"*\"]', '2023-04-13 02:13:40', '2023-04-12 06:55:38', '2023-04-13 02:13:40'),
+(233, 'App\\Models\\User', 13, 'auth-token', '6ea7e180ca6ac113339de422efd6df5bbd6ae1b4825d3fca25b9ede8eba08f71', '[\"*\"]', NULL, '2023-04-12 07:40:08', '2023-04-12 07:40:08'),
+(234, 'App\\Models\\User', 13, 'auth-token', 'df925bc5ba6b7be19c54551dd7cb1b54d8c19046c4d78239d96db643f7ca5ffc', '[\"*\"]', '2023-04-12 07:59:41', '2023-04-12 07:42:43', '2023-04-12 07:59:41'),
+(235, 'App\\Models\\User', 14, 'auth-token', '36f9cc12e0547ce3051ca08c7ab5ed09f1d34b11113af4ae7b2593f127ae3e28', '[\"*\"]', NULL, '2023-04-12 08:04:12', '2023-04-12 08:04:12'),
+(236, 'App\\Models\\User', 14, 'auth-token', '131b7258e4274ff8761870b2bac121b5383cd7f33aa174a0e41b7cdbab0e2547', '[\"*\"]', NULL, '2023-04-12 08:31:16', '2023-04-12 08:31:16'),
+(237, 'App\\Models\\User', 15, 'auth-token', '7487c1844f4bff38288c11a45e8e10bdc4fde11c57eaf4f40c06e433b8cfb2c1', '[\"*\"]', '2023-04-12 14:46:20', '2023-04-12 14:43:30', '2023-04-12 14:46:20'),
+(238, 'App\\Models\\User', 14, 'auth-token', 'c85788017b87768528a0dc6cf872a3b759a10e4acb292b7987848e996d87a3a6', '[\"*\"]', '2023-04-13 08:36:46', '2023-04-13 08:36:04', '2023-04-13 08:36:46'),
+(239, 'App\\Models\\User', 14, 'auth-token', 'a5ecb1f29f886bb3fdbc1a5462f7ffb401f6c757d9e16b6c6a61b6926dce6268', '[\"*\"]', '2023-04-13 08:39:46', '2023-04-13 08:38:02', '2023-04-13 08:39:46'),
+(240, 'App\\Models\\User', 14, 'auth-token', 'b975d27e87ff62a38d394868fed7c87462b7dc1997fd3b970d47808b2ad7c723', '[\"*\"]', NULL, '2023-04-13 08:40:38', '2023-04-13 08:40:38'),
+(241, 'App\\Models\\User', 14, 'auth-token', '58dde5ac4e208f1b02faf0e6bcaf56f44fb5f66a41e16acb1479299fee523c88', '[\"*\"]', '2023-04-13 08:47:55', '2023-04-13 08:47:51', '2023-04-13 08:47:55'),
+(242, 'App\\Models\\User', 2, 'auth-token', '794644e5295ca581d64e30a3d4b8316a383f555617a03a8feb63c0b243cd041f', '[\"*\"]', '2023-04-13 08:52:00', '2023-04-13 08:50:14', '2023-04-13 08:52:00'),
+(243, 'App\\Models\\User', 14, 'auth-token', '99c2dbbf8569b4a2a590dd967c8c0643ee4ef545f7a970ef13dcdd9dff5005e5', '[\"*\"]', '2023-04-13 08:51:01', '2023-04-13 08:50:56', '2023-04-13 08:51:01'),
+(244, 'App\\Models\\User', 14, 'auth-token', 'aaa9589b49ecffec8a078980888c8e4c0cf6a70a22aac6fb50c4ec69b9cd3963', '[\"*\"]', '2023-04-13 15:19:15', '2023-04-13 08:52:29', '2023-04-13 15:19:15'),
+(245, 'App\\Models\\User', 14, 'auth-token', 'f8bf8494367884f824a1f389ee482e847d9d43168006f544bb9221e4de91f8c9', '[\"*\"]', NULL, '2023-04-13 08:55:07', '2023-04-13 08:55:07'),
+(246, 'App\\Models\\User', 2, 'auth-token', 'b039957de04c88e3e6237424845d546db646c20467e117a683727426099ae915', '[\"*\"]', '2023-04-15 11:30:12', '2023-04-15 04:54:40', '2023-04-15 11:30:12'),
+(247, 'App\\Models\\User', 2, 'auth-token', '682652218420b877d65e308f1b59386dab7291972bf5ed0c0ec44f0426fdded9', '[\"*\"]', '2023-04-15 22:20:05', '2023-04-15 13:11:36', '2023-04-15 22:20:05');
 
 -- --------------------------------------------------------
 
@@ -1561,13 +1699,13 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 
 CREATE TABLE `perusahaan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `alamat` text NOT NULL,
-  `kontak` text DEFAULT NULL,
-  `logo` varchar(255) NOT NULL,
-  `direktur` varchar(255) DEFAULT NULL,
-  `nomor` varchar(255) DEFAULT NULL,
-  `website` text DEFAULT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kontak` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `direktur` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1586,8 +1724,8 @@ INSERT INTO `perusahaan` (`id`, `nama`, `alamat`, `kontak`, `logo`, `direktur`, 
 --
 
 CREATE TABLE `provinces` (
-  `id` char(2) NOT NULL,
-  `name` varchar(191) NOT NULL
+  `id` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1601,7 +1739,7 @@ CREATE TABLE `ref_city` (
   `code` varchar(15) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `parent` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='kota/kabupaten';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='kota/kabupaten';
 
 --
 -- Dumping data untuk tabel `ref_city`
@@ -2130,9 +2268,9 @@ INSERT INTO `ref_city` (`id`, `code`, `name`, `parent`) VALUES
 --
 
 CREATE TABLE `regencies` (
-  `id` char(4) NOT NULL,
-  `province_id` char(2) NOT NULL,
-  `name` varchar(50) NOT NULL
+  `id` char(4) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `province_id` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -2143,8 +2281,8 @@ CREATE TABLE `regencies` (
 
 CREATE TABLE `reimbursement` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_reimbursement` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_reimbursement` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2159,7 +2297,9 @@ INSERT INTO `reimbursement` (`id`, `kode_reimbursement`, `nama`, `created_at`, `
 (2, '44', 'Pinjaman Ke Perusahaan', '2022-06-30 08:01:02', '2022-08-31 15:34:21', '2022-08-31 15:34:21'),
 (3, '102', 'Transportasi', '2022-08-31 15:33:45', '2022-08-31 15:33:45', NULL),
 (4, '100', 'Komunikasi', '2022-08-31 15:34:15', '2022-08-31 15:34:15', NULL),
-(5, '101', 'Makan', '2022-08-31 15:34:34', '2023-02-17 17:26:11', '2023-02-17 17:26:11');
+(5, '101', 'Makan', '2022-08-31 15:34:34', '2023-02-17 17:26:11', '2023-02-17 17:26:11'),
+(6, '103', 'Entertainment', '2023-04-03 14:54:55', '2023-04-03 14:55:04', NULL),
+(7, '104', 'Hotel', '2023-04-03 15:00:48', '2023-04-03 15:00:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -2169,11 +2309,11 @@ INSERT INTO `reimbursement` (`id`, `kode_reimbursement`, `nama`, `created_at`, `
 
 CREATE TABLE `riwayat_bahasa` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `nama_bahasa` varchar(191) NOT NULL,
-  `penguasaan` varchar(191) NOT NULL,
-  `jenis` varchar(191) NOT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_bahasa` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `penguasaan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2195,13 +2335,13 @@ INSERT INTO `riwayat_bahasa` (`id`, `nip`, `nama_bahasa`, `penguasaan`, `jenis`,
 
 CREATE TABLE `riwayat_cuti` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_cuti` varchar(191) NOT NULL,
-  `nomor_surat` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_cuti` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_surat` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_surat` date NOT NULL,
   `tanggal_mulai` date NOT NULL,
   `tanggal_selesai` date NOT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2216,7 +2356,12 @@ INSERT INTO `riwayat_cuti` (`id`, `nip`, `kode_cuti`, `nomor_surat`, `tanggal_su
 (2, '66', '19', '342es-fa/sadf-2021', '2022-07-07', '2022-01-02', '2022-01-12', '', '2022-07-02 23:10:27', '2022-07-02 23:10:27', NULL),
 (3, '66', '19', 'tes', '2022-07-14', '2022-07-09', '2022-07-14', '', '2022-07-03 07:04:21', '2022-07-03 07:04:21', NULL),
 (4, '66', '52', '123-456', '2022-07-12', '2022-07-09', '2022-07-14', '66/66-cuti-123-456.png', '2022-07-12 13:05:38', '2022-07-12 13:05:38', NULL),
-(5, '66', '19', '123', '2022-07-13', '2022-01-02', '2022-01-12', '', '2022-07-17 02:15:56', '2022-07-17 02:15:56', NULL);
+(5, '66', '19', '123', '2022-07-13', '2022-01-02', '2022-01-12', '', '2022-07-17 02:15:56', '2022-07-17 02:15:56', NULL),
+(6, '28', '1', '123456', '2023-04-03', '2023-04-04', '2023-04-05', '', '2023-04-03 06:19:40', '2023-04-03 06:19:40', NULL),
+(11, '28', 'M', '123456', '2023-04-14', '2023-04-14', '2023-04-15', '', '2023-04-14 00:36:45', '2023-04-14 00:36:45', NULL),
+(12, '28', 'M', '123456', '2023-04-14', '2023-04-14', '2023-04-15', '', '2023-04-14 00:39:47', '2023-04-14 00:39:47', NULL),
+(13, '28', 'M', '123456', '2023-04-14', '2023-04-14', '2023-04-15', '', '2023-04-14 00:40:27', '2023-04-14 00:40:27', NULL),
+(14, '28', 'M', '123456', '2023-04-14', '2023-04-14', '2023-04-15', '', '2023-04-14 00:41:05', '2023-04-14 00:41:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -2226,16 +2371,16 @@ INSERT INTO `riwayat_cuti` (`id`, `nip`, `kode_cuti`, `nomor_surat`, `tanggal_su
 
 CREATE TABLE `riwayat_jabatan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jenis_jabatan` tinyint(4) NOT NULL,
-  `kode_skpd` varchar(191) NOT NULL,
-  `kode_tingkat` varchar(191) NOT NULL,
-  `no_sk` varchar(191) NOT NULL,
+  `kode_skpd` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_tingkat` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_sk` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_sk` date NOT NULL,
   `tanggal_tmt` date NOT NULL,
-  `sebagai` varchar(191) NOT NULL DEFAULT 'defenitif',
+  `sebagai` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'defenitif',
   `is_akhir` tinyint(4) NOT NULL DEFAULT 0,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2247,16 +2392,28 @@ CREATE TABLE `riwayat_jabatan` (
 
 INSERT INTO `riwayat_jabatan` (`id`, `nip`, `jenis_jabatan`, `kode_skpd`, `kode_tingkat`, `no_sk`, `tanggal_sk`, `tanggal_tmt`, `sebagai`, `is_akhir`, `file`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, '28', 1, '102242', '1022420200', '1234', '2022-06-28', '2022-06-28', 'defenitif', 0, '28/28-jabatan-1234.pdf', '2022-06-28 14:46:26', '2023-02-13 11:00:53', '2023-02-13 11:00:53'),
-(2, '28', 2, '3', '2113', '1234', '1970-01-01', '1970-01-01', 'PLT', 0, '28/28-jabatan-1234.pdf', '2022-06-28 14:46:26', '2023-02-23 14:18:44', NULL),
+(2, '28', 2, '3', '2113', '1234', '1970-01-01', '1970-01-01', 'PLT', 0, '28/28-jabatan-1234.pdf', '2022-06-28 14:46:26', '2023-04-03 15:03:43', '2023-04-03 15:03:43'),
 (3, '66', 1, '102104', '102104', '123', '2022-06-30', '2022-06-30', 'defenitif', 1, NULL, '2022-06-30 08:29:40', '2022-06-30 08:29:40', NULL),
 (4, '101090', 1, '102242', '1022420100', 'DSM 112121', '2015-08-29', '2024-08-29', 'defenitif', 0, NULL, '2022-08-29 05:01:13', '2022-08-29 05:01:13', NULL),
 (5, '101090', 1, '102242', '1022420100', 'DSM 112121', '2015-08-29', '2024-08-29', 'defenitif', 1, NULL, '2022-08-29 05:01:13', '2022-08-29 05:01:13', NULL),
 (6, '28', 1, '3', '1', '1313123', '2023-03-02', '2023-02-15', 'defenitif', 0, '28/28-jabatan-20230213175433.pdf', '2023-02-13 10:54:36', '2023-02-13 11:00:41', '2023-02-13 11:00:41'),
-(7, '28', 2, '3', '1', '32342', '2023-02-09', '2023-02-09', 'defenitif', 0, '28/28-jabatan-20230213175851.pdf', '2023-02-13 10:58:51', '2023-02-23 14:18:44', NULL),
+(7, '28', 2, '3', '1', '32342', '2023-02-09', '2023-02-09', 'defenitif', 0, '28/28-jabatan-20230213175851.pdf', '2023-02-13 10:58:51', '2023-04-03 15:03:48', '2023-04-03 15:03:48'),
 (8, '28', 2, '3', '1', '80000', '1970-01-01', '1970-01-01', 'defenitif', 0, '28/28-jabatan-20230213175956.pdf', '2023-02-13 10:59:56', '2023-02-14 05:37:21', '2023-02-14 05:37:21'),
 (9, '28', 1, '3', '1', '3343', '2023-02-23', '2023-02-09', 'defenitif', 0, '28/28-jabatan-20230213180630.pdf', '2023-02-13 11:06:30', '2023-02-13 11:09:04', '2023-02-13 11:09:04'),
-(10, '28', 2, '3', '1', '123123', '2023-02-28', '2023-02-28', 'defenitif', 1, '28/28-jabatan-20230213180848.pdf', '2023-02-13 11:08:48', '2023-02-23 14:18:44', NULL),
-(11, '10', 1, '3', '102104', '123', '2023-02-24', '2023-02-28', 'defenitif', 1, NULL, '2023-02-24 07:37:09', '2023-02-24 07:37:09', NULL);
+(10, '28', 1, '01', 'DSM 05', '123123', '2023-02-28', '2023-02-28', 'defenitif', 0, '28/28-jabatan-20230213180848.pdf', '2023-02-13 11:08:48', '2023-04-09 08:01:02', NULL),
+(11, '10', 1, '04', 'JMP STP', '123', '2023-02-24', '2023-02-24', 'defenitif', 1, NULL, '2023-02-24 07:37:09', '2023-03-26 20:42:34', NULL),
+(12, '123', 1, '01', 'DSM 01', '123776', '2023-04-05', '2023-04-29', 'defenitif', 1, 'data_pegawai/123/riwayat_jabatan/123-jabatan-20230405134302.pdf', '2023-04-05 06:43:02', '2023-04-05 06:46:53', '2023-04-05 06:46:53'),
+(13, '123', 1, '01', 'DSM 02', '123322', '2023-04-08', '2023-04-30', 'defenitif', 0, 'data_pegawai/123/riwayat_jabatan/123-jabatan-20230405135715.pdf', '2023-04-05 06:57:15', '2023-04-05 06:57:49', NULL),
+(14, '28', 2, '01', 'DSM 02', '8992', '2023-04-10', '2023-04-11', 'defenitif', 1, 'data_pegawai/28/riwayat_jabatan/1681027262_MENU Aplikasi absen 1.2 (2).pdf', '2023-04-09 08:01:02', '2023-04-09 08:01:02', NULL),
+(15, '004', 1, '01', 'DSM 03', '024001', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 03:44:55', '2023-04-12 03:44:55', NULL),
+(16, '005', 1, '01', 'DSM 03', '024002', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 03:46:14', '2023-04-12 03:46:14', NULL),
+(17, '008', 1, '01', 'DSM 06', '024003', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 03:49:08', '2023-04-12 03:49:08', NULL),
+(18, '010', 1, '01', 'DSM 07', '024004', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 03:51:19', '2023-04-12 03:51:19', NULL),
+(19, '009', 1, '01', 'DSM 08', '024005', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 03:53:50', '2023-04-12 03:53:50', NULL),
+(20, '012', 1, '01', 'DSM 05', '024006', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 03:54:21', '2023-04-12 03:54:21', NULL),
+(21, '011', 1, '03', 'DSM 0271', '0271001', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 03:57:03', '2023-04-12 03:57:03', NULL),
+(22, '007', 1, '09', 'DSM 021', '021003', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 04:10:35', '2023-04-12 04:10:35', NULL),
+(23, '003', 1, '10', 'DSM 031', '031001', '2023-04-12', '2023-04-12', 'defenitif', 1, NULL, '2023-04-12 04:18:28', '2023-04-12 04:18:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -2266,16 +2423,16 @@ INSERT INTO `riwayat_jabatan` (`id`, `nip`, `jenis_jabatan`, `kode_skpd`, `kode_
 
 CREATE TABLE `riwayat_kgb` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `nomor_surat` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_surat` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_surat` date NOT NULL,
   `tanggal_tmt` date NOT NULL,
   `tipe_gaji` tinyint(4) NOT NULL COMMENT '1: umk\r\n2: non-umk',
-  `kode_umk` varchar(20) NOT NULL,
+  `kode_umk` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gaji_pokok` double NOT NULL,
   `masa_kerja_tahun` int(11) NOT NULL,
   `masa_kerja_bulan` int(11) NOT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_akhir` tinyint(4) DEFAULT NULL,
   `is_private` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -2291,7 +2448,8 @@ INSERT INTO `riwayat_kgb` (`id`, `nip`, `nomor_surat`, `tanggal_surat`, `tanggal
 (1, '66', 'Cum reiciendis est e', '2022-06-09', '1971-12-28', 0, '', 1230000, 0, 0, NULL, 1, 0, '2022-07-12 03:53:38', '2022-07-12 03:54:32', NULL),
 (2, '28', '123', '1970-01-01', '1970-01-01', 0, '', 70000, 2, 1, NULL, 0, 0, '2023-02-14 05:07:52', '2023-02-14 05:34:15', '2023-02-14 05:34:15'),
 (3, '28', '123456', '2023-02-17', '2023-02-17', 0, '', 2000000, 1, 2, NULL, 1, 0, '2023-02-17 08:03:25', '2023-02-17 08:03:25', NULL),
-(4, '28', '123456', '2023-03-09', '2023-03-09', 1, '123123', 3000000, 1, 1, NULL, 0, 0, '2023-03-08 22:47:48', '2023-03-08 22:48:17', NULL);
+(4, '28', '123456', '2023-03-09', '2023-03-09', 1, '123123', 3000000, 1, 1, NULL, 0, 0, '2023-03-08 22:47:48', '2023-03-08 22:48:17', NULL),
+(5, '123', '1233333', '2023-04-05', '2023-04-05', 1, '123123', 3000000, 2, 2, '123/123-kgb-12331231.pdf', 0, 0, '2023-04-05 06:44:29', '2023-04-05 06:55:25', '2023-04-05 06:55:25');
 
 -- --------------------------------------------------------
 
@@ -2301,17 +2459,17 @@ INSERT INTO `riwayat_kgb` (`id`, `nip`, `nomor_surat`, `tanggal_surat`, `tanggal
 
 CREATE TABLE `riwayat_kursus` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_kursus` varchar(191) NOT NULL,
-  `tempat` varchar(191) DEFAULT NULL,
-  `pelaksana` varchar(191) DEFAULT NULL,
-  `angkatan` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_kursus` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tempat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pelaksana` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `angkatan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_mulai` date DEFAULT NULL,
   `tanggal_selesai` date DEFAULT NULL,
   `jumlah_jp` int(11) DEFAULT NULL,
-  `no_sertifikat` varchar(191) DEFAULT NULL,
-  `tanggal_sertifikat` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `no_sertifikat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal_sertifikat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2322,7 +2480,8 @@ CREATE TABLE `riwayat_kursus` (
 --
 
 INSERT INTO `riwayat_kursus` (`id`, `nip`, `kode_kursus`, `tempat`, `pelaksana`, `angkatan`, `tanggal_mulai`, `tanggal_selesai`, `jumlah_jp`, `no_sertifikat`, `tanggal_sertifikat`, `file`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '28', '1', 'Malang', 'Bagio', '1234', '2023-02-14', '2023-02-14', 4, '121311313', '2023-02-14', NULL, '2023-02-14 13:01:48', '2023-02-14 13:01:48', NULL);
+(1, '28', '1', 'Malang', 'Bagio', '1234', '2023-02-14', '2023-02-14', 4, '121311313', '2023-02-14', NULL, '2023-02-14 13:01:48', '2023-02-14 13:01:48', NULL),
+(2, '123', '1', 'malang', 'tahu', '2020', '2020-04-09', '2020-04-23', 400, '33122', '2020-04-29', '123/123-kursus-33122.pdf', '2023-04-05 07:37:33', '2023-04-05 07:42:57', '2023-04-05 07:42:57');
 
 -- --------------------------------------------------------
 
@@ -2332,11 +2491,11 @@ INSERT INTO `riwayat_kursus` (`id`, `nip`, `kode_kursus`, `tempat`, `pelaksana`,
 
 CREATE TABLE `riwayat_lainnya` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_lainnya` varchar(191) NOT NULL,
-  `nomor_sk` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_lainnya` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_sk` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_sk` date NOT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2350,10 +2509,10 @@ CREATE TABLE `riwayat_lainnya` (
 
 CREATE TABLE `riwayat_lhkasn` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_pelaporan` date NOT NULL,
-  `keterangan` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2367,11 +2526,11 @@ CREATE TABLE `riwayat_lhkasn` (
 
 CREATE TABLE `riwayat_lhkpn` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_pelaporan` date NOT NULL,
-  `jenis_form` varchar(191) NOT NULL,
-  `keterangan` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `jenis_form` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2385,15 +2544,15 @@ CREATE TABLE `riwayat_lhkpn` (
 
 CREATE TABLE `riwayat_organisasi` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `nama_organisasi` varchar(191) NOT NULL,
-  `jenis_organisasi` varchar(191) NOT NULL,
-  `jabatan` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_organisasi` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_organisasi` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jabatan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_mulai` date DEFAULT NULL,
   `tanggal_selesai` date DEFAULT NULL,
-  `nama_pimpinan` varchar(191) DEFAULT NULL,
-  `tempat` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `nama_pimpinan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tempat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2407,15 +2566,15 @@ CREATE TABLE `riwayat_organisasi` (
 
 CREATE TABLE `riwayat_pendidikan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_pendidikan` varchar(191) NOT NULL,
-  `kode_jurusan` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_pendidikan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_jurusan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_lulus` date NOT NULL,
-  `nomor_ijazah` varchar(191) NOT NULL,
-  `nama_sekolah` varchar(191) NOT NULL,
-  `gelar_depan` varchar(191) DEFAULT NULL,
-  `gelar_belakang` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `nomor_ijazah` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_sekolah` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gelar_depan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gelar_belakang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_akhir` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -2428,7 +2587,8 @@ CREATE TABLE `riwayat_pendidikan` (
 
 INSERT INTO `riwayat_pendidikan` (`id`, `nip`, `kode_pendidikan`, `kode_jurusan`, `tanggal_lulus`, `nomor_ijazah`, `nama_sekolah`, `gelar_depan`, `gelar_belakang`, `file`, `is_akhir`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, '28', '7', '01', '2015-08-13', 'TI12345857', 'USM Semarang', NULL, 'S.Kom', NULL, 1, '2022-08-13 02:48:16', '2022-08-13 02:48:16', NULL),
-(2, '28', '7', '64', '2023-02-14', '123', 'UB', 'Dr', 'S.Kom', NULL, 0, '2023-02-14 11:01:56', '2023-02-14 11:10:11', NULL);
+(2, '28', '7', '64', '2023-02-14', '123', 'UB', 'Dr', 'S.Kom', NULL, 0, '2023-02-14 11:01:56', '2023-02-14 11:10:11', NULL),
+(3, '123', '7', '64', '2023-04-28', '879098', 'univ a', NULL, 'M.pd', '123/123-pendidikan-8790987.pdf', 1, '2023-04-05 07:33:37', '2023-04-05 07:34:19', '2023-04-05 07:34:19');
 
 -- --------------------------------------------------------
 
@@ -2438,12 +2598,12 @@ INSERT INTO `riwayat_pendidikan` (`id`, `nip`, `kode_pendidikan`, `kode_jurusan`
 
 CREATE TABLE `riwayat_penghargaan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_penghargaan` varchar(191) NOT NULL,
-  `oleh` varchar(191) DEFAULT NULL,
-  `nomor_sk` varchar(191) DEFAULT NULL,
-  `tanggal_sk` varchar(191) DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_penghargaan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `oleh` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nomor_sk` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal_sk` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2457,18 +2617,18 @@ CREATE TABLE `riwayat_penghargaan` (
 
 CREATE TABLE `riwayat_pmk` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `jenis_pmk` varchar(191) NOT NULL,
-  `instansi` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_pmk` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `instansi` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_awal` date DEFAULT NULL,
   `tanggal_akhir` date DEFAULT NULL,
-  `nomor_sk` varchar(191) DEFAULT NULL,
+  `nomor_sk` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_sk` date DEFAULT NULL,
   `masa_kerja_bulan` int(11) DEFAULT NULL,
   `masa_kerja_tahun` int(11) DEFAULT NULL,
-  `nomor_bkn` varchar(191) DEFAULT NULL,
+  `nomor_bkn` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_bkn` date DEFAULT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2482,13 +2642,13 @@ CREATE TABLE `riwayat_pmk` (
 
 CREATE TABLE `riwayat_potongan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_kurang` varchar(191) NOT NULL,
-  `nomor_sk` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_kurang` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_sk` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_sk` date DEFAULT NULL,
   `is_aktif` tinyint(4) NOT NULL DEFAULT 0,
   `is_private` tinyint(4) NOT NULL DEFAULT 0,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2501,7 +2661,8 @@ CREATE TABLE `riwayat_potongan` (
 INSERT INTO `riwayat_potongan` (`id`, `nip`, `kode_kurang`, `nomor_sk`, `tanggal_sk`, `is_aktif`, `is_private`, `file`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, '66', '123', NULL, '2022-07-17', 0, 0, NULL, '2022-07-16 23:53:17', '2022-07-17 02:03:27', NULL),
 (2, '28', '123', 'abcd', '2022-07-26', 1, 0, NULL, '2022-07-16 23:59:27', '2023-02-14 10:29:02', '2023-02-14 10:29:02'),
-(3, '28', '3', '99999', '2023-02-14', 0, 0, NULL, '2023-02-14 10:21:28', '2023-02-14 10:21:28', NULL);
+(3, '28', '3', '99999', '2023-02-14', 0, 0, NULL, '2023-02-14 10:21:28', '2023-02-14 10:21:28', NULL),
+(4, '123', '3', '122333', '2023-04-29', 0, 0, '123/123-potongan-zhfmt.pdf', '2023-04-05 07:29:02', '2023-04-05 07:32:10', '2023-04-05 07:32:10');
 
 -- --------------------------------------------------------
 
@@ -2511,15 +2672,15 @@ INSERT INTO `riwayat_potongan` (`id`, `nip`, `kode_kurang`, `nomor_sk`, `tanggal
 
 CREATE TABLE `riwayat_shift` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_shift` varchar(255) NOT NULL,
-  `nip` varchar(255) NOT NULL,
-  `nomor_surat` varchar(255) DEFAULT NULL,
+  `kode_shift` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_surat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_surat` date DEFAULT NULL,
   `is_akhir` tinyint(4) NOT NULL DEFAULT 0,
-  `keterangan` varchar(255) DEFAULT NULL,
-  `komentar` varchar(255) DEFAULT NULL,
+  `keterangan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `komentar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 0,
-  `file` varchar(255) DEFAULT NULL,
+  `file` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2530,13 +2691,7 @@ CREATE TABLE `riwayat_shift` (
 --
 
 INSERT INTO `riwayat_shift` (`id`, `kode_shift`, `nip`, `nomor_surat`, `tanggal_surat`, `is_akhir`, `keterangan`, `komentar`, `status`, `file`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '12', '123', '123456', '2023-02-24', 1, 'asdasd', NULL, 1, '', NULL, '2023-02-24 11:25:49', NULL),
-(4, '01', '28', '123456', '2023-03-16', 1, 'udhbdd', 'ad', 1, '', '2023-03-14 03:58:37', '2023-03-14 07:30:04', '2023-03-14 07:30:04'),
-(5, '01', '28', '123456', '1970-01-01', 0, 'Untuk kali ini', NULL, 1, '', '2023-03-14 07:20:30', '2023-03-14 10:09:52', NULL),
-(6, '02', '28', 'DSM01', '1970-01-01', 0, 'oke', NULL, 0, NULL, '2023-03-14 07:29:24', '2023-03-14 10:09:52', NULL),
-(7, '02', '28', 'DSM-SR', '1970-01-01', 0, 'Shift Baru', NULL, 0, NULL, '2023-03-14 07:30:24', '2023-03-14 10:09:52', NULL),
-(8, '02', '28', '12121', '2023-03-14', 0, '1', 'oke acc', 1, '', '2023-03-14 07:31:04', '2023-03-14 10:09:52', NULL),
-(9, '01', '28', '111111', '2023-03-15', 1, 'Untuk kali ini', 'oke', 1, '', '2023-03-14 07:32:31', '2023-03-14 10:09:52', NULL);
+(13, '01', '28', '123456', '1970-01-01', 0, 'Untuk kali ini', NULL, 1, NULL, '2023-04-14 00:12:41', '2023-04-14 00:12:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -2546,14 +2701,14 @@ INSERT INTO `riwayat_shift` (`id`, `kode_shift`, `nip`, `nomor_surat`, `tanggal_
 
 CREATE TABLE `riwayat_spt` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tahun` year(4) NOT NULL,
-  `jenis_spt` varchar(191) NOT NULL,
-  `status_spt` varchar(191) DEFAULT NULL,
+  `jenis_spt` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_spt` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nominal` double DEFAULT NULL,
   `tanggal_penyampaian` date DEFAULT NULL,
-  `nomor_tanda_terima_elektronik` varchar(191) NOT NULL,
-  `file` varchar(191) DEFAULT NULL,
+  `nomor_tanda_terima_elektronik` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2567,14 +2722,14 @@ CREATE TABLE `riwayat_spt` (
 
 CREATE TABLE `riwayat_status` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_status` varchar(191) NOT NULL,
-  `kode_golongan` varchar(191) NOT NULL,
-  `no_sk` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_golongan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_sk` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_sk` date NOT NULL,
   `tanggal_tmt` date NOT NULL,
   `is_akhir` tinyint(4) NOT NULL DEFAULT 0,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2588,14 +2743,14 @@ CREATE TABLE `riwayat_status` (
 
 CREATE TABLE `riwayat_tunjangan` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) NOT NULL,
-  `kode_tunjangan` varchar(191) NOT NULL,
-  `nomor_sk` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_tunjangan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_sk` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tanggal_sk` date NOT NULL,
   `nilai` double NOT NULL,
   `is_aktif` tinyint(4) NOT NULL,
   `is_private` tinyint(4) NOT NULL DEFAULT 0,
-  `file` varchar(191) DEFAULT NULL,
+  `file` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2609,7 +2764,8 @@ INSERT INTO `riwayat_tunjangan` (`id`, `nip`, `kode_tunjangan`, `nomor_sk`, `tan
 (1, '66', '90', '123-456-789', '2022-07-12', 1230000, 1, 0, '66/66-tunjangan-.pdf', '2022-07-12 00:13:05', '2022-07-12 03:18:56', NULL),
 (2, '28', '6', '9090909', '1970-01-01', 50000, 0, 0, NULL, '2023-02-14 08:32:28', '2023-02-14 10:25:33', '2023-02-14 10:25:33'),
 (3, '28', '3', '9090909', '2021-01-29', 50000, 0, 0, NULL, '2023-02-14 08:45:49', '2023-02-14 10:27:24', '2023-02-14 10:27:24'),
-(4, '28', '6', '9898989', '2023-02-17', 125000, 0, 0, NULL, '2023-02-17 08:58:39', '2023-02-17 08:58:39', NULL);
+(4, '28', '6', '9898989', '2023-02-17', 125000, 0, 0, NULL, '2023-02-17 08:58:39', '2023-02-17 08:58:39', NULL),
+(5, '123', '3', '231122', '2023-04-29', 1000000, 1, 0, '123/123-tunjangan-20230405014526.pdf', '2023-04-05 06:45:26', '2023-04-05 07:35:57', '2023-04-05 07:35:57');
 
 -- --------------------------------------------------------
 
@@ -2619,8 +2775,8 @@ INSERT INTO `riwayat_tunjangan` (`id`, `nip`, `kode_tunjangan`, `nomor_sk`, `tan
 
 CREATE TABLE `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(191) NOT NULL,
-  `guard_name` varchar(191) NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -2632,7 +2788,8 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
 (1, 'admin', 'web', '2022-05-30 07:27:58', '2022-05-30 07:27:58'),
 (2, 'opd', 'web', '2022-05-30 07:28:01', '2022-05-30 07:28:01'),
-(3, 'pegawai', 'web', '2022-05-30 07:28:04', '2022-05-30 07:28:04');
+(3, 'pegawai', 'web', '2022-05-30 07:28:04', '2022-05-30 07:28:04'),
+(4, 'owner', 'web', '2022-05-30 07:28:04', '2022-05-30 07:28:04');
 
 -- --------------------------------------------------------
 
@@ -2653,19 +2810,19 @@ CREATE TABLE `role_has_permissions` (
 
 CREATE TABLE `shift` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_shift` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
-  `jam_buka_datang` varchar(191) DEFAULT NULL,
-  `jam_tepat_datang` varchar(191) DEFAULT NULL,
-  `jam_tutup_datang` varchar(191) DEFAULT NULL,
+  `kode_shift` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jam_buka_datang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tepat_datang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tutup_datang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `toleransi_datang` int(11) DEFAULT NULL COMMENT 'dalam menit',
-  `jam_buka_istirahat` varchar(191) DEFAULT NULL,
-  `jam_tepat_istirahat` varchar(191) DEFAULT NULL,
-  `jam_tutup_istirahat` varchar(191) DEFAULT NULL,
+  `jam_buka_istirahat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tepat_istirahat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tutup_istirahat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `toleransi_istirahat` int(11) DEFAULT NULL COMMENT 'dalam menit',
-  `jam_buka_pulang` varchar(191) DEFAULT NULL,
-  `jam_tepat_pulang` varchar(191) DEFAULT NULL,
-  `jam_tutup_pulang` varchar(191) DEFAULT NULL,
+  `jam_buka_pulang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tepat_pulang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tutup_pulang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `toleransi_pulang` int(11) DEFAULT NULL COMMENT 'dalam menit',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -2679,7 +2836,7 @@ CREATE TABLE `shift` (
 INSERT INTO `shift` (`id`, `kode_shift`, `nama`, `jam_buka_datang`, `jam_tepat_datang`, `jam_tutup_datang`, `toleransi_datang`, `jam_buka_istirahat`, `jam_tepat_istirahat`, `jam_tutup_istirahat`, `toleransi_istirahat`, `jam_buka_pulang`, `jam_tepat_pulang`, `jam_tutup_pulang`, `toleransi_pulang`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (2, '12', 'Shift A2 Pagi', '06:00', '06:00', '06:10', 10, '12:00', '12:00', '13:00', 0, '16:00', '16:00', '16:30', 0, '2022-06-25 06:43:57', '2023-03-01 06:10:06', '2023-03-01 06:10:06'),
 (3, '11', 'SHIFT MALAM', '22:00', '00:00', '23:00', 10, '12:29', '12:30', '12:31', 5, '12:35', '12:40', '12:41', 0, '2022-06-25 05:56:42', '2023-03-01 05:58:15', '2023-03-01 05:58:15'),
-(4, '01', 'Reguler', '05:03:00', '08:00:00', '00:08:30', NULL, '12:00:00', '12:00:00', '12:00:00', NULL, '17:00:00', '17:00:00', '23:30:00', NULL, '2023-03-01 05:58:06', '2023-03-01 06:09:49', NULL),
+(4, '01', 'Reguler', '05:03:00', '08:00:00', '08:30:00', 10, '12:00:00', '12:00:00', '12:00:00', NULL, '17:00:00', '17:00:00', '23:30:00', NULL, '2023-03-01 05:58:06', '2023-04-12 05:28:13', NULL),
 (5, '02', 'Sore', '14:45:00', '15:00:00', '15:20:00', 20, '18:00:00', '18:00:00', '19:00:00', 0, '23:00:00', '23:00:00', '23:10:00', 10, '2023-03-14 07:28:54', '2023-03-14 07:28:54', NULL);
 
 -- --------------------------------------------------------
@@ -2690,14 +2847,14 @@ INSERT INTO `shift` (`id`, `kode_shift`, `nama`, `jam_buka_datang`, `jam_tepat_d
 
 CREATE TABLE `skpd` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_skpd` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
-  `singkatan` varchar(191) NOT NULL,
-  `kordinat` varchar(191) DEFAULT NULL,
-  `latitude` varchar(191) DEFAULT NULL,
-  `longitude` varchar(191) DEFAULT NULL,
+  `kode_skpd` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `singkatan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kordinat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jarak` int(11) NOT NULL DEFAULT 0,
-  `polygon` text DEFAULT NULL,
+  `polygon` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2715,13 +2872,16 @@ INSERT INTO `skpd` (`id`, `kode_skpd`, `nama`, `singkatan`, `kordinat`, `latitud
 (5, '3', 'Operasional', 'OP', '-7.004861636750791, 110.42249366184808', '-7.0048616367508', '110.42249366185', 100, NULL, '2022-08-31 23:54:11', '2023-03-01 04:38:51', '2023-03-01 04:38:51'),
 (6, '5', 'Staf', 'staf', '2.1389616477968745, 117.50275430755585', '2.1389616477969', '117.50275430756', 100, NULL, '2022-10-22 03:59:42', '2023-03-01 04:38:54', '2023-03-01 04:38:54'),
 (7, '111111', 'Telkonot', 'TLT', '-8.1277966,112.7509655', '-8.1277966', '112.7509655', 1349, '[[{\"lat\":-8.126283901061166,\"lng\":112.74294548765532},{\"lat\":-8.133633639269245,\"lng\":112.75255931575214},{\"lat\":-8.124287128114265,\"lng\":112.76071390208425},{\"lat\":-8.12016609722336,\"lng\":112.75101423623656}]]', '2023-02-17 15:27:52', '2023-03-01 04:38:57', '2023-03-01 04:38:57'),
-(8, '01', 'Head Office', 'DSM HO', '-7.006793068102385, 110.41733718795163', '-7.006793068102385', '110.41733718795163', 100, NULL, '2023-03-01 04:39:12', '2023-03-01 04:39:12', NULL),
+(8, '01', 'Head Office PT. Deta Sukses Makmur', 'DSM HO', '-7.006793068102385, 110.41733718795163', '-7.006793068102385', '110.41733718795163', 100, NULL, '2023-03-01 04:39:12', '2023-04-03 13:48:34', NULL),
 (9, '04', 'Duta Kekar Plastindo', 'DSM DKP', '-7.430180, 110.804071', '-7.430180', '110.804071', 100, NULL, '2023-03-01 04:40:25', '2023-03-01 04:40:25', NULL),
-(10, '05', 'Grapari Telkomsel Yogyakarta', 'DSM Tsel Yogya', '-7.783061159258996, 110.3624493337985', '-7.783061159258996', '110.3624493337985', 100, NULL, '2023-03-01 04:44:45', '2023-03-01 04:44:45', NULL),
+(10, '05', 'Grapari Telkomsel Yogyakarta', 'DSM Tsel Yogya', '-7.782966,110.361411', '-7.782966', '110.361411', 100, NULL, '2023-03-01 04:44:45', '2023-04-03 13:46:18', NULL),
 (11, '06', 'Grapari Telkomsel Solo', 'DSM Telkomsel Solo', '-7.568469752514895, 110.81659026910465', '-7.568469752514895', '110.81659026910465', 100, NULL, '2023-03-01 04:46:48', '2023-03-01 04:46:48', NULL),
 (12, '03', 'Jaya Mandiri Plasindo', 'DSM JMP', '-7.4285714909850435, 110.80366654414584', '-7.4285714909850435', '110.80366654414584', 100, NULL, '2023-03-01 04:51:55', '2023-03-01 04:51:55', NULL),
 (13, '02', 'Branch Medan', 'DSM MDN', '3°38\'22.3\"N 98°40\'39.2\"E', NULL, NULL, 100, NULL, '2023-03-01 04:53:09', '2023-03-01 04:53:09', NULL),
-(14, '07', 'Branch Pekanbaru DSM', 'DSM Pekanbaru', '-2.9375038929811503, 104.68114065445539', '-2.9375038929811503', '104.68114065445539', 100, NULL, '2023-03-01 05:09:40', '2023-03-01 05:09:40', NULL);
+(14, '07', 'Branch Pekanbaru DSM', 'DSM Pekanbaru', '-2.9375038929811503, 104.68114065445539', '-2.9375038929811503', '104.68114065445539', 100, NULL, '2023-03-01 05:09:40', '2023-03-01 05:09:40', NULL),
+(15, '08', 'TELEPERFORMANCE Indonesia', 'DSM_TP_SEMARANG', '-6.985329919289893, 110.41413962221428', '-6.985329919289893', '110.41413962221428', 100, NULL, '2023-04-04 00:34:54', '2023-04-04 00:34:54', NULL),
+(16, '09', 'DSM Kantor Cabang Jakarta', 'DSM Jakarta', '-6.326785908126411, 107.14234434636435', '-6.326785908126411', '107.14234434636435', 100, NULL, '2023-04-12 04:08:27', '2023-04-12 04:38:44', NULL),
+(17, '10', 'DSM Cabang Surabaya', 'DSM Surabaya', '7.275774,112.732294', '7.275774', '112.732294', 100, NULL, '2023-04-12 04:16:13', '2023-04-12 04:16:13', NULL);
 
 -- --------------------------------------------------------
 
@@ -2731,8 +2891,8 @@ INSERT INTO `skpd` (`id`, `kode_skpd`, `nama`, `singkatan`, `kordinat`, `latitud
 
 CREATE TABLE `status_pegawai` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_status` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2755,8 +2915,8 @@ INSERT INTO `status_pegawai` (`id`, `kode_status`, `nama`, `created_at`, `update
 
 CREATE TABLE `suku` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_suku` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
+  `kode_suku` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2777,17 +2937,17 @@ INSERT INTO `suku` (`id`, `kode_suku`, `nama`, `created_at`, `updated_at`, `dele
 
 CREATE TABLE `tingkat` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_skpd` varchar(191) NOT NULL,
-  `parent_id` varchar(191) DEFAULT NULL,
-  `kode_tingkat` varchar(191) NOT NULL,
-  `jenis_jabatan` varchar(191) NOT NULL,
-  `nama` varchar(191) NOT NULL,
-  `kode_eselon` varchar(191) NOT NULL,
+  `kode_skpd` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parent_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_tingkat` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_jabatan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_eselon` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gaji_pokok` double DEFAULT NULL,
   `tunjangan` double DEFAULT NULL,
-  `kordinat` varchar(191) DEFAULT NULL,
-  `latitude` varchar(191) DEFAULT NULL,
-  `longitude` varchar(191) DEFAULT NULL,
+  `kordinat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jarak` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -2799,7 +2959,18 @@ CREATE TABLE `tingkat` (
 --
 
 INSERT INTO `tingkat` (`id`, `kode_skpd`, `parent_id`, `kode_tingkat`, `jenis_jabatan`, `nama`, `kode_eselon`, `gaji_pokok`, `tunjangan`, `kordinat`, `latitude`, `longitude`, `jarak`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(7, '04', NULL, 'JMP STP', '2', 'SATPAM', '3', 4000000, 500000, '-7.42818359133644, 110.80649484042875', '-7.42818359133644', ' 110.80649484042875', 100, '2023-03-14 08:58:57', '2023-03-14 08:58:57', NULL);
+(7, '04', NULL, 'JMP STP', '2', 'SATPAM', '3', 4000000, 500000, '-7.42818359133644, 110.80649484042875', '-7.42818359133644', ' 110.80649484042875', 100, '2023-03-14 08:58:57', '2023-03-14 08:58:57', NULL),
+(8, '01', NULL, 'DSM 01', '1', 'DIREKSI', '1', 10000000, 10000000, NULL, '0', '0', 100, '2023-04-03 13:51:35', '2023-04-03 13:51:35', NULL),
+(9, '01', NULL, 'DSM 02', '1', 'ADMIN_HR', '2', 1, 1, NULL, '0', '0', 100, '2023-04-03 13:52:58', '2023-04-03 13:53:06', NULL),
+(10, '01', NULL, 'DSM 03', '1', 'BUK', '2', 1, 1, NULL, '0', '0', 100, '2023-04-03 13:53:57', '2023-04-03 13:53:57', NULL),
+(11, '01', NULL, 'DSM 04', '1', 'General Manager', '2', 1, 1, NULL, '0', '0', 100, '2023-04-03 13:54:52', '2023-04-03 13:54:52', NULL),
+(12, '01', NULL, 'DSM 05', '1', 'Person in Charge', '3', 1, 1, NULL, '0', '0', 100, '2023-04-03 14:02:00', '2023-04-03 14:02:00', NULL),
+(13, '01', NULL, 'DSM 06', '1', 'Finance', '3', 0, 0, '-7.006793068102385, 110.41733718795163', '-7.006793068102385', ' 110.41733718795163', 100, '2023-04-12 03:48:24', '2023-04-12 03:48:24', NULL),
+(14, '01', NULL, 'DSM 07', '1', 'General Affair', '3', 0, 0, '-7.006793068102385, 110.41733718795163', '-7.006793068102385', ' 110.41733718795163', 100, '2023-04-12 03:50:45', '2023-04-12 03:50:45', NULL),
+(15, '01', NULL, 'DSM 08', '1', 'HR Rekrut', '4', 0, 0, '-7.006793068102385, 110.41733718795163', '-7.006793068102385', ' 110.41733718795163', 100, '2023-04-12 03:52:51', '2023-04-12 03:52:51', NULL),
+(16, '03', NULL, 'DSM 0271', '1', 'Person in Charge', '4', 0, 0, '-7.4285714909850435, 110.80366654414584', '-7.4285714909850435', ' 110.80366654414584', 100, '2023-04-12 03:56:29', '2023-04-12 03:56:29', NULL),
+(17, '09', NULL, 'DSM 021', '1', 'Person in Charge', '4', 0, 0, '-6.326787, 107.142356', '-6.326787', ' 107.142356', 100, '2023-04-12 04:09:52', '2023-04-12 04:09:52', NULL),
+(18, '10', NULL, 'DSM 031', '1', 'Person in Charge', '4', 0, 0, '7.275774,112.732294', '7.275774', '112.732294', 100, '2023-04-12 04:17:05', '2023-04-12 04:17:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -2816,7 +2987,7 @@ CREATE TABLE `total_izin` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `total_izin`
@@ -2827,7 +2998,19 @@ INSERT INTO `total_izin` (`id`, `nip`, `kode_cuti`, `total`, `periode_bulan`, `c
 (7, '66', '1', 6, '2023-02', '2023-02-26 13:53:47', '2023-02-26 14:07:51', NULL),
 (8, '10', '1', 0, '2023-02', '2023-02-26 13:53:47', NULL, NULL),
 (9, '111111', '1', 0, '2023-02', '2023-02-26 13:53:47', NULL, NULL),
-(10, '77', '1', 0, '2023-02', '2023-02-26 13:53:47', NULL, NULL);
+(10, '77', '1', 0, '2023-02', '2023-02-26 13:53:47', NULL, NULL),
+(11, '28', 'M', 0, '2023-04', '2023-04-03 21:27:32', NULL, NULL),
+(12, '10', 'M', 0, '2023-04', '2023-04-03 21:27:32', NULL, NULL),
+(13, '111111', 'M', 0, '2023-04', '2023-04-03 21:27:32', NULL, NULL),
+(14, '28', 'I', 0, '2023-04', '2023-04-03 21:27:44', NULL, NULL),
+(15, '10', 'I', 0, '2023-04', '2023-04-03 21:27:44', NULL, NULL),
+(16, '111111', 'I', 0, '2023-04', '2023-04-03 21:27:44', NULL, NULL),
+(17, '28', 'S', 0, '2023-04', '2023-04-03 21:28:01', NULL, NULL),
+(18, '10', 'S', 0, '2023-04', '2023-04-03 21:28:01', NULL, NULL),
+(19, '111111', 'S', 0, '2023-04', '2023-04-03 21:28:01', NULL, NULL),
+(20, '28', 'C', 0, '2023-04', '2023-04-03 21:28:08', NULL, NULL),
+(21, '10', 'C', 0, '2023-04', '2023-04-03 21:28:08', NULL, NULL),
+(22, '111111', 'C', 0, '2023-04', '2023-04-03 21:28:08', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2844,7 +3027,7 @@ CREATE TABLE `total_izin_detail` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `total_izin_detail`
@@ -2866,7 +3049,7 @@ INSERT INTO `total_izin_detail` (`id`, `nip`, `kode_cuti`, `tanggal`, `periode_b
 
 CREATE TABLE `total_presensi` (
   `id` int(11) NOT NULL,
-  `nip` varchar(191) NOT NULL,
+  `nip` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `masuk` int(11) NOT NULL DEFAULT 0,
   `telat` int(11) NOT NULL DEFAULT 0,
   `alfa` int(11) NOT NULL DEFAULT 0,
@@ -2876,18 +3059,16 @@ CREATE TABLE `total_presensi` (
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) NOT NULL DEFAULT 0,
   `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `total_presensi`
 --
 
 INSERT INTO `total_presensi` (`id`, `nip`, `masuk`, `telat`, `alfa`, `periode_bulan`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`) VALUES
-(23, '28', 6, 0, 0, '2023-02', '2023-02-26 13:45:20', 0, '2023-02-26 14:07:51', 0, NULL),
-(24, '66', 0, 0, 0, '2023-02', '2023-02-26 13:45:20', 0, '2023-02-26 14:07:51', 0, NULL),
-(25, '10', 0, 0, 6, '2023-02', '2023-02-26 13:45:20', 0, '2023-02-26 14:07:51', 0, NULL),
-(26, '111111', 0, 0, 6, '2023-02', '2023-02-26 13:45:20', 0, '2023-02-26 14:07:51', 0, NULL),
-(27, '77', 0, 0, 6, '2023-02', '2023-02-26 13:45:20', 0, '2023-02-26 14:07:51', 0, NULL);
+(23, '28', 0, 0, 0, '2023-04', '2023-02-26 13:45:20', 0, '2023-04-16 11:25:27', 0, NULL),
+(24, '66', 0, 0, 0, '2023-04', '2023-02-26 13:45:20', 0, '2023-02-26 14:07:51', 0, NULL),
+(25, '10', 0, 0, 0, '2023-04', '2023-02-26 13:45:20', 0, '2023-04-16 11:25:27', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -2897,35 +3078,24 @@ INSERT INTO `total_presensi` (`id`, `nip`, `masuk`, `telat`, `alfa`, `periode_bu
 
 CREATE TABLE `total_presensi_detail` (
   `id` int(11) NOT NULL,
-  `nip` varchar(191) NOT NULL,
+  `nip` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
   `tanggal` date DEFAULT NULL,
   `status` int(11) NOT NULL COMMENT '1 : Masuk\r\n2 : Telat\r\n3 : Alpha\r\n4 : Izin\r\n',
-  `kode_cuti` int(11) DEFAULT NULL COMMENT 'ini terisi jika status 4',
+  `kode_cuti` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ini terisi jika status 4',
   `tanggal_datang` datetime DEFAULT NULL,
-  `kordinat_datang` text DEFAULT NULL,
-  `foto_datang` varchar(255) DEFAULT NULL,
+  `kordinat_datang` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `foto_datang` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tanggal_istirahat` datetime DEFAULT NULL,
-  `kordinat_istirahat` text DEFAULT NULL,
-  `foto_istirahat` varchar(255) DEFAULT NULL,
+  `kordinat_istirahat` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `foto_istirahat` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tanggal_pulang` datetime DEFAULT NULL,
-  `kordinat_pulang` text DEFAULT NULL,
-  `foto_pulang` varchar(255) DEFAULT NULL,
-  `periode_bulan` varchar(12) NOT NULL,
+  `kordinat_pulang` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `foto_pulang` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `periode_bulan` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data untuk tabel `total_presensi_detail`
---
-
-INSERT INTO `total_presensi_detail` (`id`, `nip`, `tanggal`, `status`, `kode_cuti`, `tanggal_datang`, `kordinat_datang`, `foto_datang`, `tanggal_istirahat`, `kordinat_istirahat`, `foto_istirahat`, `tanggal_pulang`, `kordinat_pulang`, `foto_pulang`, `periode_bulan`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(15, '28', '2023-02-26', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-02', '2023-02-26 14:06:06', NULL, NULL),
-(16, '66', '2023-02-26', 4, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-02', '2023-02-26 14:06:06', NULL, NULL),
-(17, '10', '2023-02-26', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-02', '2023-02-26 14:06:06', NULL, NULL),
-(18, '111111', '2023-02-26', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-02', '2023-02-26 14:06:06', NULL, NULL),
-(19, '77', '2023-02-26', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-02', '2023-02-26 14:06:06', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2944,7 +3114,7 @@ CREATE TABLE `umk` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `umk`
@@ -2962,48 +3132,49 @@ INSERT INTO `umk` (`id`, `kode_umk`, `kode_kabupaten`, `nama_umk`, `nominal`, `w
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nip` varchar(191) DEFAULT NULL,
-  `nik` varchar(191) DEFAULT NULL,
-  `name` varchar(191) NOT NULL,
-  `gelar_depan` varchar(191) DEFAULT NULL,
-  `gelar_belakang` varchar(191) DEFAULT NULL,
-  `tempat_lahir` varchar(191) DEFAULT NULL,
+  `nip` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nik` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gelar_depan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gelar_belakang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tempat_lahir` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_lahir` date DEFAULT NULL,
-  `jenis_kelamin` enum('laki-laki','perempuan') DEFAULT NULL,
-  `kode_agama` varchar(191) DEFAULT NULL,
-  `kode_status` bigint(20) UNSIGNED DEFAULT NULL,
-  `kode_kawin` varchar(191) DEFAULT NULL,
+  `jenis_kelamin` enum('laki-laki','perempuan') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_agama` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_status` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_kawin` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `kode_suku` bigint(20) UNSIGNED DEFAULT NULL,
-  `golongan_darah` enum('A','B','AB','O') DEFAULT NULL,
-  `alamat` text DEFAULT NULL,
-  `alamat_ktp` text DEFAULT NULL,
-  `image` varchar(191) DEFAULT NULL,
-  `email` varchar(191) DEFAULT NULL,
-  `no_hp` varchar(191) DEFAULT NULL,
-  `kordinat` varchar(191) DEFAULT NULL,
-  `latitude` varchar(191) DEFAULT NULL,
-  `longitude` varchar(191) DEFAULT NULL,
+  `golongan_darah` enum('A','B','AB','O') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alamat` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alamat_ktp` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `no_hp` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kordinat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jarak` int(11) NOT NULL DEFAULT 0,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(191) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `maks_cuti` int(11) NOT NULL DEFAULT 12,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `owner` int(11) NOT NULL DEFAULT 0 COMMENT '1: owner 0: non owner',
+  `fcm_token_web` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fcm_token_android` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `nip`, `nik`, `name`, `gelar_depan`, `gelar_belakang`, `tempat_lahir`, `tanggal_lahir`, `jenis_kelamin`, `kode_agama`, `kode_status`, `kode_kawin`, `kode_suku`, `golongan_darah`, `alamat`, `alamat_ktp`, `image`, `email`, `no_hp`, `kordinat`, `latitude`, `longitude`, `jarak`, `email_verified_at`, `password`, `remember_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, '123', '123', 'Odette Kennedy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'zilong@example.com', NULL, NULL, NULL, NULL, 0, NULL, '$2y$10$jYCstjBrC01Ul9kZ1QCXuOBAS1i/F9q8vHqcUuCX3L9yCPGoKNzOy', '1bSEhLg6CvOKhYFxMYBg98CgXZKtMBkEcHGSRwmeR5FRHb4HXQZ2Nyl3F0Ox', NULL, '2022-06-24 14:19:54', '2022-07-03 13:32:58'),
-(2, '28', '36', 'Ananda Adi Kusuma', NULL, 'S.Kom', 'Semarang', '1970-01-01', 'perempuan', 'islam', 1, 'kawin', 64, 'O', 'Jl. Cinde Selatan No 64 A Semarang', 'Jl. Cinde Selatan No 64 A Semarang', 'jampack/dist/img/businessman.png', 'adminjaringan@gmail.com', '6285712893128', '-7.006793068102385, 110.41733718795163', '-7.006793068102385', '110.41733718795163', 0, NULL, '$2y$10$2Yyq8824UCBZJVB0qKHJjOyyqOGemV7hu5pmv1d7VaRwxmCUmJ5SG', NULL, NULL, '2022-06-26 04:11:08', '2023-03-14 07:41:51'),
-(3, '66', '83', 'BUDI', 'Dr', 'ST, MT', 'Berau', '2012-02-11', 'laki-laki', 'islam', 2, 'belum kawin', 64, 'B', 'Durian', 'biduk', 'jampack/dist/img/businessman.png', 'cv.karyamuda.km@gmail.com', '085316787777', '-7.147382932171307, 110.4144753843769', '-7.1473829321713', '110.41447538438', 2147483647, NULL, '$2y$10$l/qWZ0e1kxR2qdw4V11djOLbHmiCBrI4hDBCvRSLaKf13nE9L0eSu', NULL, '2023-03-14 07:39:17', '2022-06-26 05:11:51', '2023-03-14 07:39:17'),
-(4, '10', '10', 'Agus Maryadi', NULL, 'S.H', 'Semarang', '1990-08-03', 'perempuan', 'islam', 1, 'kawin', 64, 'O', 'Semarang', 'Semarang', 'jampack/dist/img/businessman.png', 'agus@detasuksesmakmur.com', '08571212121211', NULL, NULL, NULL, 0, NULL, '$2y$10$x1xwd0.qhHuXX0pP2YOfSO/ywuzWOF8UQnUOAIiz/Kqpat/tmwV9.', NULL, NULL, '2022-08-03 09:04:58', '2023-03-14 07:42:00'),
-(5, '101090', '337408251190992121', 'Maryadi Agus', NULL, 'S.H', 'Semarang', '1994-01-20', 'laki-laki', 'islam', 1, 'kawin', NULL, 'A', 'Jl. S.Parman No 76, Kota Semarang', 'Jl. S.Parman No 76, Kota Semarang', 'jampack/dist/img/businessman.png', 'hello@detasukesmakmur.com', '081239073834', '-7.006419370659125, 110.4178284732322', '-7.0064193706591', '110.41782847323', 100, NULL, '$2y$10$j5Yo/Z87P1dq7Ix0genmIu8VF1ZKKH7gyF3AjCm7Hlwo4Na1XFNAO', NULL, '2023-01-09 07:19:48', '2022-08-29 04:59:51', '2023-01-09 07:19:48'),
-(6, '111111', '3546546784678', 'Benny Kurniawan', 'SOS', NULL, 'Jombang', '1970-01-01', 'perempuan', 'islam', 2, 'kawin', NULL, 'A', 'jln kenangan', 'jln kenangan', 'jampack/dist/img/businessman.png', 'benny.kurniawan2310@gmail.com', '082333980110', NULL, NULL, NULL, 0, NULL, '$2y$10$QFIX71/3vkiOLIrq0.O2J.j.T9RdXrR5G8H0Iz/jw8zJSmk6MSMSa', NULL, NULL, '2022-09-22 14:20:26', '2023-03-14 07:42:22'),
-(7, '77', '6198484', 'wijaya', 'Ki', 'Sh', 'balikpapan', '1983-10-29', 'perempuan', 'islam', 2, 'kawin', NULL, 'O', 'Jln Durian 3\r\nBlok D7', 'Jln Durian 3\r\nBlok D7', 'jampack/dist/img/businessman.png', 'cv.karyamuda.km@gmail.com', '085316787777', '2.1389616477968745, 117.50275430755585', '2.1389616477969', '117.50275430756', 100, NULL, '$2y$10$aM.Xq0XHBdl24EA2XJERp.ZcMQp2LnTkjGPrsno8ma8Oqfy5Xn/za', NULL, '2023-03-14 07:39:22', '2022-10-22 04:03:43', '2023-03-14 07:39:22');
+INSERT INTO `users` (`id`, `nip`, `nik`, `name`, `gelar_depan`, `gelar_belakang`, `tempat_lahir`, `tanggal_lahir`, `jenis_kelamin`, `kode_agama`, `kode_status`, `kode_kawin`, `kode_suku`, `golongan_darah`, `alamat`, `alamat_ktp`, `image`, `email`, `no_hp`, `kordinat`, `latitude`, `longitude`, `jarak`, `email_verified_at`, `password`, `remember_token`, `maks_cuti`, `deleted_at`, `created_at`, `updated_at`, `owner`, `fcm_token_web`, `fcm_token_android`) VALUES
+(2, '28', '36', 'Ananda Adi Kusuma', NULL, 'S.Kom', 'Semarang', '1990-11-25', 'perempuan', 'islam', '1', 'kawin', 64, 'O', 'Jl. Cinde Selatan No 64 A Semarang', 'Jl. Cinde Selatan No 64 A Semarang', 'data_pegawai/28/foto/1681051158_amir-seilsepour-5vg_SarQimA-unsplash.jpg', 'adminjaringan@gmail.com', '6285712893128', '-7.006793068102385, 110.41733718795163', '-7.006793068102385', '110.41733718795163', 0, NULL, '$2y$10$h1U6QImUsXPnPx31LxjTmupUC75DZE.62rSTw0EaPZiqfSLyGEuAu', NULL, 11, NULL, '2022-06-26 04:11:08', '2023-04-14 00:41:05', 0, NULL, NULL),
+(3, '66', '83', 'BUDI', 'Dr', 'ST, MT', 'Berau', '2012-02-11', 'laki-laki', 'islam', '2', 'belum kawin', 64, 'B', 'Durian', 'biduk', 'jampack/dist/img/businessman.png', 'cv.karyamuda.km@gmail.com', '085316787777', '-7.147382932171307, 110.4144753843769', '-7.1473829321713', '110.41447538438', 2147483647, NULL, '$2y$10$l/qWZ0e1kxR2qdw4V11djOLbHmiCBrI4hDBCvRSLaKf13nE9L0eSu', NULL, 12, '2023-03-14 07:39:17', '2022-06-26 05:11:51', '2023-03-14 07:39:17', 0, NULL, NULL),
+(4, '10', '10', 'Agus Maryadi', NULL, 'S.H', 'Semarang', '1990-08-03', 'perempuan', 'islam', '2', 'kawin', 64, 'O', 'Semarang', 'Semarang', 'data_pegawai/10/foto/1680758852_logan-weaver-lgnwvr-IVXoVHXqVCY-unsplash.jpg', 'agus@detasuksesmakmur.com', '08571212121211', NULL, NULL, NULL, 0, NULL, '$2y$10$yEhXY7pLJMfcFJW2cJm8aOoVEfIKFxgjjEf4Hgo7ion9S9Ccrh0Fe', NULL, 12, NULL, '2022-08-03 09:04:58', '2023-04-06 05:27:32', 0, NULL, NULL),
+(22, NULL, NULL, 'owner', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'owner@gmail.com', NULL, NULL, NULL, NULL, 0, NULL, '$2y$10$4jUWDksXe559stZnEB..f.c0roORJZ9ARn.Vt9ozjmtDp.uz2TxmC', NULL, 12, NULL, '2023-04-13 23:41:59', '2023-04-13 23:41:59', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3012,9 +3183,9 @@ INSERT INTO `users` (`id`, `nip`, `nik`, `name`, `gelar_depan`, `gelar_belakang`
 --
 
 CREATE TABLE `villages` (
-  `id` char(10) NOT NULL,
-  `district_id` char(7) NOT NULL,
-  `name` varchar(50) NOT NULL
+  `id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `district_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3025,12 +3196,12 @@ CREATE TABLE `villages` (
 
 CREATE TABLE `visit_lokasi` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `kode_visit` varchar(255) NOT NULL,
-  `qr` varchar(200) NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `kordinat` varchar(255) NOT NULL,
+  `kode_visit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `qr` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kordinat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jarak` int(11) NOT NULL,
-  `polygon` text DEFAULT NULL,
+  `polygon` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3047,6 +3218,18 @@ INSERT INTO `visit_lokasi` (`id`, `kode_visit`, `qr`, `nama`, `kordinat`, `jarak
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `aktifitas`
+--
+ALTER TABLE `aktifitas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `app_status_function`
+--
+ALTER TABLE `app_status_function`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `cuti`
@@ -3531,10 +3714,22 @@ ALTER TABLE `visit_lokasi`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `aktifitas`
+--
+ALTER TABLE `aktifitas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `app_status_function`
+--
+ALTER TABLE `app_status_function`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT untuk tabel `cuti`
 --
 ALTER TABLE `cuti`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `daftar_kurang_payroll`
@@ -3558,37 +3753,37 @@ ALTER TABLE `data_payroll`
 -- AUTO_INCREMENT untuk tabel `data_pengajuan_cuti`
 --
 ALTER TABLE `data_pengajuan_cuti`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_pengajuan_lembur`
 --
 ALTER TABLE `data_pengajuan_lembur`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_pengajuan_reimbursement`
 --
 ALTER TABLE `data_pengajuan_reimbursement`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_presensi`
 --
 ALTER TABLE `data_presensi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_visit`
 --
 ALTER TABLE `data_visit`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `eselon`
 --
 ALTER TABLE `eselon`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -3612,13 +3807,13 @@ ALTER TABLE `hari_libur`
 -- AUTO_INCREMENT untuk tabel `imei`
 --
 ALTER TABLE `imei`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT untuk tabel `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT untuk tabel `jurusan`
@@ -3648,19 +3843,19 @@ ALTER TABLE `lainnya`
 -- AUTO_INCREMENT untuk tabel `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT untuk tabel `lokasi`
 --
 ALTER TABLE `lokasi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT untuk tabel `lokasi_detail`
 --
 ALTER TABLE `lokasi_detail`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`
@@ -3726,13 +3921,13 @@ ALTER TABLE `pendidikan`
 -- AUTO_INCREMENT untuk tabel `penghargaan`
 --
 ALTER TABLE `penghargaan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengumuman`
 --
 ALTER TABLE `pengumuman`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `permissions`
@@ -3744,7 +3939,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
 
 --
 -- AUTO_INCREMENT untuk tabel `perusahaan`
@@ -3762,7 +3957,7 @@ ALTER TABLE `ref_city`
 -- AUTO_INCREMENT untuk tabel `reimbursement`
 --
 ALTER TABLE `reimbursement`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_bahasa`
@@ -3774,25 +3969,25 @@ ALTER TABLE `riwayat_bahasa`
 -- AUTO_INCREMENT untuk tabel `riwayat_cuti`
 --
 ALTER TABLE `riwayat_cuti`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_jabatan`
 --
 ALTER TABLE `riwayat_jabatan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_kgb`
 --
 ALTER TABLE `riwayat_kgb`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_kursus`
 --
 ALTER TABLE `riwayat_kursus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_lainnya`
@@ -3822,7 +4017,7 @@ ALTER TABLE `riwayat_organisasi`
 -- AUTO_INCREMENT untuk tabel `riwayat_pendidikan`
 --
 ALTER TABLE `riwayat_pendidikan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_penghargaan`
@@ -3840,13 +4035,13 @@ ALTER TABLE `riwayat_pmk`
 -- AUTO_INCREMENT untuk tabel `riwayat_potongan`
 --
 ALTER TABLE `riwayat_potongan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_shift`
 --
 ALTER TABLE `riwayat_shift`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `riwayat_spt`
@@ -3864,13 +4059,13 @@ ALTER TABLE `riwayat_status`
 -- AUTO_INCREMENT untuk tabel `riwayat_tunjangan`
 --
 ALTER TABLE `riwayat_tunjangan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `shift`
@@ -3882,7 +4077,7 @@ ALTER TABLE `shift`
 -- AUTO_INCREMENT untuk tabel `skpd`
 --
 ALTER TABLE `skpd`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `status_pegawai`
@@ -3900,13 +4095,13 @@ ALTER TABLE `suku`
 -- AUTO_INCREMENT untuk tabel `tingkat`
 --
 ALTER TABLE `tingkat`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `total_izin`
 --
 ALTER TABLE `total_izin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT untuk tabel `total_izin_detail`
@@ -3918,13 +4113,13 @@ ALTER TABLE `total_izin_detail`
 -- AUTO_INCREMENT untuk tabel `total_presensi`
 --
 ALTER TABLE `total_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT untuk tabel `total_presensi_detail`
 --
 ALTER TABLE `total_presensi_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT untuk tabel `umk`
@@ -3936,7 +4131,7 @@ ALTER TABLE `umk`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT untuk tabel `visit_lokasi`

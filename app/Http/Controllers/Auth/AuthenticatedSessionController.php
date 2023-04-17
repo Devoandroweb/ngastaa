@@ -59,4 +59,17 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+    public function updateFCM(Request $request){
+        try{
+            $request->user()->update(['fcm_token_web'=>$request->token]);
+            return response()->json([
+                'success'=>true
+            ]);
+        }catch(\Exception $e){
+            report($e);
+            return response()->json([
+                'success'=>false
+            ],500);
+        }
+    }
 }
