@@ -260,6 +260,8 @@ $(document).ready(function () {
             dataAjax(target,url);
         }});
     });
+    resetDevice()
+    resetPassword()
     function setDataTable(){
         loadingFormStart();
         _TABLE = $('#data').DataTable({
@@ -308,12 +310,13 @@ $(document).ready(function () {
             initDatePickerSingle()
         }});
      }
-     let deleteRow = (url) => { 
-        loadingFormStart();
-        $.ajax({url: url, success: function(response){
-            loadingFormStop();
-            rebuildDatatable();
-        }});
+    let deleteRow = (url) => {
+            loadingFormStart();
+            $.ajax({url: url, success: function(response){
+                loadingFormStop();
+                rebuildDatatable();
+            }
+        });
      }
      function rebuildDatatable(){
         $(".target-view").html(htmlTable);
@@ -420,7 +423,56 @@ $(document).ready(function () {
         }
         initDatePickerSingle()
      }
-
+     function resetDevice(){
+        $(document).on("click",".btn-reset-device",function(e){
+            e.preventDefault()
+            var _E = $(this);
+            $.ajax({
+                type: "get",
+                url: _E.attr('href'),
+                success: function (response) {
+                    if(response.status){
+                        iziToast.success({
+                            title: 'Success',
+                            message: response.message,
+                            position: 'bottomCenter'
+                        });
+                    }else{
+                        iziToast.error({
+                            title: 'Error',
+                            message: response.message,
+                            position: 'bottomCenter'
+                        });
+                    }
+                }
+            });
+        })
+     }
+     function resetPassword(){
+        $(document).on("click",".btn-reset-password",function(e){
+            e.preventDefault()
+            var _E = $(this);
+            $.ajax({
+                type: "get",
+                url: _E.attr('href'),
+                success: function (response) {
+                    if(response.status){
+                        iziToast.success({
+                            title: 'Success',
+                            message: response.message,
+                            position: 'bottomCenter'
+                        });
+                    }else{
+                        iziToast.error({
+                            title: 'Error',
+                            message: response.message,
+                            position: 'bottomCenter'
+                        });
+                    }
+                }
+            });
+        })
+     }
 });
 window.onload = function() {
   loadingFormStop()

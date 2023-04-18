@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
+use App\Models\Pegawai\Imei;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -292,5 +294,25 @@ class PegawaiController extends Controller
         ]);
         ob_end_clean();
         return $response;
+    }
+    function resetDevice($nip){
+        try {
+            Imei::where('nip',$nip)->delete();
+            return response()->json(['status' => TRUE,'message'=>'Device ID berhasil di reset']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => FALSE, 'message'=>"Error Server"]);
+            //throw $th;
+        }
+    }
+    function resetPassword($nip){
+        try {
+            User::where('nip',$nip)->update([
+                "password" => Hash::make($nip)
+            ]);
+            return response()->json(['status' => TRUE, 'message'=>'Password berhasil di reset, gunakan password NIP']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => FALSE, 'message'=>"Error Server"]);
+            //throw $th;
+        }
     }
 }

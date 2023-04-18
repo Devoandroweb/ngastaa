@@ -15,5 +15,23 @@
     <div class="col-12 col-sm-3 mb-4">
         <p>Password</p>
         <b>********</b>
+        <a href="{{route('pegawai.pegawai.reset_password',$pegawai->nip)}}" class="badge btn-soft-danger badge-soft-danger btn-reset-device ms-3">
+            <span>
+                <span class="icon">{!! icons('refresh') !!}</span>
+                Reset
+            </span>
+        </a>
+    </div>
+</div>
+<div class="row mb-4 text-dark">
+    <div class="col-12 col-sm-3 mb-4">
+        <p>Device ID</p>
+        <b>********</b>
+        <a href="{{route('pegawai.pegawai.reset_device',$pegawai->nip)}}" class="badge btn-soft-primary badge-soft-primary btn-reset-device ms-3">
+            <span>
+                <span class="icon">{!! icons('refresh') !!}</span>
+                Reset
+            </span>
+        </a>
     </div>
 </div>

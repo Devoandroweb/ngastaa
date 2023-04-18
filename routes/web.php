@@ -218,6 +218,8 @@ Route::middleware(['auth'])
                         Route::get('download-template-import', 'donwloadTemplate')->name('donwload_template_import');
                         Route::get('shift/{pegawai}', 'shift')->name('shift');
                         Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
+                        Route::get('reset-device/{nip}', 'resetDevice')->name('reset_device');
+                        Route::get('reset-password/{nip}', 'resetPassword')->name('reset_password');
 
                     });
 
