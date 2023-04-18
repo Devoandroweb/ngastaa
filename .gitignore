@@ -18,7 +18,7 @@ yarn-error.log
 /.idea
 /.vscode
 *.zip
-
+/data_pegawai
 
 custom-sql.txt
 /tunasinti.com

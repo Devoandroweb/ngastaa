@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pegawai;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PosisiResource;
+use App\Models\Perusahaan;
 use App\Models\User;
 
 class DataPosisiControlller extends Controller
@@ -13,7 +14,25 @@ class DataPosisiControlller extends Controller
         PosisiResource::withoutWrapping();
         $pegawai = PosisiResource::make($pegawai);
         // return inertia('Pegawai/Posisi/index', compact('pegawai'));
-        $view = view('pages/pegawai/pegawai/datautama/posisi', compact('pegawai'));
+        $perusahaan = Perusahaan::first();
+
+        $jabatan = array_key_exists('0', $pegawai->jabatan_akhir->toArray()) ? $pegawai->jabatan_akhir[0] : null;
+        
+        if( $jabatan != null){
+            $skpd = $jabatan?->skpd?->nama;
+            $jenis_jabatan = jenis_jabatan($jabatan->jenis_jabatan);
+            $tmt_jabatan = tanggal_indo($jabatan->tmt_jabatan);
+            $masa_kerja = get_masa_kerja($jabatan->masa_kerja);
+            $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
+        }else{
+            $skpd = "-";
+            $jabatan = "-";
+            $jenis_jabatan = "-";
+            $tmt_jabatan = "-";
+            $masa_kerja = "-";
+        }
+
+        $view = view('pages/pegawai/pegawai/datautama/posisi', compact('pegawai','perusahaan','skpd','jabatan','jenis_jabatan','tmt_jabatan','masa_kerja'));
         return response()->json(['view'=> $view->render()]);
     }
 }

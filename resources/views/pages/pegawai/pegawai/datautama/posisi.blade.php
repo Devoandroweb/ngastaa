@@ -3,28 +3,28 @@
         <i class="far fa-building text-info fa-2x mb-2"></i>
         <div class="text-dark">
             <p>Instantsi</p>
-            <b>PT. wa.me/6282396151291</b>
+            <b>{{$perusahaan->nama}}</b>
         </div>
     </div>
     <div class="col col-sm-4 my-7 text-center">
         <i class="fas fa-project-diagram text-blue fa-2x mb-2"></i>
         <div class="text-dark">
             <p>Divisi Kerja</p>
-            <b>{{$pegawai->skpd ?? "-"}}</b>
+            <b>{{$skpd}}</b>
         </div>
     </div>
     <div class="col col-sm-4 my-7 text-center">
         <i class="fas fa-user-tie text-pink fa-2x mb-2"></i>
         <div class="text-dark">
             <p>Jenis Jabatan</p>
-            <b>{{$pegawai->jenis_jabatan ?? "-"}}</b>
+            <b>{{$jenis_jabatan}}</b>
         </div>
     </div>
     <div class="col col-sm-4 my-7 text-center">
         <i class="fas fa-user-secret text-purple fa-2x mb-2"></i>
         <div class="text-dark">
             <p>Jabatan</p>
-            <b>{{$pegawai->jabatan ?? "-"}}</b>
+            <b>{{$jabatan}}</b>
         </div>
     </div>
     <div class="col col-sm-4 my-7 text-center">
@@ -32,14 +32,14 @@
         <i class="fas fa-user-clock text-red fa-2x mb-2"></i>
         <div class="text-dark">
             <p>TMT Jabatan</p>
-            <b>{{$pegawai->tmt_jabatan ?? "-"}}</b>
+            <b>{{$tmt_jabatan}}</b>
         </div>
     </div>
     <div class="col col-sm-4 my-7 text-center">
         <i class="fas fa-hourglass-half text-violet fa-2x mb-2"></i>
         <div class="text-dark">
             <p>Masa Kerja</p>
-            <b>{{$pegawai->masa_kerja ?? "-"}}</b>
+            <b>{{$masa_kerja}}</b>
         </div>
     </div>
 </div>

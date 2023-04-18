@@ -133,6 +133,7 @@ $(document).ready(function () {
     var _COLUMNS = null;
     var _URL_ADD = null;
     var _TABLE = null;
+    var _LOADING_SPINNER = `<span class="spinner-border spinner-border-sm float-left icon" role="status" aria-hidden="true"></span> Loading...`;
     var loading = '<div class="loader mb-4"><div class="bar"></div></div>';
     var htmlTable = '<table id="data" class="table table-bordered nowrap" width="100%"></table>';
     var _STATUS_SUBMIT = 0;
@@ -426,6 +427,8 @@ $(document).ready(function () {
      function resetDevice(){
         $(document).on("click",".btn-reset-device",function(e){
             e.preventDefault()
+            var content = $(this).html();
+            $(this).html(_LOADING_SPINNER);
             var _E = $(this);
             $.ajax({
                 type: "get",
@@ -444,6 +447,7 @@ $(document).ready(function () {
                             position: 'bottomCenter'
                         });
                     }
+                    _E.html(content)
                 }
             });
         })
@@ -452,6 +456,8 @@ $(document).ready(function () {
         $(document).on("click",".btn-reset-password",function(e){
             e.preventDefault()
             var _E = $(this);
+            var content = $(this).html();
+            $(this).html(_LOADING_SPINNER);
             $.ajax({
                 type: "get",
                 url: _E.attr('href'),
@@ -469,6 +475,7 @@ $(document).ready(function () {
                             position: 'bottomCenter'
                         });
                     }
+                    _E.html(content)
                 }
             });
         })

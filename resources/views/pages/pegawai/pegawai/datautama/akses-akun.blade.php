@@ -8,11 +8,11 @@
     </div>
 </div>
 <div class="row mb-4 text-dark">
-    <div class="col-12 col-sm-3 mb-4">
+    <div class="col-12 col-sm-4 mb-4">
         <p>Nomor Pegawai</p>
         <b>{{$pegawai->nip}}</b>
     </div>
-    <div class="col-12 col-sm-3 mb-4">
+    <div class="col-12 col-sm-4 mb-4">
         <p>Password</p>
         <b>********</b>
         <a href="{{route('pegawai.pegawai.reset_password',$pegawai->nip)}}" class="badge btn-soft-danger badge-soft-danger btn-reset-device ms-3">
@@ -24,7 +24,7 @@
     </div>
 </div>
 <div class="row mb-4 text-dark">
-    <div class="col-12 col-sm-3 mb-4">
+    <div class="col-12 col-sm-4 mb-4">
         <p>Device ID</p>
         <b>********</b>
         <a href="{{route('pegawai.pegawai.reset_device',$pegawai->nip)}}" class="badge btn-soft-primary badge-soft-primary btn-reset-device ms-3">
