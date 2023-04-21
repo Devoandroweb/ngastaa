@@ -36,17 +36,17 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 // array_push($data,$row);
 
                 $item = new User();
-                $item->nip = $row[1];
+                $item->nip = $this->checkNip($row[1],$i);
                 $item->password = Hash::make($row[1]);
                 $item->gelar_depan = $row[2];
                 $item->gelar_belakang = $row[3];
                 $item->name = $row[4];
                 $item->tempat_lahir = $row[5];
                 $item->tanggal_lahir = $this->checkTanggal($row[6],$i);
-                $item->jenis_kelamin = $this->checkJenisKelamin(str_replace(" ","",strtolower($row[7])),$i);
+                $item->jenis_kelamin = $this->checkJenisKelamin(strtolower($row[7]),$i);
                 $item->kode_agama = $row[8];
                 $item->kode_kawin = strtolower($row[9]);
-                $item->golongan_darah = $row[10];
+                $item->golongan_darah = $this->checkGolonganDarah($row[10],$i);
                 $item->nik = $row[11];
                 $item->no_hp = $row[12];
                 $item->email = $row[13];
@@ -80,11 +80,37 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     {
         return 2;
     }
+    function checkNip($value,$i){
+        if($value == "" || $value == null){
+            return throw new Exception("NIP tidak boleh kosong, Kesalahan pada baris Excel ke $i");
+        }
+        return $value;
+
+    }
     function checkJenisKelamin($jenis_kelamin,$i){
+        $jenis_kelamin = strtolower($jenis_kelamin);
+        if($jenis_kelamin == "laki laki"){
+            $jenis_kelamin = "laki-laki";
+        }
+        $jenis_kelamin = str_replace(" ","",$jenis_kelamin);
         if($jenis_kelamin != "laki-laki" && $jenis_kelamin != "perempuan"){
-            return throw new Exception("Kesalahan Jenis Kelamin ($jenis_kelamin), Jenis kelamin harus `laki-laki` atau `perempuan`, Kesalahan pada baris Excel ke $i");
+            return throw new Exception("Kesalahan Jenis Kelamin ($jenis_kelamin), Jenis kelamin harus `Laki-Laki` atau `Perempuan` tanpa spasi, Kesalahan pada baris Excel ke $i");
         }
         return $jenis_kelamin;
+    }
+    function checkGolonganDarah($value_darah,$i){
+        try {
+            //code...
+            $golRah = ['A','O','AB','B'];
+            // dd($value_darah);
+            if(!in_array(strtoupper($value_darah),$golRah)){
+                return throw new Exception($this->errorGolonganDarah($value_darah,$i));
+            }
+            return $value_darah;
+        } catch (\Throwable $th) {
+            $this->error = true;
+            $this->errorMessage = $this->errorGolonganDarah($value_darah,$i);
+        }
     }
     function checkTanggal($row,$i){
         try {
@@ -118,10 +144,23 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                             - 25-05-2023
                             ";
         return $message;
+    } 
+    private function errorGolonganDarah($value_darah,$i){
+        $message = "Kesalahan Golongan Darah ($value_darah), pastikan golongan darah sudah valid tidak boleh menggunakan angka , Kesalahan pada baris Excel ke $i";
+                $message .= "<br> Hanya gologan darah berikut yang valid : <br> ";
+                $message .= "
+                            - O <br>
+                            - A <br>
+                            - AB
+                            ";
+        return $message;
     }   
+    
     public function transformDate($value, $format = 'Y-m-d')
     {
+        $value = str_replace(" ","",$value);
         try {
+            // dd($value);
             return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value)->format('Y-m-d');
         } catch (\Throwable $e) {
             $value = str_replace("/","-",$value);

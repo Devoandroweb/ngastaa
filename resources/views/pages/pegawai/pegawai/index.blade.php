@@ -36,6 +36,7 @@
             <th>No Pegawai & Nama Lengkap</th>
             <th>Jabatan & Divisi</th>
             <th>Level</th>
+            <th>Kuota Cuti</th>
             <th>No Hp & Email</th>
         </tr>
     </thead>
@@ -90,6 +91,9 @@
                     },{
                         data: 'level',
                         name: 'level',
+                    },{
+                        data: 'cuti',
+                        name: 'maks_cuti',
                     },{
                         data: 'no_hp',
                         name: 'no_hp',

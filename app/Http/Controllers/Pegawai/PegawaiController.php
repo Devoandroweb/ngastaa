@@ -243,6 +243,9 @@ class PegawaiController extends Controller
             ->addColumn('no_hp', function ($row) {
                 return '<p class="text-success">' . $row->no_hp . '</p><i>' . $row->email . '</i>';
             })
+            ->addColumn('cuti', function ($row) {
+                return "<span class='badge badge-danger'>{$row->maks_cuti}</span>";
+            })
             ->addColumn('detail', function ($row) {
                 return route('pegawai.pegawai.detail', $row->nip);
             })
@@ -254,7 +257,7 @@ class PegawaiController extends Controller
                 $html .= "<a class='me-2 shift text-warning' tooltip='Ubah Shift' href='" . route('pegawai.pegawai.shift', $row) . "'>" . icons('refresh') . "</a>";
                 return $html;
             })
-            ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'no_hp', 'level'])
+            ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'no_hp', 'level','cuti'])
             ->addIndexColumn()
             ->toJson();
     }
