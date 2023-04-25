@@ -37,44 +37,42 @@ class CutiApiController extends Controller
 
         $user = User::where('nip', $nip)->first();
         if($user){
-                // dd($nip);
-                if($user->maks_cuti == 0){
-                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Kuota Cuti sudah habis!']),200);
-                }
-                $cek = DataPengajuanCuti::where('nip', $nip)->where('status', 0)->count();
-                // dd($cek);
-                if($cek > 0){
-                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
-                }
-                if (request()->file('file')) {
-                    $file =  request()->file('file');
-                    $namaFile = uploadImage(public_path("perizinan/$nip"),$file);
-                }else{
-                    $namaFile = "";
-                }
+            if($user->maks_cuti == 0){
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Kuota Cuti sudah habis!']),200);
+            }
+            $cek = DataPengajuanCuti::where('nip', $nip)->where('status', 0)->count();
+            if($cek > 0){
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
+            }
+            if (request()->file('file')) {
+                $file =  request()->file('file');
+                $namaFile = uploadImage(public_path("perizinan/$nip"),$file);
+            }else{
+                $namaFile = "";
+            }
 
-                $data = [
-                    'nip' => $nip,
-                    'kode_cuti' => $kode_cuti,
-                    'tanggal_mulai' => date("Y-m-d",strtotime($tanggal_mulai)),
-                    'tanggal_selesai' => date("Y-m-d",strtotime($tanggal_selesai)),
-                    'keterangan' => $keterangan,
-                    'file' => "perizinan/$nip/".$namaFile,
-                ];
+            $data = [
+                'nip' => $nip,
+                'kode_cuti' => $kode_cuti,
+                'tanggal_mulai' => date("Y-m-d",strtotime($tanggal_mulai)),
+                'tanggal_selesai' => date("Y-m-d",strtotime($tanggal_selesai)),
+                'keterangan' => $keterangan,
+                'file' => "perizinan/$nip/".$namaFile,
+            ];
 
-                try {
-                    $cr = DataPengajuanCuti::create($data);
-                } catch (\Exception $e) {
-                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => $e->getMessage()]),200);
+            try {
+                $cr = DataPengajuanCuti::create($data);
+            } catch (\Exception $e) {
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => $e->getMessage()]),200);
 
-                }
+            }
 
-                if($cr){
-                    tambah_log($cr->nip, "App\Pegawai\DataPengajuanCuti", $cr->id, 'diajukan');    
-                    return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Berhasil di ajukan']),200);
-                }else{
-                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Gagal di ajukan']),200);
-                }
+            if($cr){
+                tambah_log($cr->nip, "App\Pegawai\DataPengajuanCuti", $cr->id, 'diajukan');    
+                return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Berhasil di ajukan']),200);
+            }else{
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Gagal di ajukan']),200);
+            }
         }else{
             return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Pegawai tidak di temukan']),200);
         }

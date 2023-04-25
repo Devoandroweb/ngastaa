@@ -257,8 +257,8 @@ class PresensiApiController extends Controller
         $tutupSoreTime = strtotime($shift->jam_tutup_pulang);
         
         // dd($dateSend <= $tutupPagiTime);
-
-        if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) {
+        
+        if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
             $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', date('Y-m-d'))->count();
             if ($cek > 0) {
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pagi ini!']),200);
@@ -266,6 +266,7 @@ class PresensiApiController extends Controller
                 $foto = $this->uploadFotoAbsen($nip);
                 $data = [
                     'nip' => $nip, 
+                    'periode_bulan' => date("Y-m"),
                     'kordinat_datang' => $kordinat,
                     'foto_datang' => $foto,
                     'kode_tingkat' => $kode_tingkat,

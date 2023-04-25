@@ -55,6 +55,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
         $this->periodeBulan = date("Y-m");
         $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->where("tanggal_pulang","!=",null)->get();
+        // dd($this->dataPresensi);
         $this->dataTotalPresensi = $mdTotalPresensi->where('periode_bulan',$this->periodeBulan)->get(['nip','masuk','telat','alfa'])->toArray();
         $this->dataTotalPresensiDetail = $mdTotalPresensiDetail->get();
         $this->dataTotalIzin = $mdTotalIzin->where('periode_bulan',$this->periodeBulan)->get(['nip','kode_cuti','total','periode_bulan'])->toArray();

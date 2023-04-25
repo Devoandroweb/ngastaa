@@ -163,6 +163,9 @@ class RiwayatShiftController extends Controller
         return $dataTables->of($Rshift)
         
             ->addColumn('nama', function ($row) {
+                if($row['shift']){
+                    return (($row->is_akhir == 1)?'<i class="bi bi-bookmark-star-fill text-danger fs-4"></i>' : '').$row['shift']['nama'];
+                }
                 return  $row['shift']['nama'] ;
             })
             ->addColumn('nomor_surat', function ($row) {
@@ -187,7 +190,7 @@ class RiwayatShiftController extends Controller
                 $html .= "<a class='text-danger delete' tooltip='Hapus' href='" . route('pegawai.shift.delete', ['pegawai' => $row['nip'], 'Rshift' => $row['id']]) . "'>" . icons('trash') . "</a>";
                 return $html;
             })
-            ->rawColumns(['opsi', 'file'])
+            ->rawColumns(['opsi', 'file','nama'])
             ->addIndexColumn()->toJson();
     }
 }

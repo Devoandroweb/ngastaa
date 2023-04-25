@@ -15,9 +15,9 @@ class Presensi extends Controller
          
             $data = [
                 'nip' => $nip,
-                'datang' => $data ? date("H:i:s",strtotime($data->tanggal_datang)) : "-",
-                'istirahat' => $data ? date("H:i:s",strtotime($data->tanggal_istirahat)) : "-",
-                'pulang' => $data ? date("H:i:s",strtotime($data->tanggal_pulang)) : "-",
+                'datang' => $data->tanggal_datang != null ? date("H:i:s",strtotime($data->tanggal_datang)) : "-",
+                'istirahat' => $data->tanggal_istirahat != null ? date("H:i:s",strtotime($data->tanggal_istirahat)) : "-",
+                'pulang' => $data->tanggal_pulang != null ? date("H:i:s",strtotime($data->tanggal_pulang)) : "-",
                 'visit' => "-",
             ];
             return response()->json([

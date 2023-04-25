@@ -18,8 +18,8 @@ class CCronjobs extends Controller
             $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
             if ($resultCalculate == 0) {
                 return response()->json([
-                    'status' => TRUE,
-                    'message' => 'Perhitungan Presensi untuk hari ini sudah di hitung'
+                    'status' => FALSE,
+                    'message' => 'Maaf Perhitungan Presensi untuk hari ini sebelumnya sudah di hitung'
                 ]);
             }
             return response()->json([
