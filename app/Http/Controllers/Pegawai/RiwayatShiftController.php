@@ -80,7 +80,7 @@ class RiwayatShiftController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_surat'] = date("Y-m-d",strtotime($data["tanggal_surat"]));
+        $data['tanggal_surat'] = date("Y-m-d",strtotime(normalDateSystem($data["tanggal_surat"])));
         // $data["status"] = "99";
 
         $id = request('id');
@@ -101,7 +101,7 @@ class RiwayatShiftController extends Controller
         }
 
         // dd($data);
-
+        
         
         if(request()->query('front')){
             $data['nip'] = $pegawai->nip;

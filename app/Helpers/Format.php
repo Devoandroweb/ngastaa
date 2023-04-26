@@ -615,3 +615,6 @@ function roleFormat(){
         return "PGW";
     }
 }
+function normalDateSystem($date){
+    return str_replace("/","-",$date);
+}
