@@ -100,19 +100,15 @@ class RiwayatShiftController extends Controller
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
-        
+        // dd($data);
 
         
         if(request()->query('front')){
-            $cr = RiwayatShift::updateOrCreate(
-                [
-                    'id' => $id,
-                    'nip' => $pegawai->nip,
-                    'status' => 1,
-                    'is_akhir' => 1
-                ],
-                $data
-            );
+            $data['nip'] = $pegawai->nip;
+            $data['is_akhir'] = 1;
+            $data['status'] = 1;
+            RiwayatShift::where('nip',$pegawai->nip)->update(['is_akhir' => 0]);
+            $cr = RiwayatShift::create($data);
             if (!$id) {
                 tambah_log($pegawai->nip, "App\Pegawai\RiwayatShift", $cr->id, 'ditambahkan');
             }
