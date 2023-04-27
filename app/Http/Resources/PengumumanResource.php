@@ -18,7 +18,7 @@ class PengumumanResource extends JsonResource
             'id' => $this->id,
             'judul' => $this->judul,
             'deskripsi' => $this->deskripsi,
-            'file' => storage($this->file),
+            'file' => public_path("public/".$this->file),
             'created_at' => tanggal_indo($this->created_at),
         ];
     }

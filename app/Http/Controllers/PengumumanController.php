@@ -53,11 +53,12 @@ class PengumumanController extends Controller
         }
 
         if (request('id') == '') {
-            $data['file'] = request()->file('file') ? request()->file('file')->store('uploads/pengumuman') : '';
+            $data['file'] = request()->file('file') ? "pengumuman/".uploadImage(public_path('pengumuman'),request()->file('file')) : '';
             $up = Pengumuman::create($data);
         } else {
             if (request()->file('file')) {
-                $data['file'] = request()->file('file')->store('uploads/pengumuman');
+                @unlink(public_path(request('old-file')));
+                $data['file'] = "pengumuman/".uploadImage(public_path('pengumuman'),request()->file('file'));
             }
             $up = Pengumuman::where('id', request('id'))->update($data);
         }
@@ -93,7 +94,7 @@ class PengumumanController extends Controller
         // dd(url($pengumuman[0]['file']));
         return $dataTables->of($pengumuman)
             ->addColumn('file', function ($row) {
-                return '<a class="btn btn-outline-info btn-animated" href="' . $row->file . '">Lihat File</a>';
+                return '<a class="btn btn-outline-info btn-animated" href="'.url('public/'.$row->file).'">Lihat File</a>';
             })
             ->addColumn('opsi', function ($row) {
 

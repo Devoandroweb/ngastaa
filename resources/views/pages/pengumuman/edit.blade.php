@@ -26,6 +26,7 @@
             <div class="form-group has-validation">
                 <label class="form-label">PDF / Gambar</label>
                 <div class="input-group">
+                    <input type="hidden" name="old-file" value="{{$pengumuman->file}}">
                     <a href="{{url($pengumuman->file)}}" class="btn btn-success" target="_blank">File Saat ini</a>
                     <input type="file" class="form-control @error('file') is-invalid @enderror"  placeholder="Masukkan File" name="file">
                 </div>
