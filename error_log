@@ -1,2 +1,7 @@
 [08-Mar-2023 12:19:34 Asia/Jakarta] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.0.2". You are running 7.4.33. in /home/ngaq5629/public_html/vendor/composer/platform_check.php on line 24
 [14-Mar-2023 14:30:01 Asia/Jakarta] PHP Deprecated:  Required parameter $Rkeluarga follows optional parameter $status in /home/ngaq5629/public_html/app/Http/Controllers/Pegawai/KeluargaController.php on line 94
+[27-Apr-2023 01:14:42 UTC] PHP Warning:  require(/home/ngaq5629/public_html/testing.ngastaa.com/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ngaq5629/public_html/testing.ngastaa.com/index.php on line 34
+[27-Apr-2023 01:14:42 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ngaq5629/public_html/testing.ngastaa.com/vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/ngaq5629/public_html/testing.ngastaa.com/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ngaq5629/public_html/testing.ngastaa.com/index.php on line 34
