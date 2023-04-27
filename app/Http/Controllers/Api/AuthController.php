@@ -35,23 +35,23 @@ class AuthController extends Controller
                 ], 200);
             }
         }
-        $imei = $request->imei;
+        // $imei = $request->imei;
 
-        $cek_imei = Imei::where('kode', $imei)->first();
+        // $cek_imei = Imei::where('kode', $imei)->first();
 
-        if($cek_imei){
-            if($cek_imei->nip != $user->nip){
-                return response()->json([
-                    'status' => FALSE,
-                    'message' => "Maaf, 1 Device hanya dapat digunakan untuk 1 Pegawai!",
-                ], 200);
-            }
-        }else{
-            Imei::create([
-                'nip' => $user->nip,
-                'kode' => $imei,
-            ]);
-        }
+        // if($cek_imei){
+        //     if($cek_imei->nip != $user->nip){
+        //         return response()->json([
+        //             'status' => FALSE,
+        //             'message' => "Maaf, 1 Device hanya dapat digunakan untuk 1 Pegawai!",
+        //         ], 200);
+        //     }
+        // }else{
+        //     Imei::create([
+        //         'nip' => $user->nip,
+        //         'kode' => $imei,
+        //     ]);
+        // }
         $data = PegawaiResource::make($user);
         $riwayatShift = RiwayatShift::where("nip",$user->nip)->where("is_akhir",1)->orderByDesc('kode_shift')->get();
 
