@@ -206,25 +206,39 @@
     </div>
 </div>
 <div class="row ">
-    <div class="col">        
+    <div class="col-sm-6">        
         <div class="card border-pink ">
             <div class="card-header border-bottom border-pink shadow card-header-action">
-                <h6 class="text-bold py-2"> Data Kepegawaian Berdasarkan Status Pegawai </h6>
+                <h6 class="text-bold py-2"> Kepegawaian Berdasarkan Status Pegawai </h6>
                 <div class="card-action-wrap">
                     <div class="d-flex">
                         <input type="text" name="year_payroll" class="form-control form-control-sm datepicker-single-year" value="{{date("d-m-Y")}}" id="">
                     </div>
-                    <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover refresh"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="disc"></i></span></span></a>
+                    
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover full-screen"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="maximize"></i></span><span class="feather-icon d-none"><i data-feather="minimize"></i></span></span></a>
-                    <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover"  data-bs-toggle="collapse" href="#collapse_1" aria-expanded="true"><span class="icon"><span class="feather-icon"><i data-feather="chevron-down"></i></span></span></a>
+                    
                 </div>
             </div>
             <div class="card-body">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div id="chart_kepegawaian"></div>
+                <div id="chart_kepegawaian" style="height:350px"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">        
+        <div class="card border-pink ">
+            <div class="card-header border-bottom border-pink shadow card-header-action">
+                <h6 class="text-bold py-2"> Kepegawaian Berdasarkan Perkawinan </h6>
+                <div class="card-action-wrap">
+                    <div class="d-flex">
+                        <input type="text" name="year_payroll" class="form-control form-control-sm datepicker-single-year" value="{{date("d-m-Y")}}" id="">
                     </div>
+        
+                    <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover full-screen"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="maximize"></i></span><span class="feather-icon d-none"><i data-feather="minimize"></i></span></span></a>
+                    
                 </div>
+            </div>
+            <div class="card-body">
+                <div id="chart_perkawinan" style="height:350px"></div>
             </div>
         </div>
     </div>
@@ -507,7 +521,7 @@ var options1 = {
 	series: status_pegawai_statistic.series,
 	chart: {
         type: 'donut',
-        width: 500,
+        width: 450,
         
     },
     plotOptions: {
@@ -536,7 +550,7 @@ var options1 = {
             breakpoint: 480,
             options: {
             chart: {
-                width: 300
+                width: 200
             },
             legend: {
                 position: 'bottom'
@@ -548,6 +562,30 @@ var options1 = {
 var chart1 = new ApexCharts(document.querySelector("#chart_kepegawaian"), options1);
 chart1.render();
 
+// Pie Chart
+var options = {
+  series: @json($status_kawin_statistic['series']),
+  chart: {
+  width: 500,
+  type: 'pie',
+},
+colors: @json($status_kawin_statistic['colors']),
+labels: @json($status_kawin_statistic['labels']),
+responsive: [{
+  breakpoint: 480,
+  options: {
+	chart: {
+	  width: 300
+	},
+	legend: {
+	  position: 'bottom'
+	}
+  }
+}]
+};
+
+var chart = new ApexCharts(document.querySelector("#chart_perkawinan"), options);
+chart.render();
 var _TABLE = null;
         var _URL_DATATABLE = '{{url("dashboard-datatable")}}';
         // SESUAIKAN COLUMN DATATABLE

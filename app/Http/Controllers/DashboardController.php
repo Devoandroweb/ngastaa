@@ -14,7 +14,8 @@ use App\Models\Presensi\TotalPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 // use ZipStream\Bigint;
@@ -28,7 +29,7 @@ class DashboardController extends Controller
     }
     public function __invoke()
     {
-        // dd(auth()->user());
+        
         $role = role('opd');
         $periode_bulan = date("Y-m");
         $pegawai = $this->pegawaiRepository->getAllPegawaiRoleOPD($role);
@@ -42,6 +43,8 @@ class DashboardController extends Controller
         $nama_status_pegawai = [];
         $color_status_pegawai = [];
 
+        # Data Kepegawaian Status Pegawai
+        
         foreach ($status_pegawai as $key => $value) {
             $pegawai = User::role('pegawai')->where('owner',0)
                         ->when($role,function($q){
@@ -59,25 +62,66 @@ class DashboardController extends Controller
                             });
                         });
             $total_status = $pegawai->where('kode_status',$value->kode_status)->count();
-            // echo $total_status->toSql();
+            
             $nama = $value->nama;
             
             array_push($total_status_pegawai,$total_status);
             array_push($nama_status_pegawai,$nama);
             array_push($color_status_pegawai,getColor($key));
-            // $status_pegawai_statistic[]= [
-            //     'series' => $data,
-            //     'label' => $nama,
-            // ];
+            
         }
         $status_pegawai_statistic = [
             'series' => $total_status_pegawai,
             'labels' => $nama_status_pegawai,
             'colors' => $color_status_pegawai,
         ];
-        // dd($status_pegawai_statistic);
         
-        // $get_pegawai = $pegawai->get();
+        # Data Kepegawaian Status Kawin
+        $status_kawin = User::groupBy('kode_kawin')->pluck('kode_kawin');
+        
+        $collection = new Collection($status_kawin);
+        $status_kawin = $collection->filter(function ($value) {
+            return $value !== null;
+        });
+        $status_kawin = $status_kawin->values()->all();
+        $status_kawin_statistic = [];
+        $total_status_kawin = [];
+        $nama_status_kawin = [];
+        $color_status_kawin = [];
+        $total_kawin_nikah = 0;
+        foreach ($status_kawin as $key => $value) {
+            $pegawai = User::role('pegawai')->where('owner',0)
+                        ->when($role,function($q){
+                            $user = auth()->user()->jabatan_akhir;
+                            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+                            $skpd = '';
+                            if ($jabatan) {
+                                $skpd = $jabatan->kode_skpd;
+                            }
+
+                            return $q->join('riwayat_jabatan', function ($qt) use ($skpd) {
+                                $qt->on('riwayat_jabatan.nip', 'users.nip')
+                                    ->where('riwayat_jabatan.kode_skpd', $skpd)
+                                    ->where('riwayat_jabatan.is_akhir', 1);
+                            });
+                        });
+            $total_status = $pegawai->where('kode_kawin',$value)->count();
+            
+            $nama = $value;
+           
+            array_push($total_status_kawin,$total_status);
+            array_push($nama_status_kawin,ucfirst($nama));
+            array_push($color_status_kawin,getColor($key));
+
+        }
+        $status_kawin_statistic = [
+            'series' => $total_status_kawin,
+            'labels' => $nama_status_kawin,
+            'colors' => $color_status_kawin,
+        ];
+
+        // dd($status_kawin_statistic);
+        # Presensi Count
         $presensi = DataPresensi::whereDate('data_presensi.created_at', date("Y-m-d"))
                     ->when($role, function ($qr) {
                         $user = auth()->user()->jabatan_akhir;
@@ -139,7 +183,6 @@ class DashboardController extends Controller
             ]);
         }
         # Total Presensi
-        
         $totalPresensi = TotalPresensi::where('periode_bulan',$periode_bulan)->whereIn('nip',$this->pegawaiRepository->getAllPegawaiRoleOPD($role)->pluck('nip'))->get();
 
         $masuk = $totalPresensi->sum("masuk");
@@ -168,10 +211,14 @@ class DashboardController extends Controller
                                     ->whereYear('riwayat_jabatan.tanggal_tmt', date("Y"))
                                     ->get();
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
+
+        
+
         $titlePage = "Dashboard ".env('app_name');
 
         return view('dashboard',compact(
             'status_pegawai_statistic',
+            'status_kawin_statistic',
             'titlePage',
             'jumlah_pegawai', 
             'presensi', 

@@ -6,6 +6,7 @@
 /public/lembur
 /public/uploads
 /public/storage
+/public/pengumuman
 /storage/*.key
 /vendor
 .env

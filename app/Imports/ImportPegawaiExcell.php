@@ -45,7 +45,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 $item->tanggal_lahir = $this->checkTanggal($row[6],$i);
                 $item->jenis_kelamin = $this->checkJenisKelamin(strtolower($row[7]),$i);
                 $item->kode_agama = $row[8];
-                $item->kode_kawin = strtolower($row[9]);
+                $item->kode_kawin = $this->checkKawin(strtolower($row[9]),$i);
                 $item->golongan_darah = $this->checkGolonganDarah($row[10],$i);
                 $item->nik = $row[11];
                 $item->no_hp = $row[12];
@@ -127,6 +127,22 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         }
         
     }
+    function checkKawin($row,$i){
+        try {
+            
+            if($row == "kawin" || $row == "belum kawin"){
+                return throw new Exception($this->errorKawin($i));
+            }
+            return $row;
+        } catch (\Throwable $th) {
+            $this->error = true;
+            $this->errorMessage = $this->errorKawin($i);
+            
+            // $this->errorMessage = $th->getMessage();
+        }
+        
+    }
+
     function errorMessage(){
         return $this->errorMessage;
     }
@@ -155,7 +171,10 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                             ";
         return $message;
     }   
-    
+    private function errorKawin($i){
+        $message = "Kode Menikah salah, gunakan kata 'Menikah' atau 'Belum Menikah', Kesalahan pada baris Excel ke $i";
+        return $message;
+    }
     public function transformDate($value, $format = 'Y-m-d')
     {
         $value = str_replace(" ","",$value);
