@@ -139,6 +139,10 @@ class PegawaiController extends Controller
             
             $data['password'] = password_hash(request('nip'), PASSWORD_BCRYPT);
             $cr = User::create($data);
+            TotalPresensi::create([
+                'nip' => $item->nip,
+                'periode_bulan' =>  date("Y-m")
+            ]);
             $cr->assignRole('pegawai');
         } else {
             $user =  User::where('nip', request('nip'));
@@ -147,7 +151,7 @@ class PegawaiController extends Controller
             }
             $cr = $user->update($data);
         }
-
+        
         if ($cr) {
             return redirect(route('pegawai.pegawai.index'))->with([
                 'type' => 'success',
