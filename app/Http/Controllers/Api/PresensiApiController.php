@@ -328,6 +328,7 @@ class PresensiApiController extends Controller
                     $foto = $this->uploadFotoAbsen($nip);
                     $data = [
                         'nip' => $nip,
+                        'periode_bulan' => date("Y-m"),
                         'kordinat_istirahat' => $kordinat,
                         'foto_istirahat' => $foto,
                         'kode_tingkat' => $kode_tingkat,
@@ -355,6 +356,7 @@ class PresensiApiController extends Controller
                 } else {
                     $foto = $this->uploadFotoAbsen($nip);
                     $data = [
+                        'periode_bulan' => date("Y-m"),
                         'kordinat_pulang' => $kordinat,
                         'foto_pulang' => $foto,
                         'tanggal_pulang' => $tanggalIn
@@ -381,6 +383,7 @@ class PresensiApiController extends Controller
                 } else {
                     $foto = $this->uploadFotoAbsen($nip);
                     $data = [
+                        'periode_bulan' => date("Y-m"),
                         'kordinat_pulang' => $kordinat,
                         'foto_pulang' => $foto,
                         'tanggal_pulang' => $tanggalIn
@@ -408,6 +411,7 @@ class PresensiApiController extends Controller
                     $foto = $this->uploadFotoAbsen($nip);
                     $data = [
                         'nip' => $nip,
+                        'periode_bulan' => date("Y-m"),
                         'kordinat_pulang' => $kordinat,
                         'foto_pulang' => $foto,
                         'kode_tingkat' => $kode_tingkat,
