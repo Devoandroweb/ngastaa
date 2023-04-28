@@ -34,7 +34,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 };
                 // dd(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[6]));
                 // array_push($data,$row);
-
+                $this->nipExisting($row[1]);
                 $item = new User();
                 $item->nip = $this->checkNip($row[1],$i);
                 $item->password = Hash::make($row[1]);
@@ -69,8 +69,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         } catch (\Throwable $th) {
             
             DB::rollBack();
-            
-            
+
             $this->error = true;
             $this->errorMessage = $th->getMessage();
             //throw $th;
@@ -85,7 +84,14 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
             return throw new Exception("NIP tidak boleh kosong, Kesalahan pada baris Excel ke $i");
         }
         return $value;
-
+    }
+    function nipExisting($nip){
+        
+        if(User::where('nip',$nip)->first() != null){
+            return throw new $this->alertMessageNip($nip);
+        }
+        return $nip;
+        
     }
     function checkJenisKelamin($jenis_kelamin,$i){
         $jenis_kelamin = strtolower($jenis_kelamin);
@@ -142,7 +148,9 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         }
         
     }
-
+    function alertMessageNip($nip){
+        return "NIP Sudah di gunakan ($nip)";
+    }
     function errorMessage(){
         return $this->errorMessage;
     }
