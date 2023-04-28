@@ -54,9 +54,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         $this->mdTotalIzin = $mdTotalPresensi;
 
         $this->periodeBulan = date("Y-m");
-        $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->where("tanggal_pulang","!=",null)->get();
+        $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->where('hitung',0)->where("tanggal_pulang","!=",null)->get();
         // dd($this->dataPresensi);
         $this->dataTotalPresensi = $mdTotalPresensi->where('periode_bulan',$this->periodeBulan)->get(['nip','masuk','telat','alfa'])->toArray();
+        
         $this->dataTotalPresensiDetail = $mdTotalPresensiDetail->get();
         $this->dataTotalIzin = $mdTotalIzin->where('periode_bulan',$this->periodeBulan)->get(['nip','kode_cuti','total','periode_bulan'])->toArray();
         $this->allPengajuanCuti = $mdPengajuanCuti->where('status',1)->get();
@@ -81,8 +82,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             //     ]);
             // }
             // dd($this->dataTotalPresensi);
-            foreach ($this->allPegawai as $pegawai) {
+            foreach ($this->allPegawai as $key => $pegawai) {
                 $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
+                if($indexTotalPegawai == ""){
+                    dd($pegawai->nip);
+                }
                 // if($indexTotalPegawai == "" || $indexTotalPegawai == null){
                 //     array_push($dataInsertTotalPresensiDetail,[
                 //         'nip' => $pegawai->nip,
@@ -94,10 +98,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                 // }
                 $presensi = $this->existingPresensi($pegawai->nip);
                 //cek pegawai di data_presensi
-     
+                
                 if($presensi == null){
                     // cek pegawai di izin/cuti
-                    // dd($pegawai);
+                    
                     $izin = $this->existingIzin($pegawai->nip);
                     if($izin != null){
                         // $this->dataTotalPresensi[$indexTotalPegawai]['izin']++;
@@ -173,6 +177,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
             # UPDATE APP STATUS FUNCTION
             AppStatusFunction::where('name','calculate_presensi')->update(['value' => 1]);
+            $this->dataPresensi->update(['hitung',1]);
             return 1;
         } catch (\Throwable $th) {
             return $th->getMessage();

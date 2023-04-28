@@ -16,6 +16,7 @@ class CCronjobs extends Controller
     function calculatePresensi(){
         try {
             $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
+       
             if ($resultCalculate == 0) {
                 return response()->json([
                     'status' => FALSE,
