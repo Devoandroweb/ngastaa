@@ -48,16 +48,24 @@ class UnduhBerkasController extends Controller
         $zip = new ZipArchive;
 
         if (true === ($zip->open("public/file-pegawai-$nip.zip", ZipArchive::CREATE | ZipArchive::OVERWRITE))) {
+            # Untuk Foto
             $pathFoto = public_path("../data_pegawai/$nip/foto");
-            $pathFoto = public_path("../data_pegawai/$nip/foto");
-            $files = File::allFiles($path);
+            $zip->addEmptyDir("foto");
+            $files = File::allFiles($pathFoto);
             foreach ($files as $file) {
                 $name = basename($file);
-                if ($name !== '.gitignore') {
-                    $zip->addFile(public_path("../data_pegawai/$nip/foto/$name"), $name);
-                    // dd($zip);
-                }
+                $zip->addFile(public_path("../data_pegawai/$nip/foto/$name"),"foto/$name");
             }
+            
+            # Untuk Keluarga KTP
+            $pathFoto = public_path("../data_pegawai/$nip/keluarga/ktp");
+            $zip->addEmptyDir("keluarga/ktp");
+            $files = File::allFiles($pathFoto);
+            foreach ($files as $file) {
+                $name = basename($file);
+                $zip->addFile(public_path("../data_pegawai/$nip/keluarga/ktp/$name"),"keluarga/ktp/$name");
+            }
+
             $zip->close();
         }
         // return response()->download()

@@ -63,12 +63,12 @@
                                     <span>Unduh Profil</span>
                                 </span>
                             </a>
-                            {{-- <a class="btn btn-info btn-animated" href="{{url('pegawai/berkas/'.$pegawai->nip.'/berkas_zip')}}" >
+                            <a class="btn btn-info btn-animated" href="{{url('pegawai/berkas/'.$pegawai->nip.'/berkas_zip')}}" >
                                 <span>
                                     <span class="icon"><i class="fa fa-download"></i></span>
                                     <span>Unduh Berkas</span>
                                 </span>
-                            </a> --}}
+                            </a>
                         </div>
                     </div>
                 </div>

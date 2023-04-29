@@ -109,7 +109,7 @@
         </div>
         <div class="col-md-8">
             <div class="form-group">
-                <input class="form-control mb-3 @error('unggah_ktp') is-invalid @enderror" placeholder="Masukkan Unggah Ktp" name="unggah_ktp" type="file">
+                <input class="form-control mb-3 @error('unggah_ktp') is-invalid @enderror" placeholder="Masukkan Unggah Ktp" name="file_ktp" type="file">
                 <div class="invalid-feedback">
                     {{ $errors->first('file_ktp') }}
                 </div>
@@ -135,7 +135,7 @@
         </div>
         <div class="col-md-8">
             <div class="form-group">
-                <input class="form-control mb-3 @error('unggah_bpjs') is-invalid @enderror" placeholder="Masukkan Unggah Bpjs" name="unggah_bpjs" type="file">
+                <input class="form-control mb-3 @error('unggah_bpjs') is-invalid @enderror" placeholder="Masukkan Unggah Bpjs" name="file_bpjs" type="file">
                 <div class="invalid-feedback">
                     {{ $errors->first('unggah_bpjs') }}
                 </div>
