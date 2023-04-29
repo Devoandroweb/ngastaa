@@ -48,6 +48,7 @@ function saveForm(form,url,statusSubmit,method = "post",igoneinput = [], withFil
                 },
                 error : function (response){
                     errorValidateMessage(response.responseJSON.errors)
+                    loadingFormStop()
                 }
             }
             if(withFile){
@@ -123,6 +124,7 @@ function errorValidateMessage(message) {
     for(var property in message ) {
         $(`[name='${property}']`).addClass("is-invalid");
         $(`[name='${property}']`).siblings(".is-invalid").remove()
+        $(`[name='${property}']`).siblings(".invalid-feedback").remove()
         $(`[name='${property}']`).after(validateTooltipInvalid(message[property][0]))
     }
 }
