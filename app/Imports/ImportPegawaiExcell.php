@@ -88,7 +88,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     function nipExisting($nip){
         
         if(User::where('nip',$nip)->first() != null){
-            return throw new $this->alertMessageNip($nip);
+            return throw new Exception($this->alertMessageNip($nip));
         }
         return $nip;
         
