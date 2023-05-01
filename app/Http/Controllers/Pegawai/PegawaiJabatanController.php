@@ -114,10 +114,9 @@ class PegawaiJabatanController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_sk'] = date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_sk"])));
-        $data['tanggal_tmt'] =  date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_tmt"])));
+        $data['tanggal_sk'] = normalDateSystem(request("tanggal_sk"));
+        $data['tanggal_tmt'] =  normalDateSystem(request("tanggal_tmt"));
         
-
         if (request('is_akhir') == 1) {
             $data['sebagai'] = "defenitif";
             RiwayatJabatan::where('nip', $pegawai->nip)->update(['is_akhir' => 0]);
@@ -133,10 +132,14 @@ class PegawaiJabatanController extends Controller
                 }
             }
         }
-
+        
+        // upload file
         if (request()->file('file')) {
             // $data['file'] = request()->file('file')->storeAs('data_pegawai/'.$pegawai->nip.'/riwayat_jabatan', $pegawai->nip . "-jabatan-" . date("YmdHis") . ".pdf");
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
+            if ($data['file']) {
+                @unlink($dir."/".$data['file']);
+            }
         }
 
         $cr = RiwayatJabatan::updateOrCreate(

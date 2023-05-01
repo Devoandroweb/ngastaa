@@ -91,14 +91,19 @@ class RiwayatCutiController extends Controller
             }
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-cuti-" . request('nomor_surat') . ".pdf");
+            $file = RiwayatCuti::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/perizinan';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
-        $data['tanggal_surat'] = date("Y-m-d",strtotime(Str::replace('/', '-', $data['tanggal_surat'])));
-        $data['tanggal_mulai'] = date("Y-m-d",strtotime(Str::replace('/', '-', $data['tanggal_mulai'])));
-        $data['tanggal_selesai'] = date("Y-m-d",strtotime(Str::replace('/', '-', $data['tanggal_selesai'])));
+        $data['tanggal_surat'] = normalDateSystem(request('tanggal_surat'));
+        $data['tanggal_mulai'] = normalDateSystem(request('tanggal_mulai'));
+        $data['tanggal_selesai'] = normalDateSystem(request('tanggal_selesai'));
+        
         $cr = RiwayatCuti::updateOrCreate(
             [
                 'id' => $id,

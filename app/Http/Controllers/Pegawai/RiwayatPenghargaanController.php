@@ -76,7 +76,7 @@ class RiwayatPenghargaanController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_sk'] =  date("Y-m-d",strtotime($data["tanggal_sk"]));
+        $data['tanggal_sk'] =  normalDateSystem(request("tanggal_sk"));
 
         $id = request('id');
         if ($id) {
@@ -88,9 +88,13 @@ class RiwayatPenghargaanController extends Controller
             }
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-penghargaan-" . request('nomor_sk') . ".pdf");
+            $file = RiwayatPenghargaan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/penghargaan';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 

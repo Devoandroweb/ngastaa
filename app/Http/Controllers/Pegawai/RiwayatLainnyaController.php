@@ -73,7 +73,7 @@ class RiwayatLainnyaController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_sk'] =  date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_sk"])));
+        $data['tanggal_sk'] =  normalDateSystem(request("tanggal_sk"));
 
         $id = request('id');
         if ($id) {
@@ -85,11 +85,13 @@ class RiwayatLainnyaController extends Controller
             }
         }
 
-
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-lainnya-" . request('tanggal_sk') . ".pdf");
+            $file = RiwayatLainnya::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/lainnya';
-            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
+            if ($file) {
+                @unlink($dir."/".$file);
+            }$data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatLainnya::updateOrCreate(

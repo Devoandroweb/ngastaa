@@ -80,7 +80,7 @@ class RiwayatShiftController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_surat'] = date("Y-m-d",strtotime(normalDateSystem($data["tanggal_surat"])));
+        $data['tanggal_surat'] = normalDateSystem(request("tanggal_surat"));
         // $data["status"] = "99";
 
         $id = request('id');
@@ -94,9 +94,13 @@ class RiwayatShiftController extends Controller
             tambah_log($pegawai->nip, "App\Pegawai\RiwayatShift", $id, 'diubah');
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-shift-" . request('nomor_surat') . ".pdf");
+            $file = RiwayatShift::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/shift';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 

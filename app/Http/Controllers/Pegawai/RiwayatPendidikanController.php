@@ -102,7 +102,7 @@ class RiwayatPendidikanController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_lulus'] = date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_lulus"])));
+        $data['tanggal_lulus'] = normalDateSystem(request("tanggal_lulus"));
 
         if (request('is_akhir') == 1) {
             RiwayatPendidikan::where('nip', $pegawai->nip)->update(['is_akhir' => 0]);
@@ -117,10 +117,14 @@ class RiwayatPendidikanController extends Controller
                 }
             }
         }
-
+        
+        //upload file 
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-pendidikan-" . request('nomor_ijazah') . request('kode_pendidikan') . ".pdf");
+            $file = RiwayatPendidikan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/pendidikan';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
