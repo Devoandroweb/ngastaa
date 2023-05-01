@@ -100,6 +100,7 @@ class RiwayatCutiController extends Controller
             }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
+        
         $data['tanggal_surat'] = normalDateSystem(request('tanggal_surat'));
         $data['tanggal_mulai'] = normalDateSystem(request('tanggal_mulai'));
         $data['tanggal_selesai'] = normalDateSystem(request('tanggal_selesai'));
