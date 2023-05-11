@@ -111,8 +111,8 @@ class RiwayatKgbController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_surat'] = date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_surat"])));
-        $data['tanggal_tmt'] =  date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_tmt"])));
+        $data['tanggal_surat'] = normalDateSystem(request("tanggal_surat"));
+        $data['tanggal_tmt'] =  normalDateSystem(request("tanggal_tmt"));
         if (request('gaji_pokok')) {
             $data['gaji_pokok'] = number_to_sql($data['gaji_pokok']);
         }
@@ -127,9 +127,13 @@ class RiwayatKgbController extends Controller
             }
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-kgb-" . request('nomor_surat') . ".pdf");
+            $file = RiwayatKgb::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/gaji_pokok';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 

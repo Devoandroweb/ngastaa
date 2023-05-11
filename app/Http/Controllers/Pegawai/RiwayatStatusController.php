@@ -101,6 +101,8 @@ class RiwayatStatusController extends Controller
                 }
             }
         }
+
+        // upload file
         if (request()->file('file')) {
             $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-status-" . request('no_sk') . ".pdf");
         }

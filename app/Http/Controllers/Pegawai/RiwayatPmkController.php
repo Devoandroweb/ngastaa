@@ -81,8 +81,8 @@ class RiwayatPmkController extends Controller
 
         $data = request()->validate($rules);
         
-        $data['tanggal_awal'] = date('Y-m-d', strtotime(str_replace("/","-", $data["tanggal_awal"])));
-        $data['tanggal_akhir'] = date('Y-m-d', strtotime(str_replace("/","-", $data["tanggal_akhir"])));
+        $data['tanggal_awal'] = normalDateSystem(request("tanggal_awal"));
+        $data['tanggal_akhir'] = normalDateSystem(request("tanggal_akhir"));
 
         $id = request('id');
         if ($id) {
@@ -94,9 +94,13 @@ class RiwayatPmkController extends Controller
             }
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-pmk-" . request('jenis_pmk') . date("His") . ".pdf");
+            $file = RiwayatPmk::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/pengalaman_kerja';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 

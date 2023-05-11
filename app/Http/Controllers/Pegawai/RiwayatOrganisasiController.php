@@ -80,8 +80,8 @@ class RiwayatOrganisasiController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_mulai'] = date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_mulai"])));
-        $data['tanggal_selesai'] =  date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_selesai"])));
+        $data['tanggal_mulai'] = normalDateSystem(request("tanggal_mulai"));
+        $data['tanggal_selesai'] =  normalDateSystem(request("tanggal_selesai"));
         
         $id = request('id');
         if ($id) {
@@ -93,10 +93,13 @@ class RiwayatOrganisasiController extends Controller
             }
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-organisasi-" . request('no_sertifikat') . ".pdf");
+            $file = RiwayatOrganisasi::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/organisasi';
-            $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
+            if ($file) {
+                @unlink($dir."/".$file);
+            }$data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
         $cr = RiwayatOrganisasi::updateOrCreate(

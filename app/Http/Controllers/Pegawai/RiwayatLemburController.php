@@ -80,8 +80,8 @@ class RiwayatLemburController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal'] = date("Y-m-d",strtotime($data["tanggal"]));
-        $data['tanggal_surat'] =  date("Y-m-d",strtotime($data["tanggal_surat"]));
+        $data['tanggal'] = normalDateSystem(request("tanggal"));
+        $data['tanggal_surat'] =  normalDateSystem(request("tanggal_surat"));
 
         $id = request('id');
         if ($id) {
@@ -94,9 +94,13 @@ class RiwayatLemburController extends Controller
             tambah_log($pegawai->nip, "App\Pegawai\DataPengajuanLembur", $id, 'diubah');
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-lembur-" . request('nomor_surat') . ".pdf");
+            $file = DataPengajuanLembur::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/lembur';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 

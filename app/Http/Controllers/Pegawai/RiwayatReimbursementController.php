@@ -79,7 +79,7 @@ class RiwayatReimbursementController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_surat'] = date("Y-m-d",strtotime($data["tanggal_surat"]));
+        $data['tanggal_surat'] = normalDateSystem(request("tanggal_surat"));
         $data['nilai'] = number_to_sql($data['nilai']);
 
         $id = request('id');
@@ -93,9 +93,13 @@ class RiwayatReimbursementController extends Controller
             tambah_log($pegawai->nip, "App\Pegawai\DataPengajuanReimbursement", $id, 'diubah');
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-reimbursement-" . request('nomor_surat') . ".pdf");
+            $file = DataPengajuanReimbursement::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/reimbursement';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
