@@ -101,7 +101,7 @@ class RiwayatTunjanganController extends Controller
         $data = request()->validate($rules);
         
         $data['nilai'] = number_to_sql($data['nilai']);
-        $data['tanggal_sk'] = date('Y-m-d', strtotime(str_replace("/","-", $data["tanggal_sk"])));
+        $data['tanggal_sk'] = normalDateSystem(request("tanggal_sk"));
         $id = request('id');
         if ($id) {
             if (request()->file('file')) {
@@ -112,9 +112,14 @@ class RiwayatTunjanganController extends Controller
             }
             tambah_log($pegawai->nip, "App\Pegawai\RiwayatTunjangan", $id, 'diubah');
         }
+
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-tunjangan-" . date("Ymdhis") . ".pdf");
+            $file = RiwayatTunjangan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/tunjangan';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 

@@ -74,9 +74,9 @@ class RiwayatKursusController extends Controller
         }
 
         $data = request()->validate($rules);
-        $data['tanggal_mulai'] = date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_mulai"])));
-        $data['tanggal_selesai'] =  date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_selesai"])));
-        $data['tanggal_sertifikat'] =  date("Y-m-d",strtotime(str_replace("/","-", $data["tanggal_sertifikat"])));
+        $data['tanggal_mulai'] = normalDateSystem(request("tanggal_mulai"));
+        $data['tanggal_selesai'] =  normalDateSystem(request("tanggal_selesai"));
+        $data['tanggal_sertifikat'] =  normalDateSystem(request("tanggal_sertifikat"));
         $id = request('id');
         if ($id) {
             if (request()->file('file')) {
@@ -87,9 +87,13 @@ class RiwayatKursusController extends Controller
             }
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-kursus-" . request('no_sertifikat') . ".pdf");
+            $file = RiwayatKursus::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/kursus';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 

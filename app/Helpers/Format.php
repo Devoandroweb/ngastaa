@@ -616,5 +616,5 @@ function roleFormat(){
     }
 }
 function normalDateSystem($date){
-    return str_replace("/","-",$date);
+    return date("Y-m-d",strtotime(str_replace("/","-",$date)));
 }

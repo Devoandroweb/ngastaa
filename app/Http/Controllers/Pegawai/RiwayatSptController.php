@@ -77,7 +77,7 @@ class RiwayatSptController extends Controller
 
         $data = request()->validate($rules);
         $data['tahun'] = request('tahun') ?? date('Y');
-        $data['tanggal_penyampaian'] = date('Y-m-d', strtotime(str_replace("/","-", $data["tanggal_penyampaian"])));
+        $data['tanggal_penyampaian'] = normalDateSystem(request("tanggal_penyampaian"));
 
 
         if (request('nominal')) {
@@ -94,9 +94,13 @@ class RiwayatSptController extends Controller
             }
         }
 
+        // upload file
         if (request()->file('file')) {
-            // $data['file'] = request()->file('file')->storeAs($pegawai->nip, $pegawai->nip . "-spt-" . request('tahun') . ".pdf");
+            $file = RiwayatSpt::where('id', $id)->where('nip', $pegawai->nip)->value('file');
             $dir = 'data_pegawai/'.$pegawai->nip.'/spt';
+            if ($file) {
+                @unlink($dir."/".$file);
+            }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
@@ -120,6 +124,7 @@ class RiwayatSptController extends Controller
             ]);
         }
     }
+    
     public function datatable($pegawai,DataTables $dataTables){
         $Rspt = RiwayatSpt::where('nip', $pegawai)
             ->orderByDesc('tahun')->get();
