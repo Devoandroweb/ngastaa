@@ -42,7 +42,7 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 <div class="modal fade" id="located-panel" tabindex="-1" role="dialog" aria-labelledby="located-panel" aria-hidden="true">
@@ -70,7 +70,7 @@
                             <td class="lokasi"></td>
                         </tr>
                     </table>
-                </div> 
+                </div>
                 <div class="d-block d-md-none">
                     <table class="table table-bordered w-100">
                         <tr>
@@ -119,7 +119,7 @@
     {{-- <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script> --}}
 
     <script >
-        
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("presensi.laporan_visit.datatable")}}';
         $(".divisi").select2();
@@ -133,7 +133,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -183,7 +183,7 @@
             $(".nama_pegawai").html(data.nama)
             $(".jabatan").text(data.jabatan)
             $(".tanggal").text(data.tanggal)
-            $("#foto").attr("src","{{url('public')}}/"+data.foto)
+            $("#foto").attr("src","{{url('public/visit/')}}"+data.nip+"/"+data.foto)
             // $("#keterangan").text(data.keterangan)
             if(data.kordinat != null){
                 $(".lokasi").text(checkVisitLokasi(data.kordinat))
@@ -213,14 +213,14 @@
                     parseFloat(location_target[1].split(" ").join("")),
                     parseFloat(location_target[0].split(" ").join(""))
                 ];
-        
+
                 var point = turf.point(turfKoor);
                 var isInside = turf.booleanPointInPolygon(point, polygon);
                 console.log(isInside);
                 if((e.polygon).length != 0){
                     L.polygon(JSON.parse(e.polygonAsli), { color: "red" }).addTo(drawnItems);
                 }
-                
+
                 if(isInside){
                     namaLokasi = e.nama
                 }
@@ -228,5 +228,5 @@
             return namaLokasi;
         }
     </script>
-    
+
 @endpush
