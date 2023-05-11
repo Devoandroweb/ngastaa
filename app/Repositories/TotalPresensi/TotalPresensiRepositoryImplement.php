@@ -54,7 +54,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         $this->mdTotalIzin = $mdTotalPresensi;
 
         $this->periodeBulan = date("Y-m");
-        $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->where('hitung',0)->where("tanggal_pulang","!=",null)->get();
+        $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->where('hitung',0)->where("tanggal_pulang","!=",null)->where('hitung',0);
         // dd($this->dataPresensi);
         $this->dataTotalPresensi = $mdTotalPresensi->where('periode_bulan',$this->periodeBulan)->get(['nip','masuk','telat','alfa'])->toArray();
         
@@ -186,7 +186,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     }
     
     function existingPresensi($nip){
-        foreach ($this->dataPresensi as $presensi) {
+        foreach ($this->dataPresensi->get() as $presensi) {
             if($nip == $presensi->nip){
                 return $presensi;
             }
