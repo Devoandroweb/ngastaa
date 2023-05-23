@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\DataVisitResource;
 use App\Models\Master\Visit;
-use App\Models\Pegawai\DataVisit;   
+use App\Models\Pegawai\DataVisit;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -18,22 +18,8 @@ class VisitApiController extends Controller
         $kordinat = request('kordinat');
         $kode_visit = request('kode_visit');
 
-        // $image_64 = request('image');
-        // $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
-        // $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
-        // $image = str_replace($replace, '', $image_64);
-        // $image = str_replace(' ', '+', $image);
-        // $imageName = date("YmdHis") .  Str::random(10) . '.' . $extension;
-
-        
-
-        // if($image_64){
-        //     $foto = "visit/$nip/$imageName";
-        //     Storage::disk('public')->put("/$foto", base64_decode($image));
-        // }else{
-        //     $foto = "";
-        // }
-
+        #$newOrOld = request('new_old'); # 1 : new | 2 : old
+        $newOrOld = 2; # 1 : new | 2 : old
 
         $timeZone = request('timezone') ?? 'WITA';
 
@@ -61,13 +47,33 @@ class VisitApiController extends Controller
             }else{
                 $foto = "";
             }
-            $data = [
-                'nip' => $nip,
-                'kode_visit' => $kode_visit,
-                'kordinat' => $kordinat,
-                'foto' => $foto,
-                'tanggal' => $tanggalIn
-            ];
+            $cr = false;
+            if($newOrOld == 2){
+                $data = [
+                    'nip' => $nip,
+                    'kode_visit' => $kode_visit,
+                    'kordinat' => $kordinat,
+                    'foto' => $foto,
+                    'tanggal' => $tanggalIn
+                ];
+            }else{
+                # tambah visit baru
+                $namaVisit = request('nama_visit');
+                $kode_visit = (string) Str::uuid();
+                Visit::create([
+                    'kode_visit' => $kode_visit,
+                    'nama' => $namaVisit,
+                    'kordinat' => $kordinat,
+                ]);
+
+                $data = [
+                    'nip' => $nip,
+                    'kode_visit' => $kode_visit,
+                    'kordinat' => $kordinat,
+                    'foto' => $foto,
+                    'tanggal' => $tanggalIn
+                ];
+            }
             $cr = DataVisit::create($data);
             if ($cr) {
                 return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Kunjungan!', 'keterangan' => 'pagi']),200);
@@ -75,7 +81,7 @@ class VisitApiController extends Controller
                 return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),400);
             }
         }
-        
+
     }
 
     public function index()
@@ -92,7 +98,7 @@ class VisitApiController extends Controller
             }else{
                 $data = DataVisit::where('nip', $nip)->get();
             }
-            
+
             // dd($data);
             $data = DataVisitResource::collection($data);
 
@@ -100,7 +106,7 @@ class VisitApiController extends Controller
         } catch (\Throwable $th) {
             return response()->json(buildResponseSukses($th->getMessage()),400);
         }
-        
+
     }
 
     public function lokasi()
@@ -122,7 +128,7 @@ class VisitApiController extends Controller
     }
     function list_lokasi_visit(){
         try{
-            
+
             $data = Visit::all();
             return response()->json(buildResponseSukses($data),200);
         } catch (\Throwable $th) {

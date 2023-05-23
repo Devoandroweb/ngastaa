@@ -1,0 +1,2 @@
+ALTER TABLE `data_visit` ADD `check_in` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `foto`;
+ALTER TABLE `data_visit` ADD `check_out` DATETIME NULL DEFAULT NULL AFTER `check_in`;

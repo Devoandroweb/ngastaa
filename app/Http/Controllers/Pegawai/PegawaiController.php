@@ -7,6 +7,7 @@ use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
 use App\Models\Pegawai\Imei;
+use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
@@ -48,7 +49,7 @@ class PegawaiController extends Controller
             ->get();
         SelectResource::withoutWrapping();
         $pegawai = SelectResource::collection($pegawai);
-        
+
         return response()->json($pegawai);
     }
 
@@ -70,7 +71,7 @@ class PegawaiController extends Controller
     {
         $pegawai->tlahir = tanggal_indo($pegawai->tanggal_lahir);
         // dd($pegawai);
-       
+
         return view('pages/pegawai/pegawai/detail', compact('pegawai'));
         // return inertia('Pegawai/Pegawai/detail', compact('pegawai'));
     }
@@ -136,11 +137,11 @@ class PegawaiController extends Controller
             $data['image'] = $dir.'/'.$image;
         }
         if (!request('id')) {
-            
+
             $data['password'] = password_hash(request('nip'), PASSWORD_BCRYPT);
             $cr = User::create($data);
             TotalPresensi::firstOrCreate([
-                'nip' => $item->nip,
+                'nip' => request('nip'),
                 'periode_bulan' =>  date("Y-m")
             ]);
             $cr->assignRole('pegawai');
@@ -151,7 +152,7 @@ class PegawaiController extends Controller
             }
             $cr = $user->update($data);
         }
-        
+
         if ($cr) {
             return redirect(route('pegawai.pegawai.index'))->with([
                 'type' => 'success',
@@ -216,18 +217,18 @@ class PegawaiController extends Controller
             });
         // dd($pegawai);
         // $pegawai = PegawaiResource::collection($pegawai);
-        
-        
+
+
         return $dataTables->of($pegawai)
             ->addColumn('images', function ($row) {
-                return '<div>	
+                return '<div>
                         <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
                         <img src="' . $row->foto() . '" alt="user" class="avatar-img">
                     </div>';
             })
             ->addColumn('nama', function ($row) {
                 return '<b class="text-primary">' . $row->nip . '</b><br>' .  ($row->gelar_depan ? $row->gelar_depan .". " : "") . $row->name . ($row->gelar_belakang ? ", " . $row->gelar_belakang : "");
-                
+
             })
             ->addColumn('nama_jabatan', function ($row) {
                 $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
@@ -271,7 +272,7 @@ class PegawaiController extends Controller
     }
 
     public function import_pegawai()
-    {   
+    {
         request()->validate([
             'file' => 'required|mimes:xlsx',
         ]);

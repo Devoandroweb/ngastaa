@@ -41,7 +41,7 @@ class RiwayatShiftController extends Controller
     {
         // return view('pages.pegawai.pegawai.datariwayat.Shift.edit',compact('pegawai', 'Rshift'));
         // return inertia('Pegawai/Shift/Add', compact('pegawai', 'Rshift'));
-        
+
         $for = 1;
         $data['data'] = $Rshift;
         $data['view'] = view('pages.pegawai.pegawai.datariwayat.shift.add',compact('pegawai', 'Rshift', 'for'))->render();
@@ -103,10 +103,9 @@ class RiwayatShiftController extends Controller
             }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
-
-        // dd($data);
-        
-        
+        if(role('owner')){
+            $data['status'] = 1;
+        }
         if(request()->query('front')){
             $data['nip'] = $pegawai->nip;
             $data['is_akhir'] = 1;
@@ -161,7 +160,7 @@ class RiwayatShiftController extends Controller
             ->get();
         $Rshift = RiwayatShiftResource::collection($Rshift);
         return $dataTables->of($Rshift)
-        
+
             ->addColumn('nama', function ($row) {
                 if($row['shift']){
                     return (($row->is_akhir == 1)?'<i class="bi bi-bookmark-star-fill text-danger fs-4"></i>' : '').$row['shift']['nama'];

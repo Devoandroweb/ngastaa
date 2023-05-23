@@ -29,11 +29,11 @@ class DashboardController extends Controller
     }
     public function __invoke()
     {
-        
+
         $role = role('opd');
         $periode_bulan = date("Y-m");
         $pegawai = $this->pegawaiRepository->getAllPegawaiRoleOPD($role);
-                    
+
         $jumlah_pegawai = $pegawai->count();
         $get_pegawai = User::role('pegawai')->where('owner',0);
 
@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $color_status_pegawai = [];
 
         # Data Kepegawaian Status Pegawai
-        
+
         foreach ($status_pegawai as $key => $value) {
             $pegawai = User::role('pegawai')->where('owner',0)
                         ->when($role,function($q){
@@ -62,23 +62,23 @@ class DashboardController extends Controller
                             });
                         });
             $total_status = $pegawai->where('kode_status',$value->kode_status)->count();
-            
+
             $nama = $value->nama;
-            
+
             array_push($total_status_pegawai,$total_status);
             array_push($nama_status_pegawai,$nama);
             array_push($color_status_pegawai,getColor($key));
-            
+
         }
         $status_pegawai_statistic = [
             'series' => $total_status_pegawai,
             'labels' => $nama_status_pegawai,
             'colors' => $color_status_pegawai,
         ];
-        
+
         # Data Kepegawaian Status Kawin
         $status_kawin = User::groupBy('kode_kawin')->pluck('kode_kawin');
-        
+
         $collection = new Collection($status_kawin);
         $status_kawin = $collection->filter(function ($value) {
             return $value !== null;
@@ -106,9 +106,9 @@ class DashboardController extends Controller
                             });
                         });
             $total_status = $pegawai->where('kode_kawin',$value)->count();
-            
+
             $nama = $value;
-           
+
             array_push($total_status_kawin,$total_status);
             array_push($nama_status_kawin,ucfirst($nama));
             array_push($color_status_kawin,getColor($key));
@@ -187,7 +187,7 @@ class DashboardController extends Controller
 
         $masuk = $totalPresensi->sum("masuk");
         $alfa = $totalPresensi->sum("alfa");
-        
+
         $dataTotalPresensi = [$masuk,$alfa];
         $textTotalPresensi = ['Masuk', 'Tidak Masuk'];
         $colorTotalPresensi = ['#00E396','#FF4560'];
@@ -212,7 +212,7 @@ class DashboardController extends Controller
                                     ->get();
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
 
-        
+
 
         $titlePage = "Dashboard ".env('app_name');
 
@@ -220,10 +220,10 @@ class DashboardController extends Controller
             'status_pegawai_statistic',
             'status_kawin_statistic',
             'titlePage',
-            'jumlah_pegawai', 
-            'presensi', 
-            'bulan', 
-            'tahun', 
+            'jumlah_pegawai',
+            'presensi',
+            'bulan',
+            'tahun',
             'selesai_kontrak',
             'mapsRadar',
             'lokasiVisit',
@@ -252,7 +252,7 @@ class DashboardController extends Controller
             return tanggal_indo($row->tanggal_tmt);
         })
         ->addColumn('images', function ($row) {
-            return '<div>	
+            return '<div>
                     <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
                     <img src="' . $row->foto() . '" alt="user" class="avatar-img">
                 </div>';
@@ -264,7 +264,7 @@ class DashboardController extends Controller
     public function payrollStatistic()
     {
         $dateRange = request()->query("d");
-        
+
         $payroll = DataPayroll::query();
         if($dateRange == null){
             $payroll = $payroll->get();
@@ -280,7 +280,7 @@ class DashboardController extends Controller
         foreach ($payroll as $pay) {
             $totalPayroll += (int)$pay->total;
             $total += (int)$pay->total;
-            
+
             if($created_at != $pay->created_at){
                 $dataPayroll[] = $total;
                 $categories[] = date("m-Y",strtotime($pay->created_at));
@@ -297,7 +297,7 @@ class DashboardController extends Controller
     function getNominalRange($input){
         $len = strlen((string)$input);
         $result = "10";
-        for ($i=1; $i < $len; $i++) { 
+        for ($i=1; $i < $len; $i++) {
             $result .= "0";
         }
         return $result;
