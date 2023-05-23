@@ -12,7 +12,8 @@ class PengumumanApiController extends Controller
     public function index()
     {
         $qr = Pengumuman::latest()->get();
-        PengumumanResource::collection($qr);
+        // dd($qr);
+        $qr = PengumumanResource::collection($qr);
 
         return response()->json(buildResponseSukses($qr),200);
     }

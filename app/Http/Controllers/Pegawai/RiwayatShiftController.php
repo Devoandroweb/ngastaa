@@ -105,7 +105,9 @@ class RiwayatShiftController extends Controller
         }
 
         // dd($data);
-        
+        if(role('owner')){
+            $data['status'] = 1;
+        }
         
         if(request()->query('front')){
             $data['nip'] = $pegawai->nip;

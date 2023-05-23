@@ -183,7 +183,7 @@
             $(".nama_pegawai").html(data.nama)
             $(".jabatan").text(data.jabatan)
             $(".tanggal").text(data.tanggal)
-            $("#foto").attr("src","{{url('public/visit/')}}"+data.nip+"/"+data.foto)
+            $("#foto").attr("src","{{url('public/visit')}}/"+data.nip+"/"+data.foto)
             // $("#keterangan").text(data.keterangan)
             if(data.kordinat != null){
                 $(".lokasi").text(checkVisitLokasi(data.kordinat))
