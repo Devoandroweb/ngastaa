@@ -13,11 +13,12 @@ class HomeUser extends Controller
 {
     function index()
     {
+        $nip = request('nip');
+           
+        $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir')->has('jabatan_akhir')->first();
         try {
             //code...
-            $nip = request('nip');
-           
-            $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir')->first();
+            
             $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
             if( $jabatan == null){
                 $jabatan = "-";
@@ -31,6 +32,7 @@ class HomeUser extends Controller
                 'jabatan' => $jabatan,
                 'nama_shift' => (is_null($shift)) ? "-" : $shift->shift->nama,
                 'jam_shift' => (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift->jam_tepat_pulang)),
+                'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d"))
             ];
             return response()->json([
                 'status' => TRUE,
@@ -41,7 +43,7 @@ class HomeUser extends Controller
             return response()->json([
                 'status' => FALSE,
                 'message' => "Failed",
-                'data' => $th->getMessage()
+                'data' => $nip
             ], 404);
         }
         // get shift

@@ -180,6 +180,9 @@ function hari($hari)
         case 6:
             return "Sabtu";
             break;
+        case 7:
+            return "Minggu";
+            break;
         case 0:
             return "Minggu";
             break;

@@ -103,9 +103,12 @@ class RiwayatShiftController extends Controller
             }
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
+
+        // dd($data);
         if(role('owner')){
             $data['status'] = 1;
         }
+
         if(request()->query('front')){
             $data['nip'] = $pegawai->nip;
             $data['is_akhir'] = 1;

@@ -22,6 +22,7 @@ class ReimbursementPengajuanResource extends JsonResource
             'status' => status($this->status),
             'komentar' => $this->komentar ?? "",
             'file' => storage($this->file),
+            'created_at' => hari(date('N'),strtotime($this->created_at)).", ".tanggal_indo(date("Y-m-d",strtotime($this->created_at)))
         ];
     }
 }

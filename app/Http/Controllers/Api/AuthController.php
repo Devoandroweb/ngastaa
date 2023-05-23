@@ -20,6 +20,9 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
+        // return response()->json([
+        //     'data' => $request->all()
+        // ], 200);
         $request->validate([
             'email' => 'required',
             'password' => 'required'

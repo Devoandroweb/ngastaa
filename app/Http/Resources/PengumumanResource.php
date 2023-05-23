@@ -14,12 +14,13 @@ class PengumumanResource extends JsonResource
      */
     public function toArray($request)
     {
+        
         return [
             'id' => $this->id,
             'judul' => $this->judul,
             'deskripsi' => $this->deskripsi,
-            'file' => public_path("public/".$this->file),
-            'created_at' => tanggal_indo($this->created_at),
+            'file' => $this->file,
+            'created_at' => hari(date('N'),strtotime($this->created_at)).", ".tanggal_indo(date("Y-m-d",strtotime($this->created_at))),
         ];
     }
 }
