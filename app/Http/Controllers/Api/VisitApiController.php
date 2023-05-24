@@ -9,6 +9,7 @@ use App\Models\Pegawai\DataVisit;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VisitApiController extends Controller
 {
@@ -19,7 +20,7 @@ class VisitApiController extends Controller
         $kode_visit = request('kode_visit');
 
         #$newOrOld = request('new_old'); # 1 : new | 2 : old
-        $newOrOld = 2; # 1 : new | 2 : old
+        $newOrOld = request('new_old'); # 1 : new | 2 : old
 
         $timeZone = request('timezone') ?? 'WITA';
 
@@ -59,11 +60,15 @@ class VisitApiController extends Controller
             }else{
                 # tambah visit baru
                 $namaVisit = request('nama_visit');
+                $alamat = request('alamat');
                 $kode_visit = (string) Str::uuid();
+                $qrName = (string) Str::uuid().".svg";
+                QrCode::generate($kode_visit, public_path("visit_qr\\".$qrName));
                 Visit::create([
                     'kode_visit' => $kode_visit,
                     'nama' => $namaVisit,
-                    'kordinat' => $kordinat,
+                    'alamat' => $alamat,
+                    'qr' => $qrName
                 ]);
 
                 $data = [
@@ -83,7 +88,17 @@ class VisitApiController extends Controller
         }
 
     }
-
+    function checkOut(){
+        try{
+            $idDataVisit = request('id_data_visit');
+            $dataVisit = DataVisit::find($idDataVisit);
+            $dataVisit->check_out = date("Y-m-d H:i:s");
+            $dataVisit->update();
+            return response()->json(buildResponseSukses(['status' => 'Success', 'messages' =>'Sukses Checkout Visit']),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseSukses($th->getMessage()),400);
+        }
+    }
     public function index()
     {
         try {

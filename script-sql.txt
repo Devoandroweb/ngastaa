@@ -1,2 +1,5 @@
 ALTER TABLE `data_visit` ADD `check_in` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `foto`;
 ALTER TABLE `data_visit` ADD `check_out` DATETIME NULL DEFAULT NULL AFTER `check_in`;
+ALTER TABLE `visit_lokasi` ADD `alamat` TEXT NULL DEFAULT NULL AFTER `nama`;
+ALTER TABLE `visit_lokasi` CHANGE `jarak` `jarak` INT(11) NULL DEFAULT NULL;
+ALTER TABLE `visit_lokasi` CHANGE `kordinat` `kordinat` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;

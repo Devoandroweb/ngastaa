@@ -26,13 +26,19 @@
                 {{-- maps --}}
                 <div id="map" class="mb-4" style="height: 500px"></div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Alamat</label>
+                            <textarea input class="form-control" name="alamat" id="alamat" placeholder="Masukkan Aalamat" rows="4" cols="10">{{$visit->alamat ?? ''}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label class="form-label">Koordinat</label>
                             <input class="form-control" name="kordinat" id="koordinat" placeholder="Masukkan Koordinat" value="{{$visit->kordinat ?? ''}}">
                         </div>
                     </div>
-                    <div class="col d-none">
+                    <div class="d-none">
                         <div class="row">
                             <div class="mb-3 col">
                                 <label for="customRange1" class="form-label">Jarak Wilayah (m)</label>
@@ -54,7 +60,7 @@
                 <input type="hidden" name="longitude" id="longitude" value="{{isset($lglt[1]) ?? ''}}">
                 <input type="hidden" name="polygon" id="polygon" value="{{$visit->polygon ?? ''}}">
                 {{-- end maps --}}
-                <button type="submit" class="btn btn-primary btn-submit">Simpan</button>    
+                <button type="submit" class="btn btn-primary btn-submit">Simpan</button>
                 <a href="{{route('master.visit.index')}}" class="btn btn-light">Kembali</a>
             </form>
         </div>
@@ -68,7 +74,7 @@
     var htmlSelctPegawai = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-pegawai')!!}";
     $(".element-keterangan").html(htmlSelctPegawai);
 	// $(".select2").select2("destroy").select2();
-	
+
     $("#input_tags_pwgawai").select2({
         tags: true,
         tokenSeparators: [',', ' '],

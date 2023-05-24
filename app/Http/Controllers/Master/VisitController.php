@@ -33,7 +33,7 @@ class VisitController extends Controller
     public function add()
     {
         $visit = new Visit();
-    
+
         return view('pages\masterdata\datapresensi\lokasivisit\add', compact('visit'));
     }
 
@@ -65,6 +65,7 @@ class VisitController extends Controller
             'kordinat' => 'required',
             'jarak' => 'required',
             'nama' => 'required',
+            'alamat' => 'required',
             'polygon' => 'nullable',
         ];
 

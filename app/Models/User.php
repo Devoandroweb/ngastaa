@@ -29,7 +29,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
-    
+
     protected $guarded = [];
 
     protected $hidden = [
@@ -63,7 +63,7 @@ class User extends Authenticatable
     public function riwayat_pendidikan()
     {
         return $this->hasMany(RiwayatPendidikan::class, 'nip', 'nip')->orderByDesc('kode_pendidikan');
-    
+
     }public function riwayat_shift()
     {
         return $this->hasMany(RiwayatShift::class, 'nip', 'nip')->orderByDesc('kode_shift');
@@ -73,7 +73,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(RiwayatKursus::class, 'nip', 'nip');
     }
-    
+
     public function riwayat_penghargaan()
     {
         return $this->hasMany(RiwayatPenghargaan::class, 'nip', 'nip');
@@ -117,7 +117,7 @@ class User extends Authenticatable
     public function pendidikan_akhir()
     {
         return $this->riwayat_pendidikan()->where('is_akhir', 1);
-    } 
+    }
     public function shift_akhir()
     {
         return $this->riwayat_shift()->where('is_akhir', 1);
@@ -174,5 +174,6 @@ class User extends Authenticatable
             }
         }
         return url("/$foto");
+        // return $foto;
     }
 }

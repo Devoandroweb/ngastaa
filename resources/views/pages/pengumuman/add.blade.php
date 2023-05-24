@@ -24,13 +24,13 @@
             </div>
             <div class="form-group has-validation">
                 <label class="form-label">PDF / Gambar</label>
-                <input type="file" class="form-control @error('file') is-invalid @enderror"  placeholder="Masukkan File" name="file">
+                <input type="file" class="form-control @error('file') is-invalid @enderror"  placeholder="Masukkan File" name="file" required>
                 <div class="invalid-feedback">
                     {{ $errors->first('file') }}
                 </div>
             </div>
         </div>
-       
+
     </div>
     <button type="submit" class="btn btn-primary">Simpan</button>
     <a href="{{route('pengumuman.index')}}" class="btn btn-light">Kembali</a>

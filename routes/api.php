@@ -23,7 +23,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function(){
-    
+
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('getUser', [AuthController::class, 'getUser']);
     Route::post('ubah-password', [AuthController::class,'changePassword']);
@@ -70,6 +70,7 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('', 'index');
             Route::get('lokasi', 'lokasi');
             Route::post('store', 'store');
+            Route::post('check-out', 'checkOut');
         });
 
     Route::controller(PengumumanApiController::class)

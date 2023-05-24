@@ -19,9 +19,11 @@ class DataVisitResource extends JsonResource
             'nip' => $this->nip,
             'kode_visit' => $this->kode_visit,
             'visit' => $this->visit?->nama,
+            'alamat' => $this->visit?->alamat,
             'kordinat' => $this->kordinat,
             'tanggal' => tanggal_indo($this->tanggal),
             'jam' => get_jam($this->tanggal),
+            'check_out' => $this->check_out != null ? get_jam($this->check_out) : null,
             'foto' => url("public/uploads".$this->foto),
         ];
     }

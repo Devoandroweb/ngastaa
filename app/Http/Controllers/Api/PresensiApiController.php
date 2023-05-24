@@ -81,7 +81,7 @@ class PresensiApiController extends Controller
                 ->whereNull('lokasi_detail.deleted_at')
                 ->first();
             if ($lokasiPegawai && $lokasiPegawai->kordinat != "" && $lokasiPegawai->longitude != "" && $lokasiPegawai->latitude != "" && $lokasiPegawai->jarak > 0) {
-                
+
                 return response()->json(buildResponseSukses([
                     'kordinat' => $lokasiPegawai->kordinat,
                     'latitude' => $lokasiPegawai->latitude,
@@ -149,7 +149,7 @@ class PresensiApiController extends Controller
             $kode_tingkat = $tingkat?->kode_tingkat ?? 0;
             $divisi = $rwJabatan?->skpd;
             $kode_skpd = $divisi?->kode_skpd;
-            
+
             $shift_pegawai = RiwayatShift::where('is_akhir', 1)->where('nip', $nip)->first();
             if($shift_pegawai){
                 $lokasi = $shift_pegawai->kode_shift;
@@ -183,10 +183,10 @@ class PresensiApiController extends Controller
         // dd(request()->all());
         // dd(request('image'));
         // $image_64 = request('image');
-        
+
         // $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
         // $extension = request('image')->getClientOriginalExtension();
-        
+
         // $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
         // $image = str_replace($replace, '', $image_64);
         // $image = str_replace(' ', '+', $image);
@@ -197,12 +197,12 @@ class PresensiApiController extends Controller
         $toler1Min = strtotime("-5 minutes");
         $dateSend = strtotime($date);
 
-        
+
 
         // if($image_64){
         //     $foto = "presensi/$nip/$imageName";
         //     Storage::disk('public')->put("/$foto", $image);
-            
+
         // }else{
         //     $foto = "";
         // }
@@ -221,13 +221,13 @@ class PresensiApiController extends Controller
         // dd(date("H:i:s",$toler1Min));
         // dd(date("Y-m-d H:i:s",$dateSend));
         // dd(date("Y-m-d H:i:s",$toler1Min));
-        $user = User::where('nip', $nip)->with('riwayat_shift')->has('riwayat_shift')->first();
-        
+        $user = User::where('nip', $nip)->with('riwayat_shift')->first();
+
         if ($dateSend < $toler1Min) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Harap memperbaiki jam Handphone Anda!']),400);
         }
-        
-        
+
+
         if (!$user) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'User tidak ditemukan!']),400);
         }
@@ -255,9 +255,9 @@ class PresensiApiController extends Controller
 
         $bukaSoreTime = strtotime($shift->jam_buka_pulang);
         $tutupSoreTime = strtotime($shift->jam_tutup_pulang);
-        
+
         // dd($dateSend <= $tutupPagiTime);
-        
+
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
             $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', date('Y-m-d'))->count();
             if ($cek > 0) {
@@ -265,7 +265,7 @@ class PresensiApiController extends Controller
             } else {
                 $foto = $this->uploadFotoAbsen($nip);
                 $data = [
-                    'nip' => $nip, 
+                    'nip' => $nip,
                     'periode_bulan' => date("Y-m"),
                     'kordinat_datang' => $kordinat,
                     'foto_datang' => $foto,
@@ -276,7 +276,7 @@ class PresensiApiController extends Controller
                 $cr = DataPresensi::create($data);
                 if ($cr) {
                     if ($user->no_hp != "") {
-                        //Telat 
+                        //Telat
                         if (strtotime($tanggalIn) > strtotime(date("Y-m-d", strtotime($tanggalIn)) . $shift->jam_tepat_datang)) {
                             $dateTimeObject1 = date_create(date("Y-m-d", strtotime($tanggalIn)) . " " . $shift->jam_tepat_datang);
                             $dateTimeObject2 = date_create($tanggalIn);

@@ -21,6 +21,18 @@ class CApiAktifitas extends Controller
             return response()->json(buildResponseSukses($th->getMessage()),400);
         }
     }
+    function index_two(){
+        try {
+            // dd(request()->all());
+            $nip = request()->query('nip');
+            $data = MAktifitas::whereNot('nip',$nip)->orderBy('created_at','desc')->get();
+            $data = AktifitasResource::collection($data);
+            // $data->{"foto"} = url('public/'.$data->foto);
+            return response()->json(buildResponseSukses($data),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseSukses($th->getMessage()),400);
+        }
+    }
     function store(){
         try {
             $nip = request('nip');
@@ -48,6 +60,6 @@ class CApiAktifitas extends Controller
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => $th->getMessage()]),400);
             //throw $th;
         }
-        
+
     }
 }
