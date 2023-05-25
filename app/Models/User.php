@@ -146,6 +146,9 @@ class User extends Authenticatable
     function statusPegawai(){
         return $this->hasOne(StatusPegawai::class,'kode_status','kode_status');
     }
+    // function jamKerja(){
+    //     return $this->hasOne(MJamKerja::class,'nip','nip');
+    // }
     public function riwayatJabatan()
     {
         $user = auth()->user()->jabatan_akhir;

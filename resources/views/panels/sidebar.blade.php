@@ -24,7 +24,7 @@
         </span>
     </div>
     <!-- /Brand -->
-    
+
     <!-- Main Menu -->
     <div data-simplebar class="nicescroll-bar">
         <div class="menu-content-wrap">
@@ -53,7 +53,7 @@
                                 <span class="nav-link-text">Dashboard</span>
                             </a>
                         </li>
-                    </ul>	
+                    </ul>
                 </div>
                 <ul class="navbar-nav flex-column">
                     {{-- Profil Pegawai --}}
@@ -71,7 +71,7 @@
                     @if(role('admin'))
                     @include('panels.sidebar-hrd')
                     @endif
-                    <li class="nav-item d-none"> 
+                    <li class="nav-item d-none">
                         {{-- {{activeMenu("pegawai")}} --}}
                         <a class="nav-link" href="{{route('presensi.penjadwalanshift.index')}}">
                             <span class="nav-icon-wrap">
@@ -134,9 +134,9 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{route('master.eselon.index')}}"><span class="nav-link-text">Level Jabatan</span></a>
                                             </li>
-                                        </ul>	
-                                    </li>	
-                                </ul>	
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
                             {{-- Data Pendidikan --}}
                             <li class="nav-item">
@@ -160,9 +160,9 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{route('master.kursus.index')}}"><span class="nav-link-text">Kursus & Pelatihan</span></a>
                                             </li>
-                                        </ul>	
-                                    </li>	
-                                </ul>	
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
                             {{-- Data Presensi --}}
                             <li class="nav-item">
@@ -183,9 +183,9 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{route('master.visit.index')}}"><span class="nav-link-text">Lokasi Visit</span></a>
                                             </li>
-                                        </ul>	
-                                    </li>	
-                                </ul>	
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
                             {{-- Data Presensi --}}
                             <li class="nav-item">
@@ -209,9 +209,12 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{route('master.shift.index')}}"><span class="nav-link-text">Shift</span></a>
                                             </li>
-                                        </ul>	
-                                    </li>	
-                                </ul>	
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{route('master.jam_kerja.index')}}"><span class="nav-link-text">Jam Kerja</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
                             {{-- Data Payroll --}}
                             <li class="nav-item">
@@ -244,9 +247,9 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{route('master.payroll.pengurangan.index')}}"><span class="nav-link-text">Komponen Potongan</span></a>
                                             </li>
-                                        </ul>	
-                                    </li>	
-                                </ul>	
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
                             {{-- Data Lainya --}}
                             <li class="nav-item">
@@ -270,11 +273,11 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{route('master.reimbursement.index')}}"><span class="nav-link-text">Reimbursement</span></a>
                                             </li>
-                                        </ul>	
-                                    </li>	
-                                </ul>	
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
-                        </ul>	
+                        </ul>
                     </li>
                     {{-- Payroll --}}
                     <li class="nav-item {{activeMenu("payroll")}}">
@@ -300,9 +303,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('payroll.kurang.index')}}"><span class="nav-link-text">Daftar Pengurangan</span></a>
                                     </li>
-                                </ul>	
-                            </li>	
-                        </ul>	
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
                     @endif
                     {{-- Menu Riwayat --}}
@@ -323,7 +326,7 @@
                             <span class="nav-link-text">Presensi Harian</span>
                         </a>
                     </li>
-                    <li class="nav-item {{activeMenu("rekapabsen")}}"> 
+                    <li class="nav-item {{activeMenu("rekapabsen")}}">
                         {{-- {{activeMenu("pegawai")}} --}}
                         <a class="nav-link " href="{{route('presensi.rekapabsen.index')}}">
                             <span class="nav-icon-wrap">
@@ -379,9 +382,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('pengajuan.shift.index')}}"><span class="nav-link-text">Pengajuan Shift</span></a>
                                     </li>
-                                </ul>	
-                            </li>	
-                        </ul>	
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
                     @endif
                     <div class="menu-gap"></div>
@@ -420,7 +423,7 @@
                             </span>
                             <span class="nav-link-text">Visit</span>
                         </a>
-                    </li> 
+                    </li>
                     <li class="nav-item {{activeMenu("laporan-aktifitas")}}">
                         <a class="nav-link" href="{{route('presensi.aktifitas.index')}}">
                             <span class="nav-icon-wrap">
@@ -438,7 +441,7 @@
                     <div class="nav-header">
                         <span>Informasi</span>
                     </div>
-                    
+
                     {{-- Pengumuman --}}
                     <li class="nav-item {{activeMenu("pengumuman")}}">
                         <a class="nav-link" href="{{route('pengumuman.index')}}">
@@ -475,12 +478,12 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('users.manager.index')}}"><span class="nav-link-text">Kepala Divisi</span></a>
                                     </li>
-                                </ul>	
-                            </li>	
-                        </ul>	
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
                     {{-- Profile Perusahaan --}}
-                    
+
                     <li class="nav-item d-block d-md-none {{activeMenu("perusahaan")}}">
                         <a class="nav-link" href="{{route('perusahaan.index')}}">
                             <span class="nav-icon-wrap">
@@ -491,12 +494,12 @@
                             <span class="nav-link-text">Profile Perusahaan</span>
                         </a>
                     </li>
-                    @endif	
+                    @endif
                 </ul>
             </div>
             @endif
-            
-            
+
+
         </div>
     </div>
     <!-- /Main Menu -->

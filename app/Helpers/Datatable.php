@@ -232,6 +232,18 @@ function konfigShift($nip){
     ];
     return $arrayColumns;
 }
+function konfigJamKerja($nip){
+    $arrayColumns = [
+        "url" => url("pegawai/jam_kerja/".$nip. "/datatable"),
+        "url_add" => url("pegawai/jam_kerja/" . $nip . "/add"),
+        "data" => [
+            ['title' => 'No','data' => 'DT_RowIndex', 'orderable'=> false ,'searchable'=> false],
+            ['title' => 'Nama Jam Kerja','data' => 'nama','name' => 'nama'],
+            ['title' => 'Opsi','data' => 'opsi','name' => 'opsi'],
+        ]
+    ];
+    return $arrayColumns;
+}
 function konfigPenghargaan($nip)
 {
     $arrayColumns = [

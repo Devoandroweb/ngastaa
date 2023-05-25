@@ -27,6 +27,7 @@ use App\Http\Controllers\Master\PenguranganPayrollController;
 use App\Http\Controllers\Master\ReimbursementController;
 use App\Http\Controllers\Master\SeksiController;
 use App\Http\Controllers\Master\ShiftController;
+use App\Http\Controllers\Master\JamKerjaController;
 use App\Http\Controllers\Master\SkpdController;
 use App\Http\Controllers\Master\StatusPegawaiController;
 use App\Http\Controllers\Master\SukuController;
@@ -60,6 +61,7 @@ use App\Http\Controllers\Pegawai\RiwayatPmkController;
 use App\Http\Controllers\Pegawai\RiwayatPotonganController;
 use App\Http\Controllers\Pegawai\RiwayatReimbursementController;
 use App\Http\Controllers\Pegawai\RiwayatShiftController;
+use App\Http\Controllers\Pegawai\RiwayatJamKerjaController;
 use App\Http\Controllers\Pegawai\RiwayatSptController;
 use App\Http\Controllers\Pegawai\RiwayatStatusController;
 use App\Http\Controllers\Pegawai\RiwayatTunjanganController;
@@ -116,7 +118,7 @@ Route::middleware(['auth'])
         Route::get('logs', [LogController::class, 'index'])->name('logs');
         Route::get('ubah-password', [UbahPassword::class, 'index'])->name('password.index');
         Route::post('ubah-password-update', [UbahPassword::class, 'update'])->name('ubah.password.update');
-        
+
         Route::prefix('presensi')
             ->name("presensi.")
             ->middleware('role:opd|admin|owner')
@@ -133,7 +135,7 @@ Route::middleware(['auth'])
                     Route::get('datatable_detail_izin/{nip}', 'datatable_detail_izin')->name('datatable_detail_izin');
                     Route::get('datatable_detail_absen/{nip}/{status}', 'datatable_detail_absen')->name('datatable_detail_absen');
                 });
-                
+
                 Route::prefix('penjadwalanshift')
                 ->controller(PenjadwalanShiftController::class)
                     ->name("penjadwalanshift.")
@@ -146,7 +148,7 @@ Route::middleware(['auth'])
                         Route::get('delete/{penjadwalanshift}', 'delete')->name('delete');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
-                
+
                 Route::prefix('rekapabsen')
                 ->controller(RekapAbsensHarianController::class)
                     ->name("rekapabsen.")
@@ -231,7 +233,7 @@ Route::middleware(['auth'])
                         Route::get('reset', 'reset')->name('reset');
                         Route::post('store', 'store')->name('store');
                     });
-                
+
 
                 Route::controller(PegawaiJabatanController::class)
                     ->prefix('jabatan/{pegawai}')
@@ -413,6 +415,17 @@ Route::middleware(['auth'])
                         Route::get('delete/{Rshift}', 'delete')->name('delete');
                     });
 
+                Route::controller(RiwayatJamKerjaController::class)
+                    ->prefix('jam_kerja/{pegawai}')
+                    ->name("jam_kerja.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('add', 'add')->name('add');
+                        Route::post('store', 'store')->name('store');
+                        Route::get('edit/{RJamKerja}', 'edit')->name('edit');
+                        Route::get('delete/{RJamKerja}', 'delete')->name('delete');
+                    });
+
                 Route::controller(RiwayatKgbController::class)
                     ->prefix('kgb/{pegawai}')
                     ->name("kgb.")
@@ -501,7 +514,8 @@ Route::middleware(['auth'])
                         Route::get('edit/{Rlainnya}', 'edit')->name('edit');
                         Route::get('delete/{Rlainnya}', 'delete')->name('delete');
                     });
-                    // NEW DATATABLE
+
+                    // NEW DATATABLEa
                     // ============== Data Riwayat ===================
                     Route::get('jabatan/{pegawai}/datatable', [PegawaiJabatanController::class, "datatable"]);
                     Route::get('kgb/{pegawai}/datatable', [RiwayatKgbController::class, "datatable"]);
@@ -514,6 +528,7 @@ Route::middleware(['auth'])
                     Route::get('lembur/{pegawai}/datatable', [RiwayatLemburController::class, "datatable"]);
                     Route::get('reimbursement/{pegawai}/datatable', [RiwayatReimbursementController::class, "datatable"]);
                     Route::get('shift/{pegawai}/datatable', [RiwayatShiftController::class, "datatable"]);
+                    Route::get('jam_kerja/{pegawai}/datatable', [RiwayatJamKerjaController::class, "datatable"]);
                     // ============== Data Keluarga ===================
                     Route::get('keluarga/{pegawai}/datatable_keluarga', [KeluargaController::class, "datatable_keluarga"]);
                     Route::get('keluarga/{pegawai}/datatable_orangtua', [KeluargaController::class, "datatable_orangtua"]);
@@ -576,7 +591,7 @@ Route::middleware(['auth'])
                         Route::get('payroll-datatable/{generate}', 'payrollDatatable')->name('payrollDatatable');
                     });
             });
-        
+
         Route::prefix('pengajuan')
             ->name("pengajuan.")
             ->middleware('role:opd|admin|owner')
@@ -593,7 +608,7 @@ Route::middleware(['auth'])
                         Route::get('laporan-divisi-download', 'laporan_divisi_download')->name('laporan_divisi_download');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
-                
+
                 Route::controller(CutiPengajuanController::class)
                     ->prefix('cuti')
                     ->name("cuti.")
@@ -638,7 +653,7 @@ Route::middleware(['auth'])
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
             });
-        
+
         Route::prefix('manajemen-user')
             ->name("users.")
             ->middleware('role:admin|owner')
@@ -868,6 +883,19 @@ Route::middleware(['auth'])
                         Route::post('store', 'store')->name('store');
                         Route::get('edit/{shift}', 'edit')->name('edit');
                         Route::get('delete/{shift}', 'delete')->name('delete');
+                        Route::get('datatable', 'datatable')->name('datatable');
+                    });
+                Route::controller(JamKerjaController::class)
+                    ->prefix('jam_kerja')
+                    ->name("jam_kerja.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('add', 'add')->name('add');
+                        Route::get('json', 'json')->name('json');
+                        Route::get('json_all', 'json_all')->name('json_all');
+                        Route::post('store', 'store')->name('store');
+                        Route::get('edit/{jamKerja}', 'edit')->name('edit');
+                        Route::get('delete/{jamKerja}', 'delete')->name('delete');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
 

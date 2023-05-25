@@ -223,7 +223,7 @@ class PegawaiController extends Controller
             ->addColumn('images', function ($row) {
                 return '<div>
                         <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
-                        <img src="' . $row->foto() . '" alt="user" class="avatar-img">
+                        <img src="' . url("/".$row->foto()) . '" alt="user" class="avatar-img">
                     </div>';
             })
             ->addColumn('nama', function ($row) {

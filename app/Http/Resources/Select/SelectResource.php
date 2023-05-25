@@ -72,6 +72,9 @@ class SelectResource extends JsonResource
         if($this->kode_shift){
             $data['kode_shift'] = $this->kode_shift;
         }
+        if($this->kode){
+            $data['kode'] = $this->kode; # jam kerja
+        }
         if($this->kode_reimbursement){
             $data['kode_reimbursement'] = $this->kode_reimbursement;
         }

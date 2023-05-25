@@ -45,6 +45,16 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link item-sidebar-content tab-datatable" data-bs-toggle="tab" data-tipepage="211" href="#jam_kerja"
+                                data-tableurl="{{konfigJamKerja($pegawai['nip'])['url']}}"
+                                data-tablecolumn='{!!json_encode(konfigJamKerja($pegawai['nip'])['data'])!!}'
+                                data-tableadd="{{konfigJamKerja($pegawai['nip'])['url_add']}}"
+                                >
+                                <span class="nav-icon-wrap">{!!icons('c-arror-right')!!}</span>
+                                <span class="nav-link-text">Jam Kerja</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link item-sidebar-content tab-datatable" data-tipepage="22" href="#gaji_pokok"
                                 data-tableurl="{{konfigGajiPokok($pegawai['nip'])['url']}}"
                                 data-tablecolumn='{!!json_encode(konfigGajiPokok($pegawai['nip'])['data'])!!}'
@@ -95,7 +105,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link item-sidebar-content tab-datatable" data-tipepage="27"  href="#data_cuti" 
+                            <a class="nav-link item-sidebar-content tab-datatable" data-tipepage="27"  href="#data_cuti"
                                 data-tableurl="{!!konfigCuti($pegawai['nip'])['url']!!}"
                                 data-tablecolumn='{!!json_encode(konfigCuti($pegawai["nip"])["data"])!!}'
                                 data-tableadd="{!!konfigCuti($pegawai["nip"])["url_add"]!!}"
@@ -133,7 +143,7 @@
                                 <span class="nav-link-text">Shift</span>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link item-sidebar-content tab-datatable" data-tipepage="31"  href="#data_penghargaan"
                                 data-tableurl="{!!konfigPenghargaan($pegawai['nip'])['url']!!}"
@@ -161,7 +171,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link item-sidebar-content tab-datatable" href="#orang_tua" 
+                            <a class="nav-link item-sidebar-content tab-datatable" href="#orang_tua"
                             data-tableurl="{{konfigOrangTua($pegawai['nip'])['url']}}"
                             data-tablecolumn='{!!json_encode(konfigOrangTua($pegawai['nip'])['data'])!!}'
                             data-tableadd="{{konfigOrangTua($pegawai['nip'])['url_add']}}"
@@ -251,7 +261,7 @@
 			</div>
 		</div>
 		<!--Sidebar Fixnav-->
-		
+
 		<!--/ Sidebar Fixnav-->
 	</nav>
 	<div class="integrationsapp-content">
@@ -279,7 +289,7 @@
                     <div id="akses_akun" class="view-data-utama"></div>
                     <div class="target-view"></div>
                 </div>
-				
+
 			</div>
 		</div>
 	</div>

@@ -333,6 +333,14 @@ $(document).ready(function () {
                     initDevisi();
                 }
                 break;
+            case 211:
+                if(data != null){
+                    initJamKerja(data.kode);
+                }else{
+                    initJamKerja();
+                }
+                break;
+
             case 22:
                 if(data != null){
                     initGaji(data);
