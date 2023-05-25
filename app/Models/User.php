@@ -173,7 +173,7 @@ class User extends Authenticatable
                 return asset('/dist/img/man.png');
             }
         }
-        return url("/$foto");
-        // return $foto;
+        // return url("/$foto");
+        return $foto;
     }
 }

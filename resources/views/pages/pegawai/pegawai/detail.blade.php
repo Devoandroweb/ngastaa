@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <div class="avatar avatar-xxl avatar-rounded position-relative mb-2">
                         {{-- <img src="{{$pegawai->images}}" alt="user" class="avatar-img border border-4 border-white"> --}}
-                        <img src="{{$pegawai->foto()}}" alt="user" class="avatar-img border border-4 border-white">
+                        <img src="{{url("/".$pegawai->foto())}}" alt="user" class="avatar-img border border-4 border-white">
                         <span class="badge badge-indicator badge-success  badge-indicator-xl position-bottom-end-overflow-1 me-1"></span>
                     </div>
                     <h4>{{$pegawai->name}}
@@ -109,7 +109,7 @@
             </div>
             <div class="tab-pane fade" id="data_riwayat">
                 @include('pages.pegawai.pegawai.menu-pane.data-riwayat')
-            </div> 
+            </div>
             <div class="tab-pane fade" id="data_keluarga">
                 @include('pages.pegawai.pegawai.menu-pane.data-keluarga')
             </div>
@@ -121,7 +121,7 @@
             </div>
         </div>
         @include('pages.pegawai.pegawai.sidebar-content')
-        
+
         {{-- end tabs --}}
     </div>
 </div>
@@ -150,7 +150,7 @@ $(document).ready(function () {
     $('.item-sidebar-content').click(function(){
         _TIPE_PAGE = $(this).data("tipepage");
     })
-    $(".tab-datatable").click(function (e) { 
+    $(".tab-datatable").click(function (e) {
         e.preventDefault();
         _URL = $(this).data("tableurl");
         console.log($(this).data("tablecolumn"))
@@ -168,12 +168,12 @@ $(document).ready(function () {
             setDataTable();
         }
     });
-    
-    $('#data_pribadi').click(function (e) { 
+
+    $('#data_pribadi').click(function (e) {
         // e.preventDefault();
         _URL = '{{url("pegawai/posisi/".$pegawai->nip)}}'
     });
-    $('#data_koor').click(function (e) { 
+    $('#data_koor').click(function (e) {
         _STATUS_SUBMIT = 2;
     });
     // kembali
@@ -211,7 +211,7 @@ $(document).ready(function () {
     $(document).on("click",".btn-submit", async function (e) {
         e.preventDefault()
         loadingFormStart();
-        
+
         let form = $(this).closest("form");
         console.log(_STATUS_SUBMIT);
         if(_STATUS_SUBMIT == 1){ // new
@@ -239,7 +239,7 @@ $(document).ready(function () {
                 _ID_UPDATE = 0;
             }
         }
-        
+
     });
     $(document).on("click",".btn-reset-koor", function (e) {
         e.preventDefault()
@@ -301,7 +301,7 @@ $(document).ready(function () {
             }
         });
     }
-    let getView = (url) => { 
+    let getView = (url) => {
         loadingFormStart();
         $.ajax({url: url, success: function(response){
             $(".target-view").html(response.view);
@@ -350,21 +350,21 @@ $(document).ready(function () {
                 setNumeric()
                 break;
             case 24:
-                
+
                 if(data != null){
                     initJenisPotongan(data.kode_kurang);
                 }else{
                     initJenisPotongan()
                 }
                 break;
-            case 25:    
+            case 25:
                 if(data != null){
                     iniPendidikan(data.kode_pendidikan,data.kode_jurusan);
                 }else{
                     iniPendidikan();
                 }
                 break;
-            case 26:    
+            case 26:
                 if(data != null){
                     initKursus(data.kursus);
                 }else{
@@ -380,7 +380,7 @@ $(document).ready(function () {
                 setNumeric()
                 break;
             case 28:
-                
+
                 setNumeric()
                 break;
             case 29:
@@ -392,7 +392,7 @@ $(document).ready(function () {
                 setNumeric()
                 break;
             case 30:
-                
+
                 if(data != null){
                     initShift(data.kode_shift);
                 }else{
