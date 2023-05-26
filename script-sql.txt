@@ -31,6 +31,10 @@ ALTER TABLE `m_jam_kerja` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INC
 
 
 
--------------------------------------------------------------------
+-----------------------------done--------------------------------------
 ALTER TABLE `aktifitas` CHANGE `nama` `jam_mulai` TIME NOT NULL;
 ALTER TABLE `aktifitas` ADD `keterangan` TEXT NULL DEFAULT NULL AFTER `koordinat`;
+
+
+-------------------------------------------------------------------------------------------
+ALTER TABLE `users` ADD `status_absen` TINYINT NOT NULL DEFAULT '0' COMMENT '1: Sudah, 0 Belum' AFTER `fcm_token_android`;

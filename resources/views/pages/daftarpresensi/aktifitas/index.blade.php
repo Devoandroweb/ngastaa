@@ -140,7 +140,6 @@
                         orderable: false,
                         searchable: false,
                     },{
-
                         data: 'jam_mulai',
                         name: 'jam_mulai',
                     },{
