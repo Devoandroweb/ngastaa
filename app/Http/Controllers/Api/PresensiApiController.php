@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Jobs\ProcessWaNotif;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Shift;
+use App\Models\MJamKerja;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\Pegawai\RiwayatShift;
 use App\Models\User;
@@ -152,9 +153,9 @@ class PresensiApiController extends Controller
 
             $shift_pegawai = RiwayatShift::where('is_akhir', 1)->where('nip', $nip)->first();
             if($shift_pegawai){
-                $lokasi = $shift_pegawai->kode_shift;
+                $kodeShift = $shift_pegawai->kode_shift;
             }else{
-                $lokasi = Lokasi::select('*')
+                $kodeShift = Lokasi::select('*')
                             ->leftJoin('lokasi_detail', 'lokasi_detail.kode_lokasi', 'lokasi.kode_lokasi')
                             ->whereRaw("(lokasi.keterangan = 1 AND lokasi_detail.keterangan_id = '$nip')")
                             ->orWhereRaw("(lokasi.keterangan = 2 AND lokasi_detail.keterangan_id = '$kode_tingkat')")
@@ -164,7 +165,7 @@ class PresensiApiController extends Controller
             }
 
 
-            $shift = Shift::where('kode_shift', $lokasi)->first();
+            $shift = Shift::where('kode_shift', $kodeShift)->first();
             $shift->kode_tingkat = $kode_tingkat;
             $data = ShiftApiResource::make($shift);
 
@@ -221,7 +222,7 @@ class PresensiApiController extends Controller
         // dd(date("H:i:s",$toler1Min));
         // dd(date("Y-m-d H:i:s",$dateSend));
         // dd(date("Y-m-d H:i:s",$toler1Min));
-        $user = User::where('nip', $nip)->with('riwayat_shift')->first();
+        $user = User::where('nip', $nip)->with('riwayat_shift','jamKerja')->first();
 
         if ($dateSend < $toler1Min) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Harap memperbaiki jam Handphone Anda!']),400);
@@ -238,23 +239,40 @@ class PresensiApiController extends Controller
         //     return response()->json(['status' => 'Error', 'messages' => 'Anda sedang dalam masa perizinan!']);
         // }
         $kode_shift = null;
-        if($user->riwayat_shift->count() > 0){
+        $kode_jam_kerja = null;
+        if($user->jamKerja->count() > 0){
+            $kode_jam_kerja = $user->jamKerja->where('is_akhir',1)->first()?->kode_jam_kerja;
+        }elseif($user->riwayat_shift->count() > 0){
             // dd($user->riwayat_shift[0]);
             $kode_shift = $user->riwayat_shift[0]->kode_shift;
         }
-
+        // dd("$kode_shift | $kode_jam_kerja",$user);
         $shift = Shift::where('kode_shift', $kode_shift)->first();
-        if($shift == null){
-            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Shift Tidak Temukan !!', 'keterangan' => '']),200);
+        $jamkerja = MJamKerja::where('kode', $kode_jam_kerja)->first();
+
+        if($shift == null && $jamkerja == null){
+            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Jam Kerja atau Shift Tidak Temukan !!', 'keterangan' => '']),200);
         }
-        $bukaPagiTime = strtotime($shift->jam_buka_datang);
-        $tutupPagiTime = strtotime($shift->jam_tutup_datang);
+        if($jamkerja != null){
+            $bukaPagiTime = strtotime($jamkerja->jam_buka_datang);
+            $tutupPagiTime = strtotime($jamkerja->jam_tutup_datang);
 
-        $bukaSiangTime = strtotime($shift->jam_buka_istirahat);
-        $tutupSiangTime = strtotime($shift->jam_tutup_istirahat);
+            $bukaSiangTime = strtotime($jamkerja->jam_buka_istirahat);
+            $tutupSiangTime = strtotime($jamkerja->jam_tutup_istirahat);
 
-        $bukaSoreTime = strtotime($shift->jam_buka_pulang);
-        $tutupSoreTime = strtotime($shift->jam_tutup_pulang);
+            $bukaSoreTime = strtotime($jamkerja->jam_buka_pulang);
+            $tutupSoreTime = strtotime($jamkerja->jam_tutup_pulang);
+        }else{
+            $bukaPagiTime = strtotime($shift->jam_buka_datang);
+            $tutupPagiTime = strtotime($shift->jam_tutup_datang);
+
+            $bukaSiangTime = strtotime($shift->jam_buka_istirahat);
+            $tutupSiangTime = strtotime($shift->jam_tutup_istirahat);
+
+            $bukaSoreTime = strtotime($shift->jam_buka_pulang);
+            $tutupSoreTime = strtotime($shift->jam_tutup_pulang);
+        }
+
 
         // dd($dateSend <= $tutupPagiTime);
 
@@ -271,6 +289,7 @@ class PresensiApiController extends Controller
                     'foto_datang' => $foto,
                     'kode_tingkat' => $kode_tingkat,
                     'kode_shift' => $kode_shift,
+                    'kode_jam_kera' => $kode_jam_kerja,
                     'tanggal_datang' => $tanggalIn
                 ];
                 $cr = DataPresensi::create($data);
@@ -333,6 +352,7 @@ class PresensiApiController extends Controller
                         'foto_istirahat' => $foto,
                         'kode_tingkat' => $kode_tingkat,
                         'kode_shift' => $kode_shift,
+                        'kode_jam_kera' => $kode_jam_kerja,
                         'tanggal_istirahat' => $tanggalIn
                     ];
                     $cr = DataPresensi::create($data);
@@ -416,6 +436,7 @@ class PresensiApiController extends Controller
                         'foto_pulang' => $foto,
                         'kode_tingkat' => $kode_tingkat,
                         'kode_shift' => $kode_shift,
+                        'kode_jam_kera' => $kode_jam_kerja,
                         'tanggal_pulang' => $tanggalIn
                     ];
                     $cr = DataPresensi::create($data);

@@ -10,6 +10,7 @@ use App\Models\Pegawai\DataPengajuanLembur;
 use App\Models\Pegawai\Keluarga;
 use App\Models\Pegawai\RiwayatGolongan;
 use App\Models\Pegawai\RiwayatJabatan;
+use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Pegawai\RiwayatKgb;
 use App\Models\Pegawai\RiwayatKursus;
 use App\Models\Pegawai\RiwayatPendidikan;
@@ -157,12 +158,14 @@ class User extends Authenticatable
         if ($jabatan) {
             $skpd = $jabatan->kode_skpd;
         }
-
         return $this->join('riwayat_jabatan', function ($qt) use ($skpd) {
             $qt->on('riwayat_jabatan.nip', 'users.nip')
                 ->where('riwayat_jabatan.kode_skpd', $skpd)
                 ->where('riwayat_jabatan.is_akhir', 1);
         });
+    }
+    function jamKerja(){
+        return $this->hasMany(RiwayatJamKerja::class,'nip','nip');
     }
     function foto(){
         $jk = str_replace(" ","",$this->jenis_kelamin);
@@ -179,4 +182,5 @@ class User extends Authenticatable
         // return url("/$foto");
         return $foto;
     }
+
 }

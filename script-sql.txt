@@ -36,5 +36,7 @@ ALTER TABLE `aktifitas` CHANGE `nama` `jam_mulai` TIME NOT NULL;
 ALTER TABLE `aktifitas` ADD `keterangan` TEXT NULL DEFAULT NULL AFTER `koordinat`;
 
 
--------------------------------------------------------------------------------------------
+------------------------------------------done-------------------------------------------------
 ALTER TABLE `users` ADD `status_absen` TINYINT NOT NULL DEFAULT '0' COMMENT '1: Sudah, 0 Belum' AFTER `fcm_token_android`;
+----------------------------------------------------------------------------------------------------
+ALTER TABLE `data_presensi` ADD `kode_jam_kerja` VARCHAR(200) NULL DEFAULT NULL AFTER `kode_shift`;
