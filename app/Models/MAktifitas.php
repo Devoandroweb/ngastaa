@@ -9,7 +9,7 @@ class MAktifitas extends Model
 {
     use HasFactory;
     protected $table = "aktifitas";
-    protected $fillable = ['nip','nama', 'koordinat', 'foto'];
+    protected $fillable = ['nip','jam_mulai', 'koordinat', 'foto','keterangan'];
     function pegawai(){
         return $this->hasOne(User::class,'nip','nip');
     }

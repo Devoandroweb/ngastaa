@@ -35,9 +35,11 @@ class CApiAktifitas extends Controller
     }
     function store(){
         try {
+
             $nip = request('nip');
-            $nama = request('nama');
+            $jamMulai = request('jam_mulai');
             $koordinat = request('koordinat');
+            $keterangan = request('keterangan');
             if (request()->file('foto')) {
                 $file =  request()->file('foto');
                 $path = "aktifitas/$nip";
@@ -47,8 +49,9 @@ class CApiAktifitas extends Controller
             }
             $data = [
                 'nip' => $nip,
-                'nama' => $nama,
+                'jam_mulai' => $jamMulai,
                 'koordinat' => $koordinat,
+                'keterangan' => $keterangan,
                 'foto' => $foto,
             ];
             $cr = MAktifitas::create($data);

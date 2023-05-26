@@ -1,3 +1,4 @@
+---------------------- done to hosting -------------------------------------
 ALTER TABLE `data_visit` ADD `check_in` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `foto`;
 ALTER TABLE `data_visit` ADD `check_out` DATETIME NULL DEFAULT NULL AFTER `check_in`;
 ALTER TABLE `visit_lokasi` ADD `alamat` TEXT NULL DEFAULT NULL AFTER `nama`;
@@ -27,3 +28,9 @@ CREATE TABLE `m_jam_kerja` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `m_jam_kerja` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
+
+
+
+-------------------------------------------------------------------
+ALTER TABLE `aktifitas` CHANGE `nama` `jam_mulai` TIME NOT NULL;
+ALTER TABLE `aktifitas` ADD `keterangan` TEXT NULL DEFAULT NULL AFTER `koordinat`;

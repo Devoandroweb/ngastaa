@@ -27,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 <div class="modal fade" id="located-panel" tabindex="-1" role="dialog" aria-labelledby="located-panel" aria-hidden="true">
@@ -59,7 +59,7 @@
                             <td class="lokasi"></td>
                         </tr>
                     </table>
-                </div> 
+                </div>
                 <div class="d-block d-md-none">
                     <table class="table table-bordered w-100">
                         <tr>
@@ -112,17 +112,17 @@
     {{-- <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script> --}}
 
     <script >
-        
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("presensi.aktifitas.datatable")}}';
         $(".divisi").select2();
-       
+
         // SESUAIKAN COLUMN DATATABLE
         // SESUAIKAN FIELD EDIT MODAL
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -141,8 +141,8 @@
                         searchable: false,
                     },{
 
-                        data: 'nama',
-                        name: 'nama',
+                        data: 'jam_mulai',
+                        name: 'jam_mulai',
                     },{
 
                         data: 'nama_pegawai',
@@ -183,14 +183,14 @@
                 $(".lokasi").text(checkVisitLokasi(data.koordinat))
             }
         }
-        
-        
+
+
         function checkVisitLokasi(location_target){
             var namaLokasi = "Lokasi tidak di temukan";
             var location_target = (location_target).split(",");
             let lokasi = @json($dataLokasi);
             console.log("data lokasi",lokasi);
-            
+
             lokasi.forEach(lok => {
                 if((lok.polygon).length == 0){
                     return;
@@ -210,14 +210,14 @@
                     parseFloat(location_target[1].split(" ").join("")),
                     parseFloat(location_target[0].split(" ").join(""))
                 ];
-        
+
                 var point = turf.point(turfKoor);
                 var isInside = turf.booleanPointInPolygon(point, polygon);
                 // console.log(isInside);
                 if((lok.polygon).length != 0){
                     L.polygon(JSON.parse(lok.polygonAsli), { color: "red" }).addTo(drawnItems);
                 }
-                
+
                 if(isInside){
                     console.log("lokasi ketemu",lok)
                     namaLokasi = lok.nama
@@ -226,5 +226,5 @@
             return namaLokasi;
         }
     </script>
-    
+
 @endpush
