@@ -50,7 +50,7 @@ class Presensi extends Controller
         try{
             $pegawai = User::where('nip',$nip)->first();
             $data['status'] = true;
-            if($pegawai->status_absen == 0){
+            if($pegawai->status_absen == 1){
                 $data['absen_status'] = true;
                 return response()->json([
                     'status' => TRUE,
