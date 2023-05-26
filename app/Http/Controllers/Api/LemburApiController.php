@@ -28,7 +28,7 @@ class LemburApiController extends Controller
         $user = User::where('nip', $nip)->first();
 
         if($user){
-            
+
             $data = [
                 'nip' => $nip,
                 'tanggal' => date("Y-m-d",strtotime($tanggal)),
@@ -41,11 +41,11 @@ class LemburApiController extends Controller
             if($cek > 0){
                 return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
             }
-            
+
             $cr = DataPengajuanLembur::create($data);
             if($cr){
-                tambah_log($cr->nip, "App\Pegawai\DataPengajuanLembur", $cr->id, 'diajukan');    
-                return response()->json(buildResponseSukses(['status' => TRUE]),200);
+                tambah_log($cr->nip, "App\Pegawai\DataPengajuanLembur", $cr->id, 'diajukan');
+                return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Pengajuan berhasil terkirim!']),200);
             }else{
                 return response()->json(buildResponseGagal(['status' => FALSE, 'messages' => 'Server Erorr 405']),405);
             }

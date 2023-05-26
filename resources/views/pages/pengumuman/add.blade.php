@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="form-group has-validation">
-                <label class="form-label">PDF / Gambar</label>
+                <label class="form-label">Gambar</label>
                 <input type="file" class="form-control @error('file') is-invalid @enderror"  placeholder="Masukkan File" name="file" required>
                 <div class="invalid-feedback">
                     {{ $errors->first('file') }}

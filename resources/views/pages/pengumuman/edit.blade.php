@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="form-group has-validation">
-                <label class="form-label">PDF / Gambar</label>
+                <label class="form-label">Gambar</label>
                 <div class="input-group">
                     <input type="hidden" name="old-file" value="{{$pengumuman->file}}">
                     <a href="{{url($pengumuman->file)}}" class="btn btn-success" target="_blank">File Saat ini</a>
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-       
+
     </div>
     <button type="submit" class="btn btn-primary">Simpan</button>
     <a href="{{route('pengumuman.index')}}" class="btn btn-light">Kembali</a>

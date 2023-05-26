@@ -27,11 +27,11 @@ class ReimbursementApiController extends Controller
         $nilai = request('nilai');
         $keterangan = request('keterangan');
 
-        
+
 
         $user = User::where('nip', $nip)->first();
         if($user){
-                
+
                 $cek = DataPengajuanReimbursement::where('nip', $nip)->where('status', 0)->count();
                 if($cek > 0){
                     return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda telah melakukan pengajuan sebelumnya!']),200);
@@ -57,13 +57,13 @@ class ReimbursementApiController extends Controller
                 // }
                 $cr = DataPengajuanReimbursement::create($data);
                 if($cr){
-                    tambah_log($cr->nip, "App\Pegawai\DataPengajuanReimbursement", $cr->id, 'diajukan');    
-                    return response()->json(buildResponseSukses(['status' => TRUE]),200);
+                    tambah_log($cr->nip, "App\Pegawai\DataPengajuanReimbursement", $cr->id, 'diajukan');
+                    return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Sukses mengajukan Reimbursement!']),200);
                 }else{
-                    return response()->json(buildResponseSukses(['status' => FALSE]),200);
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Gagal mengajukan Reimbursement!']),200);
                 }
         }else{
-            return response()->json(buildResponseSukses(['status' => FALSE]),200);
+            return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak di temukan!']),200);
         }
     }
 

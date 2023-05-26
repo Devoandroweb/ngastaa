@@ -48,7 +48,7 @@ class PengumumanController extends Controller
         ]);
         if (request()->file('file')) {
             request()->validate([
-                'file' => 'max:2048|mimes:pdf,jpg,jpeg,png',
+                'file' => 'max:2048|mimes:jpg,jpeg,png',
             ]);
         }
 
