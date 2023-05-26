@@ -97,7 +97,7 @@ class VisitController extends Controller
         return $dataTables->eloquent($model)
 
             ->addColumn('qr', function ($row) {
-                return '<img src="'.url('visit_qr/'.$row->qr).'" alt="">';
+                return '<img src="'.url('public/visit_qr/'.$row->qr).'" alt="">';
             })
             ->addColumn('opsi', function ($row) {
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.visit.edit', $row->id) . "'>" . icons('pencil') . "</a>";
