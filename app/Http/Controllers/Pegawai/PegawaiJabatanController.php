@@ -47,8 +47,8 @@ class PegawaiJabatanController extends Controller
 
     public function edit(User $pegawai, RiwayatJabatan $Rjabatan)
     {
-   
-     
+
+
         $for = 1;
         // return inertia('Pegawai/Jabatan/Add', compact('pegawai', 'Rjabatan'));
         $data['data'] = $Rjabatan;
@@ -116,7 +116,7 @@ class PegawaiJabatanController extends Controller
         $data = request()->validate($rules);
         $data['tanggal_sk'] = normalDateSystem(request("tanggal_sk"));
         $data['tanggal_tmt'] =  normalDateSystem(request("tanggal_tmt"));
-        
+
         if (request('is_akhir') == 1) {
             $data['sebagai'] = "defenitif";
             RiwayatJabatan::where('nip', $pegawai->nip)->update(['is_akhir' => 0]);
@@ -132,7 +132,7 @@ class PegawaiJabatanController extends Controller
                 }
             }
         }
-        
+
         // upload file
         if (request()->file('file')) {
             // $data['file'] = request()->file('file')->storeAs('data_pegawai/'.$pegawai->nip.'/riwayat_jabatan', $pegawai->nip . "-jabatan-" . date("YmdHis") . ".pdf");
@@ -169,7 +169,7 @@ class PegawaiJabatanController extends Controller
         $Rjabatan = RiwayatJabatan::with('tingkat')
         ->where('nip', $pegawai->nip)->get();
         $Rjabatan = JabatanResource::collection($Rjabatan);
-        
+
         // dd($Rjabatan[0]->tingkat?->eselon?->nama);
         return $dataTables->of($Rjabatan)
             ->addColumn('jenis_jabatan', function ($row) {
@@ -179,14 +179,10 @@ class PegawaiJabatanController extends Controller
                 return "-";
             })
             ->addColumn('nama_jabatan', function ($row) {
-                
                 return $row->tingkat?->nama ?? "-";
-
             })
             ->addColumn('tanggal_tmt', function ($row) {
-                
                 return tanggal_indo($row->tanggal_tmt);
-
             })
             ->addColumn('tanggal_sk', function ($row) {
                 return tanggal_indo($row['tanggal_sk']);
@@ -195,14 +191,10 @@ class PegawaiJabatanController extends Controller
                 return $row->no_sk ?? "-";
             })
             ->addColumn('level', function ($row) {
-                
                 return $row->tingkat?->eselon?->nama ?? "-";
-
             })
             ->addColumn('divisi', function ($row) {
-                
                 return $row->skpd?->nama ?? "-";
-                
             })
             ->addColumn('file', function ($row) {
                 if(is_null($row['file'])){

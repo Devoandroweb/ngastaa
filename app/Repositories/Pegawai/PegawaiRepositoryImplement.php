@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Pegawai;
 
+use App\Models\Presensi\TotalPresensi;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         $this->mUser = $mUser;
     }
     function getAllPegawaiRoleOPD($role){
-        
+
         return $this->allPegawai($role)->get();
     }
     function getOnePegawaiRoleOPD($role,$nip){
@@ -56,6 +57,17 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
     }
     function getAllPegawai(){
          return $this->allPegawai = User::role('pegawai')->get();
+        //  return $this->allPegawai = User::role('pegawai')->get();
     }
     // Write something awesome :)
+    function updatoOrCreatoToTotalPresensi(){
+        foreach($this->getAllPegawai() as $pegawai){
+            TotalPresensi::firstOrCreate([
+                'nip' => $pegawai->nip,
+                'periode_bulan' =>  date("Y-m")
+            ]);
+            // $cr->assignRole('pegawai');
+
+        }
+    }
 }

@@ -8,4 +8,5 @@ interface TotalPresensiRepository extends Repository{
 
     // Write something awesome :)
     public function calculatePresensi();
+    public function manualCaculate();
 }

@@ -19,6 +19,9 @@ class RekapAbsensHarianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $mTotalPresensiDetail;
+    protected $hadir;
+
     public function index()
     {
         $skpd = Skpd::all();
@@ -31,11 +34,15 @@ class RekapAbsensHarianController extends Controller
 
         $date_start = date('Y-m-01');
         $date_end = date('Y-m-t');
+        $periodeBulan = date("Y-m");
+
         // dd(request()->query('date_start') && request()->query('date_end'));
         if (request()->query('date_start') && request()->query('date_end') ) {
             $date_start = date("Y-m-d",strtotime(request()->query('date_start')));
             $date_end = date("Y-m-d",strtotime(request()->query('date_end')));
+            $periodeBulan = null;
         }
+        // dd($periodeBulan);
         $tanggal_awal_akhir = new DatePeriod(
             new DateTime($date_start),
             new DateInterval('P1D'),
@@ -49,35 +56,73 @@ class RekapAbsensHarianController extends Controller
         // dd("oke");
         $rawColumn = [];
         // dd(User::where('name','like','%a%')->get());
-        $Tpresensi = User::role('pegawai')->when($search,function($q)use($search){
+        $mUsers = User::role('pegawai')->when($search,function($q)use($search){
                         // dd($search);
                         return $q->where('users.name','like','%'.$search.'%');
-                    })->join('total_presensi_detail','total_presensi_detail.nip','=','users.nip')->whereBetween('tanggal',[$date_start, $date_end]);
-        // dd($Tpresensi);
-        // dd($Tpresensi->get());
-        if($Tpresensi->get()->count() == 0){
-            $Tpresensi = User::role('pegawai')->when($search,function($q)use($search){
+                    });
+        if($periodeBulan != null){
+            $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])
+                        ->where('periode_bulan',$periodeBulan)->get();
+        }else{
+            $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])->get()  ;
+        }
+
+        if($mUsers->get()->count() == 0){
+            $mUsers = User::role('pegawai')->when($search,function($q)use($search){
                         return $q->where('users.name','like','%'.$search.'%');
                     });
-            $dt = DataTables::of($Tpresensi);
+            // dd($mUsers->get()->count());
+            $dt = DataTables::of($mUsers);
             foreach ($tanggal_awal_akhir as $tanggal ) {
                 $rawColumn[] = "day_{$tanggal->format('d')}";
                 $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal,$rawColumn){
                     return '-';
                 });
             }
+            $dt->addColumn('rekap',function($row){
+                return 0;
+            });
         }else{
-            $dt = DataTables::of($Tpresensi);
-            foreach ($tanggal_awal_akhir as $tanggal ) {
+            // dd($mUsers->get());
+
+            $dt = DataTables::of($mUsers);
+
+            foreach ($tanggal_awal_akhir as $i => $tanggal ) {
+
+
                 $rawColumn[] = "day_{$tanggal->format('d')}";
-                $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal){
-                    if ($tanggal->format('Y-m-d') == $row->tanggal) {
-                        return generateStatusAbsen($row->status);
+                // $this->hadir = 0;
+                $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal,$i){
+                    $status = $this->getStatusInmTotalPresensiDetail($tanggal->format('Y-m-d'),$row->nip);
+                    if ($status != null) {
+
+                        return generateStatusAbsen($status);
                     }else {
+                        $hariSabtuMinggu = cekHariAkhirPekan($tanggal->format('Y-m-d'));
+                        $hariLibur = cekHariLibur($tanggal->format('Y-m-d'));
+                        // dd($this->dataPresensi);
+                        if($hariLibur || $hariSabtuMinggu){
+                            return '<span class="badge badge-warning badge-pill badge-outline">L</span>';
+                        }
                         return '-';
                     }
                 });
             }
+            $dt->addColumn('rekap',function($row) use ($tanggal_awal_akhir){
+                $hadir = 0;
+                foreach ($tanggal_awal_akhir as $i => $tanggal ) {
+                    // $this->hadir = 0;
+
+                    $status = $this->getStatusInmTotalPresensiDetail($tanggal->format('Y-m-d'),$row->nip);
+                    if ($status != null) {
+                        if(in_array($status,[1,2,5,6])){
+                            $hadir++;
+                        }
+                    }
+
+                }
+                return $hadir;
+            });
         }
         $dt->addColumn('jabatan',function($row){
             $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
@@ -92,5 +137,16 @@ class RekapAbsensHarianController extends Controller
         $dt->addIndexColumn();
         return $dt->toJson();
     }
-    
+    function getStatusInmTotalPresensiDetail($tanggal,$nip)
+    {
+        // dd($this->mTotalPresensiDetail->get());
+        $result = null;
+        foreach ($this->mTotalPresensiDetail as $value) {
+            if($tanggal == $value->tanggal && $nip == $value->nip){
+                $result = $value->status;
+                return $result;
+            }
+        }
+        return $result;
+    }
 }

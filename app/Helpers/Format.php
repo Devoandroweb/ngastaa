@@ -6,11 +6,11 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 function role($string)
 {
-    
+
     // auth()->user()->assignRole('pegawai');
-    
+
     $arrayRole = auth()->user()->getRoleNames()->toArray();
-    
+
     // dd($arrayRole);
     if(in_array($string, $arrayRole)){
         return true;
@@ -139,7 +139,7 @@ function tanggal_indo($date)
         $tgl = date('d', strtotime($date));
         $bulan = date('m', strtotime($date));
         $tahun = date('Y', strtotime($date));
-    
+
         return $tgl . " " . bulan($bulan) . " " . $tahun;
     }else{
         return " - ";
@@ -319,7 +319,7 @@ function satuan($id)
         case '2':
             return "Persen";
             break;
-        
+
         default:
             return "";
             break;
@@ -355,10 +355,10 @@ function includeAsJsString($template,$data = null)
     $string = view(strtolower($template),['data'=>$data]);
     return str_replace("\n", '\n', str_replace('"', '\"', addcslashes(str_replace("\r", '', (string)$string), "\0..\37'\\")));
 }
-function GenerateOptionMont($b=0) 
+function GenerateOptionMont($b=0)
 {
     $htmlOption = "";
-    for ($i=1; $i<13 ; $i++) { 
+    for ($i=1; $i<13 ; $i++) {
         $bln = bulan($i);
         if ($i==$b) {
             $htmlOption .= "<option value='".$i."' selected>".$bln."</option>";
@@ -379,13 +379,13 @@ function GenerateOptionYear($t=0)
     if($t == 0){
         $t = $tahun;
     }
-    for ($i=2000; $i <= $tahun; $i++) { 
+    for ($i=2000; $i <= $tahun; $i++) {
         if ($i==$t) {
             $yearOption .= "<option value='".$i."' selected>Tahun ".$t."</option>";
         }else{
             $yearOption .= "<option value='".$i."'>Tahun ".$i."</option>";
         }
-    } 
+    }
     return $yearOption;
 }
 
@@ -400,7 +400,7 @@ function GenerateKetarangan($keterangan = "")
     ];
     $htmlOption = "";
     foreach ($options as $s) {
-        
+
         if ($keterangan == $s['value']) {
             $htmlOption .= "<option value='" . $s['value'] . "' selected>" . $s['label'] . "</option>";
         } else {
@@ -411,14 +411,14 @@ function GenerateKetarangan($keterangan = "")
 }
 function generateJenisOrganisasi($jenisorganisasi = '' )
 {
-    
+
     $options = [
         [ "value" => 'sosial', "jenis_organisasi"=> 'sosial', "label"=> 'Sosial' ],
         [ "value" => 'profesi', "jenis_organisasi"=> 'profesi', "label"=> 'Profesi'],
     ];
     $htmlOption = "";
     foreach ($options as $s) {
-        
+
         if ($jenisorganisasi  == $s['value']) {
             $htmlOption .= "<option value='" . $s['value'] . "' selected>" . $s['label'] . "</option>";
         } else {
@@ -479,7 +479,7 @@ function activeMenu($key = "")
     if(in_array($key,$urlPathArray)){
         return "active";
     }
-    
+
     return "";
 }
 
@@ -523,16 +523,22 @@ function generateStatusAbsen($status)
 {
     switch ($status) {
         case 1:
-            return '<span class="badge badge-success badge-pill badge-outline">Masuk</span>';
+            return '<span class="badge badge-success badge-pill badge-outline">H</span>';
             break;
         case 2:
-            return '<span class="badge badge-warning badge-pill badge-outline">Telat</span>';
+            return '<span class="badge badge-warning badge-pill badge-outline">T</span>';
             break;
         case 3:
-            return '<span class="badge badge-danger badge-pill badge-outline">Tidak Masuk</span>';
+            return '<span class="badge badge-danger badge-pill badge-outline">A</span>';
             break;
         case 4:
-            return '<span class="badge badge-dark badge-pill badge-outline">Izin</span>';
+            return '<span class="badge badge-dark badge-pill badge-outline">I</span>';
+            break;
+        case 5:
+            return '<span class="badge badge-info badge-pill badge-outline">(TAP)</span>';
+            break;
+        case 6:
+            return '<span class="badge badge-primary badge-pill badge-outline">(PC)</span>';
             break;
         default:
             break;
@@ -564,13 +570,13 @@ function Generatewilayah($t=0)
     if($t == 0){
         $t = $tahun;
     }
-    for ($i=2000; $i <= $tahun; $i++) { 
+    for ($i=2000; $i <= $tahun; $i++) {
         if ($i==$t) {
             $yearOption .= "<option value='".$i."' selected>Tahun ".$t."</option>";
         }else{
             $yearOption .= "<option value='".$i."'>Tahun ".$i."</option>";
         }
-    } 
+    }
     return $yearOption;
 }
 
@@ -620,4 +626,37 @@ function roleFormat(){
 }
 function normalDateSystem($date){
     return date("Y-m-d",strtotime(str_replace("/","-",$date)));
+}
+function arrayTanggal(){
+
+    $tanggal = range(1, 30); // Membuat array dari 1 hingga 30
+
+    $bulan = date('m'); // Mendapatkan bulan saat ini
+    $tahun = date('Y'); // Mendapatkan tahun saat ini
+
+    $hasil = array(); // Membuat array kosong
+
+    foreach ($tanggal as $tgl) {
+        $tanggal_format = sprintf("%02d", $tgl); // Formatkan tanggal dengan leading zero jika diperlukan
+        $hasil[] = $tahun . '-' . $bulan . '-' . $tanggal_format;
+    }
+
+    return $hasil; // Menampilkan array tanggal
+
+}
+function cekHariAkhirPekan($tanggal) {
+    $hariIni = date('N',strtotime($tanggal)); // Mendapatkan kode hari saat ini (1-7, dengan 1 adalah Senin dan 7 adalah Minggu)
+
+    if ($hariIni == 6 || $hariIni == 7) {
+        return true;
+    }
+    return false;
+}
+function cekHariLibur($tanggal) {
+    $hariLibur = ['2023-05-18']; // Mendapatkan kode hari saat ini (1-7, dengan 1 adalah Senin dan 7 adalah Minggu)
+
+    if (in_array($tanggal,$hariLibur)) {
+        return true;
+    }
+    return false;
 }

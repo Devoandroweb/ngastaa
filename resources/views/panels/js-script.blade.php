@@ -23,7 +23,7 @@
 
 	<!-- Simplebar JS -->
 	<script src="{{asset('/')}}vendors/simplebar/dist/simplebar.min.js"></script>
-	
+
 	<!-- Data Table JS -->
     <script src="{{asset('/')}}vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{asset('/')}}vendors/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
@@ -31,12 +31,18 @@
 	<script src="{{asset('/')}}vendors/datatables.net-select/js/dataTables.select.min.js"></script>
 	<script src="{{asset('/')}}vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js></script>
+    <script src=https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js></script>
+    <script src=https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js></script>
+
 	<!-- Daterangepicker JS -->
     <script src="{{asset('/')}}vendors/moment/min/moment.min.js"></script>
 	<script src="{{asset('/')}}vendors/daterangepicker/daterangepicker.js"></script>
 	<script src="{{asset('/')}}dist/js/daterangepicker-data.js"></script>
 
-	
+
 	<!-- Amcharts Maps JS -->
 	<script src="{{asset('/')}}vendors/@amcharts/amcharts4/core.js"></script>
 	<script src="{{asset('/')}}vendors/@amcharts/amcharts4/maps.js"></script>
@@ -55,7 +61,7 @@
 	<script src="{{asset('/')}}vendors/fullcalendar/main.min.js"></script>
 	<!-- Fullcalendar JS -->
 	{{-- <script src="{{asset('/')}}dist/js/fullcalendar-init.js"></script> --}}
-	
+
 	<!-- Init JS -->
 	<script src="{{asset('/')}}dist/js/init.js"></script>
 	{{-- <script src="{{asset('/')}}dist/js/chips-init.js"></script> --}}
@@ -72,7 +78,7 @@
 	<script>
 		$(".select2").select2();
 		setNumeric();
-		
+
 		$(".btn-calculate-presensi").click(function(e){
 			e.preventDefault();
 			var contentDefault = $(this).html()
@@ -100,7 +106,9 @@
 					}
 					el.html(contentDefault)
 					el.removeAttr('disabled')
-					
+                    if(_TABLE_REKAP_HARIAN !== undefined){
+                        // _TABLE_REKAP_HARIAN.ajax.reload();
+                    }
 				}
 			});
 		})

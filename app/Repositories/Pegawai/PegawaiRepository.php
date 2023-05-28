@@ -11,4 +11,5 @@ interface PegawaiRepository extends Repository{
     function getOnePegawaiRoleOPD($role,$nip);
     function getWhereNotInPegawaiRoleOPD($role,$nip);
     function getAllPegawai();
+    function updatoOrCreatoToTotalPresensi();
 }

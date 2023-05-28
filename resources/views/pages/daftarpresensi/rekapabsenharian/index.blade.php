@@ -4,7 +4,8 @@
     {{ Breadcrumbs::render('presensi-rekap-harian') }}
 @endsection
 @section('header_action')
-    <button class="btn btn-success"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Export Excel</span></span></button>
+    <button class="btn btn-success me-3"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Export Excel</span></span></button>
+    <button class="btn btn-info show-all"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Show All</span></span></button>
 @endsection
 @section('content')
 <div class="row justify-content-end">
@@ -66,30 +67,34 @@
         var lastDay = new Date(y, m, 0).getDate();
         var datatableElement = '<table id="data" class="table mt-2 nowrap w-100 mb-5 table-bordered"></table>';
         const _COLUMNS = [
-            {'title':'No','data':'DT_RowIndex', 'orderable':false ,'searchable': false},
-            {'title':'Jabatan','data':'jabatan','name':'jabatan','searchable': false},
-            {'title':'Nip','data':'nip','name':'nip'},
-            {'title':'Nama Pegawai','data':'nama_pegawai','name':'name','searchable': false},
+            {'title':'NO','data':'DT_RowIndex', 'orderable':false ,'searchable': false},
+            {'title':'JABATAN','data':'jabatan','name':'jabatan','searchable': false},
+            {'title':'NIP','data':'nip','name':'nip'},
+            {'title':'','data':'nama_pegawai','name':'name','searchable': false},
         ];
         var _START_DATE = y+"/"+m+"/01";
         var _END_DATE = y+"/"+m+"/"+lastDay;
-        var _TABLE = null;
+        var _TABLE_REKAP_HARIAN = null;
         var _DATERANGE = getDatesRange(_START_DATE,_END_DATE);
-        
+
         _DATERANGE.forEach(e => {
             var date = e.split("-");
-            _COLUMNS.push({'title':date[2],'data':'day_'+date[2],'name':null,'orderable':false ,'searchable': false})
+            var tanggal = new Date(e);
+            var namaBulan = tanggal.toLocaleString('default', { month: 'long' });
+            _COLUMNS.push({'title':`${namaBulan}-${date[2]}`,'data':'day_'+date[2],'name':null,'orderable':false ,'searchable': false})
         });
+        _COLUMNS.push({'title':'REKAP','data':'rekap','name':null,'orderable':false ,'searchable': false})
+
         $(".bulan").text(convertMonthToIndo(m-1));
         $(".tahun").text(y);
-       
+
         setDataTable(_COLUMNS,_START_DATE,_END_DATE);
         function setDataTable(columns,start_date,end_date) {
             // console.log(_URL_DATATABLE)
             $("#datatable").html(datatableElement);
             var options = {
                     searchDelay: 100,
-                    responsive:true,
+                    responsive:false,
                     processing: true,
                     serverSide: true,
                     ajax: {
@@ -103,15 +108,29 @@
                         search: ""
                     },
                     columns: columns,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            title: 'Rekap-absen'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: 'Rekap-absen'
+                        }
+                    ]
                 }
 
-            _TABLE = $('#data').DataTable(options);
+            _TABLE_REKAP_HARIAN = $('#data').DataTable(options);
         }
+        $('.show-all').on('click', function () {
+            _TABLE_REKAP_HARIAN.page.len(-1).draw();
+        })
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
         function initDateRangePickerMaksMonth(){
             $(".daterangepicker-maks-month").daterangepicker({
                 // singleDatePicker: true,
-                linkedCalendars: false,
+                // linkedCalendars: false,
                 startDate: $(".daterangepicker-maks-month").val(),
                 showDropdowns: true,
                 autoApply: true,
@@ -121,13 +140,9 @@
                 locale: {
                     format: "DD/MM/YYYY",
                 },
-                dateLimit: {
-                    months: 1,
-                    days: -1,
-                }
-                
+
             },
-            function (start, end, label) {   
+            function (start, end, label) {
                     $(".bulan").text(convertMonthToIndo(parseInt(start.format("M"))-1));
                     $(".tahun").text(start.format("YYYY"));
                     var dateRange = getDatesRange(start.format("YYYY-MM-DD"),end.format("YYYY-MM-DD"))
@@ -141,18 +156,22 @@
                     ];
                     dateRange.forEach(e => {
                         var date = e.split("-");
-                        col.push({'title':date[2],'data':'day_'+date[2],'name':null,'orderable':false ,'searchable': false})
+                        var tanggal = new Date(e);
+                        var namaBulan = tanggal.toLocaleString('default', { month: 'long' });
+                        col.push({'title':`${namaBulan}-${date[2]}`,'data':'day_'+date[2],'name':null,'orderable':false ,'searchable': false})
                     });
+                    col.push({'title':'REKAP','data':'rekap','name':null,'orderable':false ,'searchable': false})
+
                     // console.log("ini primary",_COLUMNS_PRIMARY)
                     console.log(col)
-                    _TABLE.destroy();
-                    _TABLE = null;
+                    _TABLE_REKAP_HARIAN.destroy();
+                    _TABLE_REKAP_HARIAN = null;
                     $("#datatable").empty();
                     setDataTable(col,date_start,date_end);
                 }
             );
-            $(".drp-calendar.right").hide();
-            $(".drp-calendar.left").addClass("single");
+            // $(".drp-calendar.right").hide();
+            // $(".drp-calendar.left").addClass("single");
 
             $(".calendar-table").on("DOMSubtreeModified", function () {
                 var el = $(".prev.available").parent().children().last();
@@ -165,6 +184,6 @@
         }
 
     </script>
-    
+
 @endpush
 

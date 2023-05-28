@@ -14,11 +14,12 @@ class HomeUser extends Controller
     function index()
     {
         $nip = request('nip');
-           
-        $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir')->has('jabatan_akhir')->first();
+
+        $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->has('jabatan_akhir')->first();
+        dd($user);
         try {
             //code...
-            
+
             $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
             if( $jabatan == null){
                 $jabatan = "-";
@@ -47,7 +48,7 @@ class HomeUser extends Controller
             ], 404);
         }
         // get shift
-        
+
         // dd($shift);
     }
     function absen(){
