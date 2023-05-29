@@ -13,5 +13,11 @@ class MAktifitas extends Model
     function pegawai(){
         return $this->hasOne(User::class,'nip','nip');
     }
-
+    function foto(){
+        if(file_exists(public_path("{$this->nis}/{$this->foto}"))){
+            return url("public/{$this->foto}");
+        }else{
+            return asset('dist/img/image-not-found.png');
+        }
+    }
 }

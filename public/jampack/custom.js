@@ -43,7 +43,7 @@ function loadingProccesText(el){
             text += " ."
             i++
         }
-        
+
         el.html(`<option value="0" disabled selected>${text}</option>`)
     }, 1000);
     return loading;
@@ -149,3 +149,4 @@ function inExt(value, array) {
     }
     return false;
 }
+

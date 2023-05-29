@@ -660,3 +660,7 @@ function cekHariLibur($tanggal) {
     }
     return false;
 }
+function searchIndexArrayAssoc($search,$key,$array){
+    $indeks = array_search($search, array_column($array, $key));
+    return $indeks;
+}

@@ -20,9 +20,9 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
-            <th>{{__('Nama Aktifitas')}}</th>
             <th>{{__('No. Pegawai Nama')}}</th>
             <th>{{__('Jabatan')}}</th>
+            <th>{{__('Jam Mulai')}}</th>
             <th>{{__('Tanggal')}}</th>
         </tr>
     </thead>
@@ -43,32 +43,28 @@
                 <div class="d-none d-md-block">
                     <table class="table table-bordered w-100">
                         <tr>
-                            <td width="15%" class="fw-bold">Nama Aktifitas</td>
-                            <td colspan="3" class="nama_aktifitas"></td>
-                        </tr>
-                        <tr>
                             <td width="15%" class="fw-bold">Nama Pegawai</td>
                             <td class="nama_pegawai"></td>
-                            <td width="15%" class="fw-bold">Tanggal</td>
-                            <td class="tanggal"></td>
+                            <td class="fw-bold">Jabatan</td>
+                            <td colspan="3" class="jabatan"></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Jabatan</td>
-                            <td class="jabatan"></td>
-                            <td class="fw-bold">Lokasi</td>
-                            <td class="lokasi"></td>
+                            <td width="15%" class="fw-bold">Tanggal</td>
+                            <td class="tanggal"></td>
+                            <td width="15%" class="fw-bold">Jam Mulai</td>
+                            <td colspan="3" class="jam_mulai"></td>
                         </tr>
                     </table>
                 </div>
                 <div class="d-block d-md-none">
                     <table class="table table-bordered w-100">
                         <tr>
-                            <td width="15%" class="fw-bold">Nama Aktifitas</td>
-                            <td colspan="3" class="nama_aktifitas"></td>
-                        </tr>
-                        <tr>
                             <td width="15%" class="fw-bold">Nama Pegawai</td>
                             <td class="nama_pegawai"></td>
+                        </tr>
+                        <tr>
+                            <td width="15%" class="fw-bold">Jam Mulai</td>
+                            <td colspan="3" class="jam_mulai"></td>
                         </tr>
                         <tr>
                             <td width="15%" class="fw-bold">Tanggal</td>
@@ -78,21 +74,20 @@
                             <td class="fw-bold">Jabatan</td>
                             <td class="jabatan"></td>
                         </tr>
-                        <tr>
-                            <td class="fw-bold">Lokasi</td>
-                            <td class="lokasi"></td>
-                        </tr>
                     </table>
                 </div>
                 <div class="row">
                     <div class="col-12 col-md-7">
                         {{-- maps --}}
-                        <div id="map" class="mb-4" style="height: 500px"></div>
+                        <div id="map" class="mb-4 img-thumbnail" style="height: 500px"></div>
+                        <div id="none-map" class="mb-4 position-relative img-thumbnail" style="height: 500px; display:none">
+                            <img class="m-auto w-25" src="{{asset('dist/img/route-not-found.png')}}" style="position:absolute;top:35%;left:35%">
+                        </div>
                         <input type="hidden" value="0" id="radius" >
                         {{-- end maps --}}
                     </div>
                     <div class="col-12 col-md-5">
-                        <img src="" id="foto" class="img-fluid" alt="" srcset="">
+                        <img src="" id="foto" class="img-fluid img-thumbnail" alt="" srcset="">
                     </div>
                 </div>
 			</div>
@@ -126,13 +121,14 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
+                    method:"POST",
                     url: _URL_DATATABLE,
                 },
                 rowReorder: {
                     selector: 'td:nth-child(1)'
                 },
                 language:{
-                    searchPlaceholder: "Cari",
+                    searchPlaceholder: "Cari Nama Pegawai",
                     search: ""
                 },
                 columns: [{
@@ -140,90 +136,103 @@
                         orderable: false,
                         searchable: false,
                     },{
-                        data: 'jam_mulai',
-                        name: 'jam_mulai',
-                    },{
-
                         data: 'nama_pegawai',
-                        name: 'pegawai.nama',
+                        name: 'nama_pegawai',
                     },{
                         data: 'jabatan',
                         name: 'jabatan',
                     },{
+                        data: 'jam_mulai',
+                        name: 'jam_mulai',
+                        searchable: false,
+                    },{
                         data: 'created_at',
                         name: 'created_at',
+                        searchable: false,
                     }],
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
         $('#data tbody').on('click', 'tr', function (e) {
             var data = _TABLE.row(this).data();
-
+            console.log(data)
             var ltlg = [0,0];
-            if(data.kordinat != null){
-                ltlg = (data.kordinat).split(",");
+            if(data.koordinat != null && data.koordinat != ''){
+                $("#map").show()
+                $("#none-map").hide()
+                ltlg = (data.koordinat).split(",");
+                if(ltlg.length == 1){
+                    ltlg = (data.koordinat).split(" ")
+                }
+                setTimeout(function() {
+                    updateMap(ltlg);
+                    map.invalidateSize();
+                }, 1000);
+                console.log(ltlg.length);
+            }else{
+                $("#map").hide()
+                $("#none-map").show()
+                Swal.fire(
+                  'Lokasi',
+                  'Lokasi tidak di temukan',
+                  'warning'
+                )
             }
             shootToModal(data);
             var myModal = new bootstrap.Modal($("#located-panel"))
             myModal.show();
-            setTimeout(function() {
-                updateMap(ltlg);
-                map.invalidateSize();
-            }, 1000);
+
         });
         function shootToModal(data){
-            $(".nama_aktifitas").html(data.nama)
+            $(".jam_mulai").html(data.jam_mulai)
             $(".nama_pegawai").html(data.nama_pegawai)
             $(".jabatan").text(data.jabatan)
             $(".tanggal").text(data.created_at)
-            $("#foto").attr("src","{{url('public')}}/"+data.foto)
+            $("#foto").attr("src",data.foto)
             // $("#keterangan").text(data.keterangan)
-            if(data.koordinat != null){
-                $(".lokasi").text(checkVisitLokasi(data.koordinat))
-            }
         }
 
 
-        function checkVisitLokasi(location_target){
-            var namaLokasi = "Lokasi tidak di temukan";
-            var location_target = (location_target).split(",");
-            let lokasi = @json($dataLokasi);
-            console.log("data lokasi",lokasi);
+        // function checkVisitLokasi(location_target){
+        //     var namaLokasi = "Lokasi tidak di temukan";
+        //     var location_target = (location_target).split(",");
+        //     let lokasi = @json($dataLokasi);
+        //     console.log("data lokasi",lokasi);
 
-            lokasi.forEach(lok => {
-                if((lok.polygon).length == 0){
-                    return;
-                }
-                // return;
-                var polygon = {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Polygon',
-                        // Note order: longitude, latitude.
-                        coordinates: [lok.polygon]
-                    },
-                    properties: {}
-                };
-                // Note order: longitude, latitude.
-                var turfKoor = [
-                    parseFloat(location_target[1].split(" ").join("")),
-                    parseFloat(location_target[0].split(" ").join(""))
-                ];
+        //     lokasi.forEach(lok => {
+        //         if((lok.polygon).length == 0){
+        //             return;
+        //         }
+        //         // return;
+        //         var polygon = {
+        //             type: 'Feature',
+        //             geometry: {
+        //                 type: 'Polygon',
+        //                 // Note order: longitude, latitude.
+        //                 coordinates: [lok.polygon]
+        //             },
+        //             properties: {}
+        //         };
+        //         // Note order: longitude, latitude.
+        //         var turfKoor = [
+        //             parseFloat(location_target[1].split(" ").join("")),
+        //             parseFloat(location_target[0].split(" ").join(""))
+        //         ];
 
-                var point = turf.point(turfKoor);
-                var isInside = turf.booleanPointInPolygon(point, polygon);
-                // console.log(isInside);
-                if((lok.polygon).length != 0){
-                    L.polygon(JSON.parse(lok.polygonAsli), { color: "red" }).addTo(drawnItems);
-                }
+        //         var point = turf.point(turfKoor);
+        //         var isInside = turf.booleanPointInPolygon(point, polygon);
+        //         // console.log(isInside);
+        //         if((lok.polygon).length != 0){
+        //             L.polygon(JSON.parse(lok.polygonAsli), { color: "red" }).addTo(drawnItems);
+        //         }
 
-                if(isInside){
-                    console.log("lokasi ketemu",lok)
-                    namaLokasi = lok.nama
-                }
-            });
-            return namaLokasi;
-        }
+        //         if(isInside){
+        //             console.log("lokasi ketemu",lok)
+        //             namaLokasi = lok.nama
+        //         }
+        //     });
+        //     return namaLokasi;
+        // }
     </script>
 
 @endpush

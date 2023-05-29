@@ -198,6 +198,8 @@ class DataPresensiController extends Controller
     {
         $skpd = request()->query('skpd');
         $skpd = ($skpd == 0) ? null : $skpd;
+        $role = role('opd');
+
         // $skpd = 1;
         $model = DataPresensi::selectRaw("data_presensi.id as id, users.name as nama, users.nip as nip, data_presensi.tanggal_datang, data_presensi.tanggal_istirahat, data_presensi.tanggal_pulang, data_presensi.created_at, tingkat.nama as jabatan, data_presensi.kordinat_datang, data_presensi.foto_datang, shift.nama as nama_shift")
             ->leftJoin('users', 'users.nip', 'data_presensi.nip')
@@ -205,8 +207,24 @@ class DataPresensiController extends Controller
             ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift');
         // dd($model->get());
         if($skpd){
+            // dd($skpd);
             $model->where('tingkat.kode_skpd', $skpd);
         }
+        $model->when($role, function ($qr) {
+            $user = auth()->user()->jabatan_akhir;
+            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+            $skpd = '';
+            if ($jabatan) {
+                $skpd = $jabatan->kode_skpd;
+            }
+
+            $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
+                $qt->on('riwayat_jabatan.nip', 'users.nip')
+                    ->where('riwayat_jabatan.kode_skpd', $skpd)
+                    ->where('riwayat_jabatan.is_akhir', 1);
+            });
+        });
+        dd($model->get()[0]);
         return $dataTables->of($model)
             ->editColumn('shift', function ($row) {
                 return $row->nama_shift;
@@ -218,7 +236,8 @@ class DataPresensiController extends Controller
                 return "<span class='badge badge-success badge-pill badge-sm'>". $row->nip . "</span>  " . $row->nama;
             })
             ->addColumn('jabatan', function ($row) {
-                return $row->jabatan;
+                dd($row->riwayat_jabatan);
+                return $row->riwayat_jabatan;
             })
             ->addColumn('tanggal', function ($row) {
                 return tanggal_indo($row->created_at);

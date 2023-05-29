@@ -31,15 +31,24 @@ class CAktifitas extends Controller
         return view('pages/daftarpresensi/aktifitas/index',compact('dataLokasi'));
     }
     function datatable(DataTables $dataTables){
-        $aktivitas = MAktifitas::with('pegawai')->orderBy('created_at','desc')->get();
+        $index = searchIndexArrayAssoc("nama_pegawai","data",request("columns"));
+        // dd(request('search'));
+        $aktivitas = MAktifitas::whereHas('pegawai',function($q){
+            if(request('search')["value"]){
+                $q->where("name","like","%".request('search')['value']."%");
+            }
+        })->orderBy('created_at','desc')->get();
         return $dataTables->of($aktivitas)
+        ->editColumn("foto",function ($row){
+            return $row->foto();
+        })
         ->addColumn('nama_pegawai', function ($row) {
             return "<span class='badge badge-success badge-pill badge-sm'>". $row->nip . "</span>  " . $row->pegawai->getFullName();
         })
         ->addColumn('jabatan', function ($row) {
             $jabatan_akhir = $row->pegawai->jabatan_akhir;
             $jabatan = array_key_exists('0', $jabatan_akhir->toArray()) ? $jabatan_akhir[0] : null;
-            
+
             // dd($jabatan);
             $nama_jabatan = '-';
             if ($jabatan) {

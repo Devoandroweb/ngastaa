@@ -75,7 +75,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         # code...
         // $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
         // dd("done");
-        $tanggalBulan = ['2023-04-27','2023-04-28'];
+        $tanggalBulan = ['2023-04-25','2023-04-26'];
         // $tanggalBulan = arrayTanggal();
         // dd($tanggalBulan);
         foreach ($tanggalBulan as $value) {
@@ -101,7 +101,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     {
 
 
-        $this->calculatePresensi();
+        // $this->calculatePresensi();
 
         // dd($this->dateNow);
         try {

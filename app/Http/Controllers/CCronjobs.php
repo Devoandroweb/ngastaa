@@ -15,11 +15,11 @@ class CCronjobs extends Controller
         $this->totalPresensiRepository = $totalPresensiRepository;
     }
     function calculatePresensi(){
-        // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
 
         try {
             DB::transaction(function(){
                 $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
+                // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
 
                 if ($resultCalculate == 0) {
                     return response()->json([
@@ -27,7 +27,6 @@ class CCronjobs extends Controller
                         'message' => 'Maaf Perhitungan Presensi untuk hari ini sebelumnya sudah di hitung'
                     ]);
                 }
-
             });
             DB::commit();
             return response()->json([
