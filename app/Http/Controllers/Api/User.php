@@ -19,8 +19,10 @@ class User extends Controller
             $jabatan = "-";
             $divisi = "-";
             $status_pegawai = "-";
+            $kode_tingkat = "-";
             if($dataJabatan != null){
                 $jabatan = $dataJabatan->tingkat?->nama;
+                $kode_tingkat = $dataJabatan->tingkat?->kode_tingkat;
                 $divisi = $dataJabatan?->skpd?->nama;
             }
             if($user->statusPegawai != null){
@@ -31,6 +33,7 @@ class User extends Controller
                 'foto' => $user->foto(),
                 'jabatan' => $jabatan,
                 'status_pegawai' => $status_pegawai,
+                'kode_tingkat' => $kode_tingkat,
                 'divisi' => $divisi,
             ];
             return response()->json([
@@ -55,7 +58,7 @@ class User extends Controller
             // posisi
             PosisiResource::withoutWrapping();
             $posisi = PosisiResource::make($user);
-            
+
             // pendidikan
             $Rpendidikan = RiwayatPendidikan::where('nip', $nip)
             ->orderByDesc('kode_pendidikan')
