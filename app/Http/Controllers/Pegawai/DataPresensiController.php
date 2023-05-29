@@ -236,7 +236,7 @@ class DataPresensiController extends Controller
                 return "<span class='badge badge-success badge-pill badge-sm'>". $row->nip . "</span>  " . $row->nama;
             })
             ->addColumn('jabatan', function ($row) {
-                dd($row->riwayat_jabatan);
+                // dd($row->riwayat_jabatan);
                 return $row->riwayat_jabatan;
             })
             ->addColumn('tanggal', function ($row) {
