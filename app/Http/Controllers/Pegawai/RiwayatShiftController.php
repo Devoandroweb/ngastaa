@@ -158,38 +158,40 @@ class RiwayatShiftController extends Controller
     {
 
         $Rshift = RiwayatShift::where('nip', $pegawai)
+            ->with("shift")
             ->orderByDesc('created_at')
             ->whereRaw("(status = 99 OR status = 1)")
             ->get();
+        // dd($Rshift);
         $Rshift = RiwayatShiftResource::collection($Rshift);
         return $dataTables->of($Rshift)
 
             ->addColumn('nama', function ($row) {
-                if($row['shift']){
-                    return (($row->is_akhir == 1)?'<i class="bi bi-bookmark-star-fill text-danger fs-4"></i>' : '').$row['shift']['nama'];
+                if($row->shift){
+                    return (($row->is_akhir == 1)?'<i class="bi bi-bookmark-star-fill text-danger fs-4"></i>' : '').$row->shift?->nama;
                 }
-                return  $row['shift']['nama'] ;
+                return  $row->shift?->nama ?? "-";
             })
             ->addColumn('nomor_surat', function ($row) {
-                return  $row['nomor_surat'] ;
+                return  $row->nomor_surat;
             })
             ->addColumn('tanggal_surat', function ($row) {
-                return tanggal_indo($row['tanggal_surat']) ;
+                return tanggal_indo($row->tanggal_surat) ;
             })
             ->addColumn('keterangan', function ($row) {
-                return  $row['keterangan'];
+                return  $row->keterangan;
             })
             ->addColumn('file', function ($row) {
-                if(is_null($row['file'])){
+                if(is_null($row->file)){
                         return "-";
                 }
 
-                return '<a class="badge badge-primary badge-outline" href="' . $row['file'] . '">Lihat Berkas</a>';
+                return '<a class="badge badge-primary badge-outline" href="' . $row->file . '">Lihat Berkas</a>';
             })
             ->addColumn('opsi', function ($row) {
 
-                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('pegawai.shift.edit', ['pegawai' => $row['nip'], 'Rshift' => $row['id']]) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='text-danger delete' tooltip='Hapus' href='" . route('pegawai.shift.delete', ['pegawai' => $row['nip'], 'Rshift' => $row['id']]) . "'>" . icons('trash') . "</a>";
+                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('pegawai.shift.edit', ['pegawai' => $row->nip, 'Rshift' => $row->id]) . "'>" . icons('pencil') . "</a>";
+                $html .= "<a class='text-danger delete' tooltip='Hapus' href='" . route('pegawai.shift.delete', ['pegawai' => $row->nip, 'Rshift' => $row->id]) . "'>" . icons('trash') . "</a>";
                 return $html;
             })
             ->rawColumns(['opsi', 'file','nama'])

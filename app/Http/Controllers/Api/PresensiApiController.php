@@ -289,7 +289,7 @@ class PresensiApiController extends Controller
                     'foto_datang' => $foto,
                     'kode_tingkat' => $kode_tingkat,
                     'kode_shift' => $kode_shift,
-                    'kode_jam_kera' => $kode_jam_kerja,
+                    'kode_jam_kerja' => $kode_jam_kerja,
                     'tanggal_datang' => $tanggalIn
                 ];
                 $cr = DataPresensi::create($data);
@@ -352,7 +352,7 @@ class PresensiApiController extends Controller
                         'foto_istirahat' => $foto,
                         'kode_tingkat' => $kode_tingkat,
                         'kode_shift' => $kode_shift,
-                        'kode_jam_kera' => $kode_jam_kerja,
+                        'kode_jam_kerja' => $kode_jam_kerja,
                         'tanggal_istirahat' => $tanggalIn
                     ];
                     $cr = DataPresensi::create($data);
@@ -436,7 +436,7 @@ class PresensiApiController extends Controller
                         'foto_pulang' => $foto,
                         'kode_tingkat' => $kode_tingkat,
                         'kode_shift' => $kode_shift,
-                        'kode_jam_kera' => $kode_jam_kerja,
+                        'kode_jam_kerja' => $kode_jam_kerja,
                         'tanggal_pulang' => $tanggalIn
                     ];
                     $cr = DataPresensi::create($data);

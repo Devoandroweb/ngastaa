@@ -41,3 +41,4 @@ ALTER TABLE `users` ADD `status_absen` TINYINT NOT NULL DEFAULT '0' COMMENT '1: 
 ----------------------------------------------------------------------------------------------------
 ALTER TABLE `data_presensi` ADD `kode_jam_kerja` VARCHAR(200) NULL DEFAULT NULL AFTER `kode_shift`;
 ALTER TABLE `riwayat_jam_kerja` ADD `status` TINYINT NOT NULL DEFAULT '0' AFTER `kode_jam_kerja`;
+ALTER TABLE `riwayat_jam_kerja` ADD `is_akhir` TINYINT NOT NULL DEFAULT '0' AFTER `status`;

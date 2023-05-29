@@ -6,13 +6,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class RiwayatShiftResource extends JsonResource
 {
-    
+
     public function toArray($request)
     {
         return [
             'id' => $this->id,
             'nip' => $this->nip,
-            'nama' => $this?->name,
+            'nama' => $this->name,
             'shift' => $this->shift?->nama,
             'nomor_surat' => $this->nomor_surat,
             'komentar' => $this->komentar,

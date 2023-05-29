@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Master\Shift;
 use App\Models\Pegawai\DataPresensi;
+use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Pegawai\RiwayatShift;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,20 +22,35 @@ class HomeUser extends Controller
             //code...
             $kode_tingkat = "-";
             $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
+
             if( $jabatan == null){
                 $jabatan = "-";
             }else{
                 $kode_tingkat = $jabatan->tingkat?->kode_tingkat;
+
                 $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
             }
+            $jamKerja = RiwayatJamKerja::with('jamKerja')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
             $shift = RiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
+
+            $namaShift = "-";
+            $jamShift = "-";
+
+            if($jamKerja != null){
+                $namaShift = (is_null($jamKerja)) ? "-" : $jamKerja->jamKerja?->nama;
+                $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+            }else{
+                $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
+                $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+            }
+
             $data = [
                 'nama' => $user->getFullName(),
                 'foto' => "public/{$user->image}",
                 'jabatan' => $jabatan,
                 'kode_tingkat' => $kode_tingkat,
-                'nama_shift' => (is_null($shift)) ? "-" : $shift->shift->nama,
-                'jam_shift' => (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift->jam_tepat_pulang)),
+                'nama_shift' => (is_null($shift)) ? "-" : $shift->shift?->nama,
+                'jam_shift' => (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang)),
                 'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d"))
             ];
             return response()->json([
