@@ -242,7 +242,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             TotalPresensiDetail::insert($dataInsertTotalPresensiDetail);
 
             # UPDATE APP STATUS FUNCTION
-            // AppStatusFunction::where('name','calculate_presensi')->update(['value' => 1]);
+            AppStatusFunction::where('name','calculate_presensi')->update(['value' => 1]);
             // $this->dataPresensi->update(['hitung',1]);
             return 1;
         } catch (\Throwable $th) {

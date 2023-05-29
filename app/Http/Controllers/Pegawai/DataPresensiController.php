@@ -224,7 +224,7 @@ class DataPresensiController extends Controller
                     ->where('riwayat_jabatan.is_akhir', 1);
             });
         });
-        dd($model->get()[0]);
+        // dd($model->get()[0]);
         return $dataTables->of($model)
             ->editColumn('shift', function ($row) {
                 return $row->nama_shift;
