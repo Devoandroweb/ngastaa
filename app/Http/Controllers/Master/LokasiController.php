@@ -197,9 +197,11 @@ class LokasiController extends Controller
         $model = Lokasi::query();
         return $dataTables->eloquent($model)
             ->addColumn('opsi', function ($row) {
-
+                $html = "-";
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.lokasi.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='delete text-danger delete' tooltip='Hapus' href='" . route('master.lokasi.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                if(role('admin') || role('owner')){
+                    $html .= "<a class='delete text-danger delete' tooltip='Hapus' href='" . route('master.lokasi.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                }
                 return $html;
             })
             ->rawColumns(['opsi'])

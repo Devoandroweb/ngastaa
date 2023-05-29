@@ -207,22 +207,25 @@ Route::middleware(['auth'])
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::get('json-skpd', 'json_skpd')->name('json_skpd');
-                        Route::post('store', 'store')->name('store');
-                        Route::post('upload', 'upload')->name('upload');
-                        Route::get('edit/{pegawai}', 'edit')->name('edit');
-                        Route::get('detail/{pegawai}', 'detail')->name('detail');
-                        Route::get('detail/pribadi/{pegawai}', 'detailPribadi')->name('detail_pribadi');
-                        Route::get('delete/{pegawai}', 'delete')->name('delete');
                         Route::get('datatable', 'datatable')->name('datatable');
                         Route::get('import_add', 'import_add')->name('import_add');
                         Route::post('import_pegawai', 'import_pegawai')->name('import_pegawai');
                         Route::get('download-template-import', 'donwloadTemplate')->name('donwload_template_import');
-                        Route::get('shift/{pegawai}', 'shift')->name('shift');
-                        Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
-                        Route::get('reset-device/{nip}', 'resetDevice')->name('reset_device');
-                        Route::get('reset-password/{nip}', 'resetPassword')->name('reset_password');
+                        Route::middleware("role:owner|admin")
+                            ->group(function(){
+                                Route::get('json', 'json')->name('json');
+                                Route::get('json-skpd', 'json_skpd')->name('json_skpd');
+                                Route::post('store', 'store')->name('store');
+                                Route::post('upload', 'upload')->name('upload');
+                                Route::get('edit/{pegawai}', 'edit')->name('edit');
+                                Route::get('detail/{pegawai}', 'detail')->name('detail');
+                                Route::get('detail/pribadi/{pegawai}', 'detailPribadi')->name('detail_pribadi');
+                                Route::get('delete/{pegawai}', 'delete')->name('delete');
+                                Route::get('shift/{pegawai}', 'shift')->name('shift');
+                                Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
+                                Route::get('reset-device/{nip}', 'resetDevice')->name('reset_device');
+                                Route::get('reset-password/{nip}', 'resetPassword')->name('reset_password');
+                            });
 
                     });
 
@@ -547,11 +550,12 @@ Route::middleware(['auth'])
 
         Route::prefix('payroll')
             ->name("payroll.")
-            ->middleware('role:admin|owner')
+            ->middleware('role:admin|owner|finance')
             ->group(function () {
 
                 Route::controller(TambahPayrollController::class)
                     ->prefix('tambah')
+                    ->middleware('role:admin|owner')
                     ->name("tambah.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -565,6 +569,7 @@ Route::middleware(['auth'])
 
                 Route::controller(KurangPayrollController::class)
                     ->prefix('kurang')
+                    ->middleware('role:admin|owner')
                     ->name("kurang.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -577,17 +582,20 @@ Route::middleware(['auth'])
 
                 Route::controller(GeneratePayrollController::class)
                     ->prefix('generate')
+                    ->middleware('role:admin|owner|finance')
                     ->name("generate.")
                     ->group(function () {
+                        Route::middleware('role:admin|owner')->group(function(){
+                            Route::get('add', 'add')->name('add');
+                            Route::get('slip/{dataPayroll}', 'slip')->name('slip')->withoutMiddleware(['auth']);
+                            Route::post('store', 'store')->name('store');
+                            Route::get('detail/{generate}', 'detail')->name('detail');
+                            Route::get('regenerate/{generate}', 'regenerate')->name('regenerate');
+                            Route::get('approved/{generate}/{payroll?}', 'approved')->name('approved');
+                            Route::get('rejected/{generate}/{payroll?}', 'rejected')->name('rejected');
+                            Route::get('delete/{generate}', 'delete')->name('delete');
+                        });
                         Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('slip/{dataPayroll}', 'slip')->name('slip')->withoutMiddleware(['auth']);
-                        Route::post('store', 'store')->name('store');
-                        Route::get('detail/{generate}', 'detail')->name('detail');
-                        Route::get('regenerate/{generate}', 'regenerate')->name('regenerate');
-                        Route::get('approved/{generate}/{payroll?}', 'approved')->name('approved');
-                        Route::get('rejected/{generate}/{payroll?}', 'rejected')->name('rejected');
-                        Route::get('delete/{generate}', 'delete')->name('delete');
                         Route::get('datatable', 'datatable')->name('datatable');
                         Route::get('payroll-datatable/{generate}', 'payrollDatatable')->name('payrollDatatable');
                     });
@@ -595,11 +603,12 @@ Route::middleware(['auth'])
 
         Route::prefix('pengajuan')
             ->name("pengajuan.")
-            ->middleware('role:opd|admin|owner')
+            ->middleware('role:opd|admin|owner|finance')
             ->group(function () {
 
                 Route::controller(DataPresensiController::class)
                     ->prefix('presensi')
+                    ->middleware('role:opd|admin|owner')
                     ->name("presensi.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -612,6 +621,7 @@ Route::middleware(['auth'])
 
                 Route::controller(CutiPengajuanController::class)
                     ->prefix('cuti')
+                    ->middleware('role:opd|admin|owner')
                     ->name("cuti.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -623,6 +633,7 @@ Route::middleware(['auth'])
 
                 Route::controller(ShiftPengajuanController::class)
                     ->prefix('shift')
+                    ->middleware('role:opd|admin|owner')
                     ->name("shift.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -634,6 +645,7 @@ Route::middleware(['auth'])
 
                 Route::controller(LemburPengajuanController::class)
                     ->prefix('lembur')
+                    ->middleware('role:opd|admin|owner')
                     ->name("lembur.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -645,6 +657,7 @@ Route::middleware(['auth'])
 
                 Route::controller(ReimbursementPengajuanController::class)
                     ->prefix('reimbursement')
+                    ->middleware('role:opd|admin|owner|finance')
                     ->name("reimbursement.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -710,405 +723,409 @@ Route::middleware(['auth'])
 
         Route::prefix('master')
             ->name("master.")
-            ->middleware('role:admin|owner')
             ->group(function () {
+                Route::middleware('role:admin|owner|opd')->group(function () {
+                    Route::controller(SkpdController::class)
+                        ->prefix('skpd')
+                        ->name("skpd.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::get('bawahan', 'bawahan')->name('bawahan');
+                            Route::post('store', 'store')->name('store');
+                            Route::post('reset/{skpd}', 'reset')->name('reset');
+                            Route::get('edit/{skpd}', 'edit')->name('edit');
+                            Route::get('delete/{skpd}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
 
-                Route::prefix('payroll')
-                    ->name("payroll.")
-                    ->group(function () {
+                    Route::controller(LokasiController::class)
+                        ->prefix('lokasi')
+                        ->name("lokasi.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{lokasi}', 'edit')->name('edit');
+                            Route::get('delete/{lokasi}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
 
-                        Route::controller(PenambahanPayrollController::class)
-                            ->prefix('penambahan')
-                            ->name("penambahan.")
-                            ->group(function () {
-                                Route::get('', 'index')->name('index');
-                                Route::get('add', 'add')->name('add');
-                                Route::get('json', 'json')->name('json');
-                                Route::post('store', 'store')->name('store');
-                                Route::get('edit/{tambahan}', 'edit')->name('edit');
-                                Route::get('delete/{tambahan}', 'delete')->name('delete');
-                                Route::get('datatable', 'datatable')->name('datatable');
+                        });
+                });
 
-                            });
+                Route::middleware('role:admin|owner')->group(function () {
+                    Route::prefix('payroll')
+                        ->name("payroll.")
+                        ->group(function () {
 
-                        Route::controller(PenguranganPayrollController::class)
-                            ->prefix('pengurangan')
-                            ->name("pengurangan.")
-                            ->group(function () {
-                                Route::get('', 'index')->name('index');
-                                Route::get('add', 'add')->name('add');
-                                Route::get('json', 'json')->name('json');
-                                Route::post('store', 'store')->name('store');
-                                Route::get('edit/{pengurangan}', 'edit')->name('edit');
-                                Route::get('delete/{pengurangan}', 'delete')->name('delete');
-                                Route::get('datatable', 'datatable')->name('datatable');
+                            Route::controller(PenambahanPayrollController::class)
+                                ->prefix('penambahan')
+                                ->name("penambahan.")
+                                ->group(function () {
+                                    Route::get('', 'index')->name('index');
+                                    Route::get('add', 'add')->name('add');
+                                    Route::get('json', 'json')->name('json');
+                                    Route::post('store', 'store')->name('store');
+                                    Route::get('edit/{tambahan}', 'edit')->name('edit');
+                                    Route::get('delete/{tambahan}', 'delete')->name('delete');
+                                    Route::get('datatable', 'datatable')->name('datatable');
 
-                            });
+                                });
 
-                        Route::controller(PayrollTunjanganContoller::class)
-                            ->prefix('tunjangan')
-                            ->name("tunjangan.")
-                            ->group(function () {
-                                Route::get('', 'index')->name('index');
-                                Route::get('add', 'add')->name('add');
-                                Route::get('json', 'json')->name('json');
-                                Route::get('jsonAll', 'jsonAll')->name('jsonAll');
-                                Route::post('store', 'store')->name('store');
-                                Route::get('edit/{tunjangan}', 'edit')->name('edit');
-                                Route::get('delete/{tunjangan}', 'delete')->name('delete');
-                                Route::get('datatable', 'datatable')->name('datatable');
-                            });
+                            Route::controller(PenguranganPayrollController::class)
+                                ->prefix('pengurangan')
+                                ->name("pengurangan.")
+                                ->group(function () {
+                                    Route::get('', 'index')->name('index');
+                                    Route::get('add', 'add')->name('add');
+                                    Route::get('json', 'json')->name('json');
+                                    Route::post('store', 'store')->name('store');
+                                    Route::get('edit/{pengurangan}', 'edit')->name('edit');
+                                    Route::get('delete/{pengurangan}', 'delete')->name('delete');
+                                    Route::get('datatable', 'datatable')->name('datatable');
 
-                        Route::controller(PayrollPotonganController::class)
-                            ->prefix('potongan')
-                            ->name("potongan.")
-                            ->group(function () {
-                                Route::get('', 'index')->name('index');
-                                Route::get('add', 'add')->name('add');
-                                Route::get('json', 'json')->name('json');
-                                Route::post('store', 'store')->name('store');
-                                Route::get('edit/{potongan}', 'edit')->name('edit');
-                                Route::get('delete/{potongan}', 'delete')->name('delete');
-                            });
+                                });
 
-                        Route::controller(PayrollLemburController::class)
-                            ->prefix('lembur')
-                            ->name("lembur.")
-                            ->group(function () {
-                                Route::get('', 'index')->name('index');
-                                Route::post('update', 'update')->name('update');
-                                Route::get('edit/{lembur}', 'edit')->name('edit');
-                                Route::get('datatable', 'datatable')->name('datatable');
+                            Route::controller(PayrollTunjanganContoller::class)
+                                ->prefix('tunjangan')
+                                ->name("tunjangan.")
+                                ->group(function () {
+                                    Route::get('', 'index')->name('index');
+                                    Route::get('add', 'add')->name('add');
+                                    Route::get('json', 'json')->name('json');
+                                    Route::get('jsonAll', 'jsonAll')->name('jsonAll');
+                                    Route::post('store', 'store')->name('store');
+                                    Route::get('edit/{tunjangan}', 'edit')->name('edit');
+                                    Route::get('delete/{tunjangan}', 'delete')->name('delete');
+                                    Route::get('datatable', 'datatable')->name('datatable');
+                                });
 
-                            });
-                        Route::controller(PayrollAbsensiController::class)
-                            ->prefix('absensi')
-                            ->name("absensi.")
-                            ->group(function () {
-                                Route::get('', 'index')->name('index');
-                                Route::post('update', 'update')->name('update');
-                                Route::get('edit/{absensi}', 'edit')->name('edit');
-                                Route::get('datatable', 'datatable')->name('datatable');
+                            Route::controller(PayrollPotonganController::class)
+                                ->prefix('potongan')
+                                ->name("potongan.")
+                                ->group(function () {
+                                    Route::get('', 'index')->name('index');
+                                    Route::get('add', 'add')->name('add');
+                                    Route::get('json', 'json')->name('json');
+                                    Route::post('store', 'store')->name('store');
+                                    Route::get('edit/{potongan}', 'edit')->name('edit');
+                                    Route::get('delete/{potongan}', 'delete')->name('delete');
+                                });
 
-                            });
-                        Route::controller(UmkController::class)
-                            ->prefix('umk')
-                            ->name("umk.")
-                            ->group(function () {
-                                Route::get('', 'index')->name('index');
-                                Route::get('add', 'add')->name('add');
-                                Route::get('edit/{umk}', 'edit')->name('edit');
-                                Route::post('store', 'store')->name('store');
-                                Route::post('update', 'update')->name('update');
-                                Route::get('datatable', 'datatable')->name('datatable');
-                                Route::get('delete/{umk}', 'delete')->name('delete');
-                                Route::get('json', 'json')->name('json');
-                            });
-                    });
+                            Route::controller(PayrollLemburController::class)
+                                ->prefix('lembur')
+                                ->name("lembur.")
+                                ->group(function () {
+                                    Route::get('', 'index')->name('index');
+                                    Route::post('update', 'update')->name('update');
+                                    Route::get('edit/{lembur}', 'edit')->name('edit');
+                                    Route::get('datatable', 'datatable')->name('datatable');
 
-                Route::controller(SkpdController::class)
-                    ->prefix('skpd')
-                    ->name("skpd.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::get('bawahan', 'bawahan')->name('bawahan');
-                        Route::post('store', 'store')->name('store');
-                        Route::post('reset/{skpd}', 'reset')->name('reset');
-                        Route::get('edit/{skpd}', 'edit')->name('edit');
-                        Route::get('delete/{skpd}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
+                                });
+                            Route::controller(PayrollAbsensiController::class)
+                                ->prefix('absensi')
+                                ->name("absensi.")
+                                ->group(function () {
+                                    Route::get('', 'index')->name('index');
+                                    Route::post('update', 'update')->name('update');
+                                    Route::get('edit/{absensi}', 'edit')->name('edit');
+                                    Route::get('datatable', 'datatable')->name('datatable');
 
-                Route::controller(EselonController::class)
-                    ->prefix('level')
-                    ->name("eselon.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::post('reset/{eselon}', 'reset')->name('reset');
-                        Route::get('edit/{eselon}', 'edit')->name('edit');
-                        Route::get('delete/{eselon}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
+                                });
+                            Route::controller(UmkController::class)
+                                ->prefix('umk')
+                                ->name("umk.")
+                                ->group(function () {
+                                    Route::get('', 'index')->name('index');
+                                    Route::get('add', 'add')->name('add');
+                                    Route::get('edit/{umk}', 'edit')->name('edit');
+                                    Route::post('store', 'store')->name('store');
+                                    Route::post('update', 'update')->name('update');
+                                    Route::get('datatable', 'datatable')->name('datatable');
+                                    Route::get('delete/{umk}', 'delete')->name('delete');
+                                    Route::get('json', 'json')->name('json');
+                                });
+                        });
 
-                Route::controller(JabatanController::class)
-                    ->prefix('jabatan')
-                    ->name("jabatan.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('atasan/{skpd}', 'atasan')->name('atasan');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{jabatan}', 'edit')->name('edit');
-                        Route::get('delete/{jabatan}', 'delete')->name('delete');
-                    });
+                    Route::controller(EselonController::class)
+                        ->prefix('level')
+                        ->name("eselon.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::post('reset/{eselon}', 'reset')->name('reset');
+                            Route::get('edit/{eselon}', 'edit')->name('edit');
+                            Route::get('delete/{eselon}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
 
-                Route::controller(GolonganController::class)
-                    ->prefix('golongan')
-                    ->name("golongan.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{golongan}', 'edit')->name('edit');
-                        Route::get('delete/{golongan}', 'delete')->name('delete');
-                    });
+                    Route::controller(JabatanController::class)
+                        ->prefix('jabatan')
+                        ->name("jabatan.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('atasan/{skpd}', 'atasan')->name('atasan');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{jabatan}', 'edit')->name('edit');
+                            Route::get('delete/{jabatan}', 'delete')->name('delete');
+                        });
 
-                Route::controller(JenisKpController::class)
-                    ->prefix('jeniskp')
-                    ->name("jeniskp.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{jeniskp}', 'edit')->name('edit');
-                        Route::get('delete/{jeniskp}', 'delete')->name('delete');
-                    });
+                    Route::controller(GolonganController::class)
+                        ->prefix('golongan')
+                        ->name("golongan.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{golongan}', 'edit')->name('edit');
+                            Route::get('delete/{golongan}', 'delete')->name('delete');
+                        });
 
-                Route::controller(SukuController::class)
-                    ->prefix('suku')
-                    ->name("suku.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{suku}', 'edit')->name('edit');
-                        Route::get('delete/{suku}', 'delete')->name('delete');
-                    });
+                    Route::controller(JenisKpController::class)
+                        ->prefix('jeniskp')
+                        ->name("jeniskp.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{jeniskp}', 'edit')->name('edit');
+                            Route::get('delete/{jeniskp}', 'delete')->name('delete');
+                        });
 
-                Route::controller(ShiftController::class)
-                    ->prefix('shift')
-                    ->name("shift.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::get('json_all', 'json_all')->name('json_all');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{shift}', 'edit')->name('edit');
-                        Route::get('delete/{shift}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
-                Route::controller(JamKerjaController::class)
-                    ->prefix('jam_kerja')
-                    ->name("jam_kerja.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::get('json_all', 'json_all')->name('json_all');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{jamKerja}', 'edit')->name('edit');
-                        Route::get('delete/{jamKerja}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
+                    Route::controller(SukuController::class)
+                        ->prefix('suku')
+                        ->name("suku.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{suku}', 'edit')->name('edit');
+                            Route::get('delete/{suku}', 'delete')->name('delete');
+                        });
 
-                Route::controller(LokasiController::class)
-                    ->prefix('lokasi')
-                    ->name("lokasi.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{lokasi}', 'edit')->name('edit');
-                        Route::get('delete/{lokasi}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-
-                    });
-
-                Route::controller(StatusPegawaiController::class)
-                    ->prefix('status-pegawai')
-                    ->name("status_pegawai.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{status_pegawai}', 'edit')->name('edit');
-                        Route::get('delete/{status_pegawai}', 'delete')->name('delete');
-                    });
-
-                Route::controller(PendidikanController::class)
-                    ->prefix('pendidikan')
-                    ->name("pendidikan.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{pendidikan}', 'edit')->name('edit');
-                        Route::get('delete/{pendidikan}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
-
-                Route::controller(JurusanController::class)
-                    ->prefix('jurusan')
-                    ->name("jurusan.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json/{pendidikan?}', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{jurusan}', 'edit')->name('edit');
-                        Route::get('delete/{jurusan}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-
-                    });
-
-                Route::controller(BidangController::class)
-                    ->prefix('bidang')
-                    ->name("bidang.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json/{skpd?}', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{bidang}', 'edit')->name('edit');
-                        Route::get('delete/{bidang}', 'delete')->name('delete');
-                    });
-
-                Route::controller(SeksiController::class)
-                    ->prefix('seksi')
-                    ->name("seksi.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json/{bidang?}', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{seksi}', 'edit')->name('edit');
-                        Route::get('delete/{seksi}', 'delete')->name('delete');
-                    });
-
-                Route::controller(DiklatStrukturalController::class)
-                    ->prefix('diklatStruktural')
-                    ->name("diklatStruktural.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{diklatStruktural}', 'edit')->name('edit');
-                        Route::get('delete/{diklatStruktural}', 'delete')->name('delete');
-                    });
-
-                Route::controller(KursusController::class)
-                    ->prefix('kursus')
-                    ->name("kursus.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{kursus}', 'edit')->name('edit');
-                        Route::get('delete/{kursus}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-
-                    });
-
-                Route::controller(PenghargaanController::class)
-                    ->prefix('penghargaan')
-                    ->name("penghargaan.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{penghargaan}', 'edit')->name('edit');
-                        Route::get('delete/{penghargaan}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-
-                    });
-
-                Route::controller(CutiController::class)
-                    ->prefix('cuti')
-                    ->name("cuti.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{cuti}', 'edit')->name('edit');
-                        Route::get('delete/{cuti}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
-
-                Route::controller(HariLiburController::class)
-                    ->prefix('hariLibur')
-                    ->name("hariLibur.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{hariLibur}', 'edit')->name('edit');
-                        Route::get('delete/{hariLibur}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
-
-                Route::controller(VisitController::class)
-                    ->prefix('visit')
-                    ->name("visit.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{visit}', 'edit')->name('edit');
-                        Route::get('delete/{visit}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
+                    Route::controller(ShiftController::class)
+                        ->prefix('shift')
+                        ->name("shift.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::get('json_all', 'json_all')->name('json_all');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{shift}', 'edit')->name('edit');
+                            Route::get('delete/{shift}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
+                    Route::controller(JamKerjaController::class)
+                        ->prefix('jam_kerja')
+                        ->name("jam_kerja.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::get('json_all', 'json_all')->name('json_all');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{jamKerja}', 'edit')->name('edit');
+                            Route::get('delete/{jamKerja}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
 
 
-                Route::controller(LainnyaController::class)
-                    ->prefix('lainnya')
-                    ->name("lainnya.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{lainnya}', 'edit')->name('edit');
-                        Route::get('delete/{lainnya}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
 
-                    });
+                    Route::controller(StatusPegawaiController::class)
+                        ->prefix('status-pegawai')
+                        ->name("status_pegawai.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{status_pegawai}', 'edit')->name('edit');
+                            Route::get('delete/{status_pegawai}', 'delete')->name('delete');
+                        });
 
-                Route::controller(TingkatController::class)
-                    ->prefix('tingkat')
-                    ->name("tingkat.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('org', 'org')->name('org');
-                        Route::get('json/{skpd?}', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{tingkat}', 'edit')->name('edit');
-                        Route::get('delete/{tingkat}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                        Route::post('check-kode-tingkat', 'checkKodeTingkat')->name('checkKodeTingkat');
-                    });
+                    Route::controller(PendidikanController::class)
+                        ->prefix('pendidikan')
+                        ->name("pendidikan.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{pendidikan}', 'edit')->name('edit');
+                            Route::get('delete/{pendidikan}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
 
-                Route::controller(ReimbursementController::class)
-                    ->prefix('reimbursement')
-                    ->name("reimbursement.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::get('json', 'json')->name('json');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{reimbursement}', 'edit')->name('edit');
-                        Route::get('delete/{reimbursement}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
+                    Route::controller(JurusanController::class)
+                        ->prefix('jurusan')
+                        ->name("jurusan.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json/{pendidikan?}', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{jurusan}', 'edit')->name('edit');
+                            Route::get('delete/{jurusan}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
 
-                    });
+                        });
+
+                    Route::controller(BidangController::class)
+                        ->prefix('bidang')
+                        ->name("bidang.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json/{skpd?}', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{bidang}', 'edit')->name('edit');
+                            Route::get('delete/{bidang}', 'delete')->name('delete');
+                        });
+
+                    Route::controller(SeksiController::class)
+                        ->prefix('seksi')
+                        ->name("seksi.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json/{bidang?}', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{seksi}', 'edit')->name('edit');
+                            Route::get('delete/{seksi}', 'delete')->name('delete');
+                        });
+
+                    Route::controller(DiklatStrukturalController::class)
+                        ->prefix('diklatStruktural')
+                        ->name("diklatStruktural.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{diklatStruktural}', 'edit')->name('edit');
+                            Route::get('delete/{diklatStruktural}', 'delete')->name('delete');
+                        });
+
+                    Route::controller(KursusController::class)
+                        ->prefix('kursus')
+                        ->name("kursus.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{kursus}', 'edit')->name('edit');
+                            Route::get('delete/{kursus}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+
+                        });
+
+                    Route::controller(PenghargaanController::class)
+                        ->prefix('penghargaan')
+                        ->name("penghargaan.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{penghargaan}', 'edit')->name('edit');
+                            Route::get('delete/{penghargaan}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+
+                        });
+
+                    Route::controller(CutiController::class)
+                        ->prefix('cuti')
+                        ->name("cuti.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{cuti}', 'edit')->name('edit');
+                            Route::get('delete/{cuti}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
+
+                    Route::controller(HariLiburController::class)
+                        ->prefix('hariLibur')
+                        ->name("hariLibur.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{hariLibur}', 'edit')->name('edit');
+                            Route::get('delete/{hariLibur}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
+
+                    Route::controller(VisitController::class)
+                        ->prefix('visit')
+                        ->name("visit.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{visit}', 'edit')->name('edit');
+                            Route::get('delete/{visit}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                        });
+
+
+                    Route::controller(LainnyaController::class)
+                        ->prefix('lainnya')
+                        ->name("lainnya.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{lainnya}', 'edit')->name('edit');
+                            Route::get('delete/{lainnya}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+
+                        });
+
+                    Route::controller(TingkatController::class)
+                        ->prefix('tingkat')
+                        ->name("tingkat.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('org', 'org')->name('org');
+                            Route::get('json/{skpd?}', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{tingkat}', 'edit')->name('edit');
+                            Route::get('delete/{tingkat}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+                            Route::post('check-kode-tingkat', 'checkKodeTingkat')->name('checkKodeTingkat');
+                        });
+
+                    Route::controller(ReimbursementController::class)
+                        ->prefix('reimbursement')
+                        ->name("reimbursement.")
+                        ->group(function () {
+                            Route::get('', 'index')->name('index');
+                            Route::get('add', 'add')->name('add');
+                            Route::get('json', 'json')->name('json');
+                            Route::post('store', 'store')->name('store');
+                            Route::get('edit/{reimbursement}', 'edit')->name('edit');
+                            Route::get('delete/{reimbursement}', 'delete')->name('delete');
+                            Route::get('datatable', 'datatable')->name('datatable');
+
+                        });
+                });
             });
     });
 

@@ -18,8 +18,8 @@ class CCronjobs extends Controller
 
         try {
             DB::transaction(function(){
+                // $this->totalPresensiRepository->calculatePresensi();
                 $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
-                // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
 
                 if ($resultCalculate == 0) {
                     return response()->json([
@@ -38,7 +38,7 @@ class CCronjobs extends Controller
 
         } catch (\Throwable $th) {
             // return report($th->getMessage());
-            DB::rollBack();
+            // DB::rollBack();
 
             return response()->json([
                 'status' => FALSE,

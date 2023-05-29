@@ -75,15 +75,14 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         # code...
         // $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
         // dd("done");
-        $tanggalBulan = ['2023-04-25','2023-04-26'];
-        // $tanggalBulan = arrayTanggal();
+        // $tanggalBulan = ['2023-04-25','2023-04-26'];
+        $tanggalBulan = arrayTanggal();
         // dd($tanggalBulan);
         foreach ($tanggalBulan as $value) {
             $this->date = $value;
             $this->dateNow = $value;
             $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
             $this->dataPresensi2 =  DataPresensi::whereDate('created_at', '=', $this->date)->where('hitung',0);
-
 
             $hariSabtuMinggu = cekHariAkhirPekan($this->date);
             $hariLibur = cekHariLibur($this->date);
@@ -94,6 +93,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             if($hariLibur){
                 continue;
             }
+
             $this->calculatePresensi();
         }
     }
@@ -114,12 +114,13 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
             // dd($this->allPegawai);
             // foreach ($this->allPegawai as $a) {
-            //     TotalPresensi::create([
+            //     TotalPresensi::firstOrCreate([
             //         'nip'=>$a->nip,
             //         'periode_bulan'=>$this->periodeBulan,
             //     ]);
+            //     // dd($r);
             // }
-            // dd($this->dataTotalPresensi);
+            // dd("done");
             foreach ($this->allPegawai as $key => $pegawai) {
                 $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
                 if($indexTotalPegawai == ""){

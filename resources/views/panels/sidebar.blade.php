@@ -57,7 +57,7 @@
         }
     }
     if(role('finance')){
-        $data = ["payrollGenerate","payrollPenambahan","payrollPengurangan"];
+        $data = ["payrollGenerate","payrollPenambahan","payrollPengurangan","dataPengajuanReimbursement"];
         foreach ($data as $value) {
             $$value = true;
         }
@@ -179,6 +179,7 @@
                     </li>
                     @if(role('owner') || role('admin') || role('finance'))
                     {{-- Master --}}
+                    @if(!role('finance'))
                     <div class="menu-gap"></div>
                     <div class="nav-header">
                         <span>Master</span>
@@ -410,6 +411,7 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
                     {{-- Payroll --}}
                     <li class="nav-item {{activeMenu("payroll")}}">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#payroll">
@@ -446,7 +448,7 @@
                     </li>
                     @endif
 
-                    @if(role('owner') || role('admin') || role('finance'))
+                    @if(role('owner') || role('admin') || role('finance') || role('opd'))
                     {{-- Menu Riwayat --}}
                     <div class="menu-gap"></div>
                     <div class="nav-header">
@@ -499,6 +501,7 @@
                     </li>
                     @endif
                     {{-- Pengajuan --}}
+
                     <li class="nav-item {{activeMenu("pengajuan")}}">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#data_pengajuan">
                             <span class="nav-icon-wrap">

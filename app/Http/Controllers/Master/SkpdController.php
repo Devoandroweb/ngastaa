@@ -31,7 +31,7 @@ class SkpdController extends Controller
     }
 
     public function json()
-    {   
+    {
         $skpd = Skpd::when(request()->query("q") != "",function($query){
             // dd(request()->query("q"));
 
@@ -144,11 +144,13 @@ class SkpdController extends Controller
         $model = Skpd::query();
         return $dataTables->eloquent($model)
             ->addColumn('opsi', function ($row) {
-
-                // $html = "<a class='me-2 reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
-                $html = "<a class='me-2 reset' tooltip='Reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
-                $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.skpd.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='delete text-danger delete' tooltip='Hapus' href='" . route('master.skpd.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                $html = "-";
+                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.skpd.edit', $row->id) . "'>" . icons('pencil') . "</a>";
+                if(role('admin') || role('owner')){
+                    // $html = "<a class='me-2 reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
+                    $html .= "<a class='me-2 reset' tooltip='Reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
+                    $html .= "<a class='delete text-danger delete' tooltip='Hapus' href='" . route('master.skpd.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                }
                 return $html;
             })
             ->rawColumns(['opsi'])

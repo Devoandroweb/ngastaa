@@ -22,10 +22,11 @@
     <!-- /Start Nav -->
     <div class="nav-end-wrap">
         <ul class="navbar-nav flex-row">
-
+            @if(role('admin') || role('owner'))
             <li class="nav-item d-none d-md-block">
                 <a href="{{route('calculate-presensi')}}" class="btn btn-gradient-info btn-calculate-presensi px-4 py-2 me-2 fw-bold">{!! icons('git-pull') !!} HITUNG PRESENSI</a>
             </li>
+            @endif
             <li class="nav-item d-none d-md-block">
                 {{-- CLOCK --}}
                 <div class="clock-container bg-primary text-white p-2 me-2 fw-bold">
