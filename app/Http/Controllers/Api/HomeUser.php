@@ -16,21 +16,23 @@ class HomeUser extends Controller
         $nip = request('nip');
 
         $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->has('jabatan_akhir')->first();
-        dd($user);
+
         try {
             //code...
-
+            $kode_tingkat = "-";
             $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
             if( $jabatan == null){
                 $jabatan = "-";
             }else{
                 $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
+                $kode_tingkat = $jabatan->tingkat?->kode_tingkat;
             }
             $shift = RiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
             $data = [
                 'nama' => $user->getFullName(),
                 'foto' => "public/{$user->image}",
                 'jabatan' => $jabatan,
+                'kode_tingkat' => $kode_tingkat,
                 'nama_shift' => (is_null($shift)) ? "-" : $shift->shift->nama,
                 'jam_shift' => (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift->jam_tepat_pulang)),
                 'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d"))

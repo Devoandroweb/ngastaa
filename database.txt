@@ -1,6 +1,0 @@
-HOSTING -------
-DB: ngaq5629_testing_ngastaa
-U : ngaq5629_testing_ngastaa
-P: ND@Te?jED;F]
-SQL ------
-ALTER TABLE `data_presensi` ADD `hitung` TINYINT NULL DEFAULT 0 AFTER `deleted_at`;
