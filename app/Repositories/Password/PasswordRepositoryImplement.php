@@ -18,17 +18,17 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
 
     public function __construct()
     {
-        
+
     }
     function changePassword($auth){
     // Write something awesome :)
-        
+
         $password = request('password');
         $password_baru = request('password_baru');
 
         $cek = Hash::check($password, $auth->user()->password);
         if($cek){
-            $pass = password_hash($password_baru, PASSWORD_BCRYPT);
+            $pass = Hash::make($password_baru);
             return $auth->user()->update(['password' => $pass]);
         }else{
             return false;
@@ -39,12 +39,12 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
         $nip = request('nip');
         $password_lama = request('password_lama');
         $password_baru = request('password_baru');
-        
+
         $user = User::where('nip',$nip)->first();
 
         $cek = Hash::check($password_lama, $user->password);
         if($cek){
-            $user->password = password_hash($password_baru, PASSWORD_BCRYPT);
+            $user->password = Hash::make($password_baru);
             $user->update();
             return true;
         }else{

@@ -14,7 +14,7 @@
             <div class="form-group has-validation">
                 <label class="form-label">Komponen</label>
                 <select class="form-control komponen" name="kode_tambah" required>
-                    @foreach (\App\Models\Master\Payroll\Bonus::orderBy('nama')->get(); as $item)
+                    @foreach (\App\Models\Master\Payroll\Bonus::orderBy('nama')->get() as $item)
                         @if($tambah->kode_tambah == $item->kode_tambah)
                             <option selected value="{{$item->kode_tambah}}">{{$item->nama}}</option>
                         @else
@@ -28,7 +28,7 @@
             <div class="form-group has-validation">
                 <label class="form-label">Periode</label>
                 <select class="form-control periode" name="is_periode" required>
-                    
+
                     @if($tambah->is_periode == 0)
                     <option selected value="0">Selamanya</option>
                     <option value="1">Periode Tertentu</option>
@@ -64,7 +64,7 @@ function searchId($id,$data)
         endif;
     endforeach;
     return false;
-}    
+}
 @endphp
 @endsection
 @push('js')
@@ -79,19 +79,19 @@ function searchId($id,$data)
             // minimumInputLength: 2,
             placeholder: "Ketikkan Komponen Potongan",
         })
-        
+
         $(".periode").select2();
         $(".keterangan").select2();
         showKomponenKeterangan(parseInt('{{$tambah->keterangan}}'))
         showKomponenPeriode(parseInt('{{$tambah->is_periode}}'))
 
-        $('.periode').change(function (e) { 
+        $('.periode').change(function (e) {
             e.preventDefault();
             console.log($(this).val())
             var val = $(this).val()
             showKomponenPeriode(val)
         });
-        $('.keterangan').change(function (e) { 
+        $('.keterangan').change(function (e) {
             e.preventDefault();
             console.log($(this).val())
             var val = $(this).val()
@@ -126,5 +126,5 @@ function searchId($id,$data)
             }
         }
     </script>
-    
+
 @endpush

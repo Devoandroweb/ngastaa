@@ -138,7 +138,7 @@ class PegawaiController extends Controller
         }
         if (!request('id')) {
 
-            $data['password'] = password_hash(request('nip'), PASSWORD_BCRYPT);
+            $data['password'] = Hash::make(request('nip'));
             $cr = User::create($data);
             TotalPresensi::firstOrCreate([
                 'nip' => request('nip'),
@@ -200,21 +200,22 @@ class PegawaiController extends Controller
     public function datatable(DataTables $dataTables)
     {
         $role = role('opd');
-        $pegawai = User::role('pegawai')->with('jabatan_akhir')
-            ->when($role, function ($qr) {
-                $user = auth()->user()->jabatan_akhir;
-                $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                $skpd = '';
-                if ($jabatan) {
-                    $skpd = $jabatan->kode_skpd;
-                }
+        // dd($role);
+        $pegawai = User::role('pegawai');
+            // ->when($role, function ($qr) {
+            //     $user = auth()->user()->jabatan_akhir;
+            //     $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+            //     $skpd = '';
+            //     if ($jabatan) {
+            //         $skpd = $jabatan->kode_skpd;
+            //     }
 
-                $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                        ->where('kode_skpd', $skpd)
-                        ->where('is_akhir', 1);
-                });
-            });
+            //     $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
+            //         $qt->on('riwayat_jabatan.nip', 'users.nip')
+            //             ->where('kode_skpd', $skpd)
+            //             ->where('is_akhir', 1);
+            //     });
+            // });
         // dd($pegawai);
         // $pegawai = PegawaiResource::collection($pegawai);
 
@@ -314,9 +315,11 @@ class PegawaiController extends Controller
     }
     function resetPassword($nip){
         try {
-            User::where('nip',$nip)->update([
+            // dd($nip);
+            User::where('nip',$nip)->first()->update([
                 "password" => Hash::make($nip)
             ]);
+            // dd($status);
             return response()->json(['status' => TRUE, 'message'=>'Password berhasil di reset, gunakan password NIP']);
         } catch (\Throwable $th) {
             return response()->json(['status' => FALSE, 'message'=>"Error Server"]);

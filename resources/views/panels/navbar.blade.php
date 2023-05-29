@@ -18,11 +18,11 @@
         </ul>
         <a href="{{$perusahaan->website}}" class="text-primary d-block d-md-none">{!! icons('globe') !!} <small>Company Site</small></a>
     </div>
-    
+
     <!-- /Start Nav -->
     <div class="nav-end-wrap">
         <ul class="navbar-nav flex-row">
-            
+
             <li class="nav-item d-none d-md-block">
                 <a href="{{route('calculate-presensi')}}" class="btn btn-gradient-info btn-calculate-presensi px-4 py-2 me-2 fw-bold">{!! icons('git-pull') !!} HITUNG PRESENSI</a>
             </li>
@@ -37,12 +37,12 @@
                     <div class="clock-col">
                         <p class="clock-hours clock-timer">
                         </p>
-                        
+
                     </div>
                     <div class="clock-col">
                         <p class="clock-minutes clock-timer">
                         </p>
-                        
+
                     </div>
                     <div class="clock-col">
                         <p class="clock-seconds clock-timer">
@@ -60,9 +60,11 @@
                     <div class="dropdown-menu dropdown-bordered">
                         <a class="dropdown-item" href="{{route('users.hrd.index')}}"><i class="dropdown-icon las la-user"></i><span>HRD</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{route('users.manager.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Kepala Divisi</span></a>                       
+                        <a class="dropdown-item" href="{{route('users.manager.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Kepala Divisi</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{route('users.direksi.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Direksi</span></a>                       
+                        <a class="dropdown-item" href="{{route('users.direksi.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Direksi</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{route('users.finance.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Finance</span></a>
                     </div>
                 </div>
             </li>
@@ -155,7 +157,7 @@
                                         </div>
                                     </div>
                                     <div class="media-body">
-                                        <div>	
+                                        <div>
                                             <div class="notifications-text">Winston Churchil shared a document with you</div>
                                             <div class="notifications-info">
                                                 <span class="badge badge-soft-violet">File Manager</span>
@@ -175,7 +177,7 @@
                                         </div>
                                     </div>
                                     <div class="media-body">
-                                        <div>	
+                                        <div>
                                             <div class="notifications-text">Last 2 days left for the project to be completed</div>
                                             <div class="notifications-info">
                                                 <span class="badge badge-soft-orange">Updates</span>
@@ -190,7 +192,7 @@
                     </div>
                 </div>
             </li>
-            
+
             <li class="nav-item">
                 <div class="dropdown mx-2">
                     <a class=" dropdown-toggle no-caret" href="#" role="button" data-bs-display="static" data-bs-toggle="dropdown" data-dropdown-animation data-bs-auto-close="outside" aria-expanded="false">
@@ -218,13 +220,13 @@
                         <a class="dropdown-item" href="{{route('password.index')}}">Akun</a>
                         <a class="dropdown-item" href="{{route('password.index')}}">Ubah Password</a>
                         <a class="dropdown-item" href="{{url('logout')}}"><span class="me-2">Sing Out</span></a>
-                        
+
                     </div>
                 </div>
             </li>
         </ul>
     </div>
     <!-- /End Nav -->
-    </div>									
+    </div>
 </nav>
 <!-- /Top Navbar -->

@@ -14,7 +14,7 @@
             <div class="form-group has-validation">
                 <label class="form-label">Komponen</label>
                 <select class="form-control komponen" name="kode_kurang" required>
-                    @foreach (\App\Models\Master\Payroll\Potongan::orderBy('nama')->get(); as $item)
+                    @foreach (\App\Models\Master\Payroll\Potongan::orderBy('nama')->get() as $item)
                         @if($kurang->kode_kurang == $item->kode_kurang)
                             <option selected value="{{$item->kode_kurang}}">{{$item->nama}}</option>
                         @else
@@ -28,7 +28,7 @@
             <div class="form-group has-validation">
                 <label class="form-label">Periode</label>
                 <select class="form-control periode" name="is_periode" required>
-                    
+
                     @if($kurang->is_periode == 0)
                     <option selected value="0">Selamanya</option>
                     <option value="1">Periode Tertentu</option>
@@ -48,7 +48,7 @@
         </select>
     </div>
     <div class="element-keterangan"></div>
-    
+
     <button type="submit" class="btn btn-primary">Simpan</button>
     <a href="{{route('payroll.kurang.index')}}" class="btn btn-light">Kembali</a>
 </form>
@@ -62,7 +62,7 @@ function searchId($id,$data)
         endif;
     endforeach;
     return false;
-}    
+}
 @endphp
 @endsection
 @push('js')
@@ -76,19 +76,19 @@ function searchId($id,$data)
             // minimumInputLength: 2,
             placeholder: "Ketikkan Komponen Potongan",
         })
-        
+
         $(".periode").select2();
         $(".keterangan").select2();
         showKomponenKeterangan(parseInt('{{$kurang->keterangan}}'))
         showKomponenPeriode(parseInt('{{$kurang->is_periode}}'))
 
-        $('.periode').change(function (e) { 
+        $('.periode').change(function (e) {
             e.preventDefault();
             console.log($(this).val())
             var val = $(this).val()
             showKomponenPeriode(val)
         });
-        $('.keterangan').change(function (e) { 
+        $('.keterangan').change(function (e) {
             e.preventDefault();
             console.log($(this).val())
             var val = $(this).val()

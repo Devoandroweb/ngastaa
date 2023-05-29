@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 
 class DireksiController extends Controller
@@ -30,7 +31,7 @@ class DireksiController extends Controller
             'password' => 'required',
         ];
         $data = request()->validate($rules);
-        $data['password'] = password_hash(request('password'), PASSWORD_BCRYPT);
+        $data['password'] = Hash::make(request('password'));
         $data['owner'] = 1;
         $user = User::create($data);
         $user->assignRole('owner');
@@ -53,9 +54,9 @@ class DireksiController extends Controller
         $users = User::role('owner')->orderBy('name')->get();
         return $dataTables->of($users)
             ->addColumn('images', function ($row) {
-                return '<div>	
+                return '<div>
                         <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
-                        <img src="' . asset('dist/img/businessman.png') . '" alt="user" class="avatar-img">
+                        <img src="' . $row->foto() . '" alt="user" class="avatar-img">
                     </div>';
             })
             ->addColumn('opsi', function ($row) {

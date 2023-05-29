@@ -80,9 +80,9 @@ class ManagerController extends Controller
         $users = PegawaiResource::collection($users);
         return $dataTables->of($users)
             ->addColumn('images', function ($row) {
-                return '<div>	
+                return '<div>
                         <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
-                        <img src="' . asset('dist/img/businessman.png') . '" alt="user" class="avatar-img">
+                        <img src="' . $row->foto() . '" alt="user" class="avatar-img">
                         </div>';
                 // <img src="' . $row['images'] . '" alt="user" class="avatar-img">
             })

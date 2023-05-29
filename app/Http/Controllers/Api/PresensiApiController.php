@@ -198,8 +198,6 @@ class PresensiApiController extends Controller
         $toler1Min = strtotime("-5 minutes");
         $dateSend = strtotime($date);
 
-
-
         // if($image_64){
         //     $foto = "presensi/$nip/$imageName";
         //     Storage::disk('public')->put("/$foto", $image);

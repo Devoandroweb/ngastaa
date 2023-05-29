@@ -1,8 +1,8 @@
 <div class="form-group">
     <label class="form-label">Pilih Jabatan</label>
     <select class="form-control tingkat-jabatan" name="kode_keterangan" required>
-        
-        @foreach (\App\Models\Master\Tingkat::orderBy('nama')->get(); as $s)
+
+        @foreach (\App\Models\Master\Tingkat::orderBy('nama')->get() as $s)
             @php
             $json = [
                 "value" => $s->kode_tingkat,

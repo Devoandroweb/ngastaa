@@ -1,8 +1,8 @@
 <div class="form-group">
     <label class="form-label">Pilih Level</label>
     <select class="form-control skpd" name="kode_keterangan" required>
-        
-        @foreach (\App\Models\Master\Skpd::orderBy('nama')->get(); as $s)
+
+        @foreach (\App\Models\Master\Skpd::orderBy('nama')->get() as $s)
         @php
             $json = [
                 "value" => $s->kode_skpd,

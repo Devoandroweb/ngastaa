@@ -49,8 +49,8 @@ class HomeUser extends Controller
                 'foto' => "public/{$user->image}",
                 'jabatan' => $jabatan,
                 'kode_tingkat' => $kode_tingkat,
-                'nama_shift' => (is_null($shift)) ? "-" : $shift->shift?->nama,
-                'jam_shift' => (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang)),
+                'nama_shift' => $namaShift,
+                'jam_shift' => $jamShift,
                 'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d"))
             ];
             return response()->json([

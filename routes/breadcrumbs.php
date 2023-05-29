@@ -434,12 +434,12 @@ Breadcrumbs::for('laporan-aktifitas', function (BreadcrumbTrail $trail) {
     $trail->push('Laporan Aktifitas', route('presensi.aktifitas.index'));
 });
 
-// Presensi | Rekap Harian 
+// Presensi | Rekap Harian
 Breadcrumbs::for('presensi-rekap-harian', function (BreadcrumbTrail $trail) {
     $trail->push('Presensi', "#");
     $trail->push('Presensi Rekap Harian', route('presensi.rekapabsen.index'));
 });
-// Presensi | Total Presensi 
+// Presensi | Total Presensi
 Breadcrumbs::for('presensi-total-presensi', function (BreadcrumbTrail $trail) {
     $trail->push('Presensi', "#");
     $trail->push('Total Presensi', route('presensi.total_presensi.index'));
@@ -495,6 +495,16 @@ Breadcrumbs::for('management-user-direksi', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('tambah-management-user-direksi', function (BreadcrumbTrail $trail) {
     $trail->parent('management-user-direksi');
     $trail->push('Tambah Management User Direksi');
+});
+// Management User | Finance
+Breadcrumbs::for('management-user-finance', function (BreadcrumbTrail $trail) {
+    $trail->push('User', "#");
+    $trail->push('Management User Finance', route('users.finance.index'));
+
+});
+Breadcrumbs::for('tambah-management-user-finance', function (BreadcrumbTrail $trail) {
+    $trail->parent('management-user-finance');
+    $trail->push('Tambah Management User Finance');
 });
 
 // Profile Perusahaan

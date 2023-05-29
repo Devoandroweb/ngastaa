@@ -6,87 +6,63 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class HrdController extends Controller
+class FinanceController extends Controller
 {
     public function index()
     {
-
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $users = User::role('admin')
-            ->when($search, function ($qr, $search) {
-                $qr->where('name', 'LIKE', "%$search%");
-            })
-            ->orderBy('name')
-            ->paginate($limit);
-
-        $users->appends(request()->all());
-
-        $users = PegawaiResource::collection($users);
-        // return inertia('Users/Hrd/index', compact('users'));
-        return view('pages.manageuser.hrd.index');
+        return view('pages/manageuser/finance/index');
     }
 
     public function add()
     {
-        // $admin = User::role('admin')->pluck('id')->toArray();
-
-        // $users = User::role('pegawai')
-        //             ->orderBy('name')
-        //             ->whereNotIn('id', $admin)
-        //             ->get();
-        // SelectResource::withoutWrapping();
-        // $data = SelectResource::collection($users);
-        $data = null;
-        // return inertia('Users/Hrd/Add', compact('users'));
-        return view('pages.manageuser.hrd.add', compact('data'));
+        return view('pages/manageuser/finance/add');
     }
 
     public function store()
     {
         $pegawai = request('pegawai');
-        // dd($pegawai);
+
         if (count($pegawai) > 0) {
 
             foreach ($pegawai as $p) {
-                $user = User::where('nip', json_decode($p)->value)->where('owner',0)->first();
-                $user->assignRole('admin');
+                $user = User::where('nip', json_decode($p)->value)->first();
+                $user->assignRole('finance');
             }
 
-            return redirect(route('users.hrd.index'))->with([
+            return redirect(route('users.finance.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil, Menambahkan Data!"
             ]);
         }
 
-        return redirect(route('users.hrd.index'))->with([
+        return redirect(route('users.finance.index'))->with([
             'type' => 'error',
             'messages' => "Gagal!"
         ]);
     }
 
-    public function delete(User $hrd)
+    public function delete(User $finance)
     {
-        $hrd->removeRole('admin');
+        $finance->removeRole('finance');
         return redirect()->back()->with([
             'type' => 'success',
-            'messages' => 'Berhasil dihapus sebagai HRD!'
+            'messages' => 'Berhasil dihapus sebagai Kepala Divisi!'
         ]);
     }
     public function datatable(DataTables $dataTables)
     {
-        $users = User::role('admin')->orderBy('name');
-        // $users = PegawaiResource::collection($users);
-        // dd($users);
+        $users = User::role('finance')->orderBy('name')->get();
+        $users = PegawaiResource::collection($users);
         return $dataTables->of($users)
             ->addColumn('images', function ($row) {
                 return '<div>
                         <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
                         <img src="' . $row->foto() . '" alt="user" class="avatar-img">
-                    </div>';
+                        </div>';
+                // <img src="' . $row['images'] . '" alt="user" class="avatar-img">
             })
             ->addColumn('nama', function ($row) {
                 return '<b class="text-primary">' . $row['nip'] . '</b><br>' . $row['name'];
@@ -103,7 +79,7 @@ class HrdController extends Controller
             })
             ->addColumn('opsi', function ($row) {
                 // $html = "<a class='me-2 text-success' tooltip='Edit' href='" . route('pengajuan.cuti.approved', $row->id) . "'>" . icons('c-check', 17) . "</a>";
-                $html = "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('users.hrd.delete', $row['nip']) . "'>" . icons('trash', 17) . "</a>";
+                $html = "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('users.finance.delete', $row['nip']) . "'>" . icons('trash', 17) . "</a>";
                 return $html;
             })
             ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'no_hp'])

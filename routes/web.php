@@ -78,6 +78,7 @@ use App\Http\Controllers\Presensi\RekapAbsensHarianController;
 use App\Http\Controllers\Presensi\TotalPresensiController;
 use App\Http\Controllers\UbahPassword;
 use App\Http\Controllers\Users\DireksiController;
+use App\Http\Controllers\Users\FinanceController;
 use App\Http\Controllers\Users\HrdController;
 use App\Http\Controllers\Users\ManagerController;
 use Illuminate\Support\Facades\Route;
@@ -690,6 +691,17 @@ Route::middleware(['auth'])
                         Route::get('add', 'add')->name('add');
                         Route::post('store', 'store')->name('store');
                         Route::get('delete/{manager}', 'delete')->name('delete');
+                        Route::get('datatable', 'datatable')->name('datatable');
+
+                    });
+                Route::controller(FinanceController::class)
+                    ->prefix('finance')
+                    ->name("finance.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('add', 'add')->name('add');
+                        Route::post('store', 'store')->name('store');
+                        Route::get('delete/{finance}', 'delete')->name('delete');
                         Route::get('datatable', 'datatable')->name('datatable');
 
                     });
