@@ -24,8 +24,8 @@ class HomeUser extends Controller
             if( $jabatan == null){
                 $jabatan = "-";
             }else{
-                $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
                 $kode_tingkat = $jabatan->tingkat?->kode_tingkat;
+                $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
             }
             $shift = RiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
             $data = [
