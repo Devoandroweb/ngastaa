@@ -237,7 +237,7 @@ class DataPresensiController extends Controller
             })
             ->addColumn('jabatan', function ($row) {
                 // dd($row->riwayat_jabatan);
-                return $row->riwayat_jabatan;
+                return $row->jabatan ?? "-";
             })
             ->addColumn('tanggal', function ($row) {
                 return tanggal_indo($row->created_at);
