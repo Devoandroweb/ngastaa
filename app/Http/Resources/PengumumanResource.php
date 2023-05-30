@@ -14,12 +14,16 @@ class PengumumanResource extends JsonResource
      */
     public function toArray($request)
     {
-        
+        if(file_exists(public_path($this->file))){
+            $file = $this->file;
+        }else{
+            $file = asset("/dist/img/image-not-found.png");
+        }
         return [
             'id' => $this->id,
             'judul' => $this->judul,
             'deskripsi' => $this->deskripsi,
-            'file' => $this->file,
+            'file' => $file,
             'created_at' => hari(date('N'),strtotime($this->created_at)).", ".tanggal_indo(date("Y-m-d",strtotime($this->created_at))),
         ];
     }
