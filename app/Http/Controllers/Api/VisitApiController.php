@@ -63,7 +63,7 @@ class VisitApiController extends Controller
                 $alamat = request('alamat');
                 $kode_visit = (string) Str::uuid();
                 $qrName = (string) Str::uuid().".svg";
-                QrCode::generate($kode_visit, public_path("visit_qr\\".$qrName));
+                QrCode::generate($kode_visit, public_path("visit_qr/{$qrName}"));
                 Visit::create([
                     'kode_visit' => $kode_visit,
                     'nama' => $namaVisit,
@@ -131,9 +131,9 @@ class VisitApiController extends Controller
 
             $data = Visit::where('kode_visit', $kode)->first();
             if($data){
-                $exp = explode(',', $data->kordinat);
-                $data->latitude = (string) trim($exp[0]);
-                $data->longitude = (string) trim($exp[1]);
+                // $exp = explode(',', $data->kordinat);
+                // $data->latitude = (string) trim($exp[0]);
+                // $data->longitude = (string) trim($exp[1]);
                 return response()->json(buildResponseSukses($data),200);
             }
             return response()->json(buildResponseSukses(null),200);
