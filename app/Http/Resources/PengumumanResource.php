@@ -15,9 +15,9 @@ class PengumumanResource extends JsonResource
     public function toArray($request)
     {
         if(file_exists(public_path($this->file))){
-            $file = $this->file;
+            $file = url("public/$this->file");
         }else{
-            $file = asset("/dist/img/image-not-found.png");
+            $file = asset("/dist/img/logo_lets_work_greyscale.png");
         }
         return [
             'id' => $this->id,

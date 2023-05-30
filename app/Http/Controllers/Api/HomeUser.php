@@ -46,12 +46,15 @@ class HomeUser extends Controller
                     $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
                     $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
                 }
-
             }
-
+            if(file_exists(public_path($user->image))){
+                $image = url("public/{$user->image}");
+            }else{
+                $image = asset("/dist/img/logo_lets_work_greyscale.png");
+            }
             $data = [
                 'nama' => $user->getFullName(),
-                'foto' => "public/{$user->image}",
+                'foto' => $image,
                 'jabatan' => $jabatan,
                 'kode_tingkat' => $kode_tingkat,
                 'nama_shift' => $namaShift,

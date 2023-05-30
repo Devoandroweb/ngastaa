@@ -28,9 +28,14 @@ class User extends Controller
             if($user->statusPegawai != null){
                 $status_pegawai = $user->statusPegawai->nama;
             }
+            if(file_exists(public_path($user->image))){
+                $foto = url("public/{$user->image}");
+            }else{
+                $foto = asset("/dist/img/logo_lets_work_greyscale.png");
+            }
             $data = [
                 'nama' => $user->getFullName(),
-                'foto' => $user->foto(),
+                'foto' => $foto,
                 'jabatan' => $jabatan,
                 'status_pegawai' => $status_pegawai,
                 'kode_tingkat' => $kode_tingkat,
