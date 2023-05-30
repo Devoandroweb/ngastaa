@@ -30,15 +30,15 @@ class HomeUser extends Controller
 
                 $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
             }
-            $jamKerja = RiwayatJamKerja::with('jamKerja')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
+            $RjamKerja = RiwayatJamKerja::with('jamKerja')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
             $shift = RiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
 
             $namaShift = "-";
             $jamShift = "-";
 
-            if($jamKerja != null){
-                $namaShift = (is_null($jamKerja)) ? "-" : $jamKerja->jamKerja?->nama;
-                $jamShift = (is_null($jamKerja)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+            if($RjamKerja != null){
+                $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
+                $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_pulang));
             }else{
                 $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
                 $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
