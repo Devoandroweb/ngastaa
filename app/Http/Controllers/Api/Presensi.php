@@ -48,9 +48,9 @@ class Presensi extends Controller
     function checkStatusAbsen($nip)
     {
         try{
-            $pegawai = User::where('nip',$nip)->first();
+            $presensiPegawai = DataPresensi::where('nip',$nip)->whereDate('created_at', '=', date("Y-m-d"))->first();
             $data['status'] = true;
-            if($pegawai->status_absen == 1){
+            if($presensiPegawai != null){
                 $data['absen_status'] = true;
                 return response()->json([
                     'status' => TRUE,
@@ -69,7 +69,7 @@ class Presensi extends Controller
             $data['status'] = null;
             $data['absen_status'] = null;
             return response()->json([
-                'status' => TRUE,
+                'status' => false,
                 'message' => "Failed",
                 'data' => $data
             ], 400);
