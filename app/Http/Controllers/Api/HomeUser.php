@@ -38,7 +38,7 @@ class HomeUser extends Controller
 
             if($jamKerja != null){
                 $namaShift = (is_null($jamKerja)) ? "-" : $jamKerja->jamKerja?->nama;
-                $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+                $jamShift = (is_null($jamKerja)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
             }else{
                 $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
                 $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
