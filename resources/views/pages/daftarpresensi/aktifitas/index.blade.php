@@ -121,7 +121,6 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    method:"POST",
                     url: _URL_DATATABLE,
                 },
                 rowReorder: {
