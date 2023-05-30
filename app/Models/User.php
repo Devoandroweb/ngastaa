@@ -170,7 +170,7 @@ class User extends Authenticatable
     function foto(){
         $jk = str_replace(" ","",$this->jenis_kelamin);
         $foto = $this->image;
-        if($foto == null || $foto == "" || $foto == "NULL"){
+        if($foto == null || $foto == "" || $foto == "NULL" || !file_exists(public_path($foto))){
             if(strtolower($jk) == "laki-laki"){
                 return asset('/dist/img/man.png');
             }elseif(strtolower($jk) == "perempuan"){

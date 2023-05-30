@@ -94,7 +94,8 @@ class PengumumanController extends Controller
         // dd(url($pengumuman[0]['file']));
         return $dataTables->of($pengumuman)
             ->addColumn('file', function ($row) {
-                if(file_exists(public_path($row->file)) || $row->file == null){
+                // dd(file_exists(public_path($row->file)));
+                if(!file_exists(public_path($row->file)) || $row->file == null){
                     return "-";
                 }
                 return '<a class="btn btn-outline-info btn-animated" href="'.url('public/'.$row->file).'">Lihat File</a>';
