@@ -16,7 +16,7 @@ class CutiPengajuanResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'cuti' => optional($this->cuti)->nama,
+            'cuti' => $this->cuti?->nama ?? "-",
             'tanggal_mulai' => date("d/m/Y",strtotime($this->tanggal_mulai)),
             'tanggal_selesai' => date("d/m/Y",strtotime($this->tanggal_selesai)),
             'keterangan' => $this->keterangan ?? "",
