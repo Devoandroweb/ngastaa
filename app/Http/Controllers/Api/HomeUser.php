@@ -37,11 +37,16 @@ class HomeUser extends Controller
             $jamShift = "-";
 
             if($RjamKerja != null){
-                $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
-                $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_pulang));
-            }else{
-                $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
-                $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+                if($RjamKerja->jamKerja != null){
+                    $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
+                    $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_pulang));
+                }
+            }elseif($shift != null){
+                if($shift->shift != null){
+                    $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
+                    $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+                }
+
             }
 
             $data = [
