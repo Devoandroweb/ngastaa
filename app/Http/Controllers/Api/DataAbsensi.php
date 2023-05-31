@@ -12,7 +12,7 @@ class DataAbsensi extends Controller
 {
     function index($nip)
     {
-        
+
         try {
             $dataPresensi = DataPresensi::where("nip",$nip)->get();
             $data = [];
@@ -21,18 +21,18 @@ class DataAbsensi extends Controller
                 $tanggal = date("Y-m-d",strtotime($p->created_at));
                 $data[] = [
                     'tanggal' => hari($hari) . ", " .tanggal_indo($tanggal),
-                    'absen' => $p->tanggal_datang,
+                    'absen' => date("H:i",strtotime($p->tanggal_datang)),
                     'status' => 1,
                 ];
                 $data[] = [
                     'tanggal' => hari($hari) . ", " .tanggal_indo($tanggal),
-                    'absen' => $p->tanggal_pulang,
+                    'absen' => date("H:i",strtotime($p->tanggal_pulang)),
                     'status' => 2,
                 ];
-            
+
             }
             return response()->json([
-                'status' => TRUE, 
+                'status' => TRUE,
                 'message' => "Success",
                 'data' => $data
             ], 200);
@@ -65,7 +65,7 @@ class DataAbsensi extends Controller
                 $data['izin'] = $totalIzin->total;
             }
             return response()->json([
-                'status' => TRUE, 
+                'status' => TRUE,
                 'message' => "Success",
                 'data' => $data
             ], 200);
