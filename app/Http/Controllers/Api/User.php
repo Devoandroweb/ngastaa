@@ -121,6 +121,24 @@ class User extends Controller
             ]),500);
 
         }
+    }
+    function changeAddress(){
+        try {
+            $nip = request('nip');
+            $alamat = request('alamat');
+            $alamat_ktp = request('alamat_ktp');
+            $user = MUser::where('nip', $nip)->first();
+            $user->alamat = $alamat;
+            $user->alamat_ktp = $alamat_ktp;
+            $user->update();
+            return response()->json(buildResponseSukses([
+                'message' => 'Update Alamat Berhasil'
+            ]),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal([
+                'message' => $th->getMessage()
+            ]),500);
 
+        }
     }
 }
