@@ -9,10 +9,18 @@ use App\Http\Resources\Select\SelectResource;
 use App\Models\Master\Cuti;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\User;
+use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Http\Request;
 
 class CutiApiController extends Controller
 {
+    protected $pegawaiRepository;
+    protected $pegawaiWithRole;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     public function index()
     {
         try{
@@ -68,7 +76,7 @@ class CutiApiController extends Controller
             }
 
             if($cr){
-                tambah_log($cr->nip, "App\Pegawai\DataPengajuanCuti", $cr->id, 'diajukan');    
+                tambah_log($cr->nip, "App\Pegawai\DataPengajuanCuti", $cr->id, 'diajukan');
                 return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Berhasil di ajukan']),200);
             }else{
                 return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Gagal di ajukan']),200);
@@ -108,6 +116,35 @@ class CutiApiController extends Controller
         $user = User::where('nip', $nip)->first();
         if($user){
             $dpc = DataPengajuanCuti::where('nip', $nip)->get();
+            // dd($dpc);
+            $data = CutiPengajuanResource::collection($dpc);
+            if($dpc){
+                    return response()->json(buildResponseSukses([
+                        'user' => PegawaiResource::make($user),
+                        'data' => $data,
+                    ]),200);
+            }else{
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda tidak memiliki pengajuan!' ]),200);
+            }
+        }else{
+            return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak ditemukan!' ]),200);
+        }
+    }
+    public function listsOpd()
+    {
+        $nip = request()->query('nip');
+        $opd = false;
+        $user = User::where('nip',$nip)->first();
+        if(!$user){
+            return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
+        }
+        if(array_intersect(["opd","buk"],$user->getRoleNames()->toArray())){
+            $opd = true;
+        }
+            // dd($opd);
+        $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
+        if($user){
+            $dpc = DataPengajuanCuti::whereIn('nip', $arrayNip)->where('status',1)->get();
             // dd($dpc);
             $data = CutiPengajuanResource::collection($dpc);
             if($dpc){

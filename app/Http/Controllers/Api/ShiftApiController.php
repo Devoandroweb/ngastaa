@@ -9,9 +9,17 @@ use App\Http\Resources\Select\SelectResource;
 use App\Models\Master\Shift;
 use App\Models\Pegawai\RiwayatShift;
 use App\Models\User;
+use App\Repositories\Pegawai\PegawaiRepository;
 
 class ShiftApiController extends Controller
 {
+    protected $pegawaiRepository;
+    protected $pegawaiWithRole;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     public function index()
     {
         $shift = Shift::orderBy('nama')->get();
@@ -19,6 +27,7 @@ class ShiftApiController extends Controller
         $shift = SelectResource::collection($shift);
         return response()->json(buildResponseSukses($shift),200);
     }
+
 
     public function store()
     {
@@ -49,7 +58,7 @@ class ShiftApiController extends Controller
 
                 $cr = RiwayatShift::create($data);
                 if($cr){
-                    tambah_log($cr->nip, "App\Pegawai\RiwayatShift", $cr->id, 'diajukan');    
+                    tambah_log($cr->nip, "App\Pegawai\RiwayatShift", $cr->id, 'diajukan');
                     return response()->json(buildResponseSukses(['status' => TRUE,'messages' => 'Berhasil mengajukan Shift']),200);
                 }else{
                     return response()->json(buildResponseSukses(['status' => FALSE,'messages' => 'Gagal mengajukan Shift']),200);
@@ -88,6 +97,33 @@ class ShiftApiController extends Controller
         $user = User::where('nip', $nip)->first();
         if($user){
             $dpc = RiwayatShift::where('nip', $nip)->where('status', '!=', 99)->paginate(10);
+            if($dpc){
+                    return response()->json(buildResponseSukses([
+                        'user' => PegawaiResource::make($user),
+                        'data' => RiwayatShiftResource::collection($dpc),
+                    ]),200);
+            }else{
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda tidak memiliki pengajuan!' ]),200);
+            }
+        }else{
+            return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak ditemukan!']),200);
+        }
+    }
+    public function listsOpd()
+    {
+        $nip = request()->query('nip');
+            $opd = false;
+            $user = User::where('nip',$nip)->first();
+        if(!$user){
+            return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
+        }
+        if(array_intersect(["opd","buk"],$user->getRoleNames()->toArray())){
+            $opd = true;
+        }
+            // dd($opd);
+        $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
+        if($user){
+            $dpc = RiwayatShift::whereIn('nip', $arrayNip)->where('status', 1)->paginate(10);
             if($dpc){
                     return response()->json(buildResponseSukses([
                         'user' => PegawaiResource::make($user),

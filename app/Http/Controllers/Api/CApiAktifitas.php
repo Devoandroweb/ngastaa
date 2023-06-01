@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AktifitasResource;
 use App\Models\MAktifitas;
 use App\Models\User;
+use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Http\Request;
 
 class CApiAktifitas extends Controller
 {
+    protected $pegawaiRepository;
+    protected $pegawaiWithRole;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     function index(){
         try {
             // dd(request()->all());
@@ -28,25 +36,14 @@ class CApiAktifitas extends Controller
             $nip = request()->query('nip');
             $opd = false;
             $pegawai = User::where('nip',$nip)->first();
-            if(in_array("opd",$pegawai->getRoleNames()->toArray())){
+            if(!$pegawai){
+                return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
+            }
+            if(array_intersect(["opd","buk"],$pegawai->getRoleNames()->toArray())){
                 $opd = true;
             }
             // dd($opd);
-            $arrayNip = User::role('pegawai')
-                ->when($opd, function ($qr) use($pegawai) {
-                    $user = $pegawai?->jabatan_akhir;
-                    $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                    $skpd = '';
-                    if ($jabatan) {
-                        $skpd = $jabatan->kode_skpd;
-                    }
-                    // dd($skpd);
-                    $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                        $qt->on('riwayat_jabatan.nip', 'users.nip')
-                            ->where('kode_skpd', $skpd)
-                            ->where('is_akhir', 1);
-                    });
-                })->pluck('users.nip')->toArray();
+            $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
             // dd($arrayNip);
             $data = MAktifitas::whereIn('nip',$arrayNip)->with('pegawai')->orderBy('created_at','desc')->get();
             // dd($data);

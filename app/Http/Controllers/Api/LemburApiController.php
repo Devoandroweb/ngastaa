@@ -7,9 +7,17 @@ use App\Http\Resources\Api\Pengajuan\LemburPengajuanResource;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Models\Pegawai\DataPengajuanLembur;
 use App\Models\User;
+use App\Repositories\Pegawai\PegawaiRepository;
 
 class LemburApiController extends Controller
 {
+    protected $pegawaiRepository;
+    protected $pegawaiWithRole;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     public function store()
     {
         $nip = request('nip');
@@ -84,6 +92,33 @@ class LemburApiController extends Controller
         $user = User::where('nip', $nip)->first();
         if($user){
             $dpc = DataPengajuanLembur::where('nip', $nip)->get();
+            if($dpc){
+                    return response()->json(buildResponseSukses([
+                        'user' => PegawaiResource::make($user),
+                        'data' => LemburPengajuanResource::collection($dpc),
+                    ]),200);
+            }else{
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda tidak memiliki pengajuan!' ]),200);
+            }
+        }else{
+            return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak ditemukan!' ]),200);
+        }
+    }
+    function listsOpd()
+    {
+        $nip = request()->query('nip');
+        $opd = false;
+        $user = User::where('nip',$nip)->first();
+        if(!$user){
+            return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
+        }
+        if(array_intersect(["opd","buk"],$user->getRoleNames()->toArray())){
+            $opd = true;
+        }
+            // dd($opd);
+        $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
+        if($user){
+            $dpc = DataPengajuanLembur::whereIn('nip', $arrayNip)->where('status',1)->get();
             if($dpc){
                     return response()->json(buildResponseSukses([
                         'user' => PegawaiResource::make($user),

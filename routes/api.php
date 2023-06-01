@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function(){
         ->group(function(){
             Route::get('', 'index');
             Route::post('store', 'store');
-            Route::get('list-opd', 'listOpd');
+            Route::get('lists-opd', 'listOpd');
         });
 
     Route::controller(PresensiApiController::class)
@@ -100,6 +100,7 @@ Route::middleware('auth:sanctum')->group(function(){
             ->group(function () {
                 Route::get('',  'index');
                 Route::get('lists', 'lists');
+                Route::get('lists-opd', 'listsOpd');
                 Route::post('store', 'store');
                 Route::get('detail',  'detail');
             });
@@ -108,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function(){
             ->prefix('lembur')
             ->group(function () {
                 Route::get('lists', 'lists');
+                Route::get('lists-opd', 'listsOpd');
                 Route::post('store',  'store');
                 Route::get('detail',  'detail');
             });
@@ -125,6 +127,7 @@ Route::middleware('auth:sanctum')->group(function(){
             ->group(function () {
                 Route::get('',  'index');
                 Route::get('lists', 'lists');
+                Route::get('lists-opd', 'listsOpd');
                 Route::post('store', 'store');
                 Route::get('detail',  'detail');
             });
