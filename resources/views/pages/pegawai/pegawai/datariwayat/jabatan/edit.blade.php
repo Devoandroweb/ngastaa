@@ -66,7 +66,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <label class="form-label">No SK</label>
+            <label class="form-label">No Kontrak</label>
         </div>
         <div class="col-md-8">
             <div class="form-group">
@@ -79,7 +79,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <label class="form-label">Tanggal SK</label>
+            <label class="form-label">Tanggal Kontrak</label>
         </div>
         <div class="col-md-8">
             <div class="form-group">
@@ -92,7 +92,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <label class="form-label">Tanggal Selesai SK</label>
+            <label class="form-label">Tanggal Selesai Kontrak</label>
         </div>
         <div class="col-md-8">
             <div class="form-group">
