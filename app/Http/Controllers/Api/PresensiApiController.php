@@ -275,8 +275,8 @@ class PresensiApiController extends Controller
 
         // dd($dateSend <= $tutupPagiTime);
 
-        // if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
-        if (true) { # PAGI
+        if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
+        // if (true) { # PAGI
             $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', date('Y-m-d'))->count();
             if ($cek > 0) {
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pagi ini!']),200);
