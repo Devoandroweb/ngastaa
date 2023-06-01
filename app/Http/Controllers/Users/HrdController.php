@@ -12,36 +12,13 @@ class HrdController extends Controller
 {
     public function index()
     {
-
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $users = User::role('admin')
-            ->when($search, function ($qr, $search) {
-                $qr->where('name', 'LIKE', "%$search%");
-            })
-            ->orderBy('name')
-            ->paginate($limit);
-
-        $users->appends(request()->all());
-
-        $users = PegawaiResource::collection($users);
-        // return inertia('Users/Hrd/index', compact('users'));
         return view('pages.manageuser.hrd.index');
     }
 
     public function add()
     {
-        // $admin = User::role('admin')->pluck('id')->toArray();
-
-        // $users = User::role('pegawai')
-        //             ->orderBy('name')
-        //             ->whereNotIn('id', $admin)
-        //             ->get();
-        // SelectResource::withoutWrapping();
-        // $data = SelectResource::collection($users);
         $data = null;
-        // return inertia('Users/Hrd/Add', compact('users'));
+
         return view('pages.manageuser.hrd.add', compact('data'));
     }
 
@@ -53,7 +30,7 @@ class HrdController extends Controller
 
             foreach ($pegawai as $p) {
                 $user = User::where('nip', json_decode($p)->value)->where('owner',0)->first();
-                $user->assignRole('admin');
+                $user->assignRole('buk');
             }
 
             return redirect(route('users.hrd.index'))->with([
@@ -70,7 +47,7 @@ class HrdController extends Controller
 
     public function delete(User $hrd)
     {
-        $hrd->removeRole('admin');
+        $hrd->removeRole('buk');
         return redirect()->back()->with([
             'type' => 'success',
             'messages' => 'Berhasil dihapus sebagai HRD!'
@@ -78,7 +55,7 @@ class HrdController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $users = User::role('admin')->orderBy('name');
+        $users = User::role('buk')->orderBy('name');
         // $users = PegawaiResource::collection($users);
         // dd($users);
         return $dataTables->of($users)

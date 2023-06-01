@@ -465,15 +465,15 @@ Breadcrumbs::for('edit-pengumuman', function (BreadcrumbTrail $trail) {
     $trail->push('Edit Daftar Pengumuman');
 });
 
-// Management User | HRD
+// Management User | HRD/BUK
 Breadcrumbs::for('management-user-hrd', function (BreadcrumbTrail $trail) {
     $trail->push('User', "#");
-    $trail->push('Management User HRD', route('users.hrd.index'));
+    $trail->push('Management User BUK', route('users.hrd.index'));
 
 });
 Breadcrumbs::for('tambah-management-user-hrd', function (BreadcrumbTrail $trail) {
     $trail->parent('management-user-hrd');
-    $trail->push('Tambah Management User HRD');
+    $trail->push('Tambah Management User BUK');
 });
 
 // Management User | Divisi

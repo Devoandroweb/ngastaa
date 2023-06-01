@@ -1,6 +1,6 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Management User HRD</h2>
+    <h2 class="pg-title">Management User BUK</h2>
     {{ Breadcrumbs::render('tambah-management-user-hrd') }}
 @endsection
 @section('content')
@@ -22,7 +22,7 @@ function searchId($id,$data)
             <div class="form-group">
                 <label class="form-label">Pilih Pegawai</label>
                 <select class="form-control pegawai" name="pegawai[]"  multiple="multiple" required>
-                    
+
                     @foreach(\App\Models\User::role('pegawai')->orderBy('name')->get() as $s)
                     @php
                         $json = [
@@ -42,13 +42,13 @@ function searchId($id,$data)
                         @endif
                     @else
                     @endif --}}
-                        
+
                     @endforeach
                 </select>
             </div>
         </div>
-        
-       
+
+
     </div>
     <button type="submit" class="btn btn-primary">Simpan</button>
     <a href="{{route('users.hrd.index')}}" class="btn btn-light">Kembali</a>

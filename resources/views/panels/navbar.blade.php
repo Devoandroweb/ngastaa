@@ -59,13 +59,13 @@
                         <i class="far fa-user-circle me-2"></i> Management User
                     </button>
                     <div class="dropdown-menu dropdown-bordered">
-                        <a class="dropdown-item" href="{{route('users.hrd.index')}}"><i class="dropdown-icon las la-user"></i><span>HRD</span></a>
+                        <a class="dropdown-item" href="{{route('users.direksi.index')}}"><i class="dropdown-icon las la-user"></i></i><span>DIRUT</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{route('users.manager.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Kepala Divisi</span></a>
+                        <a class="dropdown-item" href="{{route('users.hrd.index')}}"><i class="dropdown-icon las la-user"></i><span>BUK</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{route('users.direksi.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Direksi</span></a>
+                        <a class="dropdown-item" href="{{route('users.manager.index')}}"><i class="dropdown-icon las la-user"></i></i><span>PIC</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{route('users.finance.index')}}"><i class="dropdown-icon far fa-user-circle"></i><span>Finance</span></a>
+                        <a class="dropdown-item" href="{{route('users.finance.index')}}"><i class="dropdown-icon las la-user"></i></i><span>Finance</span></a>
                     </div>
                 </div>
             </li>

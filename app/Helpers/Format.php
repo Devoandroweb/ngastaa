@@ -617,8 +617,10 @@ function roleFormat(){
     if(role('owner')){
         return "DIRUT";
     }elseif(role('admin')){
-        return "HRD";
-    }elseif(role('opd')){
+        return "ADM";
+    }elseif(role('opd') || role('buk')){
+        return "BUK";
+    }elseif(role('pic')){
         return "PIC";
     }else{
         return "PGW";

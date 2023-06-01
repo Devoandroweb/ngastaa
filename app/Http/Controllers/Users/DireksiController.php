@@ -44,6 +44,7 @@ class DireksiController extends Controller
     public function delete(User $direksi)
     {
         $direksi->removeRole('owner');
+        $direksi->removeRole('admin');
         return redirect()->back()->with([
             'type' => 'success',
             'messages' => 'Berhasil dihapus sebagai direksi!'
@@ -51,7 +52,7 @@ class DireksiController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $users = User::role('owner')->orderBy('name')->get();
+        $users = User::role(['owner','admin'])->orderBy('name')->get();
         return $dataTables->of($users)
             ->addColumn('images', function ($row) {
                 return '<div>
@@ -61,7 +62,10 @@ class DireksiController extends Controller
             })
             ->addColumn('opsi', function ($row) {
                 // $html = "<a class='me-2 text-success' tooltip='Edit' href='" . route('pengajuan.cuti.approved', $row->id) . "'>" . icons('c-check', 17) . "</a>";
-                $html = "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('users.direksi.delete', ['direksi'=>$row['id']]) . "'>" . icons('trash', 17) . "</a>";
+                $html = "-";
+                if($row->owner != 1){
+                    $html = "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('users.direksi.delete', $row['nip']) . "'>" . icons('trash', 17) . "</a>";
+                }
                 return $html;
             })
             ->rawColumns(['opsi', 'images'])

@@ -1,6 +1,6 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Management User HRD</h2>
+    <h2 class="pg-title">Management User BUK</h2>
     {{ Breadcrumbs::render('management-user-hrd') }}
 @endsection
 @section('header_action')
@@ -26,14 +26,14 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("users.hrd.datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -41,7 +41,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -76,12 +76,12 @@
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
     <script src="{{asset('/')}}delete.js"></script>
-    
+
 @endpush

@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function(){
         ->group(function(){
             Route::get('', 'index');
             Route::post('store', 'store');
+            Route::get('list-opd', 'listOpd');
         });
 
     Route::controller(PresensiApiController::class)

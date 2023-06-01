@@ -603,7 +603,7 @@ Route::middleware(['auth'])
 
         Route::prefix('pengajuan')
             ->name("pengajuan.")
-            ->middleware('role:opd|admin|owner|finance')
+            ->middleware('role:opd|admin|owner|finance|buk')
             ->group(function () {
 
                 Route::controller(DataPresensiController::class)
@@ -621,7 +621,7 @@ Route::middleware(['auth'])
 
                 Route::controller(CutiPengajuanController::class)
                     ->prefix('cuti')
-                    ->middleware('role:opd|admin|owner')
+                    ->middleware('role:opd|admin|owner|buk')
                     ->name("cuti.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -657,7 +657,7 @@ Route::middleware(['auth'])
 
                 Route::controller(ReimbursementPengajuanController::class)
                     ->prefix('reimbursement')
-                    ->middleware('role:opd|admin|owner|finance')
+                    ->middleware('role:opd|admin|owner|finance|buk')
                     ->name("reimbursement.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -724,7 +724,7 @@ Route::middleware(['auth'])
         Route::prefix('master')
             ->name("master.")
             ->group(function () {
-                Route::middleware('role:admin|owner|opd')->group(function () {
+                Route::middleware('role:admin|owner|opd|buk')->group(function () {
                     Route::controller(SkpdController::class)
                         ->prefix('skpd')
                         ->name("skpd.")

@@ -62,7 +62,7 @@
             $$value = true;
         }
     }
-    if(role("opd")){
+    if(role("opd") || role("buk")){
         $data = ["pegawai","hrd","masterDataDivisiKerja","masterDataShift","dataPengajuanIzin","dataPengajuanReimbursement"];
         foreach ($data as $value) {
             $$value = true;
@@ -448,7 +448,7 @@
                     </li>
                     @endif
 
-                    @if(role('owner') || role('admin') || role('finance') || role('opd'))
+                    @if(role('owner') || role('admin') || role('finance') || role('opd') || role("buk"))
                     {{-- Menu Riwayat --}}
                     <div class="menu-gap"></div>
                     <div class="nav-header">
@@ -501,7 +501,6 @@
                     </li>
                     @endif
                     {{-- Pengajuan --}}
-
                     <li class="nav-item {{activeMenu("pengajuan")}}">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#data_pengajuan">
                             <span class="nav-icon-wrap">
@@ -541,6 +540,7 @@
                         </ul>
                     </li>
                     @endif
+
                     @if(role('owner') || role('admin'))
                     <div class="menu-gap"></div>
                     <div class="nav-header">

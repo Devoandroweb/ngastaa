@@ -199,23 +199,24 @@ class PegawaiController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $role = role('opd');
+        $role = role('opd') || role('buk');
         // dd($role);
-        $pegawai = User::role('pegawai');
-            // ->when($role, function ($qr) {
-            //     $user = auth()->user()->jabatan_akhir;
-            //     $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-            //     $skpd = '';
-            //     if ($jabatan) {
-            //         $skpd = $jabatan->kode_skpd;
-            //     }
+        $pegawai = User::role('pegawai')
+            ->when($role, function ($qr) {
+                $user = auth()->user()->jabatan_akhir;
 
-            //     $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-            //         $qt->on('riwayat_jabatan.nip', 'users.nip')
-            //             ->where('kode_skpd', $skpd)
-            //             ->where('is_akhir', 1);
-            //     });
-            // });
+                $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+                $skpd = '';
+                if ($jabatan) {
+                    $skpd = $jabatan->kode_skpd;
+                }
+                // dd($skpd);
+                $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
+                    $qt->on('riwayat_jabatan.nip', 'users.nip')
+                        ->where('kode_skpd', $skpd)
+                        ->where('is_akhir', 1);
+                });
+            });
         // dd($pegawai);
         // $pegawai = PegawaiResource::collection($pegawai);
 
