@@ -49,7 +49,7 @@
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Lokasi Absen</h5>
+				<h5 class="modal-title">Lokasi Aktifitas</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -60,14 +60,14 @@
                         <tr>
                             <td width="15%" class="fw-bold">Nama Pegawai</td>
                             <td class="nama_pegawai"></td>
-                            <td width="15%" class="fw-bold">Tanggal</td>
-                            <td class="tanggal"></td>
+                            <td class="fw-bold">Jabatan</td>
+                            <td colspan="3" class="jabatan"></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Jabatan</td>
-                            <td class="jabatan"></td>
-                            <td class="fw-bold">Lokasi</td>
-                            <td class="lokasi"></td>
+                            <td width="15%" class="fw-bold">Tanggal</td>
+                            <td class="tanggal"></td>
+                            <td width="15%" class="fw-bold">Jam Mulai</td>
+                            <td colspan="3" class="jam_mulai"></td>
                         </tr>
                     </table>
                 </div>
@@ -78,6 +78,10 @@
                             <td class="nama_pegawai"></td>
                         </tr>
                         <tr>
+                            <td width="15%" class="fw-bold">Jam Mulai</td>
+                            <td colspan="3" class="jam_mulai"></td>
+                        </tr>
+                        <tr>
                             <td width="15%" class="fw-bold">Tanggal</td>
                             <td class="tanggal"></td>
                         </tr>
@@ -85,21 +89,20 @@
                             <td class="fw-bold">Jabatan</td>
                             <td class="jabatan"></td>
                         </tr>
-                        <tr>
-                            <td class="fw-bold">Lokasi</td>
-                            <td class="lokasi"></td>
-                        </tr>
                     </table>
                 </div>
                 <div class="row">
                     <div class="col-12 col-md-7">
                         {{-- maps --}}
-                        <div id="map" class="mb-4" style="height: 500px"></div>
+                        <div id="map" class="mb-4 img-thumbnail" style="height: 500px"></div>
+                        <div id="none-map" class="mb-4 position-relative img-thumbnail" style="height: 500px; display:none">
+                            <img class="m-auto w-25" src="{{asset('dist/img/route-not-found.png')}}" style="position:absolute;top:35%;left:35%">
+                        </div>
                         <input type="hidden" value="0" id="radius" >
                         {{-- end maps --}}
                     </div>
                     <div class="col-12 col-md-5">
-                        <img src="" id="foto" class="img-fluid" alt="" srcset="">
+                        <img src="" id="foto" class="img-fluid img-thumbnail" alt="" srcset="">
                     </div>
                 </div>
 			</div>
@@ -166,67 +169,80 @@
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
         $('#data tbody').on('click', 'tr', function (e) {
             var data = _TABLE.row(this).data();
-            console.log(data);
+            console.log(data)
             var ltlg = [0,0];
-            if(data.kordinat != null){
+            if(data.kordinat != null && data.kordinat != ''){
+                $("#map").show()
+                $("#none-map").hide()
                 ltlg = (data.kordinat).split(",");
+                if(ltlg.length == 1){
+                    ltlg = (data.kordinat).split(" ")
+                }
+                setTimeout(function() {
+                    updateMap(ltlg);
+                    map.invalidateSize();
+                }, 1000);
+                console.log(ltlg.length);
+            }else{
+                $("#map").hide()
+                $("#none-map").show()
+                Swal.fire(
+                  'Lokasi',
+                  'Lokasi tidak di temukan',
+                  'warning'
+                )
             }
             shootToModal(data);
             var myModal = new bootstrap.Modal($("#located-panel"))
             myModal.show();
-            setTimeout(function() {
-                updateMap(ltlg);
-                map.invalidateSize();
-            }, 1000);
+
         });
         function shootToModal(data){
             $(".nama_pegawai").html(data.nama)
             $(".jabatan").text(data.jabatan)
             $(".tanggal").text(data.tanggal)
-            $("#foto").attr("src","{{url('public/visit')}}/"+data.nip+"/"+data.foto)
-            // $("#keterangan").text(data.keterangan)
-            if(data.kordinat != null){
-                $(".lokasi").text(checkVisitLokasi(data.kordinat))
-            }
-        }
-        let lokasi = @json($dataLokasi);
-        console.log(lokasi);
-        function checkVisitLokasi(location_target){
-            var namaLokasi = "Lokasi tidak di temukan";
-            var location_target = (location_target).split(",");
-            lokasi.forEach(e => {
-                if((e.polygon).length == 0){
-                    return;
-                }
-                // return;
-                var polygon = {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Polygon',
-                        // Note order: longitude, latitude.
-                        coordinates: [e.polygon]
-                    },
-                    properties: {}
-                };
-                // Note order: longitude, latitude.
-                var turfKoor = [
-                    parseFloat(location_target[1].split(" ").join("")),
-                    parseFloat(location_target[0].split(" ").join(""))
-                ];
+            $(".jam_mulai").text(data.created_at)
+            $("#foto").attr("src",data.foto)
 
-                var point = turf.point(turfKoor);
-                var isInside = turf.booleanPointInPolygon(point, polygon);
-                console.log(isInside);
-                if((e.polygon).length != 0){
-                    L.polygon(JSON.parse(e.polygonAsli), { color: "red" }).addTo(drawnItems);
-                }
-
-                if(isInside){
-                    namaLokasi = e.nama
-                }
-            });
-            return namaLokasi;
         }
+        // let lokasi = @json($dataLokasi);
+        // console.log(lokasi);
+        // function checkVisitLokasi(location_target){
+        //     var namaLokasi = "Lokasi tidak di temukan";
+        //     var location_target = (location_target).split(",");
+        //     lokasi.forEach(e => {
+        //         if((e.polygon).length == 0){
+        //             return;
+        //         }
+        //         // return;
+        //         var polygon = {
+        //             type: 'Feature',
+        //             geometry: {
+        //                 type: 'Polygon',
+        //                 // Note order: longitude, latitude.
+        //                 coordinates: [e.polygon]
+        //             },
+        //             properties: {}
+        //         };
+        //         // Note order: longitude, latitude.
+        //         var turfKoor = [
+        //             parseFloat(location_target[1].split(" ").join("")),
+        //             parseFloat(location_target[0].split(" ").join(""))
+        //         ];
+
+        //         var point = turf.point(turfKoor);
+        //         var isInside = turf.booleanPointInPolygon(point, polygon);
+        //         console.log(isInside);
+        //         if((e.polygon).length != 0){
+        //             L.polygon(JSON.parse(e.polygonAsli), { color: "red" }).addTo(drawnItems);
+        //         }
+
+        //         if(isInside){
+        //             namaLokasi = e.nama
+        //         }
+        //     });
+        //     return namaLokasi;
+        // }
     </script>
 
 @endpush

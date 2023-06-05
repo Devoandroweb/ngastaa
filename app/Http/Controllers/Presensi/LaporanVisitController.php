@@ -57,7 +57,7 @@ class LaporanVisitController extends Controller
             ->addColumn('jabatan', function ($row) {
                 $jabatan_akhir = $row->pegawai->jabatan_akhir;
                 $jabatan = array_key_exists('0', $jabatan_akhir->toArray()) ? $jabatan_akhir[0] : null;
-                
+
                 // dd($jabatan);
                 $nama_jabatan = '-';
                 if ($jabatan) {
@@ -67,8 +67,14 @@ class LaporanVisitController extends Controller
                 }
                 return $nama_jabatan;
             })
+            ->editColumn("foto",function ($row){
+                return $row->foto();
+            })
             ->addColumn('tanggal', function ($row) {
                 return tanggal_indo($row->created_at);
+            })
+            ->editColumn('created_at',function($row){
+                return date("H:i:s",strtotime($row->created_at));
             })
             ->rawColumns(['nama'])
             ->addIndexColumn()
