@@ -8,59 +8,33 @@ use App\Models\Pegawai\DataPresensi;
 use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Pegawai\RiwayatShift;
 use App\Models\User;
+use App\Repositories\Pengumuman\PengumumanRepository;
+use App\Repositories\Presensi\PresensiRepository;
+use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 
 class HomeUser extends Controller
 {
+    protected $userRepository;
+    protected $presensiRepository;
+    protected $pengumumanRepository;
+    function __construct(
+        UserRepository $userRepository,
+        PresensiRepository $presensiRepository,
+        PengumumanRepository $pengumumanRepository,
+    ){
+        $this->userRepository = $userRepository;
+        $this->presensiRepository = $presensiRepository;
+        $this->pengumumanRepository = $pengumumanRepository;
+
+    }
     function index()
     {
-        $nip = request('nip');
-
-        $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->has('jabatan_akhir')->first();
-
         try {
-            //code...
-            $kode_tingkat = "-";
-            $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
-
-            if( $jabatan == null){
-                $jabatan = "-";
-            }else{
-                $kode_tingkat = $jabatan->tingkat?->kode_tingkat;
-
-                $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
-            }
-            $RjamKerja = RiwayatJamKerja::with('jamKerja')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
-            $shift = RiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
-
-            $namaShift = "-";
-            $jamShift = "-";
-
-            if($RjamKerja != null){
-                if($RjamKerja->jamKerja != null){
-                    $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
-                    $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_pulang));
-                }
-            }elseif($shift != null){
-                if($shift->shift != null){
-                    $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
-                    $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
-                }
-            }
-            if(file_exists(public_path($user->image))){
-                $image = url("public/{$user->image}");
-            }else{
-                $image = asset("/dist/img/logo_lets_work_greyscale.png");
-            }
-            $data = [
-                'nama' => $user->getFullName(),
-                'foto' => $image,
-                'jabatan' => $jabatan,
-                'kode_tingkat' => $kode_tingkat,
-                'nama_shift' => $namaShift,
-                'jam_shift' => $jamShift,
-                'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d"))
-            ];
+            $nip = request('nip');
+            $data['user'] = $this->userRepository->getUserWithIndentity($nip);
+            $data['presensi_today'] = $this->presensiRepository->presensiDay($nip);
+            $data['pengumuman'] =  $this->pengumumanRepository->getPengumuman();
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",

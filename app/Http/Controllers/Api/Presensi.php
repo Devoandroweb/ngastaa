@@ -5,36 +5,24 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\User;
+use App\Repositories\Presensi\PresensiRepository;
 use Illuminate\Http\Request;
 
 class Presensi extends Controller
 {
+    protected $presensiRepository;
+    function __construct(
+        PresensiRepository $presensiRepository
+    ){
+        $this->presensiRepository = $presensiRepository;
+
+    }
     function index($nip){
         try {
-
-            $data = DataPresensi::where('nip', $nip)->whereDate('created_at', date('Y-m-d'))->first();
-            if($data != null){
-
-                $data = [
-                    'nip' => $nip,
-                    'datang' => $data->tanggal_datang != null ? date("H:i:s",strtotime($data->tanggal_datang)) : "-",
-                    'istirahat' => $data->tanggal_istirahat != null ? date("H:i:s",strtotime($data->tanggal_istirahat)) : "-",
-                    'pulang' => $data->tanggal_pulang != null ? date("H:i:s",strtotime($data->tanggal_pulang)) : "-",
-                    'visit' => "-",
-                ];
-            }else{
-                $data = [
-                    'nip' => $nip,
-                    'datang' => "-",
-                    'istirahat' => "-",
-                    'pulang' => "-",
-                    'visit' => "-",
-                ];
-            }
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
-                'data' => $data
+                'data' => $this->presensiRepository->presensiDay($nip)
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

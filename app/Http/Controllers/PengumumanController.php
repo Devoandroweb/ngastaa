@@ -4,25 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PengumumanResource;
 use App\Models\Pengumuman;
+use App\Repositories\Pengumuman\PengumumanRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class PengumumanController extends Controller
 {
+
+    protected $pengumumanRepository;
+    function __construct(
+        PengumumanRepository $pengumumanRepository,
+    ){
+        $this->pengumumanRepository = $pengumumanRepository;
+
+    }
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $pengumuman = Pengumuman::when($search, function ($qr, $search) {
-            $qr->where('nama', 'LIKE', "%$search%")->orWhere('kode', 'LIKE', "%$search%");
-        })->paginate($limit);
-        $pengumuman->appends(request()->all());
-
-        $pengumuman = PengumumanResource::collection($pengumuman);
-
-        // return inertia('Pengumuman/index', compact('pengumuman'));
         return view('pages/pengumuman/index');
     }
 

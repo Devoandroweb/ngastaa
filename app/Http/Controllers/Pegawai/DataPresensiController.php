@@ -20,6 +20,7 @@ class DataPresensiController extends Controller
 {
     public function index()
     {
+
         $date = request('d') ?? date('Y-m-d', strtotime('-1 days'));
         $end = request('e') ?? date('Y-m-d');
         if (strtotime($end) <= strtotime($date)) {
@@ -204,12 +205,16 @@ class DataPresensiController extends Controller
         $model = DataPresensi::selectRaw("data_presensi.id as id, users.name as nama, users.nip as nip, data_presensi.tanggal_datang, data_presensi.tanggal_istirahat, data_presensi.tanggal_pulang, data_presensi.created_at, tingkat.nama as jabatan, data_presensi.kordinat_datang, data_presensi.foto_datang, shift.nama as nama_shift")
             ->leftJoin('users', 'users.nip', 'data_presensi.nip')
             ->leftJoin('tingkat', 'tingkat.kode_tingkat', 'data_presensi.kode_tingkat')
-            ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift')
-            ->whereDate('data_presensi.created_at',date("Y-m-d"));
+            ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift');
+            // ->whereDate('data_presensi.created_at',date("Y-m-d"));
         // dd($model->get());
         if($skpd){
             // dd($skpd);
-            $model->where('tingkat.kode_skpd', $skpd);
+            $model->whereHas('user',function($q)use($skpd){
+                $q->whereHas('riwayat_jabatan',function ($q)use($skpd){
+                    $q->where('kode_skpd',$skpd);
+                });
+            });
         }
         $model->when($role, function ($qr) {
             $user = auth()->user()->jabatan_akhir;
@@ -237,8 +242,19 @@ class DataPresensiController extends Controller
                 return "<span class='badge badge-success badge-pill badge-sm'>". $row->nip . "</span>  " . $row->nama;
             })
             ->addColumn('jabatan', function ($row) {
-                // dd($row->riwayat_jabatan);
-                return $row->jabatan ?? "-";
+                $jabatan_akhir = $row->pegawai->jabatan_akhir;
+                $jabatan = null;
+                if(count($jabatan_akhir) > 0){
+                    $jabatan = $jabatan_akhir->first();
+                }
+
+                // dd($jabatan);
+                $nama_jabatan = '-';
+                if ($jabatan) {
+                    $tingkat = $jabatan?->tingkat;
+                    $nama_jabatan =  $tingkat?->nama;
+                }
+                return $nama_jabatan;
             })
             ->addColumn('tanggal', function ($row) {
                 return tanggal_indo($row->created_at);
