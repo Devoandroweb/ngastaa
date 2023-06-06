@@ -63,7 +63,7 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
         }else{
             $image = asset("/dist/img/logo_lets_work_greyscale.png");
         }
-        $data['user'] = [
+        $data = [
             'nama' => $user->getFullName(),
             'foto' => $image,
             'jabatan' => $jabatan,
@@ -72,6 +72,7 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
             'jam_shift' => $jamShift,
             'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d"))
         ];
+        return $data;
     }
     // Write something awesome :)
 }

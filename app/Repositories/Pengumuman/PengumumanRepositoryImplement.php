@@ -18,15 +18,13 @@ class PengumumanRepositoryImplement extends Eloquent implements PengumumanReposi
 
     public function __construct(
         Pengumuman $mPengumuman,
-        PengumumanResource $pengumumanResource,
     )
     {
         $this->mPengumuman = $mPengumuman;
-        $this->pengumumanResource = $pengumumanResource;
     }
     function getPengumuman(){
 
-        return $this->pengumumanResource->collection($this->mPengumuman->latest()->get());
+        return PengumumanResource::collection($this->mPengumuman->latest()->get());
     }
     // Write something awesome :)
 }

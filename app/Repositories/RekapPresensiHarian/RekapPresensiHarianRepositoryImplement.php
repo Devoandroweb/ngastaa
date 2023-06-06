@@ -14,10 +14,10 @@ class RekapPresensiHarianRepositoryImplement extends Eloquent implements RekapPr
     */
     protected $model;
 
-    public function __construct(RekapPresensiHarian $model)
-    {
-        $this->model = $model;
-    }
+    // public function __construct(RekapPresensiHarian $model)
+    // {
+    //     $this->model = $model;
+    // }
 
     // Write something awesome :)
 }

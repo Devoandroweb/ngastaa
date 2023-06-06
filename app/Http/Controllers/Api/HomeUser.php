@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Master\Shift;
 use App\Models\Pegawai\DataPresensi;
-use App\Models\Pegawai\RiwayatJamKerja;
-use App\Models\Pegawai\RiwayatShift;
-use App\Models\User;
+
 use App\Repositories\Pengumuman\PengumumanRepository;
 use App\Repositories\Presensi\PresensiRepository;
 use App\Repositories\User\UserRepository;
-use Illuminate\Http\Request;
 
 class HomeUser extends Controller
 {
