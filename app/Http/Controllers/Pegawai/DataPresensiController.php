@@ -205,8 +205,8 @@ class DataPresensiController extends Controller
         $model = DataPresensi::selectRaw("data_presensi.id as id, users.name as nama, users.nip as nip, data_presensi.tanggal_datang, data_presensi.tanggal_istirahat, data_presensi.tanggal_pulang, data_presensi.created_at, tingkat.nama as jabatan, data_presensi.kordinat_datang, data_presensi.foto_datang, shift.nama as nama_shift")
             ->leftJoin('users', 'users.nip', 'data_presensi.nip')
             ->leftJoin('tingkat', 'tingkat.kode_tingkat', 'data_presensi.kode_tingkat')
-            ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift');
-            // ->whereDate('data_presensi.created_at',date("Y-m-d"));
+            ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift')
+            ->whereDate('data_presensi.created_at',date("Y-m-d"));
         // dd($model->get());
         if($skpd){
             // dd($skpd);
@@ -242,10 +242,10 @@ class DataPresensiController extends Controller
                 return "<span class='badge badge-success badge-pill badge-sm'>". $row->nip . "</span>  " . $row->nama;
             })
             ->addColumn('jabatan', function ($row) {
-                $jabatan_akhir = $row->pegawai->jabatan_akhir;
+                $jabatan_akhir = $row->user?->jabatan_akhir;
                 $jabatan = null;
-                if(count($jabatan_akhir) > 0){
-                    $jabatan = $jabatan_akhir->first();
+                if(!is_null($jabatan_akhir)){
+                    $jabatan = $jabatan_akhir->where('is_akhir',1)->first();
                 }
 
                 // dd($jabatan);
