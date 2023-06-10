@@ -31,6 +31,7 @@ class RekapAbsensHarianController extends Controller
     public function datatable(Request $request)
     {
         $search = request()->query('search')['value'];
+        $kodeSkpd = request()->query('kode_skpd');
 
         $date_start = date('Y-m-01');
         $date_end = date('Y-m-t');
@@ -59,6 +60,11 @@ class RekapAbsensHarianController extends Controller
         $mUsers = User::role('pegawai')->when($search,function($q)use($search){
                         // dd($search);
                         return $q->where('users.name','like','%'.$search.'%');
+                    })->when(($kodeSkpd  != 0),function($q)use($kodeSkpd){
+                        return $q->whereHas('riwayat_jabatan',function ($q)use($kodeSkpd){
+                                    $q->where('is_akhir',1);
+                                    $q->where('kode_skpd',$kodeSkpd);
+                                });
                     });
         if($periodeBulan != null){
             $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])

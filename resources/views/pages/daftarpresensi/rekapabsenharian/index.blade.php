@@ -4,21 +4,26 @@
     {{ Breadcrumbs::render('presensi-rekap-harian') }}
 @endsection
 @section('header_action')
-    <button class="btn btn-success me-3"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Export Excel</span></span></button>
+    <button id="export-excel" class="btn btn-success me-3"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Export Excel</span></span></button>
     <button class="btn btn-info show-all"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Show All</span></span></button>
 @endsection
 @section('content')
+<style>
+    .dt-button{
+        display: none;
+    }
+</style>
 <div class="row justify-content-end">
-    <div class="col">
+    {{-- <div class="col">
         <div class="input-group w-250p">
             <span class="input-affix-wrapper">
                 <label class="me-2" for="">Bulan : <span class="bulan badge badge-danger"></span></label>
                 <label for="">Tahun : <span class="tahun badge badge-info"></span></label>
             </span>
         </div>
-    </div>
-    <div class="col-3">
-        <div class="form-group float-end">
+    </div> --}}
+    <div class="col">
+        <div class="form-group">
             <div class="input-group">
                 <span class="input-affix-wrapper">
                     <div class="row w-300p">
@@ -75,8 +80,14 @@
         var _START_DATE = y+"/"+m+"/01";
         var _END_DATE = y+"/"+m+"/"+lastDay;
         var _TABLE_REKAP_HARIAN = null;
+        var _KODE_SKPD = $(".divisi").val();
+        console.log("divisi",_KODE_SKPD)
         var _DATERANGE = getDatesRange(_START_DATE,_END_DATE);
 
+        // INIT ELEMENT
+        $(".bulan").text(convertMonthToIndo(m-1));
+        $(".tahun").text(y);
+        $(".divisi").select2();
         _DATERANGE.forEach(e => {
             var date = e.split("-");
             var tanggal = new Date(e);
@@ -84,11 +95,33 @@
             _COLUMNS.push({'title':`${namaBulan}-${date[2]}`,'data':'day_'+date[2],'name':null,'orderable':false ,'searchable': false})
         });
         _COLUMNS.push({'title':'REKAP','data':'rekap','name':null,'orderable':false ,'searchable': false})
-
-        $(".bulan").text(convertMonthToIndo(m-1));
-        $(".tahun").text(y);
-
         setDataTable(_COLUMNS,_START_DATE,_END_DATE);
+
+        $('#export-excel').on('click', function () {
+            Swal.fire({
+              text: 'Apakah ingin meng-export data ini?',
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ya',
+              cancelButtonText: 'Tidak',
+            }).then((result) => {
+              if (result.value) {
+                _TABLE_REKAP_HARIAN.button(0).trigger();
+              }
+            })
+        });
+        $('.show-all').on('click', function () {
+            _TABLE_REKAP_HARIAN.page.len(-1).draw();
+        })
+        $(".divisi").on("select2:select",function(e){
+            _KODE_SKPD = e.params.data.id;
+            setDataTable(_COLUMNS,_START_DATE,_END_DATE);
+        });
+
+		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
+
         function setDataTable(columns,start_date,end_date) {
             // console.log(_URL_DATATABLE)
             $("#datatable").html(datatableElement);
@@ -98,7 +131,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: '{{route("presensi.rekapabsen.datatable")}}?date_start='+start_date+'&date_end='+end_date,
+                        url: '{{route("presensi.rekapabsen.datatable")}}?date_start='+start_date+'&date_end='+end_date+'&kode_skpd='+_KODE_SKPD,
                     },
                     rowReorder: {
                         selector: 'td:nth-child(1)'
@@ -112,7 +145,8 @@
                     buttons: [
                         {
                             extend: 'excelHtml5',
-                            title: 'Rekap-absen'
+                            title: 'Rekap-absen',
+                            className: 'btn btn-primary'
                         },
                         {
                             extend: 'pdfHtml5',
@@ -123,10 +157,8 @@
 
             _TABLE_REKAP_HARIAN = $('#data').DataTable(options);
         }
-        $('.show-all').on('click', function () {
-            _TABLE_REKAP_HARIAN.page.len(-1).draw();
-        })
-		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
+
+        // FUNCTION
         function initDateRangePickerMaksMonth(){
             $(".daterangepicker-maks-month").daterangepicker({
                 // singleDatePicker: true,
