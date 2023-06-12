@@ -472,7 +472,7 @@ class PresensiApiController extends Controller
 
     public function index()
     {
-            try{
+        try{
             $nip = request('nip');
 
             $data = DataPresensi::where('nip', $nip)->whereDate('created_at', date('Y-m-d'))->first();

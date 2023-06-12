@@ -12,7 +12,12 @@
     .dt-button{
         display: none;
     }
+    .ui-datepicker-unselectable.ui-state-hover span {
+        background: #ffcccc !important;
+        cursor: not-allowed !important;
+    }
 </style>
+
 <div class="row justify-content-end">
     {{-- <div class="col">
         <div class="input-group w-250p">
@@ -75,7 +80,7 @@
             {'title':'NO','data':'DT_RowIndex', 'orderable':false ,'searchable': false},
             {'title':'JABATAN','data':'jabatan','name':'jabatan','searchable': false},
             {'title':'NIP','data':'nip','name':'nip'},
-            {'title':'','data':'nama_pegawai','name':'name','searchable': false},
+            {'title':'Nama','data':'nama_pegawai','name':'name','searchable': true},
         ];
         var _START_DATE = y+"/"+m+"/01";
         var _END_DATE = y+"/"+m+"/"+lastDay;
@@ -140,6 +145,7 @@
                         searchPlaceholder: "Cari",
                         search: ""
                     },
+
                     columns: columns,
                     dom: 'Bfrtip',
                     buttons: [
@@ -160,19 +166,23 @@
 
         // FUNCTION
         function initDateRangePickerMaksMonth(){
+
+            var maxHoverDays = 31;
+            var maxDate = new Date();
+            maxDate.setDate(maxDate.getDate() + 31);
+
             $(".daterangepicker-maks-month").daterangepicker({
                 // singleDatePicker: true,
                 // linkedCalendars: false,
                 startDate: $(".daterangepicker-maks-month").val(),
                 showDropdowns: true,
                 autoApply: true,
-                maxDate:(d+"/"+m+"/"+y), // ILINGNO CAK
+                maxDate:maxDate, // ILINGNO CAK
                 minYear: 1970,
                 maxYear: new Date().getFullYear(),
                 locale: {
                     format: "DD/MM/YYYY",
-                },
-
+                }
             },
             function (start, end, label) {
                     $(".bulan").text(convertMonthToIndo(parseInt(start.format("M"))-1));

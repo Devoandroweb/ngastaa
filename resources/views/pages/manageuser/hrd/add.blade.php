@@ -14,6 +14,8 @@ function searchId($id,$data)
     endforeach;
     return false;
 }
+$data = \App\Models\User::role('pegawai')->orderBy('name')->get();
+// dd($data[0]->role('buk'));
 @endphp
 <form class="edit-post-form" action="{{route('users.hrd.store')}}" method="post">
     @csrf
@@ -21,10 +23,12 @@ function searchId($id,$data)
         <div class="col-xxl-12 col-lg-12">
             <div class="form-group">
                 <label class="form-label">Pilih Pegawai</label>
-                <select class="form-control pegawai" name="pegawai[]"  multiple="multiple" required>
+                <select class="form-control select2" name="pegawai[]" multiple="multiple" required>
 
-                    @foreach(\App\Models\User::role('pegawai')->orderBy('name')->get() as $s)
+                    @foreach($data as $s)
+
                     @php
+
                         $json = [
                             "value" => $s->nip,
                             "label" => $s->name,
@@ -32,17 +36,9 @@ function searchId($id,$data)
                             "kode_status" => $s->kode_status,
                             "nip" => $s->nip,
                         ];
+                        $namaJabatan = $s->jabatan_akhir()?->first()?->tingkat?->nama ?? "Tidak ada jabatan";
                     @endphp
                     <option value="{{json_encode($json)}}">{{$s->name}}</option>
-                    {{-- @if ($data != null)
-                        @if(searchId($s->id,$data))
-                            <option selected value="{{json_encode($json)}}">{{$s->name}}</option>
-                        @else
-                            <option value="{{json_encode($json)}}">{{$s->name}}</option>
-                        @endif
-                    @else
-                    @endif --}}
-
                     @endforeach
                 </select>
             </div>
@@ -55,8 +51,4 @@ function searchId($id,$data)
 
 </form>
 @endsection
-@push('js')
-<script>
-    $(".pegawai").select2({allowClear: true});
-</script>
-@endpush
+

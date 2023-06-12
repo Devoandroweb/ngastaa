@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiDivisiController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CApiAktifitas;
 use App\Http\Controllers\Api\CutiApiController;
@@ -90,6 +91,13 @@ Route::middleware('auth:sanctum')->group(function(){
         ->name('payroll-client.')
         ->group(function(){
             Route::get('', 'index');
+        });
+
+    Route::controller(ApiDivisiController::class)
+        ->prefix('divisi')
+        ->name('divisi.')
+        ->group(function(){
+            Route::get('list', 'list');
         });
 
     Route::prefix('pengajuan')
