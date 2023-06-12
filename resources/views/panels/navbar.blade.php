@@ -201,19 +201,19 @@
                             <img src="{{asset('/')}}dist/img/businessman.png" alt="user" class="avatar-img">
                         </div>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end">
+                    <div class="dropdown-menu dropdown-menu-end" style="width: 300px">
                         <div class="p-2">
                             <div class="media">
-                                <div class="media-head me-2 d-flex align-items-center">
+                                {{-- <div class="media-head me-2 d-flex align-items-center">
                                     <div class="avatar avatar-primary avatar-sm avatar-rounded">
                                         <span class="initial-wrap">{{roleFormat()}}</span>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="media-body">
                                     <div class="dropdown">
-                                        <a href="#" class="d-block link-dark fw-medium" >{{auth()->user()->name}} <span class="badge badge-sm badge-soft-green">{{auth()->user()->nip}}</span></a>
+                                        <a href="#" class="d-block link-dark fw-medium" ><span class="badge badge-sm badge-soft-green">{{auth()->user()->nip}}</span>{{auth()->user()->name}} </a>
                                     </div>
-                                    <div class="fs-7">{{auth()->user()->email}}</div>
+                                    <div class="fs-7">{{auth()->user()->jabatan_akhir->first()?->tingkat?->nama}}</div>
                                 </div>
                             </div>
                         </div>

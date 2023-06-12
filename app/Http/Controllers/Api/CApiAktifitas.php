@@ -36,12 +36,15 @@ class CApiAktifitas extends Controller
             $nip = request()->query('nip');
             $opd = false;
             $pegawai = User::where('nip',$nip)->first();
+
             if(!$pegawai){
                 return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
             }
+
             if(array_intersect(["opd","buk"],$pegawai->getRoleNames()->toArray())){
                 $opd = true;
             }
+
             // dd($opd);
             $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
             // dd($arrayNip);
@@ -51,7 +54,7 @@ class CApiAktifitas extends Controller
             // $data->{"foto"} = url('public/'.$data->foto);
             return response()->json(buildResponseSukses($data),200);
         } catch (\Throwable $th) {
-            return response()->json(buildResponseSukses($th->getMessage()),400);
+            return response()->json(buildResponseGagal($th->getMessage()),400);
         }
     }
     function store(){

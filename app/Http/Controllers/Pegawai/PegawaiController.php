@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
+use App\Models\Master\Skpd;
 use App\Models\Pegawai\Imei;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
@@ -20,9 +21,8 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        // dd($pegawai);
-        // return inertia('Pegawai/Pegawai/index', compact('pegawai'));
-        return view('pages/pegawai/pegawai/index');
+        $skpd = Skpd::all();
+        return view('pages/pegawai/pegawai/index',compact('skpd'));
     }
 
     public function json()
@@ -200,6 +200,7 @@ class PegawaiController extends Controller
     public function datatable(DataTables $dataTables)
     {
         $role = role('opd') || role('buk');
+        $filterSkpd = request()->query('kode_skpd');
         // dd($role);
         $pegawai = User::role('pegawai')
             ->when($role, function ($qr) {
@@ -217,10 +218,13 @@ class PegawaiController extends Controller
                         ->where('is_akhir', 1);
                 });
             });
-        // dd($pegawai);
-        // $pegawai = PegawaiResource::collection($pegawai);
-
-
+        if($filterSkpd){
+            $pegawai->join('riwayat_jabatan', function ($qt) use ($filterSkpd) {
+                $qt->on('riwayat_jabatan.nip', 'users.nip')
+                    ->where('kode_skpd', $filterSkpd)
+                    ->where('is_akhir', 1);
+            });
+        }
         return $dataTables->of($pegawai)
             ->addColumn('images', function ($row) {
                 return '<div>
@@ -242,8 +246,9 @@ class PegawaiController extends Controller
             })
             ->addColumn('level', function ($row) {
                 $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
-                if( $jabatan != null){
-                    return '<p>' . (is_null($row->tingkat?->eselon?->nama))?"-": $row->tingkat?->eselon?->nama . '</p>';
+                // dd($jabatan->tingkat?->eselon?->nama);
+                if($jabatan){
+                    return '<p>' . $jabatan?->tingkat?->eselon?->nama ?? "-". '</p>';
                 }
                 return "-";
             })

@@ -29,6 +29,7 @@ class DashboardController extends Controller
     }
     public function __invoke()
     {
+        // dd(auth()->user()->getRoleNames()->toArray());
 
         $role = role('opd');
         $periode_bulan = date("Y-m");

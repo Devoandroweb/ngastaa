@@ -5,8 +5,10 @@
     {{ Breadcrumbs::render('detail-pegawai') }}
 @endsection
 @section('header_action')
+
 <a href="{{route('pegawai.pegawai.import_add')}}" class="btn btn-success me-3"><i class="fas fa-file-import"></i> {{__('Import')}}</a>
-<a href="{{route('pegawai.pegawai.add')}}" class="btn btn-primary ">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+<a href="{{route('pegawai.pegawai.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+
 @endsection
 
 @section('content')
@@ -21,6 +23,23 @@
         transition: background-color 0.5s;
     }
 </style>
+@if(role('owner') || role('admin'))
+<div class="input-group me-3 mb-3 ">
+    <span class="input-affix-wrapper">
+
+        <div class="row w-50 ms-auto">
+            <div class="col-sm-12 ps-0">
+                <select name="skpd" class="form-control divisi px-2" id="">
+                    <option selected value="0">Semua Divisi</option>
+                    @foreach ($skpd as $s)
+                        <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </span>
+</div>
+@endif
 @if(session('messages'))
 <div class="alert alert-inv alert-inv-@if(session('type') == 'error'){{'danger'}}@else{{'success'}}@endif alert-wth-icon alert-dismissible fade show" role="alert">
 	<span class="alert-icon-wrap"><i class="zmdi @if(session('type') == 'error') {{'zmdi-bug'}}  @else {{'zmdi-check-circle'}} @endif "></i></span> {{session('messages')}}
@@ -41,14 +60,14 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("pegawai.pegawai.datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -98,7 +117,7 @@
                         data: 'no_hp',
                         name: 'no_hp',
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
@@ -106,8 +125,12 @@
             var data = _TABLE.row(this).data();
             window.location.href = data.detail;
         });
-       
+        $(".divisi").select2();
+        $('.divisi').on('select2:select', function (e) {
+            var data = e.params.data;
+            _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()
+        });
     </script>
     <script src="{{asset('/')}}delete.js"></script>
-    
+
 @endpush
