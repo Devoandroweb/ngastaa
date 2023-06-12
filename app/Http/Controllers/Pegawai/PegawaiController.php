@@ -199,24 +199,32 @@ class PegawaiController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $role = role('opd') || role('buk');
+        $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+        $role = role('owner') || role('admin');
         $filterSkpd = request()->query('kode_skpd');
-        // dd($role);
-        $pegawai = User::role('pegawai')
-            ->when($role, function ($qr) {
-                $user = auth()->user()->jabatan_akhir;
+        $pegawai = User::role('pegawai')->whereNot('nip',null)->with('riwayat_jabatan')
+        // dd();
+            ->when(!$role, function ($qr) use ($levelJabatanUser){
 
-                $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                $skpd = '';
-                if ($jabatan) {
-                    $skpd = $jabatan->kode_skpd;
-                }
-                // dd($skpd);
-                $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                        ->where('kode_skpd', $skpd)
-                        ->where('is_akhir', 1);
+            // ambil level jabatan user
+
+                $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser){
+                    $q->where('is_akhir',1);
+                    $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
+                        $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
+                            $q->where('kode_eselon',">",$levelJabatanUser);
+                        });
+                    });
                 });
+
+
+                // $kodeEselon = $qr->first()->riwayat_jabatan->first()->tingkat?->eselon->kode_eselon;
+                // if((int)$levelJabatanUser < (int)$kodeEselon){
+                //     // dd($qr);
+                //     return $qr;
+                // }
+            // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
+
             });
         if($filterSkpd){
             $pegawai->join('riwayat_jabatan', function ($qt) use ($filterSkpd) {
