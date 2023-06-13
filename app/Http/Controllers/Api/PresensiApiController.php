@@ -517,7 +517,7 @@ class PresensiApiController extends Controller
                 return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
             }
                 // dd($opd);
-            $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
+            // $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
             $date = request('d') ? date('Y-m-d', strtotime(request('d'))) : date('Y-m-d', strtotime('-1 days'));
             $end =  request('e') ? date('Y-m-d', strtotime(request('e')) + (60 * 60 * 24)) : date('Y-m-d');
             if($user){
@@ -581,6 +581,4 @@ class PresensiApiController extends Controller
 
         return $foto;
     }
-
-
 }

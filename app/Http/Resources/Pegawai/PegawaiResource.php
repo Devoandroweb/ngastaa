@@ -17,14 +17,14 @@ class PegawaiResource extends JsonResource
         $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
         $shift = array_key_exists('0', $this->shift_akhir->toArray()) ? $this->shift_akhir[0] : null;
         $shift = $shift?->kode_shift;
-        
+
         // dd($jabatan);
         $tingkat = $jabatan?->tingkat;
         $nama_jabatan =  $tingkat?->nama;
         $eselon =  $tingkat?->eselon?->nama;
-        $kode_eselon =  $tingkat?->eselon?->kode_level;
+        $kode_eselon =  $tingkat?->eselon?->kode_eselon;
         $skpd = $jabatan?->skpd?->nama;
-        
+
         $data = [
             'nip' => $this->nip,
             'no_hp' => $this->no_hp ?? "-",
