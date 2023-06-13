@@ -10,6 +10,7 @@ use App\Models\Master\Skpd;
 use App\Models\Pegawai\Imei;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
+use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +20,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PegawaiController extends Controller
 {
+    protected $pegawaiRepository;
+    // protected $pegawaiWithRole;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     public function index()
     {
         $skpd = Skpd::all();
@@ -150,7 +158,9 @@ class PegawaiController extends Controller
             if(request()->hasFile('image')){
                 @unlink($user->first()->image);
             }
+
             $cr = $user->update($data);
+            // $cr->assignRole('pegawai');
         }
 
         if ($cr) {
@@ -200,36 +210,12 @@ class PegawaiController extends Controller
     public function datatable(DataTables $dataTables)
     {
         $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
-        $role = role('owner') || role('admin');
-        $filterSkpd = request()->query('kode_skpd');
-        $pegawai = User::role('pegawai')->whereNot('nip',null)->with('riwayat_jabatan')
-        // dd();
-            ->when(!$role, function ($qr) use ($levelJabatanUser){
-
-            // ambil level jabatan user
-
-                $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser){
-                    $q->where('is_akhir',1);
-                    $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
-                        $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
-                            $q->where('kode_eselon',">",$levelJabatanUser);
-                        });
-                    });
-                });
-
-
-                // $kodeEselon = $qr->first()->riwayat_jabatan->first()->tingkat?->eselon->kode_eselon;
-                // if((int)$levelJabatanUser < (int)$kodeEselon){
-                //     // dd($qr);
-                //     return $qr;
-                // }
-            // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
-
-            });
-        if($filterSkpd){
-            $pegawai->join('riwayat_jabatan', function ($qt) use ($filterSkpd) {
+        $kodeSkpd = request()->query('kode_skpd');
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd);
+        if($kodeSkpd){
+            $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
                 $qt->on('riwayat_jabatan.nip', 'users.nip')
-                    ->where('kode_skpd', $filterSkpd)
+                    ->where('kode_skpd', $kodeSkpd)
                     ->where('is_akhir', 1);
             });
         }

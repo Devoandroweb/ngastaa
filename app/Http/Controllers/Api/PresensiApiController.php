@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\PresensiLaporanApiResource;
+use App\Http\Resources\Api\PresensiListOpdApiResource;
 use App\Http\Resources\Api\ShiftApiResource;
+use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Str;
 use App\Jobs\ProcessWaNotif;
 use App\Models\Master\Lokasi;
@@ -17,6 +19,13 @@ use Illuminate\Support\Facades\Storage;
 
 class PresensiApiController extends Controller
 {
+    protected $pegawaiRepository;
+    // protected $pegawaiWithRole;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     public function lokasi()
     {
         try{
@@ -496,23 +505,67 @@ class PresensiApiController extends Controller
         }
     }
 
-    public function laporan()
+    public function lists()
     {
         try{
-            $nip = request('nip');
+            $periodeBulan = date('Y-m');
+            $nip = request()->query('nip');
+            $kodeSkpd = request()->query('kode_skpd');
+            $user = User::where('nip',$nip)->first();
+            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+            if(!$user){
+                return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
+            }
+                // dd($opd);
+            $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
             $date = request('d') ? date('Y-m-d', strtotime(request('d'))) : date('Y-m-d', strtotime('-1 days'));
             $end =  request('e') ? date('Y-m-d', strtotime(request('e')) + (60 * 60 * 24)) : date('Y-m-d');
-
-            $data = DataPresensi::select('data_presensi.id', 'data_presensi.nip', 'users.name','tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'data_presensi.created_at')
-                                ->leftJoin('users', 'users.nip', 'data_presensi.nip')
-                                ->where('data_presensi.nip', $nip)
-                                ->whereBetween('data_presensi.created_at', [$date, $end])
-                                ->get();
-
-
-            $data = PresensiLaporanApiResource::collection($data);
-
-            return response()->json(buildResponseSukses($data), 200);
+            if($user){
+                $data = DataPresensi::select('data_presensi.id', 'data_presensi.nip', 'users.name','tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'data_presensi.created_at')
+                                    ->leftJoin('users', 'users.nip', 'data_presensi.nip')
+                                    ->where('data_presensi.nip', $nip)
+                                    ->where('data_presensi.periode_bulan', $periodeBulan)
+                                    // ->whereBetween('data_presensi.created_at', [$date, $end])
+                                    ->get();
+                $data = PresensiLaporanApiResource::collection($data);
+                if($data){
+                    return response()->json(buildResponseSukses($data),200);
+                }else{
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda tidak memiliki pengajuan!' ]),200);
+                }
+            }else{
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak ditemukan!' ]),200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal($th->getMessage()), 404);
+        }
+    }
+    public function listsOpd()
+    {
+        try{
+            $periodeBulan = date('Y-m');
+            $nip = request()->query('nip');
+            $kodeSkpd = request()->query('kode_skpd');
+            $user = User::where('nip',$nip)->first();
+            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+            if(!$user){
+                return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
+            }
+                // dd($opd);
+            $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
+            $date = request('d') ? date('Y-m-d', strtotime(request('d'))) : date('Y-m-d', strtotime('-1 days'));
+            $end =  request('e') ? date('Y-m-d', strtotime(request('e')) + (60 * 60 * 24)) : date('Y-m-d');
+            if($user){
+                $data = DataPresensi::whereIn('nip',$arrayNip)->get();
+                $data = PresensiListOpdApiResource::collection($data);
+                if($data){
+                    return response()->json(buildResponseSukses($data),200);
+                }else{
+                    return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda tidak memiliki pengajuan!' ]),200);
+                }
+            }else{
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak ditemukan!' ]),200);
+            }
         } catch (\Throwable $th) {
             return response()->json(buildResponseGagal($th->getMessage()), 404);
         }
@@ -528,4 +581,6 @@ class PresensiApiController extends Controller
 
         return $foto;
     }
+
+
 }

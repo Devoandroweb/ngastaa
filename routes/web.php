@@ -82,6 +82,7 @@ use App\Http\Controllers\Users\FinanceController;
 use App\Http\Controllers\Users\HrdController;
 use App\Http\Controllers\Users\ManagerController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 
 Route::get('/', function () {
@@ -122,7 +123,6 @@ Route::middleware(['auth'])
 
         Route::prefix('presensi')
             ->name("presensi.")
-            ->middleware('role:opd|admin|owner')
             ->group(function () {
 
                 Route::controller(TotalPresensiController::class)
@@ -140,7 +140,6 @@ Route::middleware(['auth'])
                 Route::prefix('penjadwalanshift')
                 ->controller(PenjadwalanShiftController::class)
                     ->name("penjadwalanshift.")
-                    ->middleware('role:admin|owner')
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::get('add', 'add')->name('add');
@@ -153,7 +152,6 @@ Route::middleware(['auth'])
                 Route::prefix('rekapabsen')
                 ->controller(RekapAbsensHarianController::class)
                     ->name("rekapabsen.")
-                    ->middleware('role:admin|owner')
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::get('datatable', 'datatable')->name('datatable');
@@ -161,7 +159,6 @@ Route::middleware(['auth'])
                 Route::prefix('laporan-visit')
                 ->controller(LaporanVisitController::class)
                     ->name("laporan_visit.")
-                    ->middleware('role:admin|owner|opd')
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::get('datatable', 'datatable')->name('datatable');
@@ -169,7 +166,6 @@ Route::middleware(['auth'])
                 Route::prefix('aktifitas')
                 ->controller(CAktifitas::class)
                     ->name("aktifitas.")
-                    ->middleware('role:admin|owner|opd')
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::get('datatable', 'datatable')->name('datatable');
@@ -178,7 +174,6 @@ Route::middleware(['auth'])
         Route::prefix('pengumuman')
         ->controller(PengumumanController::class)
             ->name("pengumuman.")
-            ->middleware('role:admin|owner')
             ->group(function () {
                 Route::get('', 'index')->name('index');
                 Route::get('add', 'add')->name('add');
@@ -191,7 +186,6 @@ Route::middleware(['auth'])
         Route::prefix('perusahaan')
         ->controller(PerusahaanController::class)
             ->name("perusahaan.")
-            ->middleware('role:admin|owner')
             ->group(function () {
                 Route::get('', 'index')->name('index');
                 Route::post('update', 'update')->name('update');
@@ -211,21 +205,18 @@ Route::middleware(['auth'])
                         Route::get('import_add', 'import_add')->name('import_add');
                         Route::post('import_pegawai', 'import_pegawai')->name('import_pegawai');
                         Route::get('download-template-import', 'donwloadTemplate')->name('donwload_template_import');
-                        Route::middleware("role:owner|admin")
-                            ->group(function(){
-                                Route::get('json', 'json')->name('json');
-                                Route::get('json-skpd', 'json_skpd')->name('json_skpd');
-                                Route::post('store', 'store')->name('store');
-                                Route::post('upload', 'upload')->name('upload');
-                                Route::get('edit/{pegawai}', 'edit')->name('edit');
-                                Route::get('detail/{pegawai}', 'detail')->name('detail');
-                                Route::get('detail/pribadi/{pegawai}', 'detailPribadi')->name('detail_pribadi');
-                                Route::get('delete/{pegawai}', 'delete')->name('delete');
-                                Route::get('shift/{pegawai}', 'shift')->name('shift');
-                                Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
-                                Route::get('reset-device/{nip}', 'resetDevice')->name('reset_device');
-                                Route::get('reset-password/{nip}', 'resetPassword')->name('reset_password');
-                            });
+                        Route::get('json', 'json')->name('json');
+                        Route::get('json-skpd', 'json_skpd')->name('json_skpd');
+                        Route::post('store', 'store')->name('store');
+                        Route::post('upload', 'upload')->name('upload');
+                        Route::get('edit/{pegawai}', 'edit')->name('edit');
+                        Route::get('detail/{pegawai}', 'detail')->name('detail');
+                        Route::get('detail/pribadi/{pegawai}', 'detailPribadi')->name('detail_pribadi');
+                        Route::get('delete/{pegawai}', 'delete')->name('delete');
+                        Route::get('shift/{pegawai}', 'shift')->name('shift');
+                        Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
+                        Route::get('reset-device/{nip}', 'resetDevice')->name('reset_device');
+                        Route::get('reset-password/{nip}', 'resetPassword')->name('reset_password');
 
                     });
 
@@ -550,12 +541,10 @@ Route::middleware(['auth'])
 
         Route::prefix('payroll')
             ->name("payroll.")
-            ->middleware('role:admin|owner|finance')
             ->group(function () {
 
                 Route::controller(TambahPayrollController::class)
                     ->prefix('tambah')
-                    ->middleware('role:admin|owner')
                     ->name("tambah.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -569,7 +558,6 @@ Route::middleware(['auth'])
 
                 Route::controller(KurangPayrollController::class)
                     ->prefix('kurang')
-                    ->middleware('role:admin|owner')
                     ->name("kurang.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -582,19 +570,17 @@ Route::middleware(['auth'])
 
                 Route::controller(GeneratePayrollController::class)
                     ->prefix('generate')
-                    ->middleware('role:admin|owner|finance')
                     ->name("generate.")
                     ->group(function () {
-                        Route::middleware('role:admin|owner')->group(function(){
-                            Route::get('add', 'add')->name('add');
-                            Route::get('slip/{dataPayroll}', 'slip')->name('slip')->withoutMiddleware(['auth']);
-                            Route::post('store', 'store')->name('store');
-                            Route::get('detail/{generate}', 'detail')->name('detail');
-                            Route::get('regenerate/{generate}', 'regenerate')->name('regenerate');
-                            Route::get('approved/{generate}/{payroll?}', 'approved')->name('approved');
-                            Route::get('rejected/{generate}/{payroll?}', 'rejected')->name('rejected');
-                            Route::get('delete/{generate}', 'delete')->name('delete');
-                        });
+
+                        Route::get('add', 'add')->name('add');
+                        Route::get('slip/{dataPayroll}', 'slip')->name('slip')->withoutMiddleware(['auth']);
+                        Route::post('store', 'store')->name('store');
+                        Route::get('detail/{generate}', 'detail')->name('detail');
+                        Route::get('regenerate/{generate}', 'regenerate')->name('regenerate');
+                        Route::get('approved/{generate}/{payroll?}', 'approved')->name('approved');
+                        Route::get('rejected/{generate}/{payroll?}', 'rejected')->name('rejected');
+                        Route::get('delete/{generate}', 'delete')->name('delete');
                         Route::get('', 'index')->name('index');
                         Route::get('datatable', 'datatable')->name('datatable');
                         Route::get('payroll-datatable/{generate}', 'payrollDatatable')->name('payrollDatatable');
@@ -603,12 +589,10 @@ Route::middleware(['auth'])
 
         Route::prefix('pengajuan')
             ->name("pengajuan.")
-            ->middleware('role:opd|admin|owner|finance|buk')
             ->group(function () {
 
                 Route::controller(DataPresensiController::class)
                     ->prefix('presensi')
-                    ->middleware('role:opd|admin|owner')
                     ->name("presensi.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -621,7 +605,6 @@ Route::middleware(['auth'])
 
                 Route::controller(CutiPengajuanController::class)
                     ->prefix('cuti')
-                    ->middleware('role:opd|admin|owner|buk')
                     ->name("cuti.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -633,7 +616,6 @@ Route::middleware(['auth'])
 
                 Route::controller(ShiftPengajuanController::class)
                     ->prefix('shift')
-                    ->middleware('role:opd|admin|owner')
                     ->name("shift.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -645,7 +627,6 @@ Route::middleware(['auth'])
 
                 Route::controller(LemburPengajuanController::class)
                     ->prefix('lembur')
-                    ->middleware('role:opd|admin|owner')
                     ->name("lembur.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -657,7 +638,6 @@ Route::middleware(['auth'])
 
                 Route::controller(ReimbursementPengajuanController::class)
                     ->prefix('reimbursement')
-                    ->middleware('role:opd|admin|owner|finance|buk')
                     ->name("reimbursement.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
@@ -670,7 +650,6 @@ Route::middleware(['auth'])
 
         Route::prefix('manajemen-user')
             ->name("users.")
-            ->middleware('role:admin|owner')
             ->group(function () {
 
                 Route::controller(DireksiController::class)
@@ -724,38 +703,37 @@ Route::middleware(['auth'])
         Route::prefix('master')
             ->name("master.")
             ->group(function () {
-                Route::middleware('role:admin|owner|opd|buk')->group(function () {
-                    Route::controller(SkpdController::class)
-                        ->prefix('skpd')
-                        ->name("skpd.")
-                        ->group(function () {
-                            Route::get('', 'index')->name('index');
-                            Route::get('add', 'add')->name('add');
-                            Route::get('json', 'json')->name('json');
-                            Route::get('bawahan', 'bawahan')->name('bawahan');
-                            Route::post('store', 'store')->name('store');
-                            Route::post('reset/{skpd}', 'reset')->name('reset');
-                            Route::get('edit/{skpd}', 'edit')->name('edit');
-                            Route::get('delete/{skpd}', 'delete')->name('delete');
-                            Route::get('datatable', 'datatable')->name('datatable');
-                        });
+                Route::controller(SkpdController::class)
+                    ->prefix('skpd')
+                    ->name("skpd.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('add', 'add')->name('add');
+                        Route::get('json', 'json')->name('json');
+                        Route::get('bawahan', 'bawahan')->name('bawahan');
+                        Route::post('store', 'store')->name('store');
+                        Route::post('reset/{skpd}', 'reset')->name('reset');
+                        Route::get('edit/{skpd}', 'edit')->name('edit');
+                        Route::get('delete/{skpd}', 'delete')->name('delete');
+                        Route::get('datatable', 'datatable')->name('datatable');
+                    });
 
-                    Route::controller(LokasiController::class)
-                        ->prefix('lokasi')
-                        ->name("lokasi.")
-                        ->group(function () {
-                            Route::get('', 'index')->name('index');
-                            Route::get('add', 'add')->name('add');
-                            Route::get('json', 'json')->name('json');
-                            Route::post('store', 'store')->name('store');
-                            Route::get('edit/{lokasi}', 'edit')->name('edit');
-                            Route::get('delete/{lokasi}', 'delete')->name('delete');
-                            Route::get('datatable', 'datatable')->name('datatable');
+                Route::controller(LokasiController::class)
+                    ->prefix('lokasi')
+                    ->name("lokasi.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('add', 'add')->name('add');
+                        Route::get('json', 'json')->name('json');
+                        Route::post('store', 'store')->name('store');
+                        Route::get('edit/{lokasi}', 'edit')->name('edit');
+                        Route::get('delete/{lokasi}', 'delete')->name('delete');
+                        Route::get('datatable', 'datatable')->name('datatable');
 
-                        });
-                });
+                    });
 
-                Route::middleware('role:admin|owner')->group(function () {
+
+
                     Route::prefix('payroll')
                         ->name("payroll.")
                         ->group(function () {
@@ -1125,7 +1103,7 @@ Route::middleware(['auth'])
                             Route::get('datatable', 'datatable')->name('datatable');
 
                         });
-                });
+
             });
     });
 

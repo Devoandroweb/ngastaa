@@ -23,41 +23,25 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
 
         $this->mUser = $mUser;
     }
-    function getAllPegawaiRoleOPD($role){
-
-        return $this->allPegawai($role)->get();
-    }
-    function getOnePegawaiRoleOPD($role,$nip){
-        foreach ($this->allPegawai($role)->get() as $pegawai) {
-            if($nip == $pegawai->nip){
-                return $pegawai;
-            }
-        }
-        return null;
-    }
-    function getWhereNotInPegawaiRoleOPD($role,$nip = []){
-        $pegawaiSpesific = $this->allPegawai($role)->whereNotIn('nip',$nip)->get();
-        return $pegawaiSpesific;
-    }
-    function allPegawai($role){
-        return $this->allPegawai = User::role('pegawai')
-            ->when($role, function ($qr) {
-                $user = auth()->user()->jabatan_akhir;
-                $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                $skpd = '';
-                if ($jabatan) {
-                    $skpd = $jabatan->kode_skpd;
-                }
-                $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                        ->where('riwayat_jabatan.kode_skpd', $skpd)
-                        ->where('riwayat_jabatan.is_akhir', 1);
+    function allPegawaiWithRole($levelJabatanUser = null, $kodeSkpd = null){
+        $role = role('owner') || role('admin');
+        $pegawai = User::role('pegawai')->whereNot('users.nip',null)->with('riwayat_jabatan')
+        ->when(!$role, function ($qr) use ($levelJabatanUser){
+            // ambil level jabatan user
+            // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
+            $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser){
+                $q->where('is_akhir',1);
+                $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
+                    $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
+                        $q->where('kode_eselon',">",$levelJabatanUser);
+                    });
                 });
             });
+        });
+        return $pegawai;
     }
     function getAllPegawai(){
-         return $this->allPegawai = User::role('pegawai')->get();
-        //  return $this->allPegawai = User::role('pegawai')->get();
+         return User::role('pegawai')->get();
     }
     // Write something awesome :)
     function updatoOrCreatoToTotalPresensi(){

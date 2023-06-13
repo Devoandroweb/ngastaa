@@ -62,9 +62,9 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('', 'index');
             Route::post('store', 'store');
             Route::get('lists', 'lists');
+            Route::get('lists-opd', 'listsOpd');
             Route::get('shift', 'shift');
             Route::get('lokasi', 'lokasi');
-            Route::get('laporan', 'laporan');
         });
 
     Route::controller(VisitApiController::class)

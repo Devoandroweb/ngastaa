@@ -133,16 +133,14 @@ class CutiApiController extends Controller
     public function listsOpd()
     {
         $nip = request()->query('nip');
-        $opd = false;
+        $kodeSkpd = request()->query('kode_skpd');
         $user = User::where('nip',$nip)->first();
+        $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
         if(!$user){
             return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
         }
-        if(array_intersect(["opd","buk"],$user->getRoleNames()->toArray())){
-            $opd = true;
-        }
             // dd($opd);
-        $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
+        $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
         if($user){
             $dpc = DataPengajuanCuti::whereIn('nip', $arrayNip)->where('status',1)->get();
             // dd($dpc);

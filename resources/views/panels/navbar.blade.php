@@ -213,7 +213,7 @@
                                     <div class="dropdown">
                                         <a href="#" class="d-block link-dark fw-medium" ><span class="badge badge-sm badge-soft-green">{{auth()->user()->nip}}</span>{{auth()->user()->name}} </a>
                                     </div>
-                                    <div class="fs-7">{{auth()->user()->jabatan_akhir->first()?->tingkat?->nama}}</div>
+                                    <div class="fs-7">{{auth()->user()->jabatan_akhir->where('is_akhir',1)->first()?->tingkat?->nama}}</div>
                                 </div>
                             </div>
                         </div>

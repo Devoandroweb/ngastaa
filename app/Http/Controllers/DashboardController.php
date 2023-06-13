@@ -33,7 +33,7 @@ class DashboardController extends Controller
 
         $role = role('opd');
         $periode_bulan = date("Y-m");
-        $pegawai = $this->pegawaiRepository->getAllPegawaiRoleOPD($role);
+        $pegawai = $this->pegawaiRepository->getAllPegawai();
 
         $jumlah_pegawai = $pegawai->count();
         $get_pegawai = User::role('pegawai')->where('owner',0);
@@ -48,7 +48,7 @@ class DashboardController extends Controller
 
         foreach ($status_pegawai as $key => $value) {
             $pegawai = User::role('pegawai')->where('owner',0)
-                        ->when($role,function($q){
+                        ->when(!$role,function($q){
                             $user = auth()->user()->jabatan_akhir;
                             $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
                             $skpd = '';
@@ -91,21 +91,7 @@ class DashboardController extends Controller
         $color_status_kawin = [];
         $total_kawin_nikah = 0;
         foreach ($status_kawin as $key => $value) {
-            $pegawai = User::role('pegawai')->where('owner',0)
-                        ->when($role,function($q){
-                            $user = auth()->user()->jabatan_akhir;
-                            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                            $skpd = '';
-                            if ($jabatan) {
-                                $skpd = $jabatan->kode_skpd;
-                            }
-
-                            return $q->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                                $qt->on('riwayat_jabatan.nip', 'users.nip')
-                                    ->where('riwayat_jabatan.kode_skpd', $skpd)
-                                    ->where('riwayat_jabatan.is_akhir', 1);
-                            });
-                        });
+            $pegawai = $this->pegawaiRepository->allPegawaiWithRole();
             $total_status = $pegawai->where('kode_kawin',$value)->count();
 
             $nama = $value;
@@ -184,7 +170,7 @@ class DashboardController extends Controller
             ]);
         }
         # Total Presensi
-        $totalPresensi = TotalPresensi::where('periode_bulan',$periode_bulan)->whereIn('nip',$this->pegawaiRepository->getAllPegawaiRoleOPD($role)->pluck('nip'))->get();
+        $totalPresensi = TotalPresensi::where('periode_bulan',$periode_bulan)->whereIn('nip',$this->pegawaiRepository->allPegawaiWithRole()->pluck('nip'))->get();
 
         $masuk = $totalPresensi->sum("masuk");
         $alfa = $totalPresensi->sum("alfa");
@@ -196,7 +182,7 @@ class DashboardController extends Controller
         $jenisIzin = Cuti::all();
 
         foreach ($jenisIzin as $i => $ji) {
-            $detailPresensi = TotalPresensiDetail::where('kode_cuti',$ji->kode_cuti)->whereIn('nip',$this->pegawaiRepository->getAllPegawaiRoleOPD($role)->pluck('nip'))->where('periode_bulan',$periode_bulan)->get();
+            $detailPresensi = TotalPresensiDetail::where('kode_cuti',$ji->kode_cuti)->whereIn('nip',$this->pegawaiRepository->allPegawaiWithRole()->pluck('nip'))->where('periode_bulan',$periode_bulan)->get();
             if(!is_null($detailPresensi)){
                 array_push($dataTotalPresensi,$detailPresensi->count());
                 array_push($textTotalPresensi,$ji->nama);

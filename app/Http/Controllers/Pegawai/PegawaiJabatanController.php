@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pegawai;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\JabatanResource;
+use App\Models\Master\Tingkat;
 use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -125,6 +126,7 @@ class PegawaiJabatanController extends Controller
         $id = request('id');
         $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
         if ($id) {
+
             if (request()->file('file')) {
                 $file = RiwayatJabatan::where('id', $id)->where('nip', $pegawai->nip)->value('file');
                 if ($file) {
@@ -149,6 +151,16 @@ class PegawaiJabatanController extends Controller
             ],
             $data
         );
+
+
+        $kodeEselon = $pegawai->jabatan_akhir->where('is_akhir',1)->first()?->tingkat?->eselon?->kode_eselon;
+        if(is_null($kodeEselon)){
+            $tingkat = Tingkat::where('kode_tingkat',$data['kode_tingkat'])->first();
+            $kodeEselon = $tingkat?->eselon?->kode_eselon;
+            $pegawai->removeRole("level_{$kodeEselon}");
+        }else{
+            $pegawai->assignRole("level_{$kodeEselon}");
+        }
 
         if(request()->query("for") == 0){
             if ($cr) {

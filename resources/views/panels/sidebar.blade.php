@@ -62,8 +62,17 @@
             $$value = true;
         }
     }
-    if(role("opd") || role("buk")){
+    $roleLevel2 = role('level_2'); // HR
+    $roleLevel3 = role('level_3'); // BUK
+    $roleLevel4 = role('level_4'); // PIC
+    if($roleLevel2 || $roleLevel3){
         $data = ["pegawai","hrd","masterDataDivisiKerja","masterDataShift","dataPengajuanIzin","dataPengajuanReimbursement"];
+        foreach ($data as $value) {
+            $$value = true;
+        }
+    }
+    if($roleLevel4){
+        $data = ["pegawai"];
         foreach ($data as $value) {
             $$value = true;
         }
@@ -448,7 +457,7 @@
                     </li>
                     @endif
 
-                    @if(role('owner') || role('admin') || role('finance') || role('opd') || role("buk"))
+                    @if(role('owner') || role('admin') || role('finance') || role('opd') || $roleLevel2)
                     {{-- Menu Riwayat --}}
                     <div class="menu-gap"></div>
                     <div class="nav-header">
