@@ -3,6 +3,7 @@
 namespace App\Repositories\Presensi;
 
 use App\Models\Pegawai\DataPresensi;
+use App\Models\Pegawai\DataVisit;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Presensi;
 
@@ -23,13 +24,14 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
     }
     function presensiDay($nip){
         $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d'))->first();
+        $dataVisit = DataVisit::where('nip',$nip)->whereDate('created_at', date('Y-m-d'))->first();
         if($data != null){
             $data = [
                 'nip' => $nip,
                 'datang' => $data->tanggal_datang != null ? date("H:i:s",strtotime($data->tanggal_datang)) : "-",
                 'istirahat' => $data->tanggal_istirahat != null ? date("H:i:s",strtotime($data->tanggal_istirahat)) : "-",
                 'pulang' => $data->tanggal_pulang != null ? date("H:i:s",strtotime($data->tanggal_pulang)) : "-",
-                'visit' => "-",
+                'visit' => $dataVisit?->check_in != null ? date("H:i:s",strtotime($data->check_in)) : "-",
             ];
         }else{
             $data = [
