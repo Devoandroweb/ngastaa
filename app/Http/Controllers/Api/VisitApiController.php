@@ -113,11 +113,15 @@ class VisitApiController extends Controller
                 $end =  request()->query('selesai') ? date('Y-m-d', strtotime(request()->query('selesai')) + (60 * 60 * 24)) : date('Y-m-d', strtotime('+1 days'));
                 // dd($end);
                 $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
-                    $q->where('jenis_visit',$jenisVisit);
+                    if($jenisVisit != ""){
+                        $q->where('jenis_visit',$jenisVisit);
+                    }
                 })->where('nip', $nip)->whereBetween('tanggal', [$date, $end])->orderBy('created_at')->get();
             }else{
                 $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
-                    $q->where('jenis_visit',$jenisVisit);
+                    if($jenisVisit != ""){
+                        $q->where('jenis_visit',$jenisVisit);
+                    }
                 })->where('nip', $nip)->orderBy('created_at')->get();
             }
 
