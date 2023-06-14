@@ -34,19 +34,12 @@ class CApiAktifitas extends Controller
         try {
             // dd(request()->all());
             $nip = request()->query('nip');
-            $opd = false;
-            $pegawai = User::where('nip',$nip)->first();
-
-            if(!$pegawai){
+            $kodeSkpd = request()->query('kode_skpd');
+            $user = User::where('nip',$nip)->first();
+            if(!$user){
                 return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
             }
-
-            if(array_intersect(["opd","buk"],$pegawai->getRoleNames()->toArray())){
-                $opd = true;
-            }
-
-            // dd($opd);
-            $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
+            $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd,true)->pluck('nip')->toArray();
             // dd($arrayNip);
             $data = MAktifitas::whereIn('nip',$arrayNip)->with('pegawai')->orderBy('created_at','desc')->get();
             // dd($data);

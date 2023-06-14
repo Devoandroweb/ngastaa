@@ -23,21 +23,45 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
 
         $this->mUser = $mUser;
     }
-    function allPegawaiWithRole($levelJabatanUser = null, $kodeSkpd = null){
-        $role = role('owner') || role('admin');
+    function allPegawaiWithRole($kodeSkpd = null, $forApi = false){
+        if($forApi){
+            # FOR WEB_SERVICES
+            $role = false;
+            $user = User::where('nip',request()->query('nip'))->first();
+            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+        }else{
+            # FOR WEB
+            $role = role('owner') || role('admin');
+            $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+        }
+
         $pegawai = User::role('pegawai')->whereNot('users.nip',null)->with('riwayat_jabatan')
-        ->when(!$role, function ($qr) use ($levelJabatanUser){
+        ->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
             // ambil level jabatan user
             // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
-            $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser){
+            $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser, $kodeSkpd){
+                if($kodeSkpd != 0 || $kodeSkpd != null){
+                    $q->where('kode_skpd',$kodeSkpd);
+                }
                 $q->where('is_akhir',1);
                 $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
                     $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
-                        $q->where('kode_eselon',">",$levelJabatanUser);
+                        $q->where('kode_eselon','>',(int)$levelJabatanUser);
                     });
                 });
             });
         });
+        if($role){
+            $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
+                $qt->on('riwayat_jabatan.nip', 'users.nip')
+                ->where('is_akhir', 1)
+                ->where('riwayat_jabatan.deleted_at', null);
+                // dd($kodeSkpd);
+                if($kodeSkpd != null && (int)$kodeSkpd != 0){
+                    $qt->where('kode_skpd', $kodeSkpd);
+                }
+            });
+        }
         return $pegawai;
     }
     function getAllPegawai(){

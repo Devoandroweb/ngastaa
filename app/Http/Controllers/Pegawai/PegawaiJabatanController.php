@@ -103,13 +103,16 @@ class PegawaiJabatanController extends Controller
             'kode_skpd' => 'required',
             'kode_tingkat' => 'required',
             'jenis_jabatan' => 'required',
-            'no_sk' => 'nullable',
             'tanggal_sk' => 'nullable',
             'tanggal_tmt' => 'nullable',
             'sebagai' => 'nullable',
             'is_akhir' => 'nullable',
         ];
-
+        $id = request('id');
+        $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
+        if($id){
+            $rules['no_sk'] = 'nullable';
+        }
         if (request()->file('file')) {
             $rules['file'] = 'mimes:pdf|max:2048';
         }
@@ -117,14 +120,12 @@ class PegawaiJabatanController extends Controller
         $data = request()->validate($rules);
         $data['tanggal_sk'] = normalDateSystem(request("tanggal_sk"));
         $data['tanggal_tmt'] =  normalDateSystem(request("tanggal_tmt"));
-
-        if (request('is_akhir') == 1) {
+        // dd($data);
+        if ((int)$data['is_akhir'] == 1) {
             $data['sebagai'] = "defenitif";
             RiwayatJabatan::where('nip', $pegawai->nip)->update(['is_akhir' => 0]);
         }
 
-        $id = request('id');
-        $dir = 'data_pegawai/'.$pegawai->nip.'/riwayat_jabatan';
         if ($id) {
 
             if (request()->file('file')) {

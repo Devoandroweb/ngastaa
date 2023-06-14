@@ -547,16 +547,15 @@ class PresensiApiController extends Controller
             $nip = request()->query('nip');
             $kodeSkpd = request()->query('kode_skpd');
             $user = User::where('nip',$nip)->first();
-            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
             if(!$user){
                 return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
             }
                 // dd($opd);
-            $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
+            $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd, true)->pluck('nip')->toArray();
             $date = request('d') ? date('Y-m-d', strtotime(request('d'))) : date('Y-m-d', strtotime('-1 days'));
             $end =  request('e') ? date('Y-m-d', strtotime(request('e')) + (60 * 60 * 24)) : date('Y-m-d');
             if($user){
-                $data = DataPresensi::whereIn('nip',$arrayNip)->get();
+                $data = DataPresensi::whereIn('nip',$arrayNip)->where('periode_bulan',$periodeBulan)->get();
                 $data = PresensiListOpdApiResource::collection($data);
                 if($data){
                     return response()->json(buildResponseSukses($data),200);

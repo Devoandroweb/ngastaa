@@ -135,12 +135,12 @@ class CutiApiController extends Controller
         $nip = request()->query('nip');
         $kodeSkpd = request()->query('kode_skpd');
         $user = User::where('nip',$nip)->first();
-        $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
         if(!$user){
             return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
         }
             // dd($opd);
-        $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
+        $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd,true)->pluck('nip')->toArray();
+        // dd($arrayNip);
         if($user){
             $dpc = DataPengajuanCuti::whereIn('nip', $arrayNip)->where('status',1)->get();
             // dd($dpc);

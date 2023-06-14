@@ -7,7 +7,7 @@ use LaravelEasyRepository\Repository;
 interface PegawaiRepository extends Repository{
 
     // Write something awesome :)
-    function allPegawaiWithRole($levelJabatanUser = null, $kodeSkpd = null);
+    function allPegawaiWithRole($kodeSkpd = null, $forApi = false);
     function getAllPegawai();
     function updatoOrCreatoToTotalPresensi();
 }

@@ -209,16 +209,10 @@ class PegawaiController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+
+        // dd($kodeSkpd);
         $kodeSkpd = request()->query('kode_skpd');
-        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd);
-        if($kodeSkpd){
-            $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
-                $qt->on('riwayat_jabatan.nip', 'users.nip')
-                    ->where('kode_skpd', $kodeSkpd)
-                    ->where('is_akhir', 1);
-            });
-        }
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
         return $dataTables->of($pegawai)
             ->addColumn('images', function ($row) {
                 return '<div>

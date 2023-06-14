@@ -29,7 +29,7 @@ class PegawaiResource extends JsonResource
             'nip' => $this->nip,
             'no_hp' => $this->no_hp ?? "-",
             'email' => $this->email ?? "-",
-            'name' => ($this->gelar_depan ? $this->gelar_depan .". " : "-") . $this->name . ($this->gelar_belakang ? ", " . $this->gelar_belakang : ""),
+            'name' => ($this->gelar_depan ? $this->gelar_depan ." " : "") . $this->name . ($this->gelar_belakang ? ", " . $this->gelar_belakang : ""),
             'nama_jabatan' => $nama_jabatan ?? "-",
             'eselon' => $eselon ?? "-",
             'kode_eselon' => $kode_eselon ?? 0,

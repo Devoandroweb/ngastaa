@@ -48,7 +48,7 @@ class DashboardController extends Controller
 
         foreach ($status_pegawai as $key => $value) {
             $pegawai = User::role('pegawai')->where('owner',0)
-                        ->when(!$role,function($q){
+                        ->when(true,function($q){
                             $user = auth()->user()->jabatan_akhir;
                             $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
                             $skpd = '';

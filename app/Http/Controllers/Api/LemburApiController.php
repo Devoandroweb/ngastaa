@@ -107,16 +107,12 @@ class LemburApiController extends Controller
     function listsOpd()
     {
         $nip = request()->query('nip');
-        $opd = false;
+        $kodeSkpd = request()->query('kode_skpd');
         $user = User::where('nip',$nip)->first();
         if(!$user){
             return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
         }
-        if(array_intersect(["opd","buk"],$user->getRoleNames()->toArray())){
-            $opd = true;
-        }
-            // dd($opd);
-        $arrayNip = $this->pegawaiRepository->getAllPegawaiRoleOPD($opd)->pluck('nip')->toArray();
+        $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd,true)->pluck('nip')->toArray();
         if($user){
             $dpc = DataPengajuanLembur::whereIn('nip', $arrayNip)->where('status',1)->get();
             if($dpc){
