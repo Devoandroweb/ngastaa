@@ -38,15 +38,20 @@ class Presensi extends Controller
         try{
             $presensiPegawai = DataPresensi::where('nip',$nip)->whereDate('created_at', '=', date("Y-m-d"))->first();
             $data['status'] = true;
+
             if($presensiPegawai != null){
-                $data['absen_status'] = true;
+                if($presensiPegawai->tanggal_datang != null && $presensiPegawai->tanggal_pulang != null){
+                    $data['absen_status'] = 2;
+                }else{
+                    $data['absen_status'] = 1;
+                }
                 return response()->json([
                     'status' => TRUE,
                     'message' => "Success",
                     'data' => $data
                 ], 200);
             }else{
-                $data['absen_status'] = false;
+                $data['absen_status'] = 0;
                 return response()->json([
                     'status' => TRUE,
                     'message' => "Success",
