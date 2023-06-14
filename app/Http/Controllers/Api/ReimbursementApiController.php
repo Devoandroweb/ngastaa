@@ -95,7 +95,7 @@ class ReimbursementApiController extends Controller
         $nip = request('nip');
         $user = User::where('nip', $nip)->first();
         if($user){
-            $dpc = DataPengajuanReimbursement::where('nip', $nip)->paginate(10);
+            $dpc = DataPengajuanReimbursement::where('nip', $nip)->orderBy('created_at','desc')->paginate(10);
             if($dpc){
                     return response()->json(buildResponseSukses([
                         'user' => PegawaiResource::make($user),
