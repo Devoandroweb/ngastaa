@@ -102,7 +102,7 @@ class VisitController extends Controller
             })
             ->addColumn('jenis_visit', function ($row) {
                 if($row->jenis_visit !== null){
-                    if($row->jenis_visit === 0){
+                    if($row->jenis_visit == 0){
                         return '<div class="badge badge-info badge-outline">Visit Baru</div>';
                     }else{
                         return '<div class="badge badge-danger badge-outline">Visit Lama</div>';
