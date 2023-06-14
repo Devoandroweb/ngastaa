@@ -37,10 +37,10 @@ class VisitApiController extends Controller
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'User tidak ditemukan!']),200);
         }
 
-        $cek = DataVisit::where('nip', $nip)->where('kode_visit', $kode_visit)->whereDate("tanggal", date("Y-m-d"))->count();
-
+        $cek = DataVisit::where('nip', $nip)->whereDate("tanggal", date("Y-m-d"))->count();
+        // dd($cek,$nip);
         if ($cek > 0) {
-            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan Visit Ke Lokasi Ini!']),200);
+            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Sudah melakukan Visit Ke Lokasi Ini sebelumnya, mohon Check-out terlebih dahulu untuk Chek-in!']),200);
         } else {
             if (request()->file('image')) {
                 $file =  request()->file('image');
