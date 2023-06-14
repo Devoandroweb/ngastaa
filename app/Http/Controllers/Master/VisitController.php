@@ -67,6 +67,7 @@ class VisitController extends Controller
             'nama' => 'required',
             'alamat' => 'required',
             'polygon' => 'nullable',
+            'status' => 'required',
         ];
 
         $data = request()->validate($rules);

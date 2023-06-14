@@ -16,6 +16,27 @@
     <div class="row">
         <div class="col-md-12">
             <form class="edit-post-form">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group has-validation">
+                            <label class="form-label">Jenis Visit</label>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input type="radio" id="customRadioc2" name="status" value="0" class="form-check-input" {{$visit?->status == 0 ? 'checked':'' }}>
+                                        <label class="form-check-label" for="customRadioc2">Visit Baru</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input type="radio" id="customRadioc1" name="status" value="1" class="form-check-input" {{$visit?->status == 1 ? 'checked':'' }}>
+                                        <label class="form-check-label" for="customRadioc1">Visit Lama</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group has-validation">
                     <label class="form-label">Nama Lokasi</label>
                     <input class="form-control @error('nama') is-invalid @enderror"  placeholder="Masukkan Nama Lokasi" name="nama" value="{{$visit->nama ?? ''}}">
