@@ -12,7 +12,7 @@ class RiwayatShiftResource extends JsonResource
         return [
             'id' => $this->id,
             'nip' => $this->nip,
-            'nama' => $this->name,
+            'nama' => $this->user?->name,
             'shift' => $this->shift?->nama,
             'nomor_surat' => $this->nomor_surat,
             'komentar' => $this->komentar,
