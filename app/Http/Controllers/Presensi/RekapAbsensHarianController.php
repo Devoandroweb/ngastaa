@@ -121,7 +121,7 @@ class RekapAbsensHarianController extends Controller
 
                     $status = $this->getStatusInmTotalPresensiDetail($tanggal->format('Y-m-d'),$row->nip);
                     if ($status != null) {
-                        if(in_array($status,[1,2,5,6])){
+                        if(in_array($status,[1,2,5,6,7])){
                             $hadir++;
                         }
                     }

@@ -84,6 +84,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
             $this->dataPresensi2 =  DataPresensi::whereDate('created_at', '=', $this->date)->where('hitung',0);
 
+
             $hariSabtuMinggu = cekHariAkhirPekan($this->date);
             $hariLibur = cekHariLibur($this->date);
             // dd($this->dataPresensi);
@@ -93,7 +94,6 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             if($hariLibur){
                 continue;
             }
-
             $this->calculatePresensi();
         }
     }
@@ -142,7 +142,13 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
                 if($presensi == null){
                     // cek pegawai di izin/cuti
+                    # cek hari sabtu
+                    $hariSabtuMinggu = cekHariAkhirPekan($this->date);
+                    $hariLibur = cekHariLibur($this->date);
+                    if($hariSabtuMinggu){
+                        # hari sabtu
 
+                    }
                     $izin = $this->existingIzin($pegawai->nip);
                     if($izin != null){
                         // $this->dataTotalPresensi[$indexTotalPegawai]['izin']++;

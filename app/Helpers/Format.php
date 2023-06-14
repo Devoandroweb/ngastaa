@@ -540,6 +540,9 @@ function generateStatusAbsen($status)
         case 6:
             return '<span class="badge badge-primary badge-pill badge-outline">(PC)</span>';
             break;
+        case 7:
+            return '<span class="badge badge-secondary badge-pill badge-outline">P</span>';
+            break;
         default:
             break;
     }
