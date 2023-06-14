@@ -69,7 +69,7 @@ class VisitApiController extends Controller
                     'nama' => $namaVisit,
                     'alamat' => $alamat,
                     'qr' => $qrName,
-                    'status' => 0,
+                    'jenis_visit' => 0,
                 ]);
 
                 $data = [
