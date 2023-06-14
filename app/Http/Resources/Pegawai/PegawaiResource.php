@@ -36,6 +36,7 @@ class PegawaiResource extends JsonResource
             'skpd' => $skpd ?? "-",
             'images' => $this->images,
             'shift' =>  $shift,
+            'status_password' => $this->status_password,
             'image' => $this->foto(),
             'tanggal_tmt' => tanggal_indo($this->tanggal_tmt),
         ];

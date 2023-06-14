@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    private $passwordRepository; 
+    private $passwordRepository;
     function __construct(PasswordRepository $passwordRepository)
     {
         $this->passwordRepository = $passwordRepository;
@@ -55,15 +55,20 @@ class AuthController extends Controller
         //         'kode' => $imei,
         //     ]);
         // }
+        $user->status_password = $this->passwordCheck($user->nip);
+        
         $data = PegawaiResource::make($user);
+        // $data->(['status_password'=>)]);
+        // dd($data);
         $riwayatShift = RiwayatShift::where("nip",$user->nip)->where("is_akhir",1)->orderByDesc('kode_shift')->get();
-
+        // $data['status_password'] = $this->passwordCheck($data['nip']);
         if(count($riwayatShift) != 0){
             $data['shift'] = $riwayatShift[0]->kode_shift;
         }else{
             $data['shift'] = null;
         }
 
+        // dd($data);
         $authToken = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
@@ -73,26 +78,12 @@ class AuthController extends Controller
             'access_token' => $authToken,
         ], 200);
     }
-    function passwordCheck(){
-        try {
-            //code...
-            $user = User::where('nip',request("nip"))->first();
-            if(!Hash::check(request("nip"), $user->password)){
-                return response()->json(buildResponseSukses([
-                    'message'=>'Password telah di ubah',
-                    'status'=>1
-                ]),200);
-            }else{
-                return response()->json(buildResponseSukses([
-                    'message'=>'Password belum di ubah',
-                    'status'=>0
-                ]),200);
-            }
-        } catch (\Throwable $th) {
-            return response()->json(buildResponseGagal([
-                'message'=>$th->getMessage(),
-                'status'=>0
-            ]),500);
+    function passwordCheck($nip){
+        $user = User::where('nip',$nip)->first();
+        if(!Hash::check($nip, $user->password)){
+            return true;
+        }else{
+            return false;
         }
     }
     function changePassword(){
@@ -124,7 +115,7 @@ class AuthController extends Controller
     {
         $nip = request('nip');
         $user = User::where('nip', $nip)->first();
-        
+
         return response()->json(buildResponseSukses($user),200);
     }
 }
