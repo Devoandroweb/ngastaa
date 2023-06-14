@@ -34,13 +34,13 @@ class VisitController extends Controller
     {
         $visit = new Visit();
 
-        return view('pages\masterdata\datapresensi\lokasivisit\add', compact('visit'));
+        return view('pages/masterdata/datapresensi/lokasivisit/add', compact('visit'));
     }
 
     public function edit(Visit $visit)
     {
         // dd($visit);
-        return view('pages\masterdata\datapresensi\lokasivisit\add', compact('visit'));
+        return view('pages/masterdata/datapresensi/lokasivisit/add', compact('visit'));
     }
 
     public function delete(Visit $visit)
