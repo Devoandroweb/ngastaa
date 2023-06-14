@@ -18,6 +18,8 @@ class PresensiListOpdApiResource extends JsonResource
             'id' => $this->id,
             'nip' => $this->nip,
             'name' => $this->user->name,
+            'divisi' => $this->user->jabatan_akhir?->where('is_akhir',1)->first()?->skpd?->nama,
+            'jabatan' => $this->user->jabatan_akhir?->where('is_akhir',1)->first()?->tingkat?->nama,
             'jam_pagi' => $this->tanggal_datang ? date('H:i', strtotime($this->tanggal_datang)) : '-',
             'jam_siang' => $this->tanggal_istirahat ? date('H:i', strtotime($this->tanggal_istirahat)) : '-',
             'jam_sore' => $this->tanggal_pulang ? date('H:i', strtotime($this->tanggal_pulang)) : '-',
