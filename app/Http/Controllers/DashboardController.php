@@ -47,21 +47,7 @@ class DashboardController extends Controller
         # Data Kepegawaian Status Pegawai
 
         foreach ($status_pegawai as $key => $value) {
-            $pegawai = User::role('pegawai')->where('owner',0)
-                        ->when(true,function($q){
-                            $user = auth()->user()->jabatan_akhir;
-                            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                            $skpd = '';
-                            if ($jabatan) {
-                                $skpd = $jabatan->kode_skpd;
-                            }
-
-                            return $q->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                                $qt->on('riwayat_jabatan.nip', 'users.nip')
-                                    ->where('riwayat_jabatan.kode_skpd', $skpd)
-                                    ->where('riwayat_jabatan.is_akhir', 1);
-                            });
-                        });
+            $pegawai = $this->pegawaiRepository->allPegawaiWithRole();
             $total_status = $pegawai->where('kode_status',$value->kode_status)->count();
 
             $nama = $value->nama;
@@ -109,6 +95,8 @@ class DashboardController extends Controller
 
         // dd($status_kawin_statistic);
         # Presensi Count
+        // dd($this->pegawaiRepository->allPegawaiWithRole()->get()->pluck('nip')->toArray());
+
         $presensi = DataPresensi::whereDate('data_presensi.created_at', date("Y-m-d"))
                     ->when($role, function ($qr) {
                         $user = auth()->user()->jabatan_akhir;
@@ -125,6 +113,7 @@ class DashboardController extends Controller
                         });
                     })
                     ->count();
+
         $bulan = DataPresensi::whereMonth('data_presensi.created_at', date("m"))
                 ->when($role, function ($qr) {
                     $user = auth()->user()->jabatan_akhir;
@@ -141,6 +130,7 @@ class DashboardController extends Controller
                     });
                 })
                 ->count();
+
         $tahun = DataPresensi::whereYear('data_presensi.created_at', date("Y"))
                 ->when($role, function ($qr) {
                     $user = auth()->user()->jabatan_akhir;
@@ -170,7 +160,7 @@ class DashboardController extends Controller
             ]);
         }
         # Total Presensi
-        $totalPresensi = TotalPresensi::where('periode_bulan',$periode_bulan)->whereIn('nip',$this->pegawaiRepository->allPegawaiWithRole()->pluck('nip'))->get();
+        $totalPresensi = TotalPresensi::where('periode_bulan',$periode_bulan)->whereIn('nip',$this->pegawaiRepository->allPegawaiWithRole()->get()->pluck('nip')->toArray())->get();
 
         $masuk = $totalPresensi->sum("masuk");
         $alfa = $totalPresensi->sum("alfa");
@@ -182,14 +172,13 @@ class DashboardController extends Controller
         $jenisIzin = Cuti::all();
 
         foreach ($jenisIzin as $i => $ji) {
-            $detailPresensi = TotalPresensiDetail::where('kode_cuti',$ji->kode_cuti)->whereIn('nip',$this->pegawaiRepository->allPegawaiWithRole()->pluck('nip'))->where('periode_bulan',$periode_bulan)->get();
+            $detailPresensi = TotalPresensiDetail::where('kode_cuti',$ji->kode_cuti)->whereIn('nip',$this->pegawaiRepository->allPegawaiWithRole()->get()->pluck('nip')->toArray())->where('periode_bulan',$periode_bulan)->get();
             if(!is_null($detailPresensi)){
                 array_push($dataTotalPresensi,$detailPresensi->count());
                 array_push($textTotalPresensi,$ji->nama);
                 array_push($colorTotalPresensi,getColor($i));
             }
         }
-
         # Data Yang Akan Selesai Kontrak
         $selesai_kontrak = User::role('opd')->selectRaw('users.*, riwayat_jabatan.tanggal_tmt')
                                     ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
@@ -197,6 +186,8 @@ class DashboardController extends Controller
                                     ->whereMonth('riwayat_jabatan.tanggal_tmt', date("m"))
                                     ->whereYear('riwayat_jabatan.tanggal_tmt', date("Y"))
                                     ->get();
+
+
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
 
 
