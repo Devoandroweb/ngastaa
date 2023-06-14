@@ -115,12 +115,16 @@ class VisitApiController extends Controller
                 $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
                     if($jenisVisit != ""){
                         $q->where('jenis_visit',$jenisVisit);
+                    }else{
+                        $q->whereIn('jenis_visit',[0,1]);
                     }
                 })->where('nip', $nip)->whereBetween('tanggal', [$date, $end])->orderBy('created_at')->get();
             }else{
                 $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
                     if($jenisVisit != ""){
                         $q->where('jenis_visit',$jenisVisit);
+                    }else{
+                        $q->whereIn('jenis_visit',[0,1]);
                     }
                 })->where('nip', $nip)->orderBy('created_at')->get();
             }
