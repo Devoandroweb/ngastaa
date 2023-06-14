@@ -47,7 +47,7 @@ class ReimbursementApiController extends Controller
                 $data = [
                     'nip' => $nip,
                     'kode_reimbursement' => $kode_reimbursement,
-                    'nilai' => number_to_sql($nilai),
+                    'nilai' => str_replace(",","",$nilai),
                     'keterangan' => $keterangan,
                     'file' => "reimbursement/$nip/".$namaFile,
                 ];
