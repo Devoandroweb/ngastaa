@@ -96,7 +96,7 @@ class ShiftApiController extends Controller
         $nip = request('nip');
         $user = User::where('nip', $nip)->first();
         if($user){
-            $dpc = RiwayatShift::where('nip', $nip)->where('status', '!=', 99)->paginate(10);
+            $dpc = RiwayatShift::where('nip', $nip)->where('status', '!=', 99)->orderBy('created_at','desc')->paginate(10);
             if($dpc){
                     return response()->json(buildResponseSukses([
                         'user' => PegawaiResource::make($user),
@@ -121,7 +121,7 @@ class ShiftApiController extends Controller
             // dd($opd);
         $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd,true)->pluck('nip')->toArray();
         if($user){
-            $dpc = RiwayatShift::with('user')->whereIn('nip', $arrayNip)->where('status', 1)->paginate(10);
+            $dpc = RiwayatShift::with('user')->whereIn('nip', $arrayNip)->where('status', 1)->orderBy('created_at','desc')->paginate(10);
             if($dpc){
                     return response()->json(buildResponseSukses([
                         'user' => PegawaiResource::make($user),

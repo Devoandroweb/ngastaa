@@ -521,12 +521,15 @@ class PresensiApiController extends Controller
             $date = request('d') ? date('Y-m-d', strtotime(request('d'))) : date('Y-m-d', strtotime('-1 days'));
             $end =  request('e') ? date('Y-m-d', strtotime(request('e')) + (60 * 60 * 24)) : date('Y-m-d');
             if($user){
-                $data = DataPresensi::select('data_presensi.id', 'data_presensi.nip', 'users.name','tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'data_presensi.created_at')
-                                    ->leftJoin('users', 'users.nip', 'data_presensi.nip')
-                                    ->where('data_presensi.nip', $nip)
-                                    ->where('data_presensi.periode_bulan', $periodeBulan)
-                                    // ->whereBetween('data_presensi.created_at', [$date, $end])
-                                    ->get();
+                // $data = DataPresensi::select('data_presensi.id', 'data_presensi.nip', 'users.name','tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'data_presensi.created_at')
+                //                     ->leftJoin('users', 'users.nip', 'data_presensi.nip')
+                //                     ->where('data_presensi.nip', $nip)
+                //                     ->where('data_presensi.periode_bulan', $periodeBulan)
+                //                     // ->whereBetween('data_presensi.created_at', [$date, $end])
+                //                     ->get();
+                $data = DataPresensi::whereHas('user',function($q) use ($nip){
+                    $q->where('nip',$nip);
+                })->where('periode_bulan',$periodeBulan)->get();
                 $data = PresensiLaporanApiResource::collection($data);
                 if($data){
                     return response()->json(buildResponseSukses($data),200);
