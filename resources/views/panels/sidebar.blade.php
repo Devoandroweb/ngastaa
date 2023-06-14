@@ -222,6 +222,11 @@
                                                 <a class="nav-link" href="{{route('master.status_pegawai.index')}}"><span class="nav-link-text">Status Pegawai</span></a>
                                             </li>
                                             @endif
+                                            @if($masterDataTingkatJabatan)
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{route('master.eselon.index')}}"><span class="nav-link-text">Level Jabatan</span></a>
+                                            </li>
+                                            @endif
                                             @if($masterDataDivisiKerja)
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{route('master.skpd.index')}}"><span class="nav-link-text">Divisi Kerja</span></a>
@@ -232,11 +237,7 @@
                                                 <a class="nav-link" href="{{route('master.tingkat.index')}}"><span class="nav-link-text">Tingkat Jabatan</span></a>
                                             </li>
                                             @endif
-                                            @if($masterDataTingkatJabatan)
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{route('master.eselon.index')}}"><span class="nav-link-text">Level Jabatan</span></a>
-                                            </li>
-                                            @endif
+
                                         </ul>
                                     </li>
                                 </ul>

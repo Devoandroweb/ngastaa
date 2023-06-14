@@ -63,3 +63,7 @@ CREATE TABLE `visit_lokasi_baru` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE `visit_lokasi` ADD `status` TINYINT NULL DEFAULT NULL COMMENT '1 : lama, 0: baru' AFTER `updated_at`;
+ALTER TABLE `visit_lokasi` CHANGE `status` `jenis_visit` TINYINT(4) NULL DEFAULT NULL COMMENT '1 : lama, 0: baru';

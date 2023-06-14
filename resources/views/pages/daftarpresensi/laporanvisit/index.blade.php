@@ -36,6 +36,7 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
+            <th>{{__('Jenis Visit')}}</th>
             <th>{{__('No. Pegawai Nama')}}</th>
             <th>{{__('Jabatan')}}</th>
             <th>{{__('Tanggal')}}</th>
@@ -155,6 +156,10 @@
                         searchable: false,
                     },{
 
+                        data: 'jenis_visit',
+                        name: 'jenis_visit',
+                    },{
+
                         data: 'nama',
                         name: 'nama',
                     },{
@@ -246,3 +251,5 @@
     </script>
 
 @endpush
+
+

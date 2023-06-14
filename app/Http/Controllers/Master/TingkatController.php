@@ -114,7 +114,7 @@ class TingkatController extends Controller
         //     // 'values.parent_id' => 'nullable',
         //     'values.gaji_pokok' => 'required',
         //     'values.tunjangan' => 'required',
-        // ]; 
+        // ];
         $rules = [
             'nama' => 'required',
             'kode_tingkat' => 'required',
@@ -208,15 +208,17 @@ class TingkatController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $model = Tingkat::query();
+        $model = Tingkat::with('eselon');
         return $dataTables->eloquent($model)
+            ->addColumn('nama_eselon', function ($row) {
+                return $row->eselon->nama ?? "-";
+            })
             ->addColumn('opsi', function ($row) {
-
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.tingkat.edit', $row->id) . "'>" . icons('pencil') . "</a>";
                 $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.tingkat.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 return $html;
             })
-            ->rawColumns(['opsi'])
+            ->rawColumns(['opsi','nama_eselon'])
             ->addIndexColumn()
             ->toJson();
     }

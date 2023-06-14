@@ -73,11 +73,23 @@ class LaporanVisitController extends Controller
             ->addColumn('tanggal', function ($row) {
                 return tanggal_indo($row->created_at);
             })
+            ->addColumn('jenis_visit', function ($row) {
+                if($row->visit?->jenis_visit !== null){
+                    if($row->visit?->jenis_visit === 0){
+                        return '<div class="badge badge-info badge-outline">Visit Baru</div>';
+                    }else{
+                        return '<div class="badge badge-danger badge-outline">Visit Lama</div>';
+                    }
+                }
+                return "-";
+            })
             ->editColumn('created_at',function($row){
                 return date("H:i:s",strtotime($row->created_at));
             })
-            ->rawColumns(['nama'])
+            ->rawColumns(['nama','jenis_visit'])
             ->addIndexColumn()
             ->toJson();
     }
 }
+
+

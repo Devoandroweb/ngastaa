@@ -105,14 +105,19 @@ class VisitApiController extends Controller
         try {
             // dd(request()->all());
             $nip = request()->query('nip');
+            $jenisVisit = request()->query('jenis_visit');
             if(!is_null(request()->query('mulai')) && !is_null(request()->query('selesai'))){
 
                 $date = request()->query('mulai') ? date('Y-m-d', strtotime(request()->query('mulai'))) : date('Y-m-d', strtotime('-1 days'));
                 $end =  request()->query('selesai') ? date('Y-m-d', strtotime(request()->query('selesai')) + (60 * 60 * 24)) : date('Y-m-d', strtotime('+1 days'));
                 // dd($end);
-                $data = DataVisit::where('nip', $nip)->whereBetween('tanggal', [$date, $end])->get();
+                $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
+                    $q->where('jenis_visit',$jenisVisit);
+                })->where('nip', $nip)->whereBetween('tanggal', [$date, $end])->orderBy('created_at')->get();
             }else{
-                $data = DataVisit::where('nip', $nip)->get();
+                $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
+                    $q->where('jenis_visit',$jenisVisit);
+                })->where('nip', $nip)->orderBy('created_at')->get();
             }
 
             // dd($data);
@@ -144,7 +149,6 @@ class VisitApiController extends Controller
     }
     function list_lokasi_visit(){
         try{
-
             $data = Visit::all();
             return response()->json(buildResponseSukses($data),200);
         } catch (\Throwable $th) {

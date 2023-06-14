@@ -19,11 +19,12 @@
             <th>No</th>
             <th>Kode Tingkat</th>
             <th>Nama Tingkat</th>
+            <th>Nama Eselon</th>
             <th>Opsi</th>
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
@@ -31,7 +32,7 @@
 @push('js')
 
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("master/tingkat/datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -39,7 +40,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -63,17 +64,20 @@
                         data: 'nama',
                         name: 'nama',
                     },{
+                        data: 'nama_eselon',
+                        name: 'kode_eselon',
+                    },{
                         data: 'opsi',
                         name: 'opsi',
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
     <script src="{{asset('/')}}delete.js"></script>
-    
+
 @endpush
