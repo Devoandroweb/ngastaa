@@ -67,6 +67,7 @@ class VisitApiController extends Controller
                 Visit::create([
                     'kode_visit' => $kode_visit,
                     'nama' => $namaVisit,
+                    'kordinat' => $kordinat,
                     'alamat' => $alamat,
                     'qr' => $qrName,
                     'jenis_visit' => 0,
