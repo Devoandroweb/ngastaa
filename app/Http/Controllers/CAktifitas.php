@@ -31,7 +31,7 @@ class CAktifitas extends Controller
         return view('pages/daftarpresensi/aktifitas/index',compact('dataLokasi'));
     }
     function datatable(DataTables $dataTables){
-        $index = searchIndexArrayAssoc("nama_pegawai","data",request("columns"));
+        // $index = searchIndexArrayAssoc("nama_pegawai","data",request("columns"));
         // dd(request('search'));
         $aktivitas = MAktifitas::whereHas('pegawai',function($q){
             if(request('search')["value"]){

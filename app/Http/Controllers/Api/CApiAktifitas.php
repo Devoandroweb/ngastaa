@@ -57,7 +57,7 @@ class CApiAktifitas extends Controller
             $jamMulai = request('jam_mulai');
             $koordinat = request('koordinat');
             $keterangan = request('keterangan');
-
+            // dd(MAktifitas::where('nip',$nip)->whereDate('created_at',date('Y-m-d'))->first());
             if(MAktifitas::where('nip',$nip)->whereDate('created_at',date('Y-m-d'))->first()){
                 return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Maaf, anda sudah melakukan Aktifitas untuk hari ini!!']),200);
             }
