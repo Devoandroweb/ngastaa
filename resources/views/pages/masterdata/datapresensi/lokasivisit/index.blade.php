@@ -17,6 +17,7 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
+            <th>{{__('Jenis Visit')}}</th>
             <th>{{__('QR')}}</th>
             <th>{{__('Nama')}}</th>
             <th>{{__('Kordinat')}}</th>
@@ -25,14 +26,14 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("master/visit/datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -40,7 +41,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -57,6 +58,9 @@
                         "data": 'DT_RowIndex',
                         orderable: false,
                         searchable: false,
+                    },{
+                        data: 'jenis_visit',
+                        name: 'jenis_visit',
                     },{
                         data: 'qr',
                         name: 'qr',
@@ -75,11 +79,11 @@
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
-    
+
 @endpush

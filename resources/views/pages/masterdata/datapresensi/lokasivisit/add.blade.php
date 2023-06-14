@@ -23,13 +23,13 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-check">
-                                        <input type="radio" id="customRadioc2" name="status" value="0" class="form-check-input" {{$visit?->status == 0 ? 'checked':'' }}>
+                                        <input type="radio" id="customRadioc2" name="jenis_visit" value="0" class="form-check-input" {{$visit?->jenis_visit == 0 ? 'checked':'' }}>
                                         <label class="form-check-label" for="customRadioc2">Visit Baru</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-check">
-                                        <input type="radio" id="customRadioc1" name="status" value="1" class="form-check-input" {{$visit?->status == 1 ? 'checked':'' }}>
+                                        <input type="radio" id="customRadioc1" name="jenis_visit" value="1" class="form-check-input" {{$visit?->jenis_visit == 1 ? 'checked':'' }}>
                                         <label class="form-check-label" for="customRadioc1">Visit Lama</label>
                                     </div>
                                 </div>

@@ -21,7 +21,7 @@ class PresensiLaporanApiResource extends JsonResource
             'jam_pagi' => $this->tanggal_datang ? date('H:i', strtotime($this->tanggal_datang)) : '-',
             'jam_siang' => $this->tanggal_istirahat ? date('H:i', strtotime($this->tanggal_istirahat)) : '-',
             'jam_sore' => $this->tanggal_pulang ? date('H:i', strtotime($this->tanggal_pulang)) : '-',
-            'tanggal' => date('d', strtotime($this->created_at)) . " " . bulan(date('m', strtotime($this->created_at))) . " " . date('Y', strtotime($this->created_at))
+            'tanggal' => hari(date("w",strtotime($this->created_at))).", ".tanggal_indo($this->created_at)
         ];
     }
 }

@@ -67,7 +67,7 @@ class VisitController extends Controller
             'nama' => 'required',
             'alamat' => 'required',
             'polygon' => 'nullable',
-            'status' => 'required',
+            'jenis_visit' => 'required',
         ];
 
         $data = request()->validate($rules);
@@ -100,13 +100,23 @@ class VisitController extends Controller
             ->addColumn('qr', function ($row) {
                 return '<img src="'.url('public/visit_qr/'.$row->qr).'" alt="">';
             })
+            ->addColumn('jenis_visit', function ($row) {
+                if($row->jenis_visit !== null){
+                    if($row->jenis_visit === 0){
+                        return '<div class="badge badge-info badge-outline">Visit Baru</div>';
+                    }else{
+                        return '<div class="badge badge-danger badge-outline">Visit Lama</div>';
+                    }
+                }
+                return "-";
+            })
             ->addColumn('opsi', function ($row) {
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.visit.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.visit.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                $html .= "<a class='delete text-danger me-2' tooltip='Hapus' href='" . route('master.visit.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 $html .= "<a class='text-info' tooltip='Hapus' href='" . url('visit_qr/'.$row->qr) . "'>" . icons('download') . " Unduh QR</a>";
                 return $html;
             })
-            ->rawColumns(['opsi','qr'])
+            ->rawColumns(['opsi','qr','jenis_visit'])
             ->addIndexColumn()
             ->toJson();
     }
