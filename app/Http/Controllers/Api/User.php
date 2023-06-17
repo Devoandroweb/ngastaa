@@ -110,6 +110,14 @@ class User extends Controller
                 $value = date("Y-m-d",strtotime($value));
             }
             $user = MUser::where('nip', $nip)->first();
+            if($name == 'image'){
+                if(request()->hasFile('value')){
+                    @unlink($user->first()->image);
+                }
+                $dir = "data_pegawai/".$nip."/foto";
+                $image =  uploadImage($dir,request()->file('value'));
+                $value = $dir.'/'.$image;
+            }
             $user->{$name} = $value;
             $user->update();
             return response()->json(buildResponseSukses([
