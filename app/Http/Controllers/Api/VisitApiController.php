@@ -107,27 +107,22 @@ class VisitApiController extends Controller
             // dd(request()->all());
             $nip = request()->query('nip');
             $jenisVisit = request()->query('jenis_visit');
+            $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
+                if($jenisVisit != ""){
+                    $q->where('jenis_visit',$jenisVisit);
+                }else{
+                    $q->whereIn('jenis_visit',[0,1]);
+                }
+            })->where('nip', $nip);
+
             if(!is_null(request()->query('mulai')) && !is_null(request()->query('selesai'))){
 
                 $date = request()->query('mulai') ? date('Y-m-d', strtotime(request()->query('mulai'))) : date('Y-m-d', strtotime('-1 days'));
                 $end =  request()->query('selesai') ? date('Y-m-d', strtotime(request()->query('selesai')) + (60 * 60 * 24)) : date('Y-m-d', strtotime('+1 days'));
                 // dd($end);
-                $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
-                    if($jenisVisit != ""){
-                        $q->where('jenis_visit',$jenisVisit);
-                    }else{
-                        $q->whereIn('jenis_visit',[0,1]);
-                    }
-                })->where('nip', $nip)->whereBetween('tanggal', [$date, $end])->orderBy('created_at')->get();
-            }else{
-                $data = DataVisit::whereHas('visit',function($q) use ($jenisVisit){
-                    if($jenisVisit != ""){
-                        $q->where('jenis_visit',$jenisVisit);
-                    }else{
-                        $q->whereIn('jenis_visit',[0,1]);
-                    }
-                })->where('nip', $nip)->orderBy('created_at')->get();
+                $data = $data->whereBetween('tanggal', [$date, $end]);
             }
+            $data = $data->orderBy('created_at','desc')->limit(10)->get();
 
             // dd($data);
             $data = DataVisitResource::collection($data);
