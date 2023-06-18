@@ -10,6 +10,8 @@ use App\Models\Pegawai\RiwayatPendidikan;
 use App\Models\Pegawai\RiwayatPmk;
 use Illuminate\Http\Request;
 use App\Models\User as MUser;
+use App\Models\UserFace;
+
 class User extends Controller
 {
     function index($nip){
@@ -150,6 +152,24 @@ class User extends Controller
         }
     }
     function registerFaceRecognition() {
-        
+        try {
+            if(request()->hasFile('image')){
+                $image = request()->file('image');
+                $nip = request()->file('nip');
+                $dir = "../data_pegawai/$nip";
+                $dirFile = "$dir/".uploadImage(public_path($dir),$image);
+                UserFace::firstOrCreate(['nip'=>$nip,'image_face'=>$dirFile]);
+            }
+            //code...
+            return response()->json(buildResponseSukses([
+                'message' => 'Sukses Daftar Face'
+            ]),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal([
+                'message' => $th->getMessage()
+            ]),500);
+
+        }
+
     }
 }

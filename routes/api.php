@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('getUser', [AuthController::class, 'getUser']);
+    Route::post('register-face-recognition', [User::class, 'registerFaceRecognition']);
     Route::post('ubah-password', [AuthController::class,'changePassword']);
     Route::post('ubah-alamat', [User::class,'changeAddress']);
     Route::post('password-check', [AuthController::class,'passwordCheck']);
