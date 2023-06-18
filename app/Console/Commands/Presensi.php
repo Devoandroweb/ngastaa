@@ -3,10 +3,17 @@
 namespace App\Console\Commands;
 
 use App\Models\AppStatusFunction;
+use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class Presensi extends Command
 {
+    protected $totalPresensiRepository;
+    function __construct(TotalPresensiRepository $totalPresensiRepository)
+    {
+        $this->totalPresensiRepository = $totalPresensiRepository;
+    }
     /**
      * The name and signature of the console command.
      *
@@ -19,7 +26,7 @@ class Presensi extends Command
      *
      * @var string
      */
-    protected $description = 'Menhitung Presensi Harian untuk di masukkan ke Rekap Presensi';
+    protected $description = 'Menghitung Presensi Harian untuk di masukkan ke Rekap Presensi';
 
     /**
      * Execute the console command.
@@ -28,13 +35,21 @@ class Presensi extends Command
      */
     public function handle()
     {
-        // $value = AppStatusFunction::where('name','calculate_presensi')->first();
-        // $value->value = 0;
-        // $value->update();
-        $fileError = fopen('error_cronjob.txt','a');
-        // fwrite($fileError, $th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now());
-        fwrite($fileError, "run command berhasil");
-        fclose($fileError);
+        try {
+            DB::transaction(function(){
+                $this->totalPresensiRepository->calculatePresensi();
+                // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
+            });
+            DB::commit();
+            //code...
+        } catch (\Throwable $th) {
+            $fileError = fopen('error_cronjob.txt','a');
+            fwrite($fileError, $th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now());
+            // fwrite($fileError, "run command berhasil");
+            fclose($fileError);
+            //throw $th;
+            DB::rollBack();
+        }
         return Command::SUCCESS;
     }
 }
