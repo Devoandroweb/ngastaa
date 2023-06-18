@@ -63,9 +63,9 @@ class VisitApiController extends Controller
                 # tambah visit baru
                 $namaVisit = request('nama_visit');
                 $alamat = request('alamat');
-                $kode_visit = (string) Str::uuid();
-                $qrName = (string) Str::uuid().".svg";
-                
+                // $kode_visit = (string) Str::uuid();
+                // $qrName = (string) Str::uuid().".svg";
+                // QrCode::generate($kode_visit, public_path("visit_qr/{$qrName}"));
                 Visit::create([
                     'kode_visit' => $kode_visit,
                     'nama' => $namaVisit,
