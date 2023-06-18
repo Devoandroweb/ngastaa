@@ -39,6 +39,9 @@ class CCronjobs extends Controller
         } catch (\Throwable $th) {
             // return report($th->getMessage());
             // DB::rollBack();
+            $fileError = fopen('error_cronjob.txt','a');
+            fwrite($fileError, $th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now());
+            fclose($fileError);
 
             return response()->json([
                 'status' => FALSE,
@@ -47,6 +50,7 @@ class CCronjobs extends Controller
         }
     }
     function resetAppStatusCalculatePresensi(){
+
         try{
             $value = AppStatusFunction::where('name','calculate_presensi')->first();
             $value->value = 0;
