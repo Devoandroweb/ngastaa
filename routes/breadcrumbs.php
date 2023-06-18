@@ -489,12 +489,12 @@ Breadcrumbs::for('tambah-management-user-divisi', function (BreadcrumbTrail $tra
 // Management User | Direksi
 Breadcrumbs::for('management-user-direksi', function (BreadcrumbTrail $trail) {
     $trail->push('User', "#");
-    $trail->push('Management User Direksi', route('users.manager.index'));
+    $trail->push('Management User', route('users.manager.index'));
 
 });
 Breadcrumbs::for('tambah-management-user-direksi', function (BreadcrumbTrail $trail) {
     $trail->parent('management-user-direksi');
-    $trail->push('Tambah Management User Direksi');
+    $trail->push('Tambah Management User');
 });
 // Management User | Finance
 Breadcrumbs::for('management-user-finance', function (BreadcrumbTrail $trail) {

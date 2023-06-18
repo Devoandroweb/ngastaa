@@ -1,6 +1,6 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Management User Direksi</h2>
+    <h2 class="pg-title">Management User</h2>
     {{ Breadcrumbs::render('tambah-management-user-direksi') }}
 @endsection
 @section('content')
@@ -47,10 +47,10 @@
 @endsection
 @push('js')
 <script>
-    $(".conf-password").keyup(function (e) { 
+    $(".conf-password").keyup(function (e) {
         confPass($(".password"))
     });
-    $(".password").keyup(function (e) { 
+    $(".password").keyup(function (e) {
         confPass($(this))
     });
     function confPass(inputPassword){

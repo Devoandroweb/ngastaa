@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        
+
         // \App\Models\User::create([
         //     'name' => 'admin',
         //     'email' => 'admin@mail.com',
@@ -29,5 +29,13 @@ class DatabaseSeeder extends Seeder
             'owner' => 1
         ]);
         $user->assignRole('owner');
+
+        $user = \App\Models\User::create([
+            'name' => 'SUPER ADMIN',
+            'email' => 'superadmin@gmail.com',
+            'password' => Hash::make('admin'),
+            'owner' => 1
+        ]);
+        $user->assignRole('admin');
     }
 }
