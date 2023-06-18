@@ -61,14 +61,15 @@ class VisitApiController extends Controller
                 ];
             }else{
                 # tambah visit baru
-                $namaVisit = request('nama_visit');
+                $tujuanVisit = request('tujuan_visit');
+                $namaLokasi = request('nama_lokasi');
                 $alamat = request('alamat');
                 // $kode_visit = (string) Str::uuid();
                 // $qrName = (string) Str::uuid().".svg";
                 // QrCode::generate($kode_visit, public_path("visit_qr/{$qrName}"));
                 Visit::create([
                     'kode_visit' => $kode_visit,
-                    'nama' => $namaVisit,
+                    'nama' => $namaLokasi,
                     'kordinat' => $kordinat,
                     'alamat' => $alamat,
                     // 'qr' => $qrName,
@@ -77,6 +78,7 @@ class VisitApiController extends Controller
 
                 $data = [
                     'nip' => $nip,
+                    'tujuan_visit' => $tujuanVisit,
                     'kode_visit' => $kode_visit,
                     'kordinat' => $kordinat,
                     'foto' => $foto,
