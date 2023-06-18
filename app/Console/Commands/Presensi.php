@@ -34,15 +34,15 @@ class Presensi extends Command
     public function handle()
     {
         try {
-            $pegawai = User::all();
-            foreach ($pegawai as $value) {
-                RiwayatJamKerja::create([
-                    'nip' => $value->nip,
-                    'kode_jam_kerja' => 'JM-01HODSM',
-                    'is_akhir' => 1,
-                    'status' => 1
-                ]);
-            }
+            // $pegawai = User::all();
+            // foreach ($pegawai as $value) {
+            //     RiwayatJamKerja::create([
+            //         'nip' => $value->nip,
+            //         'kode_jam_kerja' => 'JM-01HODSM',
+            //         'is_akhir' => 1,
+            //         'status' => 1
+            //     ]);
+            // }
 
             DB::transaction(function(){
                 \App\Repositories\TotalPresensi\TotalPresensiRepository::calculatePresensi();
