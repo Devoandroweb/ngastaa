@@ -15,7 +15,7 @@ class CCronjobs extends Controller
         $this->totalPresensiRepository = $totalPresensiRepository;
     }
     function calculatePresensi(){
-
+        
         try {
             DB::transaction(function(){
                 $resultCalculate = $this->totalPresensiRepository->calculatePresensi();

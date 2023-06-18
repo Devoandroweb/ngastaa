@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\AppStatusFunction;
+use App\Models\Pegawai\RiwayatJamKerja;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 
 class Presensi extends Command
@@ -36,6 +38,16 @@ class Presensi extends Command
     public function handle()
     {
         try {
+            $pegawai = User::all();
+            foreach ($pegawai as $value) {
+                RiwayatJamKerja::create([
+                    'nip' => $value->nip,
+                    'kode_jam_kerja' => 'JM-01HODSM',
+                    'is_akhir' => 1,
+                    'status' => 1
+                ]);
+            }
+            
             DB::transaction(function(){
                 $this->totalPresensiRepository->calculatePresensi();
                 // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
