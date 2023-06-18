@@ -72,11 +72,13 @@ class VisitController extends Controller
 
         $data = request()->validate($rules);
         if (!request('id')) {
-            $kodeVisit = (string) Str::uuid();
-            $data['kode_visit'] = $kodeVisit;
-            $qrName = (string) Str::uuid().".svg";
-            QrCode::generate($kodeVisit, public_path("visit_qr/{$qrName}"));
-            $data['qr'] = $qrName;
+            if($data['jenis_visit']==1){
+                $kodeVisit = (string) Str::uuid();
+                $data['kode_visit'] = $kodeVisit;
+                $qrName = (string) Str::uuid().".svg";
+                QrCode::generate($kodeVisit, public_path("visit_qr/{$qrName}"));
+                $data['qr'] = $qrName;
+            }
         }
         $cr = Visit::updateOrCreate(['id' => request('id')], $data);
 
@@ -98,6 +100,9 @@ class VisitController extends Controller
         return $dataTables->eloquent($model)
 
             ->addColumn('qr', function ($row) {
+                if($row->qr == null){
+                    return "-";
+                }
                 return '<img src="'.url('public/visit_qr/'.$row->qr).'" alt="">';
             })
             ->addColumn('jenis_visit', function ($row) {

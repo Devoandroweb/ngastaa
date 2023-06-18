@@ -149,4 +149,7 @@ class User extends Controller
 
         }
     }
+    function registerFaceRecognition() {
+        
+    }
 }
