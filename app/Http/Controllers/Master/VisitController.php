@@ -75,7 +75,7 @@ class VisitController extends Controller
             $kodeVisit = (string) Str::uuid();
             $data['kode_visit'] = $kodeVisit;
             $qrName = (string) Str::uuid().".svg";
-            QrCode::generate($kodeVisit, public_path("visit_qr\\".$qrName));
+            QrCode::generate($kodeVisit, public_path("visit_qr/{$qrName}"));
             $data['qr'] = $qrName;
         }
         $cr = Visit::updateOrCreate(['id' => request('id')], $data);
