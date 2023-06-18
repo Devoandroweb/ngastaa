@@ -15,82 +15,88 @@ class VisitApiController extends Controller
 {
     public function store()
     {
-        $nip = request('nip');
-        $kordinat = request('kordinat');
-        $kode_visit = request('kode_visit');
+        try {
+            $nip = request('nip');
+            $kordinat = request('kordinat');
+            $kode_visit = request('kode_visit');
 
-        #$newOrOld = request('new_old'); # 1 : new | 2 : old
-        $newOrOld = request('new_old'); # 1 : new | 2 : old
+            #$newOrOld = request('new_old'); # 1 : new | 2 : old
+            $newOrOld = request('new_old'); # 1 : new | 2 : old
 
-        $timeZone = request('timezone') ?? 'WITA';
+            $timeZone = request('timezone') ?? 'WITA';
 
-        if ($timeZone == 'WIB') {
-            $tanggalIn = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')) - (60 * 60));
-        } elseif ($timeZone == 'WIT') {
-            $tanggalIn = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')) + (60 * 60));
-        } else {
-            $tanggalIn = date('Y-m-d H:i:s');
-        }
-
-        $user = User::where('nip', $nip)->first();
-        if (!$user) {
-            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'User tidak ditemukan!']),200);
-        }
-
-        $cek = DataVisit::where('nip', $nip)->whereDate("check_in", date("Y-m-d"))->where("check_out", null)->count();
-        // dd($cek,$nip);
-        if ($cek > 0) {
-            return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Sudah melakukan Visit Ke Lokasi Ini sebelumnya, mohon Check-out terlebih dahulu untuk Chek-in!']),200);
-        } else {
-            if (request()->file('image')) {
-                $file =  request()->file('image');
-                $foto = uploadImage(public_path("visit/$nip"),$file);
-            }else{
-                $foto = "";
-            }
-            $cr = false;
-            // dd($newOrOld);
-            if($newOrOld == 2){
-                # tambah visit lama
-                $data = [
-                    'nip' => $nip,
-                    'kode_visit' => $kode_visit,
-                    'kordinat' => $kordinat,
-                    'foto' => $foto,
-                    'tanggal' => $tanggalIn
-                ];
-            }else{
-                # tambah visit baru
-                $tujuanVisit = request('tujuan_visit');
-                $namaLokasi = request('nama_lokasi');
-                $alamat = request('alamat');
-                $kode_visit = (string) Str::uuid();
-                // $qrName = (string) Str::uuid().".svg";
-                // QrCode::generate($kode_visit, public_path("visit_qr/{$qrName}"));
-                Visit::create([
-                    'kode_visit' => $kode_visit,
-                    'nama' => $namaLokasi,
-                    'kordinat' => $kordinat,
-                    'alamat' => $alamat,
-                    // 'qr' => $qrName,
-                    'jenis_visit' => 0,
-                ]);
-
-                $data = [
-                    'nip' => $nip,
-                    'tujuan_visit' => $tujuanVisit,
-                    'kode_visit' => $kode_visit,
-                    'kordinat' => $kordinat,
-                    'foto' => $foto,
-                    'tanggal' => $tanggalIn
-                ];
-            }
-            $cr = DataVisit::create($data);
-            if ($cr) {
-                return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Kunjungan!', 'keterangan' => 'pagi']),200);
+            if ($timeZone == 'WIB') {
+                $tanggalIn = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')) - (60 * 60));
+            } elseif ($timeZone == 'WIT') {
+                $tanggalIn = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')) + (60 * 60));
             } else {
-                return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),400);
+                $tanggalIn = date('Y-m-d H:i:s');
             }
+
+            $user = User::where('nip', $nip)->first();
+            if (!$user) {
+                return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'User tidak ditemukan!']),200);
+            }
+
+            $cek = DataVisit::where('nip', $nip)->whereDate("check_in", date("Y-m-d"))->where("check_out", null)->count();
+            // dd($cek,$nip);
+            if ($cek > 0) {
+                return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Sudah melakukan Visit Ke Lokasi Ini sebelumnya, mohon Check-out terlebih dahulu untuk Chek-in!']),200);
+            } else {
+                if (request()->file('image')) {
+                    $file =  request()->file('image');
+                    $foto = uploadImage(public_path("visit/$nip"),$file);
+                }else{
+                    $foto = "";
+                }
+                $cr = false;
+                // dd($newOrOld);
+                if($newOrOld == 2){
+                    # tambah visit lama
+                    $data = [
+                        'nip' => $nip,
+                        'kode_visit' => $kode_visit,
+                        'kordinat' => $kordinat,
+                        'foto' => $foto,
+                        'tanggal' => $tanggalIn
+                    ];
+                }else{
+                    # tambah visit baru
+                    $tujuanVisit = request('tujuan_visit');
+                    $namaLokasi = request('nama_lokasi');
+                    $alamat = request('alamat');
+                    $kode_visit = (string) Str::uuid();
+                    // $qrName = (string) Str::uuid().".svg";
+                    // QrCode::generate($kode_visit, public_path("visit_qr/{$qrName}"));
+                    Visit::create([
+                        'kode_visit' => $kode_visit,
+                        'nama' => $namaLokasi,
+                        'kordinat' => $kordinat,
+                        'alamat' => $alamat,
+                        // 'qr' => $qrName,
+                        'jenis_visit' => 0,
+                    ]);
+
+                    $data = [
+                        'nip' => $nip,
+                        'tujuan_visit' => $tujuanVisit,
+                        'kode_visit' => $kode_visit,
+                        'kordinat' => $kordinat,
+                        'foto' => $foto,
+                        'tanggal' => $tanggalIn
+                    ];
+                }
+                $cr = DataVisit::create($data);
+                if ($cr) {
+                    return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Kunjungan!', 'keterangan' => 'pagi']),200);
+                } else {
+                    return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),400);
+                }
+            }
+            //code...
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => $th->getMessage()]),400);
+
         }
 
     }
