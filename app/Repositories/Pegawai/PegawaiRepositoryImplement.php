@@ -24,6 +24,12 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         $this->mUser = $mUser;
     }
     function allPegawaiWithRole($kodeSkpd = null, $forApi = false){
+        // $pegawai = User::all();
+        // foreach ($pegawai as $value) {
+        //     $value->assignRole('pegawai');
+        // }
+        // dd("done");
+
         if($forApi){
             # FOR WEB_SERVICES
             $role = false;
@@ -33,6 +39,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             # FOR WEB
             $role = role('owner') || role('admin');
             $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+            // dd($levelJabatanUser);
         }
 
         $pegawai = User::role('pegawai')->whereNot('users.nip',null)->with('riwayat_jabatan')

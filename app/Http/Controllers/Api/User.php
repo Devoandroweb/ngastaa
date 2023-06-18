@@ -168,8 +168,27 @@ class User extends Controller
             return response()->json(buildResponseGagal([
                 'message' => $th->getMessage()
             ]),500);
-
         }
-
+    }
+    function checkFaceRecognition() {
+        try {
+            $nip = request('nip');
+            $face = UserFace::where(['nip'=>$nip,'face_image','!=',null]);
+            if($face){
+                return response()->json(buildResponseSukses([
+                    'status' => false,
+                    'message' => 'Face sudah tersedia'
+                ]),200);
+            }
+            return response()->json(buildResponseSukses([
+                'status' => true,
+                'message' => 'Face belum tersedia'
+            ]),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal([
+                'status' => false,
+                'message' => $th->getMessage()
+            ]),500);
+        }
     }
 }
