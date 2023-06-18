@@ -72,7 +72,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         foreach($this->getAllPegawai() as $pegawai){
             TotalPresensi::firstOrCreate([
                 'nip' => $pegawai->nip,
-                'periode_bulan' =>  date("Y-m")
+                'periode_bulan' => date("Y-m")
             ]);
             // $cr->assignRole('pegawai');
 

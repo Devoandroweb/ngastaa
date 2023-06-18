@@ -634,7 +634,7 @@ function normalDateSystem($date){
 }
 function arrayTanggal(){
 
-    $tanggal = range(1, 28); // Membuat array dari 1 hingga 30
+    $tanggal = range(1, 18); // Membuat array dari 1 hingga 30
 
     $bulan = date('m'); // Mendapatkan bulan saat ini
     $tahun = date('Y'); // Mendapatkan tahun saat ini

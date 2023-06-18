@@ -49,7 +49,9 @@ class VisitApiController extends Controller
                 $foto = "";
             }
             $cr = false;
+            // dd($newOrOld);
             if($newOrOld == 2){
+                # tambah visit lama
                 $data = [
                     'nip' => $nip,
                     'kode_visit' => $kode_visit,

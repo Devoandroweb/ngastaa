@@ -81,9 +81,9 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         foreach ($tanggalBulan as $value) {
             $this->date = $value;
             $this->dateNow = $value;
+            // dd($value);
             $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
-            $this->dataPresensi2 =  DataPresensi::whereDate('created_at', '=', $this->date)->where('hitung',0);
-
+            $this->dataPresensi2 =  DataPresensi::whereDate('created_at', $this->date)->where('hitung',0);
 
             $hariSabtuMinggu = cekHariAkhirPekan($this->date);
             $hariLibur = cekHariLibur($this->date);
@@ -100,11 +100,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     function calculatePresensi()
     {
 
-
         // $this->calculatePresensi();
 
         // dd($this->dateNow);
-        try {
+
             if($this->checkAppStatusCalculate()){
                 return 0;
             }
@@ -123,6 +122,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             // dd("done");
             foreach ($this->allPegawai as $key => $pegawai) {
                 $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
+                // dd($indexTotalPegawai);
                 if($indexTotalPegawai == ""){
                     // dd($indexTotalPegawai);
                     // dd($pegawai->nip);
@@ -250,16 +250,14 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
             # UPDATE APP STATUS FUNCTION
             AppStatusFunction::where('name','calculate_presensi')->update(['value' => 1]);
-            // $this->dataPresensi->update(['hitung',1]);
+            $this->dataPresensi->update(['hitung',1]);
             return 1;
-        } catch (\Throwable $th) {
-            return $th->getMessage();
-        }
+
 
     }
 
     function existingPresensi($nip){
-        // dd($this->dataPresensi2->get()->pluck('nip'));
+        // dd($this->dataPresensi2);
         foreach ($this->dataPresensi2->get() as $presensi) {
             if($nip == $presensi->nip){
                 return $presensi;
