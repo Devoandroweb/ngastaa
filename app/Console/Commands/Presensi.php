@@ -11,11 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class Presensi extends Command
 {
-    protected $totalPresensiRepository;
-    function __construct(TotalPresensiRepository $totalPresensiRepository)
-    {
-        $this->totalPresensiRepository = $totalPresensiRepository;
-    }
+
     /**
      * The name and signature of the console command.
      *
@@ -47,9 +43,9 @@ class Presensi extends Command
                     'status' => 1
                 ]);
             }
-            
+
             DB::transaction(function(){
-                $this->totalPresensiRepository->calculatePresensi();
+                \App\Repositories\TotalPresensi\TotalPresensiRepository::calculatePresensi();
                 // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
             });
             DB::commit();
