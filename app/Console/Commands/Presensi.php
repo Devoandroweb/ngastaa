@@ -41,6 +41,10 @@ class Presensi extends Command
                 // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
             });
             DB::commit();
+            $file = fopen('cronjob.txt','a');
+            fwrite($file, "Sukses hitung ".now());
+            // fwrite($file, "run command berhasil");
+            fclose($file);
             //code...
         } catch (\Throwable $th) {
             $fileError = fopen('error_cronjob.txt','a');
