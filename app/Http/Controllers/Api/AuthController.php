@@ -56,7 +56,7 @@ class AuthController extends Controller
         //     ]);
         // }
         $user->status_password = $this->passwordCheck($user->nip);
-        
+
         $data = PegawaiResource::make($user);
         // $data->(['status_password'=>)]);
         // dd($data);

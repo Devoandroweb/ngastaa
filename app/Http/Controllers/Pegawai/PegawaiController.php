@@ -7,7 +7,9 @@ use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
 use App\Models\Master\Skpd;
+use App\Models\Master\Tingkat;
 use App\Models\Pegawai\Imei;
+use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
@@ -63,10 +65,11 @@ class PegawaiController extends Controller
 
     public function add()
     {
-        $pegawai = new User();
+        $skpd = Skpd::all(); # Divisi
+        $jabatan = Tingkat::all(); # Jabatan
 
         // return inertia('Pegawai/Pegawai/Add', compact('pegawai'));
-        return view('pages/pegawai/pegawai/add');
+        return view('pages/pegawai/pegawai/add',compact('skpd','jabatan'));
     }
 
     public function edit(User $pegawai)
@@ -136,25 +139,42 @@ class PegawaiController extends Controller
             $rules['nik'] = 'required|unique:users';
             $rules['nip'] = 'required|unique:users';
         }
+        if (role('admin') || role('owner')) {
+            $rules['kode_skpd'] = 'required';
+            $rules['kode_tingkat'] = 'required';
+        }
         $data = request()->validate($rules);
+        $nip = $data['nip'];
+
         // dd($data);
         $data['tanggal_lahir'] = date("Y-m-d",strtotime(str_replace("/","-",$data['tanggal_lahir'])));
-        $dir = "data_pegawai/".$data['nip']."/foto";
+        $dir = "data_pegawai/".$nip."/foto";
         if(request()->hasFile('image')){
             $image =  uploadImage($dir,request()->file('image'));
             $data['image'] = $dir.'/'.$image;
         }
         if (!request('id')) {
-
-            $data['password'] = Hash::make(request('nip'));
-            $cr = User::create($data);
+            // dd($data);
+            $data['password'] = Hash::make($nip);
+            $dataInsert = collect($data);
+            $cr = User::create($dataInsert->forget(['kode_skpd','kode_tingkat'])->toArray());
             TotalPresensi::firstOrCreate([
-                'nip' => request('nip'),
+                'nip' => $nip,
                 'periode_bulan' =>  date("Y-m")
             ]);
             $cr->assignRole('pegawai');
+
+            # Add Jabatan
+            RiwayatJabatan::create([
+                'nip' => $nip,
+                'kode_tingkat' => $data['kode_tingkat'],
+                'kode_skpd' => $data['kode_skpd'],
+                'is_akhir' => 1,
+                'jenis_jabatan' => 1
+            ]);
+
         } else {
-            $user =  User::where('nip', request('nip'));
+            $user =  User::where('nip', $nip);
             if(request()->hasFile('image')){
                 @unlink($user->first()->image);
             }
@@ -162,6 +182,8 @@ class PegawaiController extends Controller
             $cr = $user->update($data);
             // $cr->assignRole('pegawai');
         }
+
+
 
         if ($cr) {
             return redirect(route('pegawai.pegawai.index'))->with([

@@ -73,7 +73,7 @@
     }
     // dd($roleLevel4);
     if($roleLevel4){
-        $data = ["pegawai"];
+        $data = ["pegawai","dataPengajuanIzin","dataPengajuanReimbursement"];
         foreach ($data as $value) {
             $$value = true;
         }
@@ -459,7 +459,7 @@
                     </li>
                     @endif
 
-                    @if(role('owner') || role('admin') || role('finance') || role('opd') || $roleLevel2)
+                    @if(role('owner') || role('admin') || role('finance') || role('opd') || $roleLevel2 || $roleLevel4)
                     {{-- Menu Riwayat --}}
                     <div class="menu-gap"></div>
                     <div class="nav-header">

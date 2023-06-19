@@ -116,6 +116,7 @@ class User extends Controller
                 if(request()->hasFile('value')){
                     @unlink($user->first()->image);
                 }
+                // dd(request()->file('value'));
                 $dir = "data_pegawai/".$nip."/foto";
                 $image =  uploadImage($dir,request()->file('value'));
                 $value = $dir.'/'.$image;

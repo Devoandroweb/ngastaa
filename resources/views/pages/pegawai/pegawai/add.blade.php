@@ -22,17 +22,17 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Kode Pegawai</label>
-                        <input class="form-control @error('nip') is-invalid @enderror"  placeholder="Masukkan Kode Pegawai" name="nip">
+                        <input class="form-control @error('nip') is-invalid @enderror"  placeholder="Masukkan Kode Pegawai" value="{{old('nip')}}" name="nip">
                         <div class="invalid-feedback">
                             {{ $errors->first('nip') }}
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">NIK</label>
-                        <input class="form-control @error('nik') is-invalid @enderror"  placeholder="Masukkan NIK" name="nik">
+                        <input class="form-control @error('nik') is-invalid @enderror"  placeholder="Masukkan NIK" name="nik" value="{{old('nik')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('nik') }}
                         </div>
@@ -43,7 +43,7 @@
                 <div class="col-md-6">
                     <div class="form-group has-validation">
                         <label class="form-label">Nama Lengkap</label>
-                        <input class="form-control @error('name') is-invalid @enderror"  placeholder="Masukkan Nama Lengkap" name="name">
+                        <input class="form-control @error('name') is-invalid @enderror"  placeholder="Masukkan Nama Lengkap" name="name" value="{{old('name')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('name') }}
                         </div>
@@ -52,7 +52,7 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Gelar Depan</label>
-                        <input class="form-control @error('gelar_depan') is-invalid @enderror"  placeholder="Masukkan Gelar Depan" name="gelar_depan">
+                        <input class="form-control @error('gelar_depan') is-invalid @enderror"  placeholder="Masukkan Gelar Depan" name="gelar_depan" value="{{old('gelar_depan')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('gelar_depan') }}
                         </div>
@@ -61,7 +61,7 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Gelar Belakang</label>
-                        <input class="form-control @error('gelar_belakang') is-invalid @enderror"  placeholder="Masukkan Gelar Belakang" name="gelar_belakang">
+                        <input class="form-control @error('gelar_belakang') is-invalid @enderror"  placeholder="Masukkan Gelar Belakang" name="gelar_belakang" value="{{old('gelar_belakang')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('gelar_belakang') }}
                         </div>
@@ -72,7 +72,7 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Tempat Lahir</label>
-                        <input class="form-control @error('tempat_lahir') is-invalid @enderror"  placeholder="Masukkan Tempat Lahir" name="tempat_lahir">
+                        <input class="form-control @error('tempat_lahir') is-invalid @enderror"  placeholder="Masukkan Tempat Lahir" name="tempat_lahir" value="{{old('tempat_lahir')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('tempat_lahir') }}
                         </div>
@@ -81,7 +81,7 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Tanggal Lahir</label>
-                        <input type="text" class="form-control datepicker-single @error('tanggal_lahir') is-invalid @enderror" name="tanggal_lahir" value="{{date('d-m-Y')}}">
+                        <input type="text" class="form-control datepicker-single @error('tanggal_lahir') is-invalid @enderror" name="tanggal_lahir" value="{{old('tanggal_lahir') ?? date('d-m-Y')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('tanggal_lahir') }}
                         </div>
@@ -93,8 +93,8 @@
                     <div class="form-group has-validation">
                         <label class="form-label">Jenis Kelamin</label>
                         <select class="form-control @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin"  id="">
-                            <option value="perempuan">Perempuan</option>
-                            <option value="laki-laki">Laki-Laki</option>
+                            <option value="perempuan" {{old('jenis_kelamin') == "perempuan" ? 'selected' : ''}}>Perempuan</option>
+                            <option value="laki-laki" {{old('jenis_kelamin') == "laki-laki" ? 'selected' : ''}}>Laki-Laki</option>
                         </select>
                         <div class="invalid-feedback">
                             {{ $errors->first('jenis_kelamin') }}
@@ -105,7 +105,7 @@
                     <div class="form-group has-validation">
                         <label class="form-label">Agama</label>
                         <select class="form-control @error('kode_agama') is-invalid @enderror" name="kode_agama"  id="">
-                            {!!optionAgama()!!}
+                            {!!optionAgama(old('kode_agama'))!!}
                         </select>
                         <div class="invalid-feedback">
                             {{ $errors->first('kode_agama') }}
@@ -116,7 +116,7 @@
                     <div class="form-group has-validation">
                         <label class="form-label">Status Pegawai</label>
                         <select class="form-control @error('kode_status') is-invalid @enderror" name="kode_status"  id="">
-                            {!!optionStatusPegawai()!!}
+                            {!!optionStatusPegawai(old('kode_status'))!!}
                         </select>
                         <div class="invalid-feedback">
                             {{ $errors->first('kode_status') }}
@@ -127,7 +127,7 @@
                     <div class="form-group has-validation">
                         <label class="form-label">Status Pernikahan</label>
                         <select class="form-control @error('kode_kawin') is-invalid @enderror" name="kode_kawin"  id="">
-                            {!!optionStatusKawin()!!}
+                            {!!optionStatusKawin(old('kode_kawin'))!!}
                         </select>
                         <div class="invalid-feedback">
                             {{ $errors->first('kode_kawin') }}
@@ -138,7 +138,7 @@
             <div class="form-group  has-validation">
                 <label class="form-label">Golongan Darah</label>
                 <select class="form-control @error('golongan_darah') is-invalid @enderror" name="golongan_darah"  id="">
-                    {!!optionGolonganDarah()!!}
+                    {!!optionGolonganDarah(old('golongan_darah'))!!}
                 </select>
                 <div class="invalid-feedback">
                     {{ $errors->first('golongan_darah') }}
@@ -157,7 +157,7 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Alamat Domisili</label>
-                        <textarea name="alamat" id="" cols="30" rows="5" class="form-control"></textarea>
+                        <textarea name="alamat" id="" cols="30" rows="5" class="form-control">{{old('alamat')}}</textarea>
                         <div class="invalid-feedback">
                             {{ $errors->first('alamat') }}
                         </div>
@@ -166,7 +166,7 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Alamat Sesuai KTP</label>
-                        <textarea name="alamat_ktp" id="" cols="30" rows="5" class="form-control"></textarea>
+                        <textarea name="alamat_ktp" id="" cols="30" rows="5" class="form-control">{{old('alamat_ktp')}}</textarea>
                         <div class="invalid-feedback">
                             {{ $errors->first('alamat_ktp') }}
                         </div>
@@ -186,7 +186,7 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">No Telepon / WA</label>
-                        <input class="form-control @error('no_hp') is-invalid @enderror"  placeholder="Masukkan No Telepon atau Whatsapp" name="no_hp">
+                        <input class="form-control @error('no_hp') is-invalid @enderror"  placeholder="Masukkan No Telepon atau Whatsapp" name="no_hp" value="{{old('no_hp')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('no_hp') }}
                         </div>
@@ -195,15 +195,44 @@
                 <div class="col">
                     <div class="form-group has-validation">
                         <label class="form-label">Email</label>
-                        <input class="form-control @error('email') is-invalid @enderror"  placeholder="Masukkan Email" name="email">
+                        <input class="form-control @error('email') is-invalid @enderror"  placeholder="Masukkan Email" name="email"  value="{{old('email')}}">
                         <div class="invalid-feedback">
                             {{ $errors->first('email') }}
                         </div>
                     </div>
                 </div>
             </div>
-            
-            
+            @if(role('owner') || role('admin'))
+            <div class="hk-pg-header pg-header-wth-tab pt-7 pb-2 mb-2">
+                <div class="d-flex">
+                    <div class="d-flex flex-wrap justify-content-between flex-1">
+                        <div class="mb-lg-0 mb-2 me-8">
+                            <h5>Divisi dan Jabatan</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <label class="form-label">Divisi Kerja</label>
+                    <div class="form-group has-validation">
+                        <select class="form-control jabatanDivisi" id=""  name="kode_skpd" required disabled>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <label class="form-label">Jabatan</label>
+                    <div class="form-group">
+                        <select class="form-control jabatanTingkat" id="" name="kode_tingkat" required disabled>
+
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -215,5 +244,68 @@
 <script>
     initDatePickerSingle();
     $("select").select2();
-</script>    
+    @if(role('owner') || role('admin'))
+        initDevisi("{{old('kode_skpd')}}","{{old('kode_tingkat')}}");
+        // initDevisi(data.kode_skpd,data.kode_tingkat);
+        /* JABATAN */
+        function initDevisi(value_divisi = null,value_tingkat = null){
+            let getDivisi = (url) => {
+                var element = $('.jabatanDivisi');
+                let loading = loadingProccesText(element)
+                $.ajax({url: url, success: function(data){
+                    element.empty()
+                    clearInterval(loading)
+                    var data = $.map(data, function (item) {
+                        return {
+                            text: item['label'],
+                            id: item['kode_skpd'],
+                        }
+                    })
+
+                    if(value_divisi == null && data.length != 0){
+                        value_divisi = data[0].id;
+                    }
+
+                    element.removeAttr("disabled")
+                    element.select2({
+                        placeholder:"Pilih Divisi atau ketik disini",
+                        data : data
+                    }).val(value_divisi).change(function(){
+                        getTingkat("{{url('master/tingkat/json')}}/"+$(this).val(),value_tingkat);
+                    }).trigger("change");
+
+                }});
+            }
+            getDivisi("{{route('master.skpd.json')}}")
+        }
+        let getTingkat = (url,value_tingkat = null) => {
+            let element = $('.jabatanTingkat');
+            element.prop('disabled', true)
+            let loading = loadingProccesText(element)
+            $.ajax({url: url, success: function(data){
+                element.empty()
+                clearInterval(loading)
+                initTingkat(data,value_tingkat,element)
+            }})
+        }
+        function initTingkat(data, value_tingkat,element = null){
+            var data = $.map(data, function (item) {
+                return {
+                    text: item['label'],
+                    id: item['value'],
+                }
+            })
+
+            if(value_tingkat == null && data.length != 0){
+                value_tingkat = data[0].id;
+            }
+            element.removeAttr("disabled")
+            element.select2({
+                placeholder:"Pilih Jabatan atau ketik disini",
+                data : data
+            }).val(value_tingkat).trigger("change");
+        }
+        /* END JABATAN */
+    @endif
+</script>
 @endpush
