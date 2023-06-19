@@ -42,7 +42,9 @@ class TotalPresensiController extends Controller
         // $role = role('opd');
         // dd($this->totalPresensiRepository->calculatePresensi($role));
         $skpd = Skpd::all();
-        return view("pages.daftarpresensi.totalpresensi.index",compact('skpd'));
+        $periodeBulan = TotalPresensiDetail::groupBy('periode_bulan')->pluck('periode_bulan');
+        // dd($periodeBulan);
+        return view("pages.daftarpresensi.totalpresensi.index",compact('skpd','periodeBulan'));
     }
     public function detail_absen(User $user,$status)
     {
@@ -54,11 +56,19 @@ class TotalPresensiController extends Controller
     }
     public function datatable(DataTables $dataTables){
         $role = role('opd');
+        $periode = request()->query('periode_bulan');
+        if($periode == "0"){
+            $periode = date('Y-m');
+        }
+        // dd($periode);
         $skpd = request()->query('skpd');
-        $skpd = ($skpd == 0) ? null : $skpd;
+        $skpd = ($skpd == "0") ? null : $skpd;
         // dd($skpd);
-        $mdTotalPresensi = User::role('pegawai')->with('totalPresensi')->has('totalPresensi');
-        // dd($mdTotalPresensi);
+        $mdTotalPresensi = User::role('pegawai')->whereHas('totalPresensiDetail',function($q) use ($periode){
+            // dd($periode);
+            $q->where('periode_bulan',$periode);
+        });
+        // dd($mdTotalPresensi->get());
         if($role){
             $mdTotalPresensi->when($role, function ($qr) {
                 $user = auth()->user()->jabatan_akhir;
@@ -95,13 +105,13 @@ class TotalPresensiController extends Controller
                 return $row->getFullName();
             })
             ->addColumn('masuk',function($row){
-                return $row->totalPresensi->masuk;
+                return $row->totalPresensiDetail->where('status', 1)->count();
             })
             ->addColumn('telat',function($row){
-                return $row->totalPresensi->telat; 
+                return $row->totalPresensiDetail->where('status', 2)->count();
             })
             ->addColumn('alfa',function($row){
-                return $row->totalPresensi->alfa;
+                return $row->totalPresensiDetail->where('status', 3)->count();
             })
             ->addColumn('izin',function($row){
                 return $this->izinRepository->calculateTotalIzin($row->nip);
@@ -123,7 +133,7 @@ class TotalPresensiController extends Controller
             ->addIndexColumn()
             ->toJson();
     }
-    
+
     public function datatable_detail_izin($nip,DataTables $dataTables){
         $totalCutiDetail = TotalIzinDetail::with('izin')->where('nip',$nip);
         // dd($totalCutiDetail);
@@ -152,5 +162,5 @@ class TotalPresensiController extends Controller
             ->addIndexColumn()
             ->toJson();
     }
-    
+
 }

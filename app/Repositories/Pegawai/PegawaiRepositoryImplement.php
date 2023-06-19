@@ -42,9 +42,11 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             // dd($levelJabatanUser);
         }
 
-        $pegawai = User::role('pegawai')->whereNot('users.nip',null)->with('riwayat_jabatan')
-        ->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
+        $pegawai = User::role('pegawai')->whereNot('users.nip',null)->with('riwayat_jabatan');
+        // dd(User::role('pegawai')->get());
+        $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
             // ambil level jabatan user
+            // dd($kodeSkpd);
             // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
             $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser, $kodeSkpd){
                 if($kodeSkpd != 0 || $kodeSkpd != null){
@@ -58,17 +60,17 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                 });
             });
         });
-        if($role){
-            $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
-                $qt->on('riwayat_jabatan.nip', 'users.nip')
-                ->where('is_akhir', 1)
-                ->where('riwayat_jabatan.deleted_at', null);
-                // dd($kodeSkpd);
-                if($kodeSkpd != null && (int)$kodeSkpd != 0){
-                    $qt->where('kode_skpd', $kodeSkpd);
-                }
-            });
-        }
+        // if($role){
+        //     $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
+        //         $qt->on('riwayat_jabatan.nip', 'users.nip')
+        //         ->where('is_akhir', 1)
+        //         ->where('riwayat_jabatan.deleted_at', null);
+        //         // dd($kodeSkpd);
+        //         if($kodeSkpd != null && (int)$kodeSkpd != 0){
+        //             $qt->where('kode_skpd', $kodeSkpd);
+        //         }
+        //     });
+        // }
         return $pegawai;
     }
     function getAllPegawai(){

@@ -19,6 +19,7 @@ use App\Models\Pegawai\RiwayatShift;
 use App\Models\Pegawai\RiwayatStatus;
 use App\Models\Presensi\TotalCutiDetail;
 use App\Models\Presensi\TotalPresensi;
+use App\Models\Presensi\TotalPresensiDetail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -140,6 +141,9 @@ class User extends Authenticatable
     }
     function totalPresensi(){
         return $this->hasOne(TotalPresensi::class,'nip','nip');
+    }
+    function totalPresensiDetail(){
+        return $this->hasMany(TotalPresensiDetail::class,'nip','nip');
     }
     function totalIzinDetail(){
         return $this->hasMany(TotalCutiDetail::class,'nip','nip');

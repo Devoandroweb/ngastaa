@@ -71,6 +71,7 @@
             $$value = true;
         }
     }
+    // dd($roleLevel4);
     if($roleLevel4){
         $data = ["pegawai"];
         foreach ($data as $value) {

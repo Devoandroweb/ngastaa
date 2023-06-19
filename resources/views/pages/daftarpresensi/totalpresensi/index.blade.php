@@ -4,11 +4,26 @@
     {{ Breadcrumbs::render('presensi-total-presensi') }}
 @endsection
 @section('header_action')
+<div class="input-group ">
+    <span class="input-affix-wrapper">
+        <div class="row w-300p">
+            <div class="col-sm-11 ps-0">
+                <select name="skpd" class="form-control periode_bulan px-2" id="">
+                    @foreach ($periodeBulan as $s)
+                    @php
+                        $periode = explode("-",$s);
+                    @endphp
+                        <option value="{{$s}}">{{bulan($periode[1])." ".$periode[0]}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </span>
+</div>
 <div class="input-group">
     <span class="input-affix-wrapper">
         <div class="row w-300p">
-            <label for="" class="col-sm-3 col-form-label">Divisi : </label>
-            <div class="col-sm-9 ps-0">
+            <div class="col-sm ps-0">
                 <select name="skpd" class="form-control divisi px-2" id="">
                     <option selected value="0">Semua Divisi</option>
                     @foreach ($skpd as $s)
@@ -62,15 +77,26 @@
 @push('js')
 <script>
     var _TABLE = null;
-    var _URL_DATATABLE = '{{route("presensi.total_presensi.datatable")}}';
-    
-    
+    var _PERIODE_BULAN = 0;
+    var _SKPD = 0;
+    var _URL_DATATABLE = '{{route("presensi.total_presensi.datatable")}}?periode_bulan='+_PERIODE_BULAN+"&skpd="+_SKPD;
+
     $(".divisi").select2();
+    $(".periode_bulan").select2({
+        placeholder: "Periode Bulan",
+        allowClear: true
+    });
     $(".divisi").on("select2:select",function(e){
         var data = e.params.data;
-        _URL_DATATABLE = '{{route("presensi.total_presensi.datatable")}}?skpd='+data.id;
-        _TABLE.ajax.url(_URL_DATATABLE).load()
+        _SKPD = data.id;
+        refreshDatatable()
     });
+    $(".periode_bulan").on("select2:select",function(e){
+        var data = e.params.data;
+        _PERIODE_BULAN = data.id;
+        refreshDatatable()
+    });
+
     setDataTable();
     function setDataTable() {
         _TABLE = $('#data').DataTable({
@@ -108,7 +134,7 @@
                     searchable:false,
                     className:"absen",
                     'createdCell':  function (td, cellData, rowData, row, col) {
-                            $(td).attr('href', rowData.href_masuk); 
+                            $(td).attr('href', rowData.href_masuk);
                     }
                 },{
                     data: 'telat',
@@ -116,7 +142,7 @@
                     searchable:false,
                     className:"absen",
                     'createdCell':  function (td, cellData, rowData, row, col) {
-                            $(td).attr('href', rowData.href_telat); 
+                            $(td).attr('href', rowData.href_telat);
                     }
                 },{
                     data: 'alfa',
@@ -124,7 +150,7 @@
                     searchable:false,
                     className:"absen",
                     'createdCell':  function (td, cellData, rowData, row, col) {
-                            $(td).attr('href', rowData.href_alfa); 
+                            $(td).attr('href', rowData.href_alfa);
                     }
                 },{
                     data: 'izin',
@@ -132,12 +158,17 @@
                     searchable:false,
                     className:"absen",
                     'createdCell':  function (td, cellData, rowData, row, col) {
-                            $(td).attr('href', rowData.href_izin); 
+                            $(td).attr('href', rowData.href_izin);
                     }
                 }],
-                
+
         });
     }
+
+    function refreshDatatable() {
+        _URL_DATATABLE = '{{route("presensi.total_presensi.datatable")}}?skpd='+_SKPD+'&periode_bulan='+_PERIODE_BULAN;
+        _TABLE.ajax.url(_URL_DATATABLE).load()
+     }
     $('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
     // setTimeout(() => {
     //     _TABLE.ajax.url(_URL_DATATABLE+'?skpd=3').load()
@@ -146,5 +177,5 @@
         redirect($(this).attr('href'));
     });
 </script>
-    
+
 @endpush
