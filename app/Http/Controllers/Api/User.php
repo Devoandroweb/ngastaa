@@ -124,11 +124,13 @@ class User extends Controller
             $user->{$name} = $value;
             $user->update();
             return response()->json(buildResponseSukses([
-                'message' => 'Update Profile Berhasil'
+                'message' => 'Update Profile Berhasil',
+                'data' => $value
             ]),200);
         } catch (\Throwable $th) {
             return response()->json(buildResponseGagal([
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
+                'data' => null,
             ]),500);
 
         }
