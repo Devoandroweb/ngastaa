@@ -88,16 +88,22 @@ class AuthController extends Controller
     }
     function changePassword(){
         try {
-            if($this->passwordRepository->changePasswordMobile()){
+            if($this->passwordRepository->changePasswordMobile() == 1){
                 return response()->json(buildResponseSukses([
                     'message'=>'Password Berhasil di ubah',
                     'status'=>1
                 ]),200);
-            }else{
+            }elseif($this->passwordRepository->changePasswordMobile() == 2){
                 return response()->json(buildResponseSukses([
                     'message'=>'Password lama tidak sesuai',
                     'status'=>0
                 ]),200);
+            }else{
+                return response()->json(buildResponseSukses([
+                    'message'=>'Password lama dan baru tidak boleh sama',
+                    'status'=>0
+                ]),200);
+
             }
         } catch (\Throwable $th) {
             return response()->json(buildResponseGagal(['message'=>$th->getMessage()]),500);

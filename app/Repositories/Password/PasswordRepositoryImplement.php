@@ -39,16 +39,18 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
         $nip = request('nip');
         $password_lama = request('password_lama');
         $password_baru = request('password_baru');
-
+        if($password_lama == $password_baru){
+            return 0;
+        }
         $user = User::where('nip',$nip)->first();
 
         $cek = Hash::check($password_lama, $user->password);
         if($cek){
             $user->password = Hash::make($password_baru);
             $user->update();
-            return true;
+            return 1;
         }else{
-            return false;
+            return 2;
         }
     }
 }
