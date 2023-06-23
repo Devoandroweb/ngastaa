@@ -1,2 +1,5 @@
 ALTER TABLE `riwayat_jabatan` CHANGE `no_sk` `no_sk` VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
 ALTER TABLE `riwayat_jabatan` CHANGE `tanggal_sk` `tanggal_sk` DATE NULL DEFAULT NULL, CHANGE `tanggal_tmt` `tanggal_tmt` DATE NULL DEFAULT NULL;
+ALTER TABLE `riwayat_jabatan` CHANGE `kode_skpd` `kode_skpd` VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `riwayat_jabatan` CHANGE `jenis_jabatan` `jenis_jabatan` TINYINT(4) NULL DEFAULT NULL;
+ALTER TABLE `riwayat_jabatan` CHANGE `kode_tingkat` `kode_tingkat` VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;

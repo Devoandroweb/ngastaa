@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pegawai;
 
+use App\Exports\ExportTemplateImportPegawai;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
@@ -294,8 +295,9 @@ class PegawaiController extends Controller
     {
         request()->validate([
             'file' => 'required|mimes:xlsx',
+            'kode_skpd' => 'required',
         ]);
-        $import = new ImportPegawaiExcell;
+        $import = new ImportPegawaiExcell(request('kode_skpd'));
         Excel::import($import, request()->file('file')->store('file'));
         if($import->errorStatus()){
             return to_route('pegawai.pegawai.import_add')->with([
@@ -303,6 +305,7 @@ class PegawaiController extends Controller
                 'messages' => $import->errorMessage()
             ]);
         }
+
         return to_route('pegawai.pegawai.index')->with([
             'type' => 'success',
             'messages' => "Berhasil meng-import pegawai"
@@ -315,12 +318,13 @@ class PegawaiController extends Controller
     }
     function donwloadTemplate(){
         $filename = "template-import-pegawai.xlsx";
-        $response = Response::download(public_path($filename), $filename, [
-            'Content-Type' => 'application/vnd.ms-excel',
-            'Content-Disposition' => 'inline; filename="' . $filename . '"'
-        ]);
+        $response = Excel::download(new ExportTemplateImportPegawai, $filename);
         ob_end_clean();
         return $response;
+        // $response = Response::download(public_path($filename), $filename, [
+            //     'Content-Type' => 'application/vnd.ms-excel',
+            //     'Content-Disposition' => 'inline; filename="' . $filename . '"'
+            // ]);
     }
     function resetDevice($nip){
         try {

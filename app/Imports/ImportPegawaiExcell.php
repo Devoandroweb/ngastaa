@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use Exception;
@@ -17,9 +18,13 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     * @param Collection $collection
     */
     protected $errorMessage = null;
-    protected $error = false;
+    protected $statusError = false;
     protected $errorRow = 0;
+    protected $kodeSkpd = 0;
     protected $i = 0;
+    function __construct($kodeSkpd) {
+        $this->kodeSkpd = $kodeSkpd;
+    }
     public function collection(Collection $collection)
     {
         DB::beginTransaction();
@@ -35,9 +40,10 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 // dd(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[6]));
                 // array_push($data,$row);
                 $this->nipExisting($row[1]);
+                $nip = $this->checkNip($row[1],$i);
                 $item = new User();
-                $item->nip = $this->checkNip($row[1],$i);
-                $item->password = Hash::make($row[1]);
+                $item->nip = $nip;
+                $item->password = Hash::make($nip);
                 $item->gelar_depan = $row[2];
                 $item->gelar_belakang = $row[3];
                 $item->name = $row[4];
@@ -56,10 +62,16 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 $item->save();
                 $item->assignRole('pegawai');
                 $i++;
-                
+
                 array_push($insertIntoTotalPresensi,[
-                    'nip' => $item->nip,
+                    'nip' => $nip,
                     'periode_bulan' =>  date("Y-m")
+                ]);
+
+                # Save to Riwayat Divisi
+                RiwayatJabatan::create([
+                    'nip' => $nip,
+                    'kode_skpd' => $this->kodeSkpd
                 ]);
             }
             # Insert Into Total Presensi
@@ -67,10 +79,10 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
             TotalPresensi::insert($insertIntoTotalPresensi);
             DB::commit();
         } catch (\Throwable $th) {
-            
+
             DB::rollBack();
 
-            $this->error = true;
+            $this->statusError = true;
             $this->errorMessage = $th->getMessage();
             //throw $th;
         }
@@ -86,12 +98,12 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         return $value;
     }
     function nipExisting($nip){
-        
+
         if(User::where('nip',$nip)->first() != null){
             return throw new Exception($this->alertMessageNip($nip));
         }
         return $nip;
-        
+
     }
     function checkJenisKelamin($jenis_kelamin,$i){
         $jenis_kelamin = strtolower($jenis_kelamin);
@@ -114,7 +126,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
             }
             return $value_darah;
         } catch (\Throwable $th) {
-            $this->error = true;
+            $this->statusError = true;
             $this->errorMessage = $this->errorGolonganDarah($value_darah,$i);
         }
     }
@@ -126,27 +138,27 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
             }
             return $tanggal;
         } catch (\Throwable $th) {
-            $this->error = true;
+            $this->statusError = true;
             $this->errorMessage = $this->errorTanggal($i);
-            
+
             // $this->errorMessage = $th->getMessage();
         }
-        
+
     }
     function checkKawin($row,$i){
         try {
-            
+
             if($row == "kawin" || $row == "belum kawin"){
                 return throw new Exception($this->errorKawin($i));
             }
             return $row;
         } catch (\Throwable $th) {
-            $this->error = true;
+            $this->statusError = true;
             $this->errorMessage = $this->errorKawin($i);
-            
+
             // $this->errorMessage = $th->getMessage();
         }
-        
+
     }
     function alertMessageNip($nip){
         return "NIP Sudah di gunakan ($nip)";
@@ -155,7 +167,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         return $this->errorMessage;
     }
     function errorStatus(){
-        return $this->error;
+        return $this->statusError;
     }
     function errorRow(){
         return $this->errorRow;
@@ -168,7 +180,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                             - 25-05-2023
                             ";
         return $message;
-    } 
+    }
     private function errorGolonganDarah($value_darah,$i){
         $message = "Kesalahan Golongan Darah ($value_darah), pastikan golongan darah sudah valid tidak boleh menggunakan angka , Kesalahan pada baris Excel ke $i";
                 $message .= "<br> Hanya gologan darah berikut yang valid : <br> ";
@@ -178,7 +190,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                             - AB
                             ";
         return $message;
-    }   
+    }
     private function errorKawin($i){
         $message = "Kode Menikah salah, gunakan kata 'Menikah' atau 'Belum Menikah', Kesalahan pada baris Excel ke $i";
         return $message;
