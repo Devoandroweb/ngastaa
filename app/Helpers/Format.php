@@ -634,7 +634,7 @@ function normalDateSystem($date){
 }
 function arrayTanggal(){
 
-    $tanggal = range(1, 18); // Membuat array dari 1 hingga 30
+    $tanggal = range(1, 25); // Membuat array dari 1 hingga 30
 
     $bulan = date('m'); // Mendapatkan bulan saat ini
     $tahun = date('Y'); // Mendapatkan tahun saat ini
@@ -669,3 +669,10 @@ function searchIndexArrayAssoc($search,$key,$array){
     $indeks = array_search($search, array_column($array, $key));
     return $indeks;
 }
+function truncateText($text, $maxLength) {
+    if (strlen($text) > $maxLength) {
+      return substr($text, 0, $maxLength - 3) . '...';
+    } else {
+      return $text;
+    }
+  }

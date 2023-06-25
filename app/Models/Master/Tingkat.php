@@ -17,6 +17,9 @@ class Tingkat extends Model
         'parents',
     ];
 
+    function skpd(){
+        return $this->hasOne(Skpd::class,'kode_skpd','kode_skpd');
+    }
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id', 'kode_tingkat');

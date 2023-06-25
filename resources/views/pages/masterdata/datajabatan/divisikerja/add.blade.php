@@ -18,14 +18,14 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Nama</label>
-                    <input class="form-control"  placeholder="Masukkan Nama" name="nama">
+                    <input class="form-control"   placeholder="Masukkan Nama" name="nama">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Singkatan</label>
                     <input class="form-control"  placeholder="Masukkan Singkatan" name="singkatan">
                 </div>
                 {{-- maps --}}
-                
+
                 <div class="row">
                     <div class="col">
                         <div class="form-group">

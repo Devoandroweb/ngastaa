@@ -28,7 +28,7 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="form-group has-validation">
                     <label class="form-label">Kode Jabatan</label>
                     <input class="form-control" name="kode_tingkat"  placeholder="Masukkan Kode Tingkat">
@@ -81,7 +81,7 @@
 
         </div>
     </div>
-    
+
 </form>
 
 @endsection
@@ -119,10 +119,10 @@
 
         }, 100);
     });
-    
 
-	
-   
+
+
+
 </script>
 <script src="{{asset('/')}}maps.js"></script>
 

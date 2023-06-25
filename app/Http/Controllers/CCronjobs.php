@@ -15,11 +15,11 @@ class CCronjobs extends Controller
         $this->totalPresensiRepository = $totalPresensiRepository;
     }
     function calculatePresensi(){
-        
+        // dd(DB::connection()->getDatabaseName());
         try {
             DB::transaction(function(){
-                $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
-                // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
+                // $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
+                $resultCalculate = $this->totalPresensiRepository->manualCaculate();
 
                 if ($resultCalculate == 0) {
                     return response()->json([

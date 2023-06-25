@@ -93,6 +93,7 @@ Route::middleware('auth:sanctum')->group(function(){
         ->name('payroll-client.')
         ->group(function(){
             Route::get('', 'index');
+            Route::get('detail', 'detail');
         });
 
     Route::controller(ApiDivisiController::class)

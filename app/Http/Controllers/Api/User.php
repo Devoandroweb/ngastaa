@@ -159,7 +159,7 @@ class User extends Controller
             if(request()->hasFile('image')){
                 $image = request()->file('image');
                 $nip = request()->file('nip');
-                $dir = "../data_pegawai/$nip";
+                $dir = "../data_pegawai/$nip/face";
                 $dirFile = "$dir/".uploadImage(public_path($dir),$image);
                 UserFace::firstOrCreate(['nip'=>$nip,'image_face'=>$dirFile]);
             }

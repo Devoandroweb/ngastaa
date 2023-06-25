@@ -2,6 +2,8 @@
 
 namespace App\Imports;
 
+use App\Models\Master\Skpd;
+use App\Models\Master\StatusPegawai;
 use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
@@ -21,9 +23,17 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     protected $statusError = false;
     protected $errorRow = 0;
     protected $kodeSkpd = 0;
+    protected $statusPegawai;
+    protected $skpd;
     protected $i = 0;
-    function __construct($kodeSkpd) {
+    function __construct(
+        $kodeSkpd,
+        StatusPegawai $statusPegawai,
+        Skpd $skpd,
+    ) {
         $this->kodeSkpd = $kodeSkpd;
+        $this->statusPegawai = $statusPegawai;
+        $this->skpd = $skpd->with('tingkatMany');
     }
     public function collection(Collection $collection)
     {
@@ -58,7 +68,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 $item->email = $row[13];
                 $item->alamat = $row[14];
                 $item->alamat_ktp = $row[15];
-                $item->kode_status = $row[16]; // harus sesuai kode pada table status_pegawai
+                $item->kode_status = $this->checkStatusPegawai($row[16],$i); // harus sesuai kode pada table status_pegawai
                 $item->save();
                 $item->assignRole('pegawai');
                 $i++;
@@ -116,18 +126,18 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         }
         return $jenis_kelamin;
     }
-    function checkGolonganDarah($value_darah,$i){
+    function checkGolonganDarah($row,$i){
         try {
             //code...
             $golRah = ['A','O','AB','B'];
-            // dd($value_darah);
-            if(!in_array(strtoupper($value_darah),$golRah)){
-                return throw new Exception($this->errorGolonganDarah($value_darah,$i));
+            // dd($row);
+            if(!in_array(strtoupper($row),$golRah)){
+                return throw new Exception($this->errorGolonganDarah($row,$i));
             }
-            return $value_darah;
+            return $row;
         } catch (\Throwable $th) {
             $this->statusError = true;
-            $this->errorMessage = $this->errorGolonganDarah($value_darah,$i);
+            $this->errorMessage = $this->errorGolonganDarah($row,$i);
         }
     }
     function checkTanggal($row,$i){
@@ -148,7 +158,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     function checkKawin($row,$i){
         try {
 
-            if($row == "kawin" || $row == "belum kawin"){
+            if(strtolower($row) == "kawin" || strtolower($row) == "belum kawin"){
                 return throw new Exception($this->errorKawin($i));
             }
             return $row;
@@ -160,8 +170,50 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         }
 
     }
+    function checkStatusPegawai($row,$i){
+        try {
+            if(is_null($this->searchData($this->statusPegawai,'nama_status',$row))){
+                return throw new Exception($this->errorStatusPegawai($i));
+            }
+            return null;
+        } catch (\Throwable $th) {
+            $this->statusError = true;
+            $this->errorMessage = $this->errorStatusPegawai($i);
+
+            // $this->errorMessage = $th->getMessage();
+        }
+    }
+    function checkDivisiAndJabatan($divisi,$jabatan,$i){
+        try {
+            $result = [
+                'kode_skpd' => null,
+                'kode_tingkat' => null,
+            ];
+            $resultStatus = false;
+            foreach ($this->skpd as $skpd) {
+                if(strtolower($divisi) == strtolower($skpd->nama)){
+                    foreach ($this->skpd->tingkatMany as $tingkat) {
+                        if(strtolower($jabatan) == $tingkat->nama){
+                            $result['kode_skpd'] = $skpd->kode_skpd;
+                            $result['kode_tingkat'] = $tingkat->kode_tingkat;
+                            $resultStatus = true;
+                        }
+                    }
+                }
+            }
+            if($resultStatus){
+                return $result;
+            }
+        }catch (\Throwable $th) {
+            $this->statusError = true;
+            $this->errorMessage = $this->errorDivisiAndJabatan($i);
+
+            // $this->errorMessage = $th->getMessage();
+        }
+    }
+
     function alertMessageNip($nip){
-        return "NIP Sudah di gunakan ($nip)";
+        return "NIP ($nip) Sudah di gunakan ";
     }
     function errorMessage(){
         return $this->errorMessage;
@@ -195,6 +247,14 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         $message = "Kode Menikah salah, gunakan kata 'Menikah' atau 'Belum Menikah', Kesalahan pada baris Excel ke $i";
         return $message;
     }
+    private function errorStatusPegawai($i){
+        $message = "Kode Status Pegawai salah, Kesalahan pada baris Excel ke $i";
+        return $message;
+    }
+    private function errorDivisiAndJabatan($i){
+        $message = "Kode Status Pegawai salah, Kesalahan pada baris Excel ke $i";
+        return $message;
+    }
     public function transformDate($value, $format = 'Y-m-d')
     {
         $value = str_replace(" ","",$value);
@@ -205,5 +265,13 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
             $value = str_replace("/","-",$value);
             return date('Y-m-d',strtotime($value));
         }
+    }
+    function searchData($data,$column,$comparison){
+        foreach($data as $value){
+            if(strtolower($value->{$column}) == strtolower($comparison)){
+                return $value->{$column};
+            }
+        }
+        return null;
     }
 }

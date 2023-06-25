@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Pegawai;
 
-use App\Exports\ExportTemplateImportPegawai;
+use App\Exports\ExportSampleImportPegawai;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
 use App\Models\Master\Skpd;
@@ -15,10 +14,9 @@ use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\DataTables;
 
 
 class PegawaiController extends Controller
@@ -317,14 +315,15 @@ class PegawaiController extends Controller
         return response()->json(["view"=>$view]);
     }
     function donwloadTemplate(){
-        $filename = "template-import-pegawai.xlsx";
-        $response = Excel::download(new ExportTemplateImportPegawai, $filename);
+        // dd("sadasd");
+        $filename = "template-import-pegawai-new.xlsx";
+        $response = Excel::download(new ExportSampleImportPegawai, $filename);
         ob_end_clean();
         return $response;
-        // $response = Response::download(public_path($filename), $filename, [
-            //     'Content-Type' => 'application/vnd.ms-excel',
-            //     'Content-Disposition' => 'inline; filename="' . $filename . '"'
-            // ]);
+        // $response = Response::download(public_path($filename), $response, [
+        //         'Content-Type' => 'application/vnd.ms-excel',
+        //         'Content-Disposition' => 'inline; filename="' . $response . '"'
+        //     ]);
     }
     function resetDevice($nip){
         try {

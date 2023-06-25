@@ -120,6 +120,7 @@ Route::middleware(['auth'])
         Route::get('logs', [LogController::class, 'index'])->name('logs');
         Route::get('ubah-password', [UbahPassword::class, 'index'])->name('password.index');
         Route::post('ubah-password-update', [UbahPassword::class, 'update'])->name('ubah.password.update');
+        Route::get('download-template-import', [PegawaiController::class,'donwloadTemplate'])->name('donwload_template_import');
 
         Route::prefix('presensi')
             ->name("presensi.")
@@ -204,7 +205,6 @@ Route::middleware(['auth'])
                         Route::get('datatable', 'datatable')->name('datatable');
                         Route::get('import_add', 'import_add')->name('import_add');
                         Route::post('import_pegawai', 'import_pegawai')->name('import_pegawai');
-                        Route::get('download-template-import', 'donwloadTemplate')->name('donwload_template_import');
                         Route::get('json', 'json')->name('json');
                         Route::get('json-skpd', 'json_skpd')->name('json_skpd');
                         Route::post('store', 'store')->name('store');

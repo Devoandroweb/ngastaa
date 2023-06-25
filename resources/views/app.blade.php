@@ -24,7 +24,7 @@
 		padding-left:3.8rem !important;
 	}
 	.hk-wrapper[data-layout="vertical"] .hk-menu .menu-content-wrap .menu-group .navbar-nav .nav-item .nav-link .nav-icon-wrap > *:not(.badge) {
-		font-size: 1.3rem !important; 
+		font-size: 1.3rem !important;
 	}
 	.cursor-pointer{
 		cursor:pointer !important;
@@ -48,9 +48,19 @@
 		<!-- /Main Content -->
 	</div>
     <!-- /Wrapper -->
-    
+
 	@include('panels.js-script')
 	<script>
+        $(document).ready(function() {
+            $('input').on('keypress', function (event) {
+                var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                	event.preventDefault();
+                	return false;
+                }
+            });
+        });
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -63,25 +73,25 @@
             </div></div>
             <p>Tunggu sebentar, sedang memuat data ....</p>`
 			},
-			responsive: {
-				details: {
-					renderer: function ( api, rowIdx ) {
+			responsive:{
+				details:{
+					renderer: function (api,rowIdx){
 						// Select hidden columns for the given row
-						var data = api.cells( rowIdx, ':hidden' ).eq(0).map( function ( cell ) {
-							var header = $( api.column( cell.column ).header() );
-	
+						var data = api.cells(rowIdx,':hidden').eq(0).map(function(cell) {
+							var header = $(api.column(cell.column).header());
+
 							return '<tr style="border-style:hidden;">'+
 									'<th class="text-dark">'+
 										header.text()+':'+
 									'</th> '+
 									'<td>'+
-										api.cell( cell ).data()+
+										api.cell(cell).data()+
 									'</td>'+
 								'</tr>';
-						} ).toArray().join('');
-	
+						}).toArray().join('');
+
 						return data ?
-							$('<table/>').append( data ) :
+							$('<table/>').append(data) :
 							false;
 					}
 				}

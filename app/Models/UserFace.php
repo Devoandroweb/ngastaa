@@ -9,7 +9,7 @@ class UserFace extends Model
 {
     use HasFactory;
     protected $table = 'user_face';
-    protected $fillable = ['nip','face_image'];
+    protected $fillable = ['nip','image_face'];
 
     function user(){
         return $this->hasOne(User::class,'nip','nip');

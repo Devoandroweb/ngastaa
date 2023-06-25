@@ -19,9 +19,13 @@ class Skpd extends Model
         'image',
     ];
 
-    public function jabatan()
+    public function tingkat()
     {
-        return $this->hasOne(Jabatan::class, 'kode_skpd', 'kode_skpd');
+        return $this->hasOne(Tingkat::class, 'kode_skpd', 'kode_skpd');
+    }
+    public function tingkatMany()
+    {
+        return $this->hasMany(Tingkat::class, 'kode_skpd', 'kode_skpd');
     }
 
     public function riwayat_jabatan()
