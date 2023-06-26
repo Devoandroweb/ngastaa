@@ -523,19 +523,19 @@ function generateStatusAbsen($status)
 {
     switch ($status) {
         case "1":
-            return '<span class="badge badge-success badge-pill badge-outline">H</span>';
+            return '<span tooltip="Hadir" class="badge badge-success badge-pill badge-outline">H</span>';
         case "2":
-            return '<span class="badge badge-warning badge-pill badge-outline">T</span>';
+            return '<span tooltip="Telat" class="badge badge-warning badge-pill badge-outline">T</span>';
         case "3":
-            return '<span class="badge badge-danger badge-pill badge-outline">A</span>';
+            return '<span tooltip="Alfa" class="badge badge-danger badge-pill badge-outline">A</span>';
         case "4":
-            return '<span class="badge badge-dark badge-pill badge-outline">I</span>';
+            return '<span tooltip="Izin" class="badge badge-dark badge-pill badge-outline">I</span>';
         case "5":
-            return '<span class="badge badge-info badge-pill badge-outline">(TAP)</span>';
+            return '<span tooltip="Tanpa Absen Pulang" class="badge badge-info badge-pill badge-outline">(TAP)</span>';
         case "6":
-            return '<span class="badge badge-primary badge-pill badge-outline">(PC)</span>';
-        case 7:
-            return '<span class="badge badge-secondary badge-pill badge-outline">P</span>';
+            return '<span tooltip="Pulang Cepat" class="badge badge-primary badge-pill badge-outline">(PC)</span>';
+        case "7":
+            return '<span tooltip="Pulang Lembur" class="badge badge-secondary badge-pill badge-outline">P</span>';
         default:
             break;
     }

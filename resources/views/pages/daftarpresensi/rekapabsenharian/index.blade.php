@@ -59,6 +59,37 @@
     </div>
 </div>
 <div class="border-bottom mb-3"></div>
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered">
+            @foreach ($statusPresensi as $value)
+            @if (in_array($loop->iteration,[4,5,6]))
+                @continue
+            @endif
+            <tr>
+                <td style="width: 5%">{!! generateStatusAbsen($value['status']) !!}</td>
+                <td style="width: 2%">:</td>
+                <td>{{$value['description']}}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+    <div class="col">
+        <table class="table table-bordered">
+            @foreach ($statusPresensi as $value)
+            @if (in_array($loop->iteration,[1,2,3]))
+                @continue
+            @endif
+            <tr>
+                <td style="width: 5%">{!! generateStatusAbsen($value['status']) !!}</td>
+                <td style="width: 2%">:</td>
+                <td>{{$value['description']}}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+</div>
+<div class="border-bottom mb-3"></div>
 <div class="invoice-body">
     <div data-simplebar class="nicescroll-bar">
         <div id="datatable"></div>

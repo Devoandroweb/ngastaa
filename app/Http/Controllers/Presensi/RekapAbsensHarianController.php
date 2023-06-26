@@ -25,7 +25,15 @@ class RekapAbsensHarianController extends Controller
     public function index()
     {
         $skpd = Skpd::all();
-        return view('pages.daftarpresensi.rekapabsenharian.index',compact('skpd'));
+        $statusPresensi = [
+            ['status'=>"1",'description'=>'Hadir'],
+            ['status'=>"2",'description'=>'Telat'],
+            ['status'=>"3",'description'=>'Alfa'],
+            ['status'=>"4",'description'=>'Izin'],
+            ['status'=>"5",'description'=>'Tanpa Absen Pulang'],
+            ['status'=>"6",'description'=>'Pulang Cepat'],
+        ];
+        return view('pages.daftarpresensi.rekapabsenharian.index',compact('skpd','statusPresensi'));
     }
 
     public function datatable(Request $request)

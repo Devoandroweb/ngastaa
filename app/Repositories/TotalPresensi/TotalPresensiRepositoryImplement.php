@@ -103,46 +103,20 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     }
     function calculatePresensi()
     {
-
-        // $this->calculatePresensi();
-
-        // dd($this->dateNow);
-
             if($this->checkAppStatusCalculate()){
                 return 0;
             }
-            // dd($this->dataTotalIzin);
             $dataInsertTotalPresensiDetail = [];
             $dataInsertTotalIzinDetail = [];
             $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
-            // dd($this->allPegawai);
-            // foreach ($this->allPegawai as $a) {
-            //     TotalPresensi::firstOrCreate([
-            //         'nip'=>$a->nip,
-            //         'periode_bulan'=>$this->periodeBulan,
-            //     ]);
-            //     // dd($r);
-            // }
-            // dd("done");
-            foreach ($this->allPegawai as $key => $pegawai) {
+            foreach ($this->allPegawai as $pegawai) {
                 $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
-                // dd($indexTotalPegawai);
                 if($indexTotalPegawai == ""){
-                    // dd($indexTotalPegawai);
-                    // dd($pegawai->nip);
                     continue;
                 }
-                // if($indexTotalPegawai == "" || $indexTotalPegawai == null){
-                //     array_push($dataInsertTotalPresensiDetail,[
-                //         'nip' => $pegawai->nip,
-                //         'tanggal' => $this->dateNow,
-                //         'status' => 0,
-                //         'kode_cuti' => 0,
-                //         'periode_bulan' => $this->periodeBulan,
-                //     ]);
-                // }
+
+                #Cek pegawai di data_presensi
                 $presensi = $this->existingPresensi($pegawai->nip);
-                //cek pegawai di data_presensi
 
                 if($presensi == null){
 
@@ -155,6 +129,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                     }
                     $izin = $this->existingIzin($pegawai->nip);
                     if($izin != null){
+                        #Izin
                         // $this->dataTotalPresensi[$indexTotalPegawai]['izin']++;
                         $indexTotalIzin = $this->searchIndexIzin($this->dataTotalIzin,'nip','kode_cuti',$pegawai->nip,$izin->kode_cuti);
                         $this->dataTotalIzin[$indexTotalIzin]['total']++;
@@ -176,7 +151,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                         TotalIzin::where('nip',$pegawai->nip)->where('kode_cuti',$izin->kode_cuti)->update($this->dataTotalIzin[$indexTotalIzin]);
                         TotalIzinDetail::insert($dataInsertTotalIzinDetail);
                     }else{
-
+                        #Alfa
                         $this->dataTotalPresensi[$indexTotalPegawai]['alfa']++;
                         if(!$this->existingTotalDetail($this->dateNow,3)){
                             array_push($dataInsertTotalPresensiDetail,[
@@ -186,24 +161,19 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                                 'kode_cuti' => null,
                                 'periode_bulan' => $this->periodeBulan,
                             ]);
-                            // dd($this->dateNow);
+
                         }
                     }
                 }else{
                     $shift = $presensi->kode_shift ?? $presensi->kode_jam_kerja;
-                    // masuk
-                    // cek telat
-                    // if($this->date == "2023-06-19"){
-                    //     dd($this->existingTelat($presensi->tanggal_datang,$shift),$presensi->tanggal_datang);
-                    // }
                     if($this->existingTelat($presensi->tanggal_datang,$shift)){
+                        #Telat
                         $this->dataTotalPresensi[$indexTotalPegawai]['telat']++;
                         if(!$this->existingTotalDetail($this->dateNow,2)){
                             $status = ["2"];
                             if($this->existingPulangCepat($presensi->tanggal_pulang,$shift)){
                                 array_push($status,"6");
                             }
-                            // dd(implode(",",$status));
                             array_push($dataInsertTotalPresensiDetail,[
                                 'nip' => $pegawai->nip,
                                 'tanggal' => $this->dateNow,
@@ -213,13 +183,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             ]);
                         }
                     }else{
-                        try {
-                            //code...
-                            $this->dataTotalPresensi[$indexTotalPegawai]['masuk']++;
-                        } catch (\Throwable $th) {
-                            dd($indexTotalPegawai);
-                        }
+
+                        $this->dataTotalPresensi[$indexTotalPegawai]['masuk']++;
                         if($presensi->tanggal_pulang == null){
+                            #Tanpa Absen Pulang
                             if(!$this->existingTotalDetail($this->dateNow,1)){
                                 array_push($dataInsertTotalPresensiDetail,[
                                     'nip' => $pegawai->nip,
@@ -231,6 +198,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             }
                         }else{
                             if($this->existingPulangCepat($presensi->tanggal_pulang,$shift)){
+                                #Pulang Cepat
                                 if(!$this->existingTotalDetail($this->dateNow,1)){
                                     array_push($dataInsertTotalPresensiDetail,[
                                         'nip' => $pegawai->nip,
@@ -241,6 +209,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                                     ]);
                                 }
                             }else{
+                                #Masuk
                                 if(!$this->existingTotalDetail($this->dateNow,1)){
                                     array_push($dataInsertTotalPresensiDetail,[
                                         'nip' => $pegawai->nip,
