@@ -100,9 +100,16 @@ class RekapAbsensHarianController extends Controller
                 // $this->hadir = 0;
                 $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal,$i){
                     $status = $this->getStatusInmTotalPresensiDetail($tanggal->format('Y-m-d'),$row->nip);
-                    if ($status != null) {
-
-                        return generateStatusAbsen($status);
+                    $status = explode(",",$status);
+                    if($status[0] == ""){
+                        $status = [];
+                    }
+                    if (count($status) > 0) {
+                        $badgeStatus = "";
+                        foreach ($status as $value) {
+                            $badgeStatus .= generateStatusAbsen($value);
+                        }
+                        return $badgeStatus;
                     }else {
                         $hariSabtuMinggu = cekHariAkhirPekan($tanggal->format('Y-m-d'));
                         $hariLibur = cekHariLibur($tanggal->format('Y-m-d'));

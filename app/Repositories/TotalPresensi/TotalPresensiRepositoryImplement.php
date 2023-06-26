@@ -162,7 +162,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             array_push($dataInsertTotalPresensiDetail,[
                                 'nip' => $pegawai->nip,
                                 'tanggal' => $this->dateNow,
-                                'status' => 4,
+                                'status' => "4",
                                 'kode_cuti' => $izin->kode_cuti,
                                 'periode_bulan' => $this->periodeBulan,
                             ]);
@@ -182,7 +182,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             array_push($dataInsertTotalPresensiDetail,[
                                 'nip' => $pegawai->nip,
                                 'tanggal' => $this->dateNow,
-                                'status' => 3,
+                                'status' => "3",
                                 'kode_cuti' => null,
                                 'periode_bulan' => $this->periodeBulan,
                             ]);
@@ -193,13 +193,21 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                     $shift = $presensi->kode_shift ?? $presensi->kode_jam_kerja;
                     // masuk
                     // cek telat
+                    // if($this->date == "2023-06-19"){
+                    //     dd($this->existingTelat($presensi->tanggal_datang,$shift),$presensi->tanggal_datang);
+                    // }
                     if($this->existingTelat($presensi->tanggal_datang,$shift)){
                         $this->dataTotalPresensi[$indexTotalPegawai]['telat']++;
                         if(!$this->existingTotalDetail($this->dateNow,2)){
+                            $status = ["2"];
+                            if($this->existingPulangCepat($presensi->tanggal_pulang,$shift)){
+                                array_push($status,"6");
+                            }
+                            // dd(implode(",",$status));
                             array_push($dataInsertTotalPresensiDetail,[
                                 'nip' => $pegawai->nip,
                                 'tanggal' => $this->dateNow,
-                                'status' => 2,
+                                'status' => implode(",",$status),
                                 'kode_cuti' => null,
                                 'periode_bulan' => $this->periodeBulan,
                             ]);
@@ -216,7 +224,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                                 array_push($dataInsertTotalPresensiDetail,[
                                     'nip' => $pegawai->nip,
                                     'tanggal' => $this->dateNow,
-                                    'status' => 5,
+                                    'status' => "5",
                                     'kode_cuti' => null,
                                     'periode_bulan' => $this->periodeBulan,
                                 ]);
@@ -227,7 +235,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                                     array_push($dataInsertTotalPresensiDetail,[
                                         'nip' => $pegawai->nip,
                                         'tanggal' => $this->dateNow,
-                                        'status' => 6,
+                                        'status' => "6",
                                         'kode_cuti' => null,
                                         'periode_bulan' => $this->periodeBulan,
                                     ]);
@@ -237,7 +245,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                                     array_push($dataInsertTotalPresensiDetail,[
                                         'nip' => $pegawai->nip,
                                         'tanggal' => $this->dateNow,
-                                        'status' => 1,
+                                        'status' => "1",
                                         'kode_cuti' => null,
                                         'periode_bulan' => $this->periodeBulan,
                                     ]);
@@ -246,7 +254,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                         }
                     }
                 }
-                // dd($this->dataTotalPresensi[$indexTotalPegawai]);
+                // dd($this->dataTotalPresensi);
                 TotalPresensi::where('nip',$pegawai->nip)->update($this->dataTotalPresensi[$indexTotalPegawai]);
 
             }
@@ -272,13 +280,18 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     }
     function existingTelat($tanggal_datang, $kode_shift)
     {
-
         $shift = $this->searchShift($kode_shift);
+
+        // dd($shift);
         if($shift != null){
-            $jam_tutup_datang = strtotime($shift->jam_tutup_datang);
-            $jamTepatNToleransi = date('Y-m-d')." ".date("H:i:s", strtotime("+{$shift->toleransi_datang} minutes",$jam_tutup_datang));
-            // dd($jamTepatNToleransi);
-            if(date("Y-m-d H:i:s", strtotime($tanggal_datang)) >= date("Y-m-d H:i:s",strtotime($jamTepatNToleransi))){
+
+            $jam_tepat_datang = strtotime($shift->jam_tepat_datang);
+            $jamTepatNToleransi = $this->date." ".date("H:i:s", strtotime("+{$shift->toleransi_datang} minutes",$jam_tepat_datang));
+            // if($this->date == "2023-06-19"){
+            //     dd($jamTepatNToleransi, $shift);
+
+            // }
+            if($this->date." ".date("H:i:s", strtotime($tanggal_datang)) >= $jamTepatNToleransi){
                 return true;
             }
         }
@@ -288,10 +301,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     {
 
         $shift = $this->searchShift($kode_shift);
-        dd($shift);
+
         if($shift != null){
             $jam_tutup_pulang = strtotime($shift->jam_tutup_pulang);
-            $jamTepatNToleransi = date('Y-m-d')." ".date("H:i:s", strtotime("+{$shift->toleransi_pulang} minutes",$jam_tutup_pulang));
+            $jamTepatNToleransi = $this->date." ".date("H:i:s", strtotime("+{$shift->toleransi_pulang} minutes",$jam_tutup_pulang));
             // dd($jamTepatNToleransi);
             if(date("Y-m-d H:i:s", strtotime($tanggal_pulang)) <= date("Y-m-d H:i:s",strtotime($jamTepatNToleransi))){
                 return true;
@@ -331,17 +344,20 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     function searchShift($kode_shift){
         $result = null;
 
+        // dd($this->mdJamKerja->all());
         # Jam Kerja
+        // dd($kode_shift);
         foreach ($this->mdJamKerja->all() as $jamKerja) {
-            if($kode_shift == $jamKerja->kode_jam_kerja){
-                $result = $jamKerja;
+            if($kode_shift == $jamKerja->kode){
+                // dd($kode_shift);
+                return $jamKerja;
             }
         }
 
         # Jam Shift
         foreach ($this->mdShifts->all() as $shift) {
             if($kode_shift == $shift->kode_shift){
-                $result = $shift;
+                return $shift;
             }
         }
         return $result;

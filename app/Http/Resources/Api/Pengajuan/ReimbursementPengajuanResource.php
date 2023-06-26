@@ -14,6 +14,7 @@ class ReimbursementPengajuanResource extends JsonResource
      */
     public function toArray($request)
     {
+        $file = fn() => (file_exists(public_path($this->file))) ? url("public/$this->file") : url("public/no-file.png");
         return [
             'id' => $this->id,
             'reimbursement' => optional($this->reimbursement)->nama,
@@ -21,7 +22,7 @@ class ReimbursementPengajuanResource extends JsonResource
             'keterangan' => $this->keterangan ?? "",
             'status' => status($this->status),
             'komentar' => $this->komentar ?? "",
-            'file' => storage($this->file),
+            'file' => $file(),
             'created_at' => hari(date('N'),strtotime($this->created_at)).", ".tanggal_indo(date("Y-m-d",strtotime($this->created_at)))
         ];
     }

@@ -109,7 +109,17 @@
                     if(_TABLE_REKAP_HARIAN !== undefined){
                         // _TABLE_REKAP_HARIAN.ajax.reload();
                     }
-				}
+				},
+                error:function(response){
+                    el.html(contentDefault)
+					el.removeAttr('disabled')
+                    console.log(response.responseJSON)
+                    Swal.fire({
+                        title: '<strong>'+response.responseJSON.message+'</strong>',
+                        icon: 'error',
+                    })
+
+                }
 			});
 		})
 	</script>

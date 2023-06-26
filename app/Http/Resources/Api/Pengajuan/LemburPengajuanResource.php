@@ -14,6 +14,8 @@ class LemburPengajuanResource extends JsonResource
      */
     public function toArray($request)
     {
+        $file = fn() => (file_exists(public_path($this->file))) ? url("public/$this->file") : url("public/no-file.png");
+
         return [
             'id' => $this->id,
             'jam_mulai' => $this->jam_mulai,
@@ -22,7 +24,7 @@ class LemburPengajuanResource extends JsonResource
             'keterangan' => $this->keterangan ?? "",
             'status' => status($this->status),
             'komentar' => $this->komentar ?? "",
-            'file' => storage($this->file),
+            'file' => $file(),
         ];
     }
 }

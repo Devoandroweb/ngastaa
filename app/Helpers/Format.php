@@ -522,27 +522,20 @@ function getColor($index)
 function generateStatusAbsen($status)
 {
     switch ($status) {
-        case 1:
+        case "1":
             return '<span class="badge badge-success badge-pill badge-outline">H</span>';
-            break;
-        case 2:
+        case "2":
             return '<span class="badge badge-warning badge-pill badge-outline">T</span>';
-            break;
-        case 3:
+        case "3":
             return '<span class="badge badge-danger badge-pill badge-outline">A</span>';
-            break;
-        case 4:
+        case "4":
             return '<span class="badge badge-dark badge-pill badge-outline">I</span>';
-            break;
-        case 5:
+        case "5":
             return '<span class="badge badge-info badge-pill badge-outline">(TAP)</span>';
-            break;
-        case 6:
+        case "6":
             return '<span class="badge badge-primary badge-pill badge-outline">(PC)</span>';
-            break;
         case 7:
             return '<span class="badge badge-secondary badge-pill badge-outline">P</span>';
-            break;
         default:
             break;
     }
@@ -634,9 +627,10 @@ function normalDateSystem($date){
 }
 function arrayTanggal(){
 
-    $tanggal = range(1, 25); // Membuat array dari 1 hingga 30
+    $tanggal = range(26, 31); // Membuat array dari 1 hingga 30
 
-    $bulan = date('m'); // Mendapatkan bulan saat ini
+    $bulan = "05"; // Mendapatkan bulan saat ini
+    // $bulan = date('m'); // Mendapatkan bulan saat ini
     $tahun = date('Y'); // Mendapatkan tahun saat ini
 
     $hasil = array(); // Membuat array kosong
