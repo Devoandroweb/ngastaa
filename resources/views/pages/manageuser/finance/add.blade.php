@@ -23,7 +23,7 @@ function searchId($id,$data)
                 <label class="form-label">Pilih Pegawai</label>
                 <select class="form-control pegawai" name="pegawai[]"  multiple="multiple" required>
 
-                    @foreach(\App\Models\User::role('pegawai')->orderBy('name')->get() as $s)
+                    @foreach(\App\Models\User::where('owner',0)->orderBy('name')->get() as $s)
                     @php
                         $json = [
                             "value" => $s->nip,
