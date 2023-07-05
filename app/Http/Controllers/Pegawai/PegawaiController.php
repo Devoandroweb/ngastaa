@@ -37,7 +37,7 @@ class PegawaiController extends Controller
     public function json()
     {
         $q = request('q');
-        $pegawai = User::role('pegawai')->orderBy('name')->get();
+        $pegawai = User::where('owner',0)->orderBy('name')->get();
         SelectResource::withoutWrapping();
         $pegawai = SelectResource::collection($pegawai);
 

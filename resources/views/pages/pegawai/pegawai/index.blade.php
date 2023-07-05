@@ -5,7 +5,7 @@
     {{ Breadcrumbs::render('detail-pegawai') }}
 @endsection
 @section('header_action')
-@if(!role('finance')) # Bukan Finance
+@if(!role('finance'))
 <a href="{{route('pegawai.pegawai.import_add')}}" class="btn btn-success me-3"><i class="fas fa-file-import"></i> {{__('Import')}}</a>
 <a href="{{route('pegawai.pegawai.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
