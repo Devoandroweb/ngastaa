@@ -36,7 +36,6 @@ class DashboardController extends Controller
         $pegawai = $this->pegawaiRepository->getAllPegawai();
 
         $jumlah_pegawai = $pegawai->count();
-        $get_pegawai = User::role('pegawai')->where('owner',0);
 
         $status_pegawai = StatusPegawai::all();
         $status_pegawai_statistic = [];
