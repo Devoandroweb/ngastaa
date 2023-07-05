@@ -44,8 +44,9 @@ class VisitApiController extends Controller
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Sudah melakukan Visit Ke Lokasi Ini sebelumnya, mohon Check-out terlebih dahulu untuk Chek-in!']),200);
             } else {
                 if (request()->file('image')) {
+                    $path = "visit/$nip/";
                     $file =  request()->file('image');
-                    $foto = uploadImage(public_path("visit/$nip"),$file);
+                    $foto = $path.uploadImage(public_path($path),$file);
                 }else{
                     return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Foto/Image tidak boleh kosong!']),200);
                 }

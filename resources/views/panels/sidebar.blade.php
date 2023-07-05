@@ -80,7 +80,7 @@
     }
     // dd($roleLevel4);
     if($roleLevel4){
-        $data = ["pegawai","dataPengajuanIzin","dataPengajuanReimbursement"];
+        $data = ["pegawai","hrd","payrollGenerate","dataPengajuanIzin","dataPengajuanReimbursement"];
         foreach ($data as $value) {
             $$value = true;
         }
@@ -194,9 +194,9 @@
                             <span class="nav-link-text">Penjadwalan Shift</span>
                         </a>
                     </li>
-                    @if(role('owner') || role('admin') || role('finance'))
+                    @if(role('owner') || role('admin') || role('finance') || $roleLevel4)
                     {{-- Master --}}
-                    @if(!role('finance'))
+                    @if(!role('finance') && !$roleLevel4)
                     <div class="menu-gap"></div>
                     <div class="nav-header">
                         <span>Master</span>
