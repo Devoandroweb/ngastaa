@@ -59,7 +59,10 @@
     }
 
     if(role('finance')){
-        $data = ["pegawai","hrd","payrollGenerate","payrollPenambahan","payrollPengurangan","dataPengajuanReimbursement"];
+        $data = ["pegawai","hrd",
+                "payrollGenerate","payrollPenambahan","payrollPengurangan",
+                "dataPengajuanReimbursement"
+                ];
         foreach ($data as $value) {
             $$value = true;
         }
@@ -80,7 +83,12 @@
     }
     // dd($roleLevel4);
     if($roleLevel4){
-        $data = ["pegawai","hrd","payrollGenerate","dataPengajuanIzin","dataPengajuanReimbursement"];
+        $data = ["pegawai","hrd",
+                "payrollGenerate",
+                "absensiHarian","absensiRekap","absensiTotal",
+                "dataPengajuanIzin","dataPengajuanReimbursement",
+                "laporanPresensi","laporanDivisi","laporanVisit","laporanAktifitas"
+                ];
         foreach ($data as $value) {
             $$value = true;
         }
