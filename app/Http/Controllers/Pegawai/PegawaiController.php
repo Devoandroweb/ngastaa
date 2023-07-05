@@ -232,6 +232,7 @@ class PegawaiController extends Controller
     {
 
         // dd($kodeSkpd);
+        
         $kodeSkpd = request()->query('kode_skpd');
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
         return $dataTables->of($pegawai)

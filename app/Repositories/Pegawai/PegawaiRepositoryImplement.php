@@ -29,7 +29,10 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         //     $value->assignRole('pegawai');
         // }
         // dd("done");
-
+        if(role('pegawai')){
+            // $kodeSkpd = auth()->user()->jabatan_akhir?->skpd;
+            // dd($kodeSkpd);
+        }
         if($forApi){
             # FOR WEB_SERVICES
             $role = false;
@@ -46,7 +49,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         // dd(User::role('pegawai')->get());
         $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
             // ambil level jabatan user
-            // dd($kodeSkpd);
+            dd($kodeSkpd);
             // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
             $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser, $kodeSkpd){
                 if($kodeSkpd != 0 || $kodeSkpd != null){
