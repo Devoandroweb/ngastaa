@@ -32,6 +32,7 @@ class RekapAbsensHarianController extends Controller
             ['status'=>"4",'description'=>'Izin'],
             ['status'=>"5",'description'=>'Tanpa Absen Pulang'],
             ['status'=>"6",'description'=>'Pulang Cepat'],
+            ['status'=>"7",'description'=>'Piket'],
         ];
         return view('pages.daftarpresensi.rekapabsenharian.index',compact('skpd','statusPresensi'));
     }

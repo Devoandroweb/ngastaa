@@ -28,12 +28,10 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     protected $i = 0;
     function __construct(
         $kodeSkpd,
-        StatusPegawai $statusPegawai,
-        Skpd $skpd,
     ) {
         $this->kodeSkpd = $kodeSkpd;
-        $this->statusPegawai = $statusPegawai;
-        $this->skpd = $skpd->with('tingkatMany');
+        $this->statusPegawai = StatusPegawai::class;
+        $this->skpd = Skpd::with('tingkatMany');
     }
     public function collection(Collection $collection)
     {
@@ -252,7 +250,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         return $message;
     }
     private function errorDivisiAndJabatan($i){
-        $message = "Kode Status Pegawai salah, Kesalahan pada baris Excel ke $i";
+        $message = "Divisi dan Jabatan salah, Kesalahan pada baris Excel ke $i";
         return $message;
     }
     public function transformDate($value, $format = 'Y-m-d')

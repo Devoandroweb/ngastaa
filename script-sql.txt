@@ -8,4 +8,7 @@ ALTER TABLE `user_face` CHANGE `face_image` `image_face` TEXT CHARACTER SET lati
 ALTER TABLE `user_face` ADD `updated_at` DATETIME NOT NULL AFTER `image_face`;
 ALTER TABLE `user_face` ADD `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `updated_at`;
 ALTER TABLE `total_presensi_detail` CHANGE `status` `status` VARCHAR(11) NOT NULL COMMENT '1 : Masuk\r\n2 : Telat\r\n3 : Alpha\r\n4 : Izin\r\n';
-
+ALTER TABLE `skpd` ADD `kota` INT NOT NULL AFTER `singkatan`;
+ALTER TABLE `skpd` CHANGE `kota` `code_city` INT(11) NOT NULL;
+ALTER TABLE `payroll_kurang` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `payroll_tambah` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;

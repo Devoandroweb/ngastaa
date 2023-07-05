@@ -4,6 +4,7 @@
     {{ Breadcrumbs::render('generate-payroll') }}
 @endsection
 @section('header_action')
+<a href="{{route('payroll.import.index')}}" class="btn btn-info me-2"><i class="fas fa-file-import"></i> {{__('Import')}}</a>
 <a href="{{route('payroll.generate.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endsection
 @section('content')
@@ -25,14 +26,14 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("payroll/generate/datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -40,7 +41,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -75,11 +76,11 @@
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
-    
+
 @endpush

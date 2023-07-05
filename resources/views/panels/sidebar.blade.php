@@ -43,6 +43,7 @@
     $laporanDivisi = false;
     $laporanVisit = false;
     $laporanAktifitas = false;
+
     $infoPengumuman = false;
     $setting = false;
     $menuPerusahaan = false;
@@ -65,8 +66,13 @@
     $roleLevel2 = role('level_2'); // HR
     $roleLevel3 = role('level_3'); // BUK
     $roleLevel4 = role('level_4'); // PIC
-    if($roleLevel2 || $roleLevel3){
-        $data = ["pegawai","hrd","masterDataDivisiKerja","masterDataShift","dataPengajuanIzin","dataPengajuanReimbursement"];
+    if($roleLevel2){
+        $data = ["pegawai","hrd",
+                "masterDataDivisiKerja","masterDataLokasiKerja","masterDataLokasiVisit",
+                "absensiHarian","absensiRekap","absensiTotal",
+                "dataPengajuanIzin","dataPengajuanLembur","dataPengajuanReimbursement","dataPengajuanShift",
+                "laporanPresensi","laporanDivisi","laporanVisit","laporanAktifitas"
+                ];
         foreach ($data as $value) {
             $$value = true;
         }
@@ -552,7 +558,7 @@
                     </li>
                     @endif
 
-                    @if(role('owner') || role('admin'))
+                    @if(role('owner') || role('admin') || $roleLevel2)
                     <div class="menu-gap"></div>
                     <div class="nav-header">
                         <span>Laporan</span>

@@ -47,14 +47,14 @@
 
 
     <button type="submit" class="btn btn-primary">Simpan</button>
-    <a href="{{route('master.payroll.penambahan.store')}}" class="btn btn-light">Kembali</a>
+    <a href="{{route('master.payroll.penambahan.index')}}" class="btn btn-light">Kembali</a>
 
 </form>
 @endsection
 @push('js')
 <script>
     buildPresentaseParent('{{$tambahan->satuan}}')
-    $("#satuan").change(function (e) { 
+    $("#satuan").change(function (e) {
         e.preventDefault();
         buildPresentaseParent($(this).val())
     });
@@ -62,16 +62,16 @@
     function buildPresentaseParent(val){
         var placeholder = '';
         var idEl = null;
-        
+
         @if($tambahan->satuan == 2)
             selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari-edit',$tunjangan)!!}";
         @else
             selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari')!!}";
         @endif
-        
-        
 
-        
+
+
+
         if(val == 2){
             $(".element-presentase").html(selectPersentase);
             idEl = "#input_tags_presentase";
@@ -90,5 +90,5 @@
 
     }
 </script>
-    
+
 @endpush

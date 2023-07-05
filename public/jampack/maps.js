@@ -58,7 +58,7 @@ map.on('draw:created',function (e) {
 });
 
 /* END CONTORL MAPS */
-
+clearAbjadAndSpasi("#koordinat")
 
 $("#radius").on("change", function () {
     const range = $(this);
@@ -68,12 +68,17 @@ $("#radius").on("change", function () {
 
 $("#koordinat").change(function (e) {
     e.preventDefault();
+    clearAbjadAndSpasi("#koordinat")
+
     const val = $(this).val();
     const ltlg = val.split(",");
+
     updateMap(ltlg);
 
     $("#latitude").val(ltlg[0]);
     $("#longitude").val(ltlg[1]);
+
+    // getCityName(ltlg[0],ltlg[1])
 });
 function updateMap(ltlg) {
     map.setView(ltlg, 15);
@@ -81,4 +86,27 @@ function updateMap(ltlg) {
     marker.setLatLng(newLatLng);
     // marker.addTo(map);
     // circle.setLatLng(newLatLng);
+}
+
+function getCityName(latitude, longitude) {
+    var url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + latitude + '&lon=' + longitude;
+
+    fetch(url)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            var cityName = (data.address.city) ? "Kab. "+data.address.city : "Kec. "+data.address.county;
+            console.log(cityName);
+            $("#city").val(cityName) // Tampilkan nama kota di konsol
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+}
+function clearAbjadAndSpasi(el){
+    var inputValue = $(el).val();
+    // Menghapus spasi dan karakter abjad menggunakan regex
+    var cleanedValue = inputValue.replace(/[\sA-Za-z]/g, '');
+    $(el).val(cleanedValue);
 }

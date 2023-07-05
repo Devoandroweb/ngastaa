@@ -10,6 +10,6 @@ class PayrollKurang extends Model
     use HasFactory;
 
     protected $table = "payroll_kurang";
-
     protected $guarded = [];
+    protected $fillable = ['kode_payroll', 'nip', 'kode_kurang', 'keterangan', 'nilai'];
 }

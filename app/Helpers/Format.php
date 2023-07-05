@@ -535,7 +535,7 @@ function generateStatusAbsen($status)
         case "6":
             return '<span tooltip="Pulang Cepat" class="badge badge-primary badge-pill badge-outline">(PC)</span>';
         case "7":
-            return '<span tooltip="Pulang Lembur" class="badge badge-secondary badge-pill badge-outline">P</span>';
+            return '<span tooltip="Piket" class="badge badge-secondary badge-pill badge-outline">P</span>';
         default:
             break;
     }
@@ -627,10 +627,10 @@ function normalDateSystem($date){
 }
 function arrayTanggal(){
 
-    $tanggal = range(26, 31); // Membuat array dari 1 hingga 30
+    $tanggal = range(1, 25); // Membuat array dari 1 hingga 30
 
-    $bulan = "05"; // Mendapatkan bulan saat ini
-    // $bulan = date('m'); // Mendapatkan bulan saat ini
+    // $bulan = "05"; // Mendapatkan bulan saat ini
+    $bulan = date('m'); // Mendapatkan bulan saat ini
     $tahun = date('Y'); // Mendapatkan tahun saat ini
 
     $hasil = array(); // Membuat array kosong
@@ -665,8 +665,60 @@ function searchIndexArrayAssoc($search,$key,$array){
 }
 function truncateText($text, $maxLength) {
     if (strlen($text) > $maxLength) {
-      return substr($text, 0, $maxLength - 3) . '...';
+        return substr($text, 0, $maxLength - 3) . '...';
     } else {
-      return $text;
+        return $text;
     }
-  }
+}
+function excelCoordinate($row, $col)
+{
+    $letters = range('A', 'Z'); // Array huruf A sampai Z
+
+    $columnLetter = '';
+
+    // Mengonversi kolom menjadi huruf (A, B, C, ...)
+    if ($col <= 26) {
+        $columnLetter = $letters[$col - 1];
+    } else {
+        $firstLetter = $letters[floor(($col - 1) / 26) - 1];
+        $secondLetter = $letters[($col - 1) % 26];
+        $columnLetter = $firstLetter . $secondLetter;
+    }
+
+    // Mengembalikan koordinat Excel
+    return $columnLetter . $row;
+}
+function excelColumn($col)
+{
+    $letters = range('A', 'Z'); // Array huruf A sampai Z
+
+    $columnLetter = '';
+
+    // Mengonversi kolom menjadi huruf (A, B, C, ...)
+    while ($col > 0) {
+        $col--; // Mengurangi 1 untuk penyesuaian dengan indeks array
+        $columnLetter = $letters[$col % 26] . $columnLetter;
+        $col = floor($col / 26);
+    }
+
+    // Mengembalikan huruf kolom Excel
+    return $columnLetter;
+}
+function excelColumnToNumber($column)
+{
+    $letters = range('A', 'Z'); // Array huruf A sampai Z
+
+    $columnNumber = 0;
+
+    $columnArray = str_split($column);
+
+    $length = count($columnArray);
+
+    for ($i = 0; $i < $length; $i++) {
+        $position = array_search($columnArray[$i], $letters) + 1;
+        $columnNumber += $position * pow(26, $length - $i - 1);
+    }
+
+    // Mengembalikan nomor kolom
+    return $columnNumber;
+}

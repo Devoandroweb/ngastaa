@@ -336,6 +336,11 @@ Breadcrumbs::for('detail-generate-payroll', function (BreadcrumbTrail $trail) {
     $trail->push('Detail Generate Payroll');
 });
 
+Breadcrumbs::for('import-payroll', function (BreadcrumbTrail $trail) {
+    $trail->parent('generate-payroll');
+    $trail->push('Import Payroll', route('payroll.import.index'));
+});
+
 // Payroll | Daftar Penambahan
 Breadcrumbs::for('daftar-penambahan', function (BreadcrumbTrail $trail) {
     $trail->push('Payroll', "#");

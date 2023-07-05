@@ -141,19 +141,21 @@ function generate_payroll_nip($nip, $no_hp, $jabatan, $kode_payroll, $bulan, $ta
     $kode_tingkat = $jabatan?->kode_tingkat;
     $kode_level = $jabatan?->tingkat?->kode_eselon;
     $kode_skpd = $jabatan?->kode_skpd;
+
+    #Gaji Pokok
     $gapok = get_gapok($nip);
     if (!$gapok) {
         $gapok =  $jabatan?->tingkat?->gaji_pokok ?? 0;
     }
     $total += $gapok;
 
-    $tunjangan_jabatan = get_nilai_tunjangan($nip, 2);
-    if (!$tunjangan_jabatan) {
-        $tunjangan_jabatan =  $jabatan?->tingkat?->tunjangan ?? 0;
-    }
+    # Tunjangan Jabatan
+    $tunjangan_jabatan =  $jabatan?->tingkat?->tunjangan ?? 0;
     $total += $tunjangan_jabatan;
     $total_penambahan += $tunjangan_jabatan;
 
+    #Tunjangan Aktif
+    // $tunjangan_aktif = get_nilai_tunjangan($nip);
 
     // Payroll Dasar Gapok
     DataPayroll::updateOrCreate(
@@ -217,7 +219,7 @@ function generate_payroll_nip($nip, $no_hp, $jabatan, $kode_payroll, $bulan, $ta
          }
          $total -= $nilai;
          $total_potongan += $nilai;
- 
+
          PayrollKurang::updateOrCreate(
              [
                  'kode_payroll' => $kode_payroll,
@@ -300,7 +302,7 @@ function generate_payroll_nip($nip, $no_hp, $jabatan, $kode_payroll, $bulan, $ta
          }
          $total -= $nilai;
          $total_potongan += $nilai;
- 
+
          PayrollKurang::updateOrCreate(
              [
                  'kode_payroll' => $kode_payroll,
@@ -407,7 +409,7 @@ function generate_payroll_nip($nip, $no_hp, $jabatan, $kode_payroll, $bulan, $ta
 
         if($jam > 0){
             $nilai = 0;
-            for ($i=1; $i <= $jam; $i++) { 
+            for ($i=1; $i <= $jam; $i++) {
                 $rule = get_rule_lembur($i);
 
                 $exp = explode(',', $rule->kode_tunjangan);
@@ -513,7 +515,7 @@ function generate_payroll_nip($nip, $no_hp, $jabatan, $kode_payroll, $bulan, $ta
             'total_potongan' => $total_potongan,
             'total_penambahan' => $total_penambahan,
         ]);
- 
+
 
     dispatch(new ProcessWaNotif($no_hp, 'Hallo, Payroll telah digenerate anda dapat memeriksa payroll anda, jika terdapat keselahan silahkan komunikasi ke HR paling lambat 3 hari setelah digenerate!'));
 }

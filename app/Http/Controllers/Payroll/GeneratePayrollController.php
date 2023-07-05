@@ -29,75 +29,85 @@ class GeneratePayrollController extends Controller
         return view('pages/payroll/generate/add', compact('generate'));
     }
 
-    public function store()
-    {
-        // dd(request()->all());
+    # Perhitungannya Hamdan (Ruwet)
+    // public function store()
+    // {
+    //     // dd(request()->all());
+    //     $bulan = request('bulan') ?? date("m");
+    //     $tahun = request('tahun') ?? date("Y");
+    //     $kode_skpd = request('kode_skpd');
+    //     // dd($kode_skpd);
+    //     $kode_payroll = date("YmdHis") . generateRandomString();
+
+    //     $whereNotIn = [];
+
+    //     $qry = GeneratePayroll::where('bulan', $bulan)->where('tahun', $tahun);
+
+    //     $cek = with(clone $qry)->whereNull('kode_skpd')->first();
+    //     if ($cek) {
+    //         return redirect()->back()->with([
+    //             'type' => 'error',
+    //             'messages' => "Gagal, Payroll Telah digenerate sebelumnya!"
+    //         ]);
+    //     }
+
+    //     if ($kode_skpd) {
+    //         $skpd = with(clone $qry)->where('kode_skpd', $kode_skpd)->first();
+    //         if ($skpd) {
+    //             return redirect()->back()->with([
+    //                 'type' => 'error',
+    //                 'messages' => "Gagal, Payroll Telah digenerate sebelumnya!"
+    //             ]);
+    //         }
+    //     }
+
+    //     $update = with(clone $qry)->first();
+
+    //     if ($update) {
+    //         $kode_payroll = $update->kode_payroll;
+    //         $whereNotIn = $qry->get()->pluck('kode_skpd')->toArray();
+    //     }
+
+    //     GeneratePayroll::updateOrCreate(
+    //         [
+    //             'kode_payroll' => $kode_payroll,
+    //         ],
+    //         [
+    //             'bulan' => $bulan,
+    //             'tahun' => $tahun,
+    //             'kode_skpd' => $kode_skpd,
+    //         ]
+    //     );
+
+    //     $pegawai = User::role('pegawai')
+    //         ->when($kode_skpd, function ($qr, $kode_skpd) {
+    //             $qr->where('riwayat_jabatan.kode_skpd', $kode_skpd);
+    //         })
+    //         ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
+    //         ->where('riwayat_jabatan.is_akhir', 1)
+    //         ->whereNotIn('riwayat_jabatan.kode_skpd', $whereNotIn)
+    //         ->select('users.nip', 'users.no_hp')
+    //         ->get();
+
+    //     foreach ($pegawai as $peg) {
+    //         $jabatan = array_key_exists('0', $peg->jabatan_akhir->toArray()) ? $peg->jabatan_akhir[0] : null;
+    //         generate_payroll_nip($peg->nip, $peg->no_hp, $jabatan, $kode_payroll, $bulan, $tahun);
+    //         // dispatch(new ProcessGeneratePayroll($peg->nip, $peg->no_hp, $jabatan, $kode_payroll, $bulan, $tahun));
+    //     }
+
+    //     return redirect()->back()->with([
+    //         'type' => 'success',
+    //         'messages' => "Berhasil, Pemberitahuan melalui Whatsapp jika payroll berhasil digenerate!"
+    //     ]);
+    // }
+    function store() {
         $bulan = request('bulan') ?? date("m");
         $tahun = request('tahun') ?? date("Y");
         $kode_skpd = request('kode_skpd');
         // dd($kode_skpd);
         $kode_payroll = date("YmdHis") . generateRandomString();
 
-        $whereNotIn = [];
-
-        $qry = GeneratePayroll::where('bulan', $bulan)->where('tahun', $tahun);
-
-        $cek = with(clone $qry)->whereNull('kode_skpd')->first();
-        if ($cek) {
-            return redirect()->back()->with([
-                'type' => 'error',
-                'messages' => "Gagal, Payroll Telah digenerate sebelumnya!"
-            ]);
-        }
-
-        if ($kode_skpd) {
-            $skpd = with(clone $qry)->where('kode_skpd', $kode_skpd)->first();
-            if ($skpd) {
-                return redirect()->back()->with([
-                    'type' => 'error',
-                    'messages' => "Gagal, Payroll Telah digenerate sebelumnya!"
-                ]);
-            }
-        }
-
-        $update = with(clone $qry)->first();
-
-        if ($update) {
-            $kode_payroll = $update->kode_payroll;
-            $whereNotIn = $qry->get()->pluck('kode_skpd')->toArray();
-        }
-
-        GeneratePayroll::updateOrCreate(
-            [
-                'kode_payroll' => $kode_payroll,
-            ],
-            [
-                'bulan' => $bulan,
-                'tahun' => $tahun,
-                'kode_skpd' => $kode_skpd,
-            ]
-        );
-
-        $pegawai = User::role('pegawai')
-            ->when($kode_skpd, function ($qr, $kode_skpd) {
-                $qr->where('riwayat_jabatan.kode_skpd', $kode_skpd);
-            })
-            ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
-            ->where('riwayat_jabatan.is_akhir', 1)
-            ->whereNotIn('riwayat_jabatan.kode_skpd', $whereNotIn)
-            ->select('users.nip', 'users.no_hp')
-            ->get();
-
-        foreach ($pegawai as $peg) {
-            $jabatan = array_key_exists('0', $peg->jabatan_akhir->toArray()) ? $peg->jabatan_akhir[0] : null;
-            generate_payroll_nip($peg->nip, $peg->no_hp, $jabatan, $kode_payroll, $bulan, $tahun);
-            // dispatch(new ProcessGeneratePayroll($peg->nip, $peg->no_hp, $jabatan, $kode_payroll, $bulan, $tahun));
-        }
-
-        return redirect()->back()->with([
-            'type' => 'success',
-            'messages' => "Berhasil, Pemberitahuan melalui Whatsapp jika payroll berhasil digenerate!"
-        ]);
+        
     }
 
     public function regenerate(GeneratePayroll $generate)
@@ -155,7 +165,7 @@ class GeneratePayrollController extends Controller
         // return inertia('Payroll/Generate/detail', compact('payroll', 'generate'));
         return view('pages/payroll/generate/detail', compact('generate'));
     }
-   
+
     public function approved(GeneratePayroll $generate, $payroll = null)
     {
         if ($payroll == null) {

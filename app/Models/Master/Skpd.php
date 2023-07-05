@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use App\Models\Kabupaten;
 use App\Models\Pegawai\RiwayatJabatan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ class Skpd extends Model
 
     protected $table = 'skpd';
 
-    protected $fillable = ['kode_skpd', 'nama', 'singkatan', 'kordinat', 'latitude', 'longitude', 'jarak','polygon'];
+    protected $fillable = ['kode_skpd', 'nama', 'singkatan', 'kordinat', 'latitude', 'longitude', 'jarak','polygon','code_city'];
 
     protected $parents = [
         'image',
@@ -43,17 +44,7 @@ class Skpd extends Model
         return $this->hasMany(Seksi::class, 'kode_skpd', 'kode_skpd');
     }
 
-    // public function getParentsAttribute()
-    // {
-    //     $parents = collect([]);
-
-    //     $parent = $this->atasan;
-
-    //     while (!is_null($parent)) {
-    //         $parents->push($parent);
-    //         $parent = $parent->atasan;
-    //     }
-
-    //     return $parents;
-    // }
+    function kota() {
+        return $this->hasOne(Kabupaten::class,'code','code_city');
+    }
 }

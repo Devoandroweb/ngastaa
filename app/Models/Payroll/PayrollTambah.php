@@ -12,4 +12,7 @@ class PayrollTambah extends Model
     protected $table = "payroll_tambah";
 
     protected $guarded = [];
+
+    protected $fillable = ['kode_payroll', 'nip', 'kode_tambahan', 'keterangan', 'nilai'];
+
 }

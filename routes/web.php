@@ -34,6 +34,7 @@ use App\Http\Controllers\Master\SukuController;
 use App\Http\Controllers\Master\TingkatController;
 use App\Http\Controllers\Master\UmkController;
 use App\Http\Controllers\Master\VisitController;
+use App\Http\Controllers\Payroll\CustomPayrollController;
 use App\Http\Controllers\Payroll\GeneratePayrollController;
 use App\Http\Controllers\Payroll\KurangPayrollController;
 use App\Http\Controllers\Payroll\TambahPayrollController;
@@ -553,7 +554,6 @@ Route::middleware(['auth'])
                         Route::get('edit/{tambah}', 'edit')->name('edit');
                         Route::get('delete/{tambah}', 'delete')->name('delete');
                         Route::get('datatable', 'datatable')->name('datatable');
-
                     });
 
                 Route::controller(KurangPayrollController::class)
@@ -584,6 +584,16 @@ Route::middleware(['auth'])
                         Route::get('', 'index')->name('index');
                         Route::get('datatable', 'datatable')->name('datatable');
                         Route::get('payroll-datatable/{generate}', 'payrollDatatable')->name('payrollDatatable');
+
+                    });
+
+                Route::controller(CustomPayrollController::class)
+                    ->prefix('import')
+                    ->name("import.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('template-payroll-import', 'templatePayrollImport')->name('template-payroll-import');
+                        Route::post('payroll-import', 'importGaji')->name('payroll-import');
                     });
             });
 

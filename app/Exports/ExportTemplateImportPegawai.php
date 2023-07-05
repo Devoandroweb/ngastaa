@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\Style\Protection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithEvents, ShouldAutoSize, WithStyles, WithTitle
@@ -58,7 +59,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
         ];
         // dd($selects);
         $this->selects=$selects;
-        $this->row_count=50;//number of rows that will have the dropdown
+        $this->row_count=1000;//number of rows that will have the dropdown
         $this->column_count=20;//number of columns to be auto sized
     }
     public function collection()
@@ -94,6 +95,19 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
 
     public function styles(Worksheet $sheet)
     {
+        $lastColumn = $sheet->getHighestColumn();
+
+        // Make sure you enable worksheet protection if you need any of the worksheet or cell protection features!
+        $sheet->getParent()->getActiveSheet()->getProtection()->setSheet(true);
+
+        // lock all cells then unlock the cell
+        $sheet->getParent()->getActiveSheet()
+            ->getStyle('A2:S4000')
+            ->getProtection()
+            ->setLocked(Protection::PROTECTION_UNPROTECTED);
+
+        // styling first row
+        // $sheet->getStyle(1)->getFont()->setBold(true);
 
         return [
             // Style the first row as bold text.
@@ -106,6 +120,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
         return [
             // handle by a closure.
             AfterSheet::class => function(AfterSheet $event) {
+
                 $row_count = $this->row_count;
                 $column_count = $this->column_count;
                 foreach ($this->selects as $select) {

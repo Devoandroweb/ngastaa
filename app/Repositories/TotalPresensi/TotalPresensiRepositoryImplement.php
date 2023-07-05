@@ -89,15 +89,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
             $this->dataPresensi2 =  DataPresensi::whereDate('created_at', $this->date)->where('hitung',0);
 
-            $hariSabtuMinggu = cekHariAkhirPekan($this->date);
-            $hariLibur = cekHariLibur($this->date);
-            // dd($this->dataPresensi);
-            if($hariSabtuMinggu){
-                continue;
-            }
-            if($hariLibur){
-                continue;
-            }
+
             $this->calculatePresensi();
         }
     }
@@ -117,15 +109,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
                 #Cek pegawai di data_presensi
                 $presensi = $this->existingPresensi($pegawai->nip);
+                $status = [];
 
                 if($presensi == null){
-
-                    // cek pegawai di izin/cuti
-                    # cek hari sabtu
-                    $hariSabtuMinggu = cekHariAkhirPekan($this->date);
-                    $hariLibur = cekHariLibur($this->date);
-                    if($hariSabtuMinggu){
-                        # hari sabtu
+                    if($this->checkHariLibur()){
+                        continue;
                     }
                     $izin = $this->existingIzin($pegawai->nip);
                     if($izin != null){
@@ -133,15 +121,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                         // $this->dataTotalPresensi[$indexTotalPegawai]['izin']++;
                         $indexTotalIzin = $this->searchIndexIzin($this->dataTotalIzin,'nip','kode_cuti',$pegawai->nip,$izin->kode_cuti);
                         $this->dataTotalIzin[$indexTotalIzin]['total']++;
+
                         if(!$this->existingTotalDetail($this->dateNow,4)){
-                            array_push($dataInsertTotalPresensiDetail,[
-                                'nip' => $pegawai->nip,
-                                'tanggal' => $this->dateNow,
-                                'status' => "4",
-                                'kode_cuti' => $izin->kode_cuti,
-                                'periode_bulan' => $this->periodeBulan,
-                            ]);
+                            array_push($status,"4");
                         }
+
                         array_push($dataInsertTotalIzinDetail,[
                             'nip' => $pegawai->nip,
                             'tanggal' => $this->dateNow,
@@ -154,17 +138,22 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                         #Alfa
                         $this->dataTotalPresensi[$indexTotalPegawai]['alfa']++;
                         if(!$this->existingTotalDetail($this->dateNow,3)){
-                            array_push($dataInsertTotalPresensiDetail,[
-                                'nip' => $pegawai->nip,
-                                'tanggal' => $this->dateNow,
-                                'status' => "3",
-                                'kode_cuti' => null,
-                                'periode_bulan' => $this->periodeBulan,
-                            ]);
-
+                            array_push($status,"3");
                         }
                     }
+                    array_push($dataInsertTotalPresensiDetail,[
+                        'nip' => $pegawai->nip,
+                        'tanggal' => $this->dateNow,
+                        'status' => implode(",",$status),
+                        'kode_cuti' => null,
+                        'periode_bulan' => $this->periodeBulan,
+                    ]);
+
                 }else{
+                    #Piket
+                    if($this->checkHariLibur()){
+                        array_push($status,"7");
+                    }
                     $shift = $presensi->kode_shift ?? $presensi->kode_jam_kerja;
                     if($this->existingTelat($presensi->tanggal_datang,$shift)){
                         #Telat
@@ -174,53 +163,31 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             if($this->existingPulangCepat($presensi->tanggal_pulang,$shift)){
                                 array_push($status,"6");
                             }
-                            array_push($dataInsertTotalPresensiDetail,[
-                                'nip' => $pegawai->nip,
-                                'tanggal' => $this->dateNow,
-                                'status' => implode(",",$status),
-                                'kode_cuti' => null,
-                                'periode_bulan' => $this->periodeBulan,
-                            ]);
+
                         }
                     }else{
-
-                        $this->dataTotalPresensi[$indexTotalPegawai]['masuk']++;
                         if($presensi->tanggal_pulang == null){
                             #Tanpa Absen Pulang
-                            if(!$this->existingTotalDetail($this->dateNow,1)){
-                                array_push($dataInsertTotalPresensiDetail,[
-                                    'nip' => $pegawai->nip,
-                                    'tanggal' => $this->dateNow,
-                                    'status' => "5",
-                                    'kode_cuti' => null,
-                                    'periode_bulan' => $this->periodeBulan,
-                                ]);
-                            }
+                            array_push($status,"5");
                         }else{
                             if($this->existingPulangCepat($presensi->tanggal_pulang,$shift)){
                                 #Pulang Cepat
-                                if(!$this->existingTotalDetail($this->dateNow,1)){
-                                    array_push($dataInsertTotalPresensiDetail,[
-                                        'nip' => $pegawai->nip,
-                                        'tanggal' => $this->dateNow,
-                                        'status' => "6",
-                                        'kode_cuti' => null,
-                                        'periode_bulan' => $this->periodeBulan,
-                                    ]);
-                                }
+                                array_push($status,"6");
                             }else{
                                 #Masuk
-                                if(!$this->existingTotalDetail($this->dateNow,1)){
-                                    array_push($dataInsertTotalPresensiDetail,[
-                                        'nip' => $pegawai->nip,
-                                        'tanggal' => $this->dateNow,
-                                        'status' => "1",
-                                        'kode_cuti' => null,
-                                        'periode_bulan' => $this->periodeBulan,
-                                    ]);
-                                }
+                                array_push($status,"1");
                             }
                         }
+                        $this->dataTotalPresensi[$indexTotalPegawai]['masuk']++;
+                    }
+                    if(!$this->existingTotalDetail($this->dateNow,1)){
+                        array_push($dataInsertTotalPresensiDetail,[
+                            'nip' => $pegawai->nip,
+                            'tanggal' => $this->dateNow,
+                            'status' => implode(",",$status),
+                            'kode_cuti' => null,
+                            'periode_bulan' => $this->periodeBulan,
+                        ]);
                     }
                 }
                 // dd($this->dataTotalPresensi);
@@ -301,6 +268,19 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         }
         return false;
     }
+    function checkHariLibur(){
+        $hariSabtuMinggu = cekHariAkhirPekan($this->date);
+        $hariLibur = cekHariLibur($this->date);
+        // dd($this->dataPresensi);
+        if($hariSabtuMinggu){
+            return true;
+        }
+        if($hariLibur){
+            return true;
+        }
+        return false;
+    }
+
     function getOnePengajuanCuti($nip){
         foreach ($this->allPengajuanCuti as $pengajuanCuti) {
             if($pengajuanCuti->nip == $nip){

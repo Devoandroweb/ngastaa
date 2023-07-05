@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Master\SkpdResource;
 use App\Http\Resources\Select\SelectResource;
+use App\Models\Kabupaten;
 use App\Models\Master\Skpd;
 use Yajra\DataTables\DataTables;
 
 class SkpdController extends Controller
 {
+    protected $kabupaten;
+    function __construct(){
+        $this->kabupaten = Kabupaten::orderBy('name')->get();
+    }
     public function index()
     {
         $search = request('s');
@@ -59,13 +64,15 @@ class SkpdController extends Controller
     {
         $skpd = new Skpd();
         // return inertia('Master/Skpd/Add', compact('skpd'));
-        return view('pages/masterdata/datajabatan/divisikerja/add');
+        return view('pages/masterdata/datajabatan/divisikerja/add')->with('kabupaten',$this->kabupaten);
     }
 
     public function edit(Skpd $skpd)
     {
         // return inertia('Master/Skpd/Add', compact('skpd'));
-        return view('pages/masterdata/datajabatan/divisikerja/edit', compact('skpd'));
+        $skpd = $skpd->load('kota');
+        // dd($skpd->kota);
+        return view('pages/masterdata/datajabatan/divisikerja/edit', compact('skpd'))->with('kabupaten',$this->kabupaten);
     }
 
     public function reset(Skpd $skpd)
@@ -117,14 +124,15 @@ class SkpdController extends Controller
             'longitude' => 'nullable',
             'jarak' => 'nullable',
             'polygon' => 'nullable',
+            'code_city' => 'required',
         ];
-
         if (!request('id')) {
             $rules['kode_skpd'] = 'required|unique:skpd';
         }
 
         $data = request()->validate($rules);
         // dd($data);
+
         $cr = Skpd::updateOrCreate(['id' => request('id')], $data);
 
         if ($cr) {

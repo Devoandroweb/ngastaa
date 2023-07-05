@@ -33,6 +33,17 @@
                             <input class="form-control" name="kordinat" id="koordinat" placeholder="Masukkan Koordinat">
                         </div>
                     </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="form-label">Kota</label>
+                            <select class="form-control mb-3 select2 @error('code_city') is-invalid @enderror"  value="" placeholder="" name="code_city">
+                                <option value="" disabled>Pilih Kabupaten/Kota</option>
+                                @foreach ($kabupaten as $kab)
+                                    <option value="{{$kab->code}}">{{$kab->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="col d-none">
                         <div class="row">
                             <div class="mb-3 col">
