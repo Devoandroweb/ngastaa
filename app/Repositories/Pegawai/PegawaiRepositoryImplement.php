@@ -37,12 +37,12 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
         }else{
             # FOR WEB
-            $role = role('owner') || role('admin');
+            $role = role('owner') || role('admin') || role("level_2");
             $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
             // dd($levelJabatanUser);
         }
 
-        $pegawai = User::role('pegawai')->whereNot('users.nip',null)->with('riwayat_jabatan');
+        $pegawai = User::whereNot('users.nip',null)->with('riwayat_jabatan');
         // dd(User::role('pegawai')->get());
         $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
             // ambil level jabatan user
