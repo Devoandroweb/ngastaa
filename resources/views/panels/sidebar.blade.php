@@ -86,7 +86,7 @@
         $data = ["pegawai","hrd",
                 "payrollGenerate",
                 "absensiHarian","absensiRekap","absensiTotal",
-                "dataPengajuanIzin","dataPengajuanReimbursement",
+                "dataPengajuanIzin","dataPengajuanLembur","dataPengajuanReimbursement","dataPengajuanShift",
                 "laporanPresensi","laporanDivisi","laporanVisit","laporanAktifitas"
                 ];
         foreach ($data as $value) {
