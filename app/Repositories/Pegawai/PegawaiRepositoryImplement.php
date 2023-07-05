@@ -37,7 +37,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
         }else{
             # FOR WEB
-            $role = role('owner') || role('admin') || role("level_2");
+            $role = role('owner') || role('admin') || role("finance");
             $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
             // dd($levelJabatanUser);
         }
@@ -60,17 +60,17 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                 });
             });
         });
-        // if($role){
-        //     $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
-        //         $qt->on('riwayat_jabatan.nip', 'users.nip')
-        //         ->where('is_akhir', 1)
-        //         ->where('riwayat_jabatan.deleted_at', null);
-        //         // dd($kodeSkpd);
-        //         if($kodeSkpd != null && (int)$kodeSkpd != 0){
-        //             $qt->where('kode_skpd', $kodeSkpd);
-        //         }
-        //     });
-        // }
+        if($role && $kodeSkpd != 0){
+            $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
+                $qt->on('riwayat_jabatan.nip', 'users.nip')
+                ->where('is_akhir', 1)
+                ->where('riwayat_jabatan.deleted_at', null);
+                // dd($kodeSkpd);
+                if($kodeSkpd != null && (int)$kodeSkpd != 0){
+                    $qt->where('kode_skpd', $kodeSkpd);
+                }
+            });
+        }
         return $pegawai;
     }
     function getAllPegawai(){

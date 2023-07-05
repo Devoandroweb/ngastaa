@@ -4,9 +4,10 @@
     {{ Breadcrumbs::render('divisi-kerja') }}
 @endsection
 @section('header_action')
+@if (!role('finance'))
 <a href="{{route('master.skpd.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+@endif
 @endsection
-
 @section('content')
 @if(session('messages'))
 <div class="alert alert-inv alert-inv-@if(session('type') == 'error'){{'danger'}}@else{{'success'}}@endif alert-wth-icon alert-dismissible fade show" role="alert">
@@ -27,14 +28,14 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("master/skpd/datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -42,7 +43,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -80,7 +81,7 @@
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
@@ -108,5 +109,5 @@
 
     </script>
     <script src="{{asset('/')}}delete.js"></script>
-    
+
 @endpush

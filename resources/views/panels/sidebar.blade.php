@@ -57,8 +57,9 @@
             $$value = true;
         }
     }
+
     if(role('finance')){
-        $data = ["payrollGenerate","payrollPenambahan","payrollPengurangan","dataPengajuanReimbursement"];
+        $data = ["pegawai","hrd","payrollGenerate","payrollPenambahan","payrollPengurangan","dataPengajuanReimbursement"];
         foreach ($data as $value) {
             $$value = true;
         }

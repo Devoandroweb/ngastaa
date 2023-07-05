@@ -5,10 +5,10 @@
     {{ Breadcrumbs::render('detail-pegawai') }}
 @endsection
 @section('header_action')
-
+@if(!role('finance')) # Bukan Finance
 <a href="{{route('pegawai.pegawai.import_add')}}" class="btn btn-success me-3"><i class="fas fa-file-import"></i> {{__('Import')}}</a>
 <a href="{{route('pegawai.pegawai.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
-
+@endif
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
         transition: background-color 0.5s;
     }
 </style>
-@if(role('owner') || role('admin'))
+@if(role('owner') || role('admin') || role('finance'))
 <div class="input-group me-3 mb-3 ">
     <span class="input-affix-wrapper">
 
@@ -121,10 +121,12 @@
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
-        $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
-            var data = _TABLE.row(this).data();
-            window.location.href = data.detail;
-        });
+        @if (!role('finance'))
+            $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
+                var data = _TABLE.row(this).data();
+                window.location.href = data.detail;
+            });
+        @endif
         $(".divisi").select2();
         $('.divisi').on('select2:select', function (e) {
             var data = e.params.data;

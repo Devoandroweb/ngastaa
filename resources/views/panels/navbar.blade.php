@@ -54,21 +54,21 @@
             </li>
             @if(role('owner'))
             <li class="nav-item d-none d-md-block">
-                <a class="btn btn-flush-dark flush-outline-hover" href="{{route('users.direksi.index')}}"><i class="dropdown-icon far fa-user-circle mr-2"></i> Management User</a>
-                {{-- <div class="btn-group dropdown me-2">
+                {{-- <a class="btn btn-flush-dark flush-outline-hover" href="{{route('users.direksi.index')}}"><i class="dropdown-icon far fa-user-circle mr-2"></i> Management User</a> --}}
+                <div class="btn-group dropdown me-2">
                     <button type="button" class="btn btn-flush-dark flush-outline-hover dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="far fa-user-circle me-2"></i> Management User
                     </button>
                     <div class="dropdown-menu dropdown-bordered">
                         <a class="dropdown-item" href="{{route('users.direksi.index')}}"><i class="dropdown-icon las la-user"></i></i><span>DIRUT</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{route('users.hrd.index')}}"><i class="dropdown-icon las la-user"></i><span>BUK</span></a>
+                        {{-- <a class="dropdown-item" href="{{route('users.hrd.index')}}"><i class="dropdown-icon las la-user"></i><span>BUK</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{route('users.manager.index')}}"><i class="dropdown-icon las la-user"></i></i><span>PIC</span></a>
-                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-divider"></div> --}}
                         <a class="dropdown-item" href="{{route('users.finance.index')}}"><i class="dropdown-icon las la-user"></i></i><span>Finance</span></a>
                     </div>
-                </div> --}}
+                </div>
             </li>
             @endif
             <li class="nav-item">
