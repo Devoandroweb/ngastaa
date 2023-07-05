@@ -24,7 +24,7 @@ class DataVisitResource extends JsonResource
             'tanggal' => tanggal_indo($this->tanggal),
             'jam' => get_jam($this->check_in),
             'check_out' => $this->check_out != null ? get_jam($this->check_out) : null,
-            'foto' => url("public/uploads".$this->foto),
+            'foto' => url("public/uploads/".$this->foto),
         ];
     }
 }
