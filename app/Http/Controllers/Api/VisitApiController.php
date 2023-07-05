@@ -47,7 +47,7 @@ class VisitApiController extends Controller
                     $file =  request()->file('image');
                     $foto = uploadImage(public_path("visit/$nip"),$file);
                 }else{
-                    $foto = "";
+                    return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Foto/Image tidak boleh kosong!']),200);
                 }
                 $cr = false;
                 // dd($newOrOld);
@@ -90,7 +90,7 @@ class VisitApiController extends Controller
                 if ($cr) {
                     return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Kunjungan!', 'keterangan' => 'pagi']),200);
                 } else {
-                    return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),400);
+                    return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),200);
                 }
             }
             //code...
