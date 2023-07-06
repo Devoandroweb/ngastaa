@@ -82,6 +82,10 @@ use App\Http\Controllers\Users\DireksiController;
 use App\Http\Controllers\Users\FinanceController;
 use App\Http\Controllers\Users\HrdController;
 use App\Http\Controllers\Users\ManagerController;
+use App\Models\Payroll\DataPayroll;
+use App\Models\Payroll\GeneratePayroll;
+use App\Models\Payroll\PayrollKurang;
+use App\Models\Payroll\PayrollTambah;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 

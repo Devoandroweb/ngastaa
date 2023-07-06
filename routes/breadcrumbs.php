@@ -25,6 +25,10 @@ Breadcrumbs::for('edit-pegawai', function (BreadcrumbTrail $trail,$nip) {
     $trail->parent('profile-pegawai');
     $trail->push('Edit Pegawai', route('pegawai.pegawai.edit',$nip));
 });
+Breadcrumbs::for('kontrak-pegawai', function (BreadcrumbTrail $trail,$nip) {
+    $trail->parent('profile-pegawai');
+    $trail->push('Kontrak Pegawai', route('pegawai.pegawai.kontrak',$nip));
+});
 
 Breadcrumbs::for('import-pegawai', function (BreadcrumbTrail $trail) {
     $trail->parent('profile-pegawai');

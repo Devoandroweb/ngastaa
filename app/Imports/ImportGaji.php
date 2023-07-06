@@ -7,8 +7,10 @@ use App\Models\Master\Payroll\Potongan;
 use App\Models\Master\Payroll\Tambahan;
 use App\Models\Master\Payroll\Tunjangan;
 use App\Models\Payroll\DataPayroll;
+use App\Models\Payroll\GeneratePayroll;
 use App\Models\Payroll\PayrollKurang;
 use App\Models\Payroll\PayrollTambah;
+use App\Repositories\Payroll\PayrollRepository;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +26,10 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
     protected $listPotongan = [];
     protected $colGajiPokok = 4;
     protected $colTunjangan = 7;
+    protected $colBonus = 0;
     protected $colPotongan = 0;
     protected $colTotalTunjangan = 0;
+    protected $colTotalBonus = 0;
     protected $colTotalPenerimaan = 0;
     protected $colTotalPotongan = 0;
     protected $colTotalGaji = 0;
@@ -33,16 +37,24 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
 
     # Varibale For Database
     protected $listPayrollTambah = [];
+    protected $listBonus = [];
     protected $listPayrollKurang = [];
 
     protected $tunjangan;
+    protected $bonus;
     protected $potongan;
+
+    protected $payrollRepository;
     /**
     * @param Collection $collection
     */
-    function __construct(){
+    function __construct(PayrollRepository $payrollRepository){
         $this->tunjangan = Tunjangan::all();
         $this->potongan = Pengurangan::all();
+        $this->bonus = Tambahan::all();
+
+        $this->payrollRepository = $payrollRepository;
+        // $this->payrollRepository->calculatePresensi();
     }
     public function collection(Collection $collection)
     {
@@ -59,8 +71,19 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
                     }
                 }
                 # ------------------------------------------------------------------------
+                # Buat List Bonus --------------------------------------------------------
+                $this->colBonus = count($this->listTunjangan)+8;
+                $this->checkExistingBonus($collection[1][$this->colBonus]);
+                for ($i=$this->colBonus; $i < count($collection[1]); $i++) {
+                    if($collection[1][$i]){
+                        array_push($this->listBonus,$collection[1][$i]);
+                    }else{
+                        break;
+                    }
+                }
+                # ------------------------------------------------------------------------
                 # Buat List Potongan -----------------------------------------------------
-                $this->colPotongan = count($this->listTunjangan)+9;
+                $this->colPotongan = count($this->listTunjangan)+8+count($this->listBonus)+2;
                 $this->checkExistingPotongan($collection[1][$this->colPotongan]);
                 for ($i=$this->colPotongan; $i < count($collection[1]); $i++) {
                     if($collection[1][$i]){
@@ -69,10 +92,13 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
                         break;
                     }
                 }
+                // dd($this->listPotongan);
                 # ------------------------------------------------------------------------
                 # Configuration Col-------------------------------------------------------
                 $this->colTotalTunjangan = $this->colTunjangan+count($this->listTunjangan);
-                $this->colTotalPenerimaan = $this->colTotalTunjangan+1;
+                $this->colTotalBonus = $this->colTotalTunjangan+count($this->listBonus)+1;
+                $this->colTotalPenerimaan = $this->colTotalBonus+1;
+                // dd($collection[2],$collection[2][$this->colTotalPenerimaan],$this->colTotalPenerimaan);
                 $this->colTotalPotongan = $this->lastCol-2;
                 $this->colTotalGaji = $this->lastCol-1;
                 # -------------------------------------------------------------------------
@@ -102,10 +128,29 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
                             $k++;
                         }
                     }
+                    # ------------------------------------------------------------------
+                    # Payroll Tambah (Bonus) ---------------------------------------------------
+                    // dd($this->listBonus);
+                    $m = 0;
+                    for ($n=$this->colBonus; $n < $this->colTotalBonus; $n++) {
+                        if(!in_array($row[$n],[null,0])){
+                            $kodeBonus = $this->searchKodeBonus($this->listBonus[$m]);
+                            $nominalBonus = $row[$n];
+                            $this->listPayrollTambah[] = [
+                                'nip' => $nip,
+                                'kode_payroll' => $kodePayroll,
+                                'kode_tambahan' => $kodeBonus,
+                                'keterangan' => $this->listBonus[$m],
+                                'nilai' => $nominalBonus,
+                            ];
+                            $m++;
+                        }
+                    }
                     if(count($this->listPayrollTambah) != 0){
                         $dataSaveForPayrollTambah[] = $this->listPayrollTambah;
                     }
                     $this->listPayrollTambah = [];
+                    // dd($dataSaveForPayrollTambah);
                     # ------------------------------------------------------------------
                     # Payroll Kurang ---------------------------------------------------
                     $l = 0;
@@ -174,6 +219,7 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
                 # -------------------------------------------------------------------------
                 #Insert Into Data Payroll -------------------------------------------------
                 DataPayroll::insert($dataSaveForDataPayroll);
+                $this->payrollRepository->insertWithDivisi($kodePayroll);
                 # -------------------------------------------------------------------------
             });
             DB::commit();
@@ -202,16 +248,24 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
             return throw new Exception($this->errorMessageTunjangan());
         }
     }
+    function checkExistingBonus($bonus){
+        if(!$bonus){
+            return throw new Exception($this->errorMessageBonus());
+        }
+    }
     function checkExistingPotongan($potongan){
         if(!$potongan){
-            return throw new Exception($this->errorMessagePotongan());
+            return throw new Exception($this->errorMessagePotongan()." | $potongan");
         }
     }
     function errorMessageTunjangan(){
-        return "Tunjangan Kosong";
+        return "Tunjangan Tidak tersedia dalam Master";
+    }
+    function errorMessageBonus(){
+        return "Bonus/Tambahan Tidak tersedia dalam Master";
     }
     function errorMessagePotongan(){
-        return "Potongan Kosong";
+        return "Potongan Tidak tersedia dalam Master";
     }
 
     #Searing Data
@@ -227,6 +281,14 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
         foreach ($this->potongan as $value) {
             if($namaPotongan == $value->nama){
                 return $value->kode_kurang;
+            }
+        }
+        return null;
+    }
+    function searchKodeBonus($namaBonus){
+        foreach ($this->bonus as $value) {
+            if($namaBonus == $value->nama){
+                return $value->kode_tambah;
             }
         }
         return null;

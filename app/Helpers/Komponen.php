@@ -33,10 +33,10 @@ function optionGolonganDarah($v = null)
 function optionStatusKawin($v = null)
 {
     $options = [
-        [ 'value' => 'belum kawin', 'kode_kawin'=> 'belum kawin', 'label'=> 'Belum kawin'],
-        [ 'value' => 'kawin', 'kode_kawin'=> 'kawin', 'label'=> 'Kawin'],
-        [ 'value' => 'janda', 'kode_kawin'=> 'janda', 'label'=> 'Janda'],
-        [ 'value' => 'duda', 'kode_kawin'=> 'duda', 'label'=> 'Duda'],
+        [ 'value' => 'belum menikah', 'kode_kawin'=> 'belum menikah', 'label'=> 'Belum Menikah'],
+        [ 'value' => 'menikah', 'kode_kawin'=> 'menikah', 'label'=> 'Menikah'],
+        // [ 'value' => 'janda', 'kode_kawin'=> 'janda', 'label'=> 'Janda'],
+        // [ 'value' => 'duda', 'kode_kawin'=> 'duda', 'label'=> 'Duda'],
     ];
     $html = "";
     foreach ($options as $s) {
@@ -104,7 +104,7 @@ function optionJenisJabatan($v = null)
         ["value"=> '2', "jenis_jabatan"=> '2', "label"=> 'Fungsional' ],
         ["value"=> '4', "jenis_jabatan"=> '4', "label"=> 'Pelaksana' ],
     ];
-    
+
     $html = "";
     foreach ($options as $s) {
         if ($v == $s['value']) {
@@ -121,7 +121,7 @@ function optionTipeGaji($v = null)
         ["value"=> '1', "tipe_gaji"=> '1', "label"=> 'UMK' ],
         ["value"=> '2', "tipe_gaji"=> '2', "label"=> 'Non-UMK' ],
     ];
-    
+
     $html = "";
     foreach ($options as $s) {
         if ($v == $s['value']) {
@@ -150,7 +150,7 @@ function opttionJenisBahasa($bahasa = null)
         ["value" => 'asing', "jenis"=> 'asing', "label"=> 'Asing' ],
         ["value" => 'daerah', "jenis"=> 'daerah', "label"=> 'Daerah' ],
     ];
-    
+
     $html = "";
     foreach ($options as $s) {
         if ($bahasa == $s['value']) {
@@ -163,12 +163,12 @@ function opttionJenisBahasa($bahasa = null)
 }
 function optionPenguasaanBahasa($penguasaan = null)
 {
-    
+
     $options = [
         [ "value" => 'pasif', "penguasaan"=> 'pasif', "label"=> 'Pasif' ],
         [ "value" => 'aktif', "penguasaan"=> 'aktif', "label"=> 'Aktif' ],
     ];
-    
+
     $html = "";
     foreach ($options as $s) {
         if ($penguasaan == $s['value']) {
@@ -182,12 +182,12 @@ function optionPenguasaanBahasa($penguasaan = null)
 
 function optionJenisSpt($jenisspt = null)
 {
-    
+
     $options = [
         [ "value" => '1770 S', "jenis_spt"=> '1770 S', "label"=> '1770 S' ],
         [ "value" => '1770 SS', "jenis_spt"=> '1770 SS', "label"=> '1770 SS' ],
     ];
-    
+
     $html = "";
     foreach ($options as $s) {
         if ($jenisspt == $s['value']) {
@@ -200,12 +200,12 @@ function optionJenisSpt($jenisspt = null)
 }
 function optionJenisInstansi($jenisinstansi = null)
 {
-    
+
     $options = [
         [ "value" => 'negeri', "jenis_pmk"=> 'negeri', "label"=> 'Negeri' ],
         [ "value" => 'swasta', "jenis_pmk"=> 'swasta', "label"=> 'Swasta' ],
     ];
-    
+
     $html = "";
     foreach ($options as $s) {
         if ($jenisinstansi == $s['value']) {

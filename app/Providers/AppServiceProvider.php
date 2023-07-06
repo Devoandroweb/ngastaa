@@ -6,6 +6,8 @@ use App\Repositories\Izin\IzinRepository;
 use App\Repositories\Izin\IzinRepositoryImplement;
 use App\Repositories\Password\PasswordRepository;
 use App\Repositories\Password\PasswordRepositoryImplement;
+use App\Repositories\Payroll\PayrollRepository;
+use App\Repositories\Payroll\PayrollRepositoryImplement;
 use App\Repositories\Pegawai\PegawaiRepository;
 use App\Repositories\Pegawai\PegawaiRepositoryImplement;
 use App\Repositories\Pengumuman\PengumumanRepository;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepository::class,UserRepositoryImplement::class);
         $this->app->bind(PresensiRepository::class,PresensiRepositoryImplement::class);
         $this->app->bind(PengumumanRepository::class,PengumumanRepositoryImplement::class);
+        $this->app->bind(PayrollRepository::class,PayrollRepositoryImplement::class);
     }
 
     /**

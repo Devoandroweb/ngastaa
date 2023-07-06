@@ -57,6 +57,7 @@ class CutiApiController extends Controller
                 $namaFile = uploadImage(public_path("perizinan/$nip"),$file);
             }else{
                 $namaFile = "";
+                return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Gagal di ajukan, Foto/File tidak boleh kosong']),200);
             }
 
             $data = [
@@ -112,7 +113,7 @@ class CutiApiController extends Controller
 
     public function lists()
     {
-        $nip = request('nip');
+        $nip = request()->query('nip');
         $user = User::where('nip', $nip)->first();
         if($user){
             $dpc = DataPengajuanCuti::where('nip', $nip)->get();

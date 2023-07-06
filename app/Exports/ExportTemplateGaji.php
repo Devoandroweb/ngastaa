@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Kabupaten;
 use App\Models\Master\Payroll\Pengurangan;
+use App\Models\Master\Payroll\Tambahan;
 use App\Models\Master\Payroll\Tunjangan;
 use App\Models\Master\Payroll\Umk;
 use App\Models\Payroll\DaftarKurangPayroll;
@@ -33,14 +34,18 @@ class ExportTemplateGaji implements FromView, WithStartRow, ShouldAutoSize, With
     protected $pegawais;
     protected $potongans;
     protected $tunjangans;
+    protected $bonus;
     protected $countTunjangan;
+    protected $countBonus;
     protected $countPotongan;
     function __construct($pegawaiRepository){
         $this->pegawaiRepository = $pegawaiRepository;
         $this->potongans = Pengurangan::get();
         $this->tunjangans = Tunjangan::get();
+        $this->bonus = Tambahan::get();
         $this->countTunjangan = $this->tunjangans->count();
         $this->countPotongan = $this->potongans->count();
+        $this->countBonus = $this->bonus->count();
         $this->pegawais = $this->pegawaiRepository->allPegawaiWithRole()->get();
     }
     public function startCell(): string
@@ -51,12 +56,14 @@ class ExportTemplateGaji implements FromView, WithStartRow, ShouldAutoSize, With
     {
         $pegawais = $this->pegawais;
         $potongans = $this->potongans;
+        $bonus = $this->bonus;
 
         $tunjangans = $this->tunjangans;
         $countTunjangan = $this->countTunjangan;
+        $countBonus = $this->countBonus;
         $countPotongan = $this->countPotongan;
         $gajiUMK = Umk::get();
-        return view('pages.payroll.generate.template',compact('pegawais','potongans','gajiUMK','tunjangans','countTunjangan','countPotongan'));
+        return view('pages.payroll.generate.template',compact('pegawais','potongans','gajiUMK','tunjangans','bonus','countTunjangan','countPotongan','countBonus'));
     }
     public function startRow(): int
     {
@@ -67,7 +74,8 @@ class ExportTemplateGaji implements FromView, WithStartRow, ShouldAutoSize, With
 
         // Make sure you enable worksheet protection if you need any of the worksheet or cell protection features!
         $sheet->getParent()->getActiveSheet()->getProtection()->setSheet(true);
-        $cellOfFill = excelColumn(11+$this->countTunjangan+$this->countPotongan);
+        $cellOfFill = excelColumn(12+$this->countTunjangan+$this->countBonus+$this->countPotongan);
+
         // lock all cells then unlock the cell
         $sheet->getParent()->getActiveSheet()
             ->getStyle('G3:'.$cellOfFill.$this->pegawais->count()+2)
@@ -103,21 +111,21 @@ class ExportTemplateGaji implements FromView, WithStartRow, ShouldAutoSize, With
                 $validationForNumber->setError('Hanya boleh menggunakan Angka.');
                 $validationForNumber->setFormula1(1);
 
-                // Set validation for the range G3:Y42
-                $validationRange = 'G3:'.$event->sheet->getHighestColumn().$this->pegawais->count()+2;
                 $countColumn = Coordinate::columnIndexFromString($workSheet->getHighestColumn());
 
                 foreach ($this->pegawais as $iteration => $value) {
                     if(in_array($iteration,[0,1,2])){
                         continue;
                     }
-                    for ($i=7; $i < $countColumn; $i++) {
+                    # Looping banyak colom yang di gunakan, arti dri $countColumn+1, karena array di mulai dari 0 jadi biar sesuai, maka di tambah 1
+                    for ($i=7; $i < $countColumn+1; $i++) {
                         $column = excelColumn($i);
                         $exceptColumn = [
                             excelColumn($this->countTunjangan+8),
-                            excelColumn($this->countTunjangan+9),
-                            excelColumn($this->countTunjangan+9+$this->countPotongan+1),
-                            excelColumn($this->countTunjangan+9+$this->countPotongan+2),
+                            excelColumn($this->countTunjangan+9+$this->countBonus),
+                            excelColumn($this->countTunjangan+9+$this->countBonus+1),
+                            excelColumn($this->countTunjangan+9+$this->countBonus+1+$this->countPotongan+1),
+                            excelColumn($this->countTunjangan+9+$this->countBonus+1+$this->countPotongan+1+1),
                         ];
                         $cell = excelCoordinate($iteration,$i);
                         if(in_array($column,$exceptColumn)){

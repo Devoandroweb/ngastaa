@@ -14,7 +14,7 @@
             src: url({{ storage_path('fonts/Poppins-ExtraLight.ttf') }}) format('truetype');
             font-weight: 400;
             font-style: normal;
-         } 
+         }
         *{
              padding: 0;
              margin: 0;
@@ -30,7 +30,7 @@
             font-family: 'poppins';
             /* background-color: #0850A5; */
         }
-        
+
         header{
             background-color: #0850A5;
             color: #fff;
@@ -38,7 +38,7 @@
             height: 230px;
             /* margin-bottom: rem; */
         }
-       
+
         .logo{
             background: #fff;
             display: flex;
@@ -47,14 +47,14 @@
             height: 50px;
             padding: 5px;
             border-radius: 100%;
-            
+
         }
         .logo img{
             width: 100%;
         }
         .h-left{
             /* float: left; */
-            text-align: left; 
+            text-align: left;
 
         }
         .h-right{
@@ -79,7 +79,7 @@
             font-size: 12pt;
             position: relative;
             z-index: 1;
-            
+
         }
         .card-line {
             position: absolute;
@@ -200,13 +200,13 @@
                         <td width="83%">{{ $payroll->divisi }}</td>
                     </tr>
                     <tr>
-                        
+
                         <td>Jabatan</td>
                         <td width="2%">:</td>
                         <td>{{ $payroll->jabatan }}</td>
                     </tr>
                     <tr>
-                        
+
                         <td>Tanggal</td>
                         <td width="2%">:</td>
                         <td>{{ bulan($payroll->bulan)." - ".$payroll->tahun }}</td>
@@ -220,21 +220,20 @@
                     </tr>
                     <tr style="border-bottom: 1px solid #D3D3D3;">
                         <td colspan="2">
-                            <div class="title" style="font-family: poppins">Gaji Pokok dan Presensi</div>
-                            <ul>
-                                <li>Gaji Pokok <span style="float:right;">Rp. {{ number_indo($payroll->gaji_pokok) }}</span></li>
-                                <li>Kehadiran  <span style="float:right;">{{ number_indo($persen_kehadiran) }} %</span></li>
-                            </ul>
+                            <div class="title" style="font-family: poppins">Gaji Pokok <span style="float:right;">Rp. {{ number_indo($payroll->gaji_pokok) }}</span></div>
+                            {{-- <ul style="list-style: none"> --}}
+                                {{-- <li class="title" style="font-family: poppins;">Gaji Pokok <span style="float:right;">Rp. {{ number_indo($payroll->gaji_pokok) }}</span></li> --}}
+                                {{-- <li>Kehadiran  <span style="float:right;">{{ number_indo($persen_kehadiran) }} %</span></li> --}}
+                            {{-- </ul> --}}
                         </td>
                         <td style="text-align: right;">
-                            <div style="font-family: poppins;font-weight: 600;">Rp. {{ number_indo($payroll->gaji_pokok) }}</div>
+                            <div style="font-family: poppins;font-weight: 600;float:right;">Rp. {{ number_indo($payroll->gaji_pokok) }}</div>
                         </td>
                     </tr>
                     <tr style="border-bottom: 0.1px solid #D3D3D3 !important;">
                         <td colspan="2">
                             <div class="title" style="font-family: poppins">Tunjangan</div>
                             <ul>
-                                <li>Jabatan <span style="float:right;">Rp. {{ number_indo($payroll->tunjangan) }}</span></li>
                                 @foreach ($penambahan as $tambah)
                                 <li>{{ $tambah->keterangan }} <span style="float:right;">Rp. {{ number_indo($tambah->nilai) }}</span></li>
                                 @endforeach

@@ -6,6 +6,7 @@ use App\Exports\ExportTemplateGaji;
 use App\Http\Controllers\Controller;
 use App\Imports\ImportGaji;
 use App\Models\Payroll\PayrollKurang;
+use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,8 +14,13 @@ use Maatwebsite\Excel\Facades\Excel;
 class CustomPayrollController extends Controller
 {
     protected $pegawaiRepository;
-    function __construct(PegawaiRepository $pegawaiRepository){
+    protected $payrollRepository;
+    function __construct(
+        PegawaiRepository $pegawaiRepository,
+        PayrollRepository $payrollRepository
+        ){
         $this->pegawaiRepository = $pegawaiRepository;
+        $this->payrollRepository = $payrollRepository;
     }
     function index() {
         return view('pages.payroll.generate.import');
@@ -27,8 +33,8 @@ class CustomPayrollController extends Controller
     }
     function importGaji() {
         // dd(request()->file('file'));
-        
-        $response = Excel::import(new ImportGaji(),request()->file('file'));
+
+        $response = Excel::import(new ImportGaji($this->payrollRepository),request()->file('file'));
 
     }
 }

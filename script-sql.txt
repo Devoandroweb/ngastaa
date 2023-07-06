@@ -1,1 +1,4 @@
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES (NULL, 'finance', 'web', NULL, NULL);
+ALTER TABLE `data_payroll` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `generate_payroll` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `data_payroll` ADD `persen_kehadiran` INT NOT NULL DEFAULT '0' AFTER `tunjangan`;

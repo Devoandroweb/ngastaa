@@ -36,6 +36,8 @@
             <td rowspan="2" style="{{$styleAlignMiddle}}">Gaji Pokok *</td>
             <td colspan="{{$countTunjangan}}" style="{{$styleAlignMiddle}}">Tunjangan</td>
             <td rowspan="2" style="{{$styleAlignMiddle}}">Total Tunjangan</td>
+            <td colspan="{{$countBonus}}" style="{{$styleAlignMiddle}}">Insentif</td>
+            <td rowspan="2" style="{{$styleAlignMiddle}}">Total Insentif</td>
             <td rowspan="2" style="{{$styleAlignMiddle}}">Total Penerimaan</td>
             <td colspan="{{$countPotongan}}" style="{{$styleAlignMiddle}}">Potongan</td>
             <td rowspan="2" style="{{$styleAlignMiddle}}">Total Potongan</td>
@@ -43,6 +45,9 @@
         </tr>
         <tr>
             @foreach ($tunjangans as $item)
+                <td>{{$item->nama}}</td>
+            @endforeach
+            @foreach ($bonus as $item)
                 <td>{{$item->nama}}</td>
             @endforeach
             @foreach ($potongans as $item)
@@ -56,29 +61,39 @@
         @endphp
         @foreach ($pegawais as $pegawai)
             @php
-                $startCoorTotalTujangan = $loop->iteration+2; # X/ROW
-                $endCoorTotalTunjangan = ($countTunjangan+7); # Y/COL
-
-                $row = ($loop->iteration+2);
-
-                $startCellTunjangan = "H".$row;
-                $endColTunjangan = $countTunjangan+7;
-                $endCellTunjangan = excelCoordinate($row,($endColTunjangan));
-
-                $sumTunjangan = "=SUM($startCellTunjangan:$endCellTunjangan)";
+                $row = ($loop->iteration+2);# X/ROW
 
                 $coorGajiPokok = "G".$row;
-                $coorTotalTunjangan = excelCoordinate($startCoorTotalTujangan,$endCoorTotalTunjangan);
-                $sumTotalPenerimaan = "=SUM($coorGajiPokok:$coorTotalTunjangan)";
 
-                $startCellPotongan = excelColumn(($endColTunjangan+3)).$row;
-                $endCellPotongan = excelCoordinate($row,(($endColTunjangan+2)+$countPotongan));
+                $startCellTunjangan = "H".$row;
+                $endColTunjangan = $countTunjangan+7;# Y/COL
+                $endCellTunjangan = excelCoordinate($row,($endColTunjangan));
+                $manyColumnInTunjangan = $endColTunjangan+1;
+                $sumTunjangan = "=SUM($startCellTunjangan:$endCellTunjangan)";
+                $coorTotalTunjangan = excelCoordinate($row,$manyColumnInTunjangan);
 
+                $startColBonus = $manyColumnInTunjangan+1;
+                $endColBonus = $manyColumnInTunjangan+$countBonus;
+                $startCellBonus = excelCoordinate($row,$startColBonus);
+                $endCellBonus = excelCoordinate($row,$endColBonus);
+                $manyColumnBonus = $endColBonus+1;
+                $sumBonus = "=SUM($startCellBonus:$endCellBonus)";
+                $coorTotalBonus = excelCoordinate($row,$manyColumnBonus);
+
+                $sumTotalPenerimaan = "=$coorGajiPokok+$coorTotalBonus+$coorTotalTunjangan";
+                $manyColumnPenerimaan = $manyColumnBonus+1;
+                $coorTotalPenerimaan = excelCoordinate($row,$manyColumnPenerimaan);
+
+                $startColPotongan = $manyColumnPenerimaan+1;
+                $endColPotonngan = $manyColumnPenerimaan+$countPotongan;
+                $startCellPotongan = excelCoordinate($row,$startColPotongan);
+                $endCellPotongan = excelCoordinate($row,$endColPotonngan);
+                $manyColumnPotongan = $endColPotonngan+1;
                 $sumPotongan = "=SUM($startCellPotongan:$endCellPotongan)";
+                $coorTotalPotongan = excelCoordinate($row,$manyColumnPotongan);
 
-                $cellTotalPenerimaan = excelCoordinate($startCoorTotalTujangan,$endCoorTotalTunjangan+2);
-                $cellTotalPotongan = excelCoordinate($startCoorTotalTujangan,(($endColTunjangan+3)+$countPotongan));
-                $totalGaji = "=($cellTotalPenerimaan-$cellTotalPotongan)";
+                $totalGaji = "=($coorTotalPenerimaan-$coorTotalPotongan)";
+                // dd($sumTotalPenerimaan,$coorTotalPotongan);
                 // dd($totalGaji);
             @endphp
             <tr>
@@ -94,6 +109,10 @@
                 <td></td>
                 @endforeach
                 <td>{{$sumTunjangan}}</td>
+                @foreach ($bonus as $item)
+                <td></td>
+                @endforeach
+                <td>{{$sumBonus}}</td>
                 <td>{{$sumTotalPenerimaan}}</td>
                 @foreach ($potongans as $item)
                 <td></td>
