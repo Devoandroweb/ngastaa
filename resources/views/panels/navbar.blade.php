@@ -52,7 +52,7 @@
                 </div>
                 {{-- END CLOCK --}}
             </li>
-            @if(role('owner'))
+            @if(role('admin'))
             <li class="nav-item d-none d-md-block">
                 {{-- <a class="btn btn-flush-dark flush-outline-hover" href="{{route('users.direksi.index')}}"><i class="dropdown-icon far fa-user-circle mr-2"></i> Management User</a> --}}
                 <div class="btn-group dropdown me-2">
@@ -71,7 +71,7 @@
                 </div>
             </li>
             @endif
-            <li class="nav-item">
+            <li class="nav-item d-none">
                 <div class="dropdown dropdown-notifications">
                     <a href="#" class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover dropdown-toggle no-caret" data-bs-toggle="dropdown" data-dropdown-animation role="button" aria-haspopup="true" aria-expanded="false"><span class="icon"><span class="position-relative"><i class="far fa-bell"></i><span class="badge badge-danger badge-indicator position-top-end-overflow-1"></span></span></span></a>
                     <div class="dropdown-menu dropdown-menu-end p-0">
@@ -221,7 +221,7 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{route('password.index')}}">Akun</a>
                         <a class="dropdown-item" href="{{route('password.index')}}">Ubah Password</a>
-                        <a class="dropdown-item" href="{{url('logout')}}"><span class="me-2">Sing Out</span></a>
+                        <a class="dropdown-item" href="{{url('logout')}}"><span class="me-2">Sign Out</span></a>
 
                     </div>
                 </div>

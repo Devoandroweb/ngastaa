@@ -7,17 +7,20 @@ use App\Models\Master\StatusPegawai;
 use App\Models\Master\Tingkat;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Protection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithEvents, ShouldAutoSize, WithStyles, WithTitle
+class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithEvents, ShouldAutoSize, WithStyles, WithTitle, WithStartRow, WithColumnFormatting
 {
 
     protected  $selects;
@@ -28,7 +31,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
     {
         $jenisKelamin = ['Laki-Laki','Perempuan'];
         $agama = ['Islam', 'Kristen', 'Hindu', 'Budha', 'Kongucu', 'Katholik', 'Protestan'];
-        $statusKawin = ['Menikah','Belum Menikah'];
+        $statusKawin = ['Menikah','Belum Menikah','Cerai Hidup','Cerai Mati'];
         $golDarah = ['A','B','AB','O'];
         $statusPegawai = StatusPegawai::orderBy('nama')->pluck('nama')->toArray();
         $divisi = Skpd::orderBy('nama')->get(['kode_skpd','nama']);
@@ -64,9 +67,31 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
     }
     public function collection()
     {
-        return collect([]);
+        return collect([
+            ["1",
+            "28",
+            "Drs.",
+            "S.kom",
+            "Harun Ar-rosyid",
+            "Semarang",
+            "17 Agustus 1945",
+            "Laki-Laki",
+            "Islam",
+            "Menikah",
+            "O",
+            "123456789",
+            "6281809988812",
+            "arrosyid@gmail.com",
+            "Jl. Sukadana No. A2 Semarang, Kota Semarang",
+            "Jl. Sukadana No. A2 Semarang, Kota Semarang",
+            "Kontrak",
+            "Head Office PT Deta Sukses Makmur",
+            "Finance"]
+        ]);
     }
-
+    function startRow() : Int {
+        return 2;
+    }
 
     public function headings(): array
     {
@@ -92,7 +117,12 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
             "Jabatan"
         ];
     }
-
+    public function columnFormats(): array
+    {
+        return [
+            'M' => NumberFormat::FORMAT_NUMBER,
+        ];
+    }
     public function styles(Worksheet $sheet)
     {
         $lastColumn = $sheet->getHighestColumn();
@@ -106,8 +136,10 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
             ->getProtection()
             ->setLocked(Protection::PROTECTION_UNPROTECTED);
 
-        // styling first row
-        // $sheet->getStyle(1)->getFont()->setBold(true);
+        $sheet->getParent()->getActiveSheet()->getStyle('B')->getAlignment()->setVertical("middle");
+        $sheet->getParent()->getActiveSheet()->getStyle('B')->getAlignment()->setHorizontal("left");
+        $sheet->getParent()->getActiveSheet()->getStyle('M')->getAlignment()->setVertical("middle");
+        $sheet->getParent()->getActiveSheet()->getStyle('M')->getAlignment()->setHorizontal("left");
 
         return [
             // Style the first row as bold text.
@@ -158,6 +190,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
                         $event->sheet->getColumnDimension($column)->setAutoSize(true);
                     }
                 }
+
             },
         ];
     }

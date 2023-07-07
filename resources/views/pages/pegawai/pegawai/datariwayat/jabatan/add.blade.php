@@ -29,7 +29,7 @@
             <div class="form-check">
                 <input type="radio" id="customRadioc2" name="is_akhir" value="0" class="form-check-input" {{$Rjabatan?->is_akhir == 0 ? 'checked':'' }}>
                 <label class="form-check-label" for="customRadioc2">Riwayat Jabatan</label>
-            </div>    
+            </div>
         </div>
     </div>
     <div class="row">
@@ -67,13 +67,13 @@
         <div class="col-md-8">
             <div class="form-group">
                 <select class="form-control jabatanTingkat" id="" name="kode_tingkat" required disabled>
-                    
+
                 </select>
-                
+
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-4">
             <label class="form-label">No Kontrak</label>
@@ -86,7 +86,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <label class="form-label">Tanggal Kontrak</label>
+            <label class="form-label">Tanggal Mulai Kontrak</label>
         </div>
         <div class="col-md-8">
             <div class="form-group">
@@ -117,7 +117,7 @@
             </div>
         </div>
     </div>
-    
+
     <hr>
     <button type="submit" class="btn btn-primary btn-submit">Simpan</button>
     <button type="button" class="btn btn-light btn-back">Kembali</button>

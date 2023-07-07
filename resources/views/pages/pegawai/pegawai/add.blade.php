@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group has-validation">
-                        <label class="form-label">Kode Pegawai</label>
+                        <label class="form-label">Nomor Induk Pegawai</label>
                         <input class="form-control @error('nip') is-invalid @enderror"  placeholder="Masukkan Kode Pegawai" value="{{old('nip')}}" name="nip">
                         <div class="invalid-feedback">
                             {{ $errors->first('nip') }}

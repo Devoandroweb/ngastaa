@@ -220,7 +220,14 @@ class DashboardController extends Controller
         $pegawai = PegawaiResource::collection($pegawai);
         // dd($pegawai->resource);
         return $dataTables->of($pegawai)
-        ->addColumn('nama_jabatan', function ($row) {
+        ->addColumn('divisi_kerja', function ($row) {
+            $skpd = "-";
+            $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
+            if($jabatan){
+                $skpd = $jabatan?->skpd?->nama;
+            }
+            return $skpd;
+        })->addColumn('nama_jabatan', function ($row) {
             $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
             $nama_jabatan = $jabatan?->tingkat?->nama;
             return $nama_jabatan ?? "-";
@@ -228,13 +235,7 @@ class DashboardController extends Controller
         ->addColumn('tanggal_tmt', function ($row) {
             return tanggal_indo($row->tanggal_tmt);
         })
-        ->addColumn('images', function ($row) {
-            return '<div>
-                    <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
-                    <img src="' . $row->foto() . '" alt="user" class="avatar-img">
-                </div>';
-        })
-        ->rawColumns(['images'])
+        // ->rawColumns(['images'])
         ->addIndexColumn()
         ->toJson();
     }

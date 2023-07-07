@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pegawai;
 
+use App\Exports\ExportDataPegawai;
 use App\Exports\ExportSampleImportPegawai;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Select\SelectResource;
@@ -232,7 +233,7 @@ class PegawaiController extends Controller
     {
 
         // dd($kodeSkpd);
-        
+
         $kodeSkpd = request()->query('kode_skpd');
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
         return $dataTables->of($pegawai)
@@ -325,6 +326,11 @@ class PegawaiController extends Controller
         //         'Content-Type' => 'application/vnd.ms-excel',
         //         'Content-Disposition' => 'inline; filename="' . $response . '"'
         //     ]);
+    }
+    function export(){
+        $response = Excel::download(new ExportDataPegawai($this->pegawaiRepository), "data-pegawai.xlsx");
+        ob_end_clean();
+        return $response;
     }
     function resetDevice($nip){
         try {

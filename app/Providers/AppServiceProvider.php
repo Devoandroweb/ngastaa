@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Divisi\DivisiRepository;
+use App\Repositories\Divisi\DivisiRepositoryImplement;
 use App\Repositories\Izin\IzinRepository;
 use App\Repositories\Izin\IzinRepositoryImplement;
 use App\Repositories\Password\PasswordRepository;
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PresensiRepository::class,PresensiRepositoryImplement::class);
         $this->app->bind(PengumumanRepository::class,PengumumanRepositoryImplement::class);
         $this->app->bind(PayrollRepository::class,PayrollRepositoryImplement::class);
+        $this->app->bind(DivisiRepository::class,DivisiRepositoryImplement::class);
     }
 
     /**

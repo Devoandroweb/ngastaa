@@ -2,7 +2,7 @@
 <form class="edit-post-form" action="{{url('pegawai/jabatan/'.$pegawai->nip)}}" method="post">
     <input type="hidden" name="id" value="{{$pegawai->id}}">
     @csrf
-    
+
     <div class="row mb-3">
         <div class="col-md-4">
             <label class="form-label">Pilihan</label>
@@ -17,7 +17,7 @@
             <div class="form-check">
                 <input type="radio" id="riwayat_jabatan" name="riwayat_jabatan" class="form-check-input" checked>
                 <label class="form-check-label" for="riwayat_jabatan">Riwayat Jabatan</label>
-            </div>    
+            </div>
         </div>
     </div>
     <div class="row">
@@ -79,7 +79,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <label class="form-label">Tanggal Kontrak</label>
+            <label class="form-label">Tanggal Mulai Kontrak</label>
         </div>
         <div class="col-md-8">
             <div class="form-group">
@@ -120,5 +120,5 @@
     <a href="{{url('pegawai/keluarga/')}}" class="btn btn-light">Kembali</a>
 </form>@endsection
 @push('js')
-    
+
 @endpush

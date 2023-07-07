@@ -35,7 +35,8 @@ function optionStatusKawin($v = null)
     $options = [
         [ 'value' => 'belum menikah', 'kode_kawin'=> 'belum menikah', 'label'=> 'Belum Menikah'],
         [ 'value' => 'menikah', 'kode_kawin'=> 'menikah', 'label'=> 'Menikah'],
-        // [ 'value' => 'janda', 'kode_kawin'=> 'janda', 'label'=> 'Janda'],
+        [ 'value' => 'cerai_hidup', 'kode_kawin'=> 'cerai_hidup', 'label'=> 'Cerai Hidup'],
+        [ 'value' => 'cerai_mati', 'kode_kawin'=> 'cerai_mati', 'label'=> 'Cerai Mati'],
         // [ 'value' => 'duda', 'kode_kawin'=> 'duda', 'label'=> 'Duda'],
     ];
     $html = "";

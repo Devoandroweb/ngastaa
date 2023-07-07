@@ -39,7 +39,7 @@
                         <i class="bi-check-circle-fill fs-6 text-blue" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Top endorsed"></i>
                     </h4>
                     <p>
-                        Venenatis tellus in metus vulputate
+                        Sisa Cuti : <span class="badge badge-danger">{{$pegawai->maks_cuti}}</span>
                     </p>
                     <ul class="list-inline fs-7 mt-2 mb-0">
                         <li class="list-inline-item d-sm-inline-block d-block mb-sm-0 mb-1 me-3">

@@ -116,9 +116,12 @@ class VisitController extends Controller
                 return "-";
             })
             ->addColumn('opsi', function ($row) {
-                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.visit.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='delete text-danger me-2' tooltip='Hapus' href='" . route('master.visit.delete', $row->id) . "'>" . icons('trash') . "</a>";
-                $html .= "<a class='text-info' tooltip='Hapus' href='" . url('visit_qr/'.$row->qr) . "'>" . icons('download') . " Unduh QR</a>";
+                $html = "-";
+                if(role('owner') || role('admin')){
+                    $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.visit.edit', $row->id) . "'>" . icons('pencil') . "</a>";
+                    $html .= "<a class='delete text-danger me-2' tooltip='Hapus' href='" . route('master.visit.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                    $html .= "<a class='text-info' tooltip='Hapus' href='" . url('visit_qr/'.$row->qr) . "'>" . icons('download') . " Unduh QR</a>";
+                }
                 return $html;
             })
             ->rawColumns(['opsi','qr','jenis_visit'])

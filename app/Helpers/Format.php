@@ -479,7 +479,7 @@ function activeMenu($key = "")
     if(in_array($key,$urlPathArray)){
         return "active";
     }
-
+    
     return "";
 }
 

@@ -247,9 +247,9 @@ class PresensiApiController extends Controller
         // }
         $kode_shift = null;
         $kode_jam_kerja = null;
-        if($user->jamKerja->count() > 0){
+        if($user->jamKerja->where('is_akhir',1)->count() > 0){
             $kode_jam_kerja = $user->jamKerja->where('is_akhir',1)->first()?->kode_jam_kerja;
-        }elseif($user->riwayat_shift->count() > 0){
+        }elseif($user->riwayat_shift->where('is_akhir',1)->count() > 0){
             // dd($user->riwayat_shift[0]);
             $kode_shift = $user->riwayat_shift[0]->kode_shift;
         }

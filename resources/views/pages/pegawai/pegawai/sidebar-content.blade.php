@@ -226,7 +226,7 @@
                                 <span class="nav-link-text">Penguasaan Bahasa</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link item-sidebar-content tab-datatable" href="#data_koor"
                             data-tableurl="{{konfigSptTahunan($pegawai['nip'])['url']}}"
                             data-tablecolumn='{!!json_encode(konfigSptTahunan($pegawai['nip'])['data'])!!}'
@@ -235,7 +235,7 @@
                                 <span class="nav-icon-wrap">{!!icons('c-arror-right')!!}</span>
                                 <span class="nav-link-text">Rp. SPT Tahunan</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item ">
                             <a class="nav-link item-sidebar-content tab-datatable" data-tipepage="33" href="#pengalaman"
                             data-tableurl="{{konfigPengalamanKerja($pegawai['nip'])['url']}}"

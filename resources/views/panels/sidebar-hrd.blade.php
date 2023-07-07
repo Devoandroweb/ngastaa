@@ -19,7 +19,7 @@
         <span class="nav-link-text">Lokasi Kerja</span>
     </a>
 </li>
-<li class="nav-item {{activeMenu("lokasi")}}">
+<li class="nav-item {{activeMenu("visit")}}">
     <a class="nav-link" href="{{route('master.visit.index')}}">
         <span class="nav-icon-wrap">
             <span class="svg-icon">

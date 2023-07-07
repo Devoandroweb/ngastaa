@@ -209,6 +209,7 @@ Route::middleware(['auth'])
                         Route::get('add', 'add')->name('add');
                         Route::get('datatable', 'datatable')->name('datatable');
                         Route::get('import_add', 'import_add')->name('import_add');
+                        Route::get('export', 'export')->name('export');
                         Route::post('import_pegawai', 'import_pegawai')->name('import_pegawai');
                         Route::get('json', 'json')->name('json');
                         Route::get('json-skpd', 'json_skpd')->name('json_skpd');

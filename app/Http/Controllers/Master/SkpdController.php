@@ -7,13 +7,16 @@ use App\Http\Resources\Master\SkpdResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Models\Kabupaten;
 use App\Models\Master\Skpd;
+use App\Repositories\Divisi\DivisiRepository;
 use Yajra\DataTables\DataTables;
 
 class SkpdController extends Controller
 {
     protected $kabupaten;
-    function __construct(){
+    protected $divisiRepository;
+    function __construct(DivisiRepository $divisiRepository){
         $this->kabupaten = Kabupaten::orderBy('name')->get();
+        $this->divisiRepository = $divisiRepository;
     }
     public function index()
     {
@@ -133,7 +136,7 @@ class SkpdController extends Controller
         $data = request()->validate($rules);
         // dd($data);
 
-        $cr = Skpd::updateOrCreate(['id' => request('id')], $data);
+        $cr = $this->divisiRepository->updateOrCreate(request('id'),$data);
 
         if ($cr) {
             return redirect(route('master.skpd.index'))->with([
@@ -149,11 +152,13 @@ class SkpdController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $model = Skpd::query();
+        $model = $this->divisiRepository->allDivisionWithRole();
+        // dd($model->get());
         return $dataTables->eloquent($model)
             ->addColumn('opsi', function ($row) {
                 $html = "-";
-                if(role('admin') || role('owner')){
+
+                if(role('admin') || role('owner') || role('level_3')){
                     $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.skpd.edit', $row->id) . "'>" . icons('pencil') . "</a>";
                     // $html = "<a class='me-2 reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
                     $html .= "<a class='me-2 reset' tooltip='Reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";

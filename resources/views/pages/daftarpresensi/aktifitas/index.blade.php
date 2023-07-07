@@ -24,6 +24,7 @@
             <th>{{__('Jabatan')}}</th>
             <th>{{__('Jam Mulai')}}</th>
             <th>{{__('Tanggal')}}</th>
+            <th>{{__('Keterangan')}}</th>
         </tr>
     </thead>
     <tbody>
@@ -147,6 +148,10 @@
                     },{
                         data: 'created_at',
                         name: 'created_at',
+                        searchable: false,
+                    },{
+                        data: 'keterangan',
+                        name: 'keterangan',
                         searchable: false,
                     }],
             });

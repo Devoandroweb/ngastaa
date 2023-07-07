@@ -13,7 +13,8 @@ use App\Models\Pegawai\RiwayatTunjangan;
 
 function get_masa_kerja($tanggal)
 {
-    $date = new DateTime($tanggal);
+    // dd($tanggal);
+    $date = new DateTime(date('Y-m-d',strtotime($tanggal)));
     $now = new DateTime(date('Y-m-d'));
     $interval = $now->diff($date);
     return "$interval->y Tahun $interval->m Bulan";
@@ -88,7 +89,7 @@ function get_tunjangan_person($nip, $bulan, $tahun, $kode_tingkat, $kode_level, 
                 ->union($tingkat)
                 ->union($level)
                 ->get();
-    
+
 
     return $skpd;
 }
@@ -111,7 +112,7 @@ function get_tunjangan_selamanya($nip, $kode_tingkat, $kode_level, $kode_skpd)
                 ->union($tingkat)
                 ->union($level)
                 ->get();
-    
+
 
     return $skpd;
 }
@@ -134,7 +135,7 @@ function get_potongan_person($nip, $bulan, $tahun, $kode_tingkat, $kode_level, $
                 ->union($tingkat)
                 ->union($level)
                 ->get();
-    
+
 
     return $skpd;
 }
@@ -157,7 +158,7 @@ function get_potongan_selamanya($nip, $kode_tingkat, $kode_level, $kode_skpd)
                 ->union($tingkat)
                 ->union($level)
                 ->get();
-    
+
 
     return $skpd;
 }

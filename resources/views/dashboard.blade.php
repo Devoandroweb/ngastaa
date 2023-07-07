@@ -36,7 +36,7 @@
                     </div>
                     <div class="ps-3">
                         <h3>{{$presensi}}</h3>
-                        
+
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="ps-3">
                         <h3>{{$tahun}}</h3>
-                        
+
                     </div>
                 </div>
             </div>
@@ -112,15 +112,15 @@
                                     </div>
                                    <div class="media-body">
                                         <small>
-                                            <div class="text-high-em">{{$lokasi->nama}}</div> 
-                                            <div class="fs-7">Kode Lokasi : <span class="text-primary fw-bold">{{$lokasi->kode_lokasi}}</span></div> 
+                                            <div class="text-high-em">{{$lokasi->nama}}</div>
+                                            <div class="fs-7">Kode Lokasi : <span class="text-primary fw-bold">{{$lokasi->kode_lokasi}}</span></div>
                                         </small>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
-                            
-                            
+
+
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
         </div>
     </div>
 </div>
-<div class="row mb-5">
+<div class="row mb-5 d-none">
     <div class="col-lg-6 col-sm-12 mb-4 mb-md-0">
         <div class="card card-refresh shadow border-primary mb-0  h-100">
             <div class="refresh-container">
@@ -191,14 +191,15 @@
                     <thead>
                         <tr className="fw-bolder text-muted">
                             <th>{{__('No')}}</th>
-                            <th>{{__('Foto')}}</th>
-                            <th>{{__('No. Pegawai Nama Lengkap')}}</th>
-                            <th>{{__('Jabatan Divisi')}}</th>
-                            <th>{{__('Tanggal Berakhir')}}</th>
+                            <th>{{__('NIP')}}</th>
+                            <th>{{__('Nama Lengkap')}}</th>
+                            <th>{{__('Divisi Kerja')}}</th>
+                            <th>{{__('Jabatan')}}</th>
+                            <th>{{__('Tanggal Berakhir Kontrak')}}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -206,7 +207,7 @@
     </div>
 </div>
 <div class="row ">
-    <div class="col-sm-6">        
+    <div class="col-sm-6">
         <div class="card border-pink ">
             <div class="card-header border-bottom border-pink shadow card-header-action">
                 <h6 class="text-bold py-2"> Kepegawaian Berdasarkan Status Pegawai </h6>
@@ -214,9 +215,9 @@
                     <div class="d-flex">
                         <input type="text" name="year_payroll" class="form-control form-control-sm datepicker-single-year" value="{{date("d-m-Y")}}" id="">
                     </div>
-                    
+
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover full-screen"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="maximize"></i></span><span class="feather-icon d-none"><i data-feather="minimize"></i></span></span></a>
-                    
+
                 </div>
             </div>
             <div class="card-body">
@@ -224,7 +225,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6">        
+    <div class="col-sm-6">
         <div class="card border-pink ">
             <div class="card-header border-bottom border-pink shadow card-header-action">
                 <h6 class="text-bold py-2"> Kepegawaian Berdasarkan Perkawinan </h6>
@@ -232,9 +233,9 @@
                     <div class="d-flex">
                         <input type="text" name="year_payroll" class="form-control form-control-sm datepicker-single-year" value="{{date("d-m-Y")}}" id="">
                     </div>
-        
+
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover full-screen"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="maximize"></i></span><span class="feather-icon d-none"><i data-feather="minimize"></i></span></span></a>
-                    
+
                 </div>
             </div>
             <div class="card-body">
@@ -280,7 +281,7 @@ function initDatePickerSingleCL(){
         },
         function (start, end, label) {
             getPayroll(start.format("YYYY-MM-DD"),end.format("YYYY-MM-DD"));
-        }   
+        }
     );
 }
 function initDatePickerCC(){
@@ -300,7 +301,7 @@ function initDatePickerCC(){
         },
         function (start, end, label) {
             // getPayroll(start.format("YYYY-MM-DD"),end.format("YYYY-MM-DD"));
-        }   
+        }
     );
 }
 /* LINE CHART */
@@ -366,7 +367,7 @@ var initLineChart = (categories = [],data = [],max = 0) => {
             min: 0,
             max: max,
             labels: {
-                formatter: (value) => { 
+                formatter: (value) => {
                     var number = (value / 1000);
                     if(number >= 1000){
                         return (number/1000) + "M"
@@ -390,9 +391,9 @@ var initLineChart = (categories = [],data = [],max = 0) => {
     _CHART_LINE = new ApexCharts(document.querySelector("#line_chart_8"), _LINE_CHART_OPT);
     _CHART_LINE.render();
 }
-													
+
 // ===========================
-													
+
 /*Distributed Column*/
 var colors = @json($colorTotalPresensi);
 console.log(@json($dataTotalPresensi));
@@ -434,19 +435,19 @@ var options4 = {
 };
 
 var chart4 = new ApexCharts(document.querySelector("#column_chart_5"), options4);
-chart4.render();									
+chart4.render();
 // ==================================
 
-/*Animated Map*/	
+/*Animated Map*/
 am4core.ready(function() {
 
 	// Themes begin
 	am4core.useTheme(am4themes_animated);
 	// Themes end
-	
+
 	// Create map instance
 	var chart2 = am4core.create("anim_map_2", am4maps.MapChart);
-	
+
 	// Set map definition
 	chart2.geodata = am4geodata_worldLow;
 	chart2.homeZoomLevel = 7;
@@ -457,64 +458,64 @@ am4core.ready(function() {
 
 	// Set projection
 	chart2.projection = new am4maps.projections.Miller();
-	
+
 	// Create map polygon series
 	var polygonSeries = chart2.series.push(new am4maps.MapPolygonSeries());
 	polygonSeries.mapPolygons.template.fill = am4core.color("#E6E9EB");
 	polygonSeries.mapPolygons.template.fillOpacity = 1;
-    
+
 	// Exclude Antartica
 	polygonSeries.exclude = ["AQ"];
-	
+
 	// Make map load polygon (like country names) data from GeoJSON
 	polygonSeries.useGeodata = true;
-	
+
 	// Configure series
 	var polygonTemplate = polygonSeries.mapPolygons.template;
 	polygonTemplate.tooltipText = "{name}";
-	
-	
+
+
 	// Create hover state and set alternative fill color
 	var hs = polygonTemplate.states.create("hover");
 	hs.properties.fill = am4core.color("#CCE5E7");
-	
+
 	// Add image series
 	var imageSeries = chart2.series.push(new am4maps.MapImageSeries());
 	imageSeries.mapImages.template.propertyFields.longitude = "longitude";
 	imageSeries.mapImages.template.propertyFields.latitude = "latitude";
 	imageSeries.mapImages.template.tooltipText = "{title}";
 	imageSeries.mapImages.template.propertyFields.url = "url";
-	
+
 	var circle = imageSeries.mapImages.template.createChild(am4core.Circle);
 	circle.radius = 0.5;
 	circle.propertyFields.fill = "color";
-	
+
 	var circle2 = imageSeries.mapImages.template.createChild(am4core.Circle);
 	circle2.radius = 0.5;
 	circle2.propertyFields.fill = "color";
-	
-    
-	
+
+
+
 	circle2.events.on("inited", function(event){
 	  animateBullet(event.target);
 	})
-	
-	
+
+
 	function animateBullet(circle) {
 		var animation = circle.animate([{ property: "scale", from: 1, to: 5 }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
 		animation.events.on("animationended", function(event){
 		  animateBullet(event.target.object);
 		})
 	}
-	
+
 	var colorSet = new am4core.ColorSet();
 	console.log(@json($mapsRadar))
 	imageSeries.data = @json($mapsRadar);
 }); // end am4core.ready()
 
-														
+
 /*Donut Chart*/
-var status_pegawai_statistic = @json($status_pegawai_statistic); 
+var status_pegawai_statistic = @json($status_pegawai_statistic);
 console.log(@json($status_pegawai_statistic));
 console.log(status_pegawai_statistic.labels);
 var options1 = {
@@ -522,7 +523,7 @@ var options1 = {
 	chart: {
         type: 'donut',
         width: 450,
-        
+
     },
     plotOptions: {
         pie: {
@@ -543,7 +544,7 @@ var options1 = {
             }
         }
     },
-    
+
     labels:status_pegawai_statistic.labels,
     colors: status_pegawai_statistic.colors,
     responsive: [{
@@ -611,11 +612,14 @@ var _TABLE = null;
                         orderable: false,
                         searchable: false,
                     },{
-                        data: 'images',
-                        name: 'images',
+                        data: 'resource.nip',
+                        name: 'resource.nip',
                     },{
                         data: 'resource.name',
                         name: 'resource.name',
+                    },{
+                        data: 'divisi_kerja',
+                        name: 'divisi_kerja',
                     },{
                         data: 'nama_jabatan',
                         name: 'nama_jabatan',
@@ -623,7 +627,7 @@ var _TABLE = null;
                         data: 'tanggal_tmt',
                         name: 'tanggal_tmt',
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
