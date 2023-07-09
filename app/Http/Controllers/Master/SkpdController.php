@@ -157,11 +157,15 @@ class SkpdController extends Controller
         return $dataTables->eloquent($model)
             ->addColumn('opsi', function ($row) {
                 $html = "-";
+                // $html = "<a class='me-2 reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
 
-                if(role('admin') || role('owner') || role('level_3')){
+                if(getPermission('masterDataDivisiKerja','U')){
                     $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.skpd.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                    // $html = "<a class='me-2 reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
+                }
+                if(getPermission('masterDataDivisiKerja','RST')){
                     $html .= "<a class='me-2 reset' tooltip='Reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
+                }
+                if(getPermission('masterDataDivisiKerja','D')){
                     $html .= "<a class='delete text-danger delete' tooltip='Hapus' href='" . route('master.skpd.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 }
                 return $html;

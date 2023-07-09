@@ -26,6 +26,8 @@ class DashboardController extends Controller
     function __construct(PegawaiRepository $pegawaiRepository)
     {
         $this->pegawaiRepository = $pegawaiRepository;
+
+
     }
     public function __invoke()
     {
@@ -33,7 +35,7 @@ class DashboardController extends Controller
 
         $role = role('opd');
         $periode_bulan = date("Y-m");
-        $pegawai = $this->pegawaiRepository->getAllPegawai();
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole();
 
         $jumlah_pegawai = $pegawai->count();
 

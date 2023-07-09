@@ -5,9 +5,13 @@
     {{ Breadcrumbs::render('detail-pegawai') }}
 @endsection
 @section('header_action')
-@if(!role('finance'))
+@if(getPermission('pegawai','E'))
 <a href="{{route('pegawai.pegawai.export')}}" class="btn btn-danger me-3"><i class="fas fa-file-import"></i> {{__('Export')}}</a>
+@endif
+@if(getPermission('pegawai','I'))
 <a href="{{route('pegawai.pegawai.import_add')}}" class="btn btn-success me-3"><i class="fas fa-file-import"></i> {{__('Import')}}</a>
+@endif
+@if(getPermission('pegawai','C'))
 <a href="{{route('pegawai.pegawai.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
 @endsection
@@ -128,6 +132,7 @@
                 window.location.href = data.detail;
             });
         @endif
+        _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()
         $(".divisi").select2();
         $('.divisi').on('select2:select', function (e) {
             var data = e.params.data;

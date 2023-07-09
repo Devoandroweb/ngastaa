@@ -35,7 +35,7 @@ class JamKerjaController extends Controller
         $jamKerja = MJamKerja::orderBy('nama')->get();
         SelectResource::withoutWrapping();
         $jamKerja = SelectResource::collection($jamKerja);
-        
+
         return response()->json($jamKerja);
     }
     public function json_all()
@@ -129,9 +129,16 @@ class JamKerjaController extends Controller
                 return $row->toleransi_datang . " m";
             })
             ->addColumn('opsi', function ($row) {
-
-                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.jam_kerja.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.jam_kerja.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                $html = "";
+                if(getPermission('masterDataJamKerja','U')){
+                    $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.jam_kerja.edit', $row->id) . "'>" . icons('pencil') . "</a>";
+                }
+                if(getPermission('masterDataJamKerja','D')){
+                    $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.jam_kerja.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                }
+                if($html == ""){
+                    return "-";
+                }
                 return $html;
             })
             ->rawColumns(['opsi'])

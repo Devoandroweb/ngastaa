@@ -51,7 +51,7 @@ class ShiftController extends Controller
         // return inertia('Master/Shift/Add', compact('shift'));
         return view('pages.masterdata.datapresensi.shift.add', compact('shift','for'));
     }
-    
+
     public function edit(Shift $shift)
     {
         // return inertia('Master/Shift/Add', compact('shift'));
@@ -128,9 +128,16 @@ class ShiftController extends Controller
                 return $row->toleransi_datang . " m";
             })
             ->addColumn('opsi', function ($row) {
-
-                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.shift.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.shift.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                $html = "";
+                if(getPermission('masterDataShift','U')){
+                    $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.shift.edit', $row->id) . "'>" . icons('pencil') . "</a>";
+                }
+                if(getPermission('masterDataShift','D')){
+                    $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.shift.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                }
+                if($html == ""){
+                    return "-";
+                }
                 return $html;
             })
             ->rawColumns(['opsi'])

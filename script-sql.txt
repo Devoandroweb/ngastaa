@@ -4,3 +4,14 @@ ALTER TABLE `generate_payroll` CHANGE `created_at` `created_at` TIMESTAMP NULL D
 ALTER TABLE `data_payroll` ADD `persen_kehadiran` INT NOT NULL DEFAULT '0' AFTER `tunjangan`;
 ALTER TABLE `skpd` ADD `pemilik` VARCHAR(100) NOT NULL COMMENT 'ini berisi NIP' AFTER `deleted_at`;
 ALTER TABLE `skpd` CHANGE `pemilik` `pemilik` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'ini berisi NIP';
+
+CREATE TABLE `ngastaa`.`m_menu` (`id` INT NOT NULL AUTO_INCREMENT , `kode_menu` VARCHAR(120) NOT NULL , `nama` VARCHAR(120) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `m_menu` ADD `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `nama`, ADD `updated_at` DATETIME NULL DEFAULT NULL AFTER `created_at`;
+CREATE TABLE `ngastaa`.`role_menu` (`id` INT NOT NULL AUTO_INCREMENT , `kode_level` INT NOT NULL COMMENT 'untuk level jabatan' , `kode_menu` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `role_menu` CHANGE `kode_level` `kode_level` VARCHAR(110) NOT NULL COMMENT 'untuk level jabatan', CHANGE `kode_menu` `kode_menu` VARCHAR(110) NOT NULL;
+ALTER TABLE `users` ADD `created_by` INT NOT NULL DEFAULT '0' AFTER `updated_at`;
+ALTER TABLE `users` ADD `updated_by` INT NOT NULL DEFAULT '0' AFTER `created_by`;
+ALTER TABLE `role_menu` CHANGE `kode_level` `kode_tingkat` VARCHAR(110) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'untuk jabatan';
+ALTER TABLE `m_menu` ADD `sub_menu` TEXT NOT NULL AFTER `nama`;
+ALTER TABLE `role_menu` ADD `has_permission` VARCHAR(20) NOT NULL AFTER `kode_menu`;
+

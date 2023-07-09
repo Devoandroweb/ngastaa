@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Master\EselonResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Models\Master\Eselon;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class EselonController extends Controller
@@ -106,11 +107,11 @@ class EselonController extends Controller
         if (!request('id')) {
             $role['name'] = "level_".request('kode_eselon');
             $role['guard_name'] = "web";
-            Eselon::updateOrCreate(['name' => $role['name']], $role);
+            Role::updateOrCreate(['name' => $role['name']], $role);
             $rules['kode_eselon'] = 'required|unique:eselon';
         }
         $data = request()->validate($rules);
-
+        // dd($data);
         $cr = Eselon::updateOrCreate(['id' => request('id')], $data);
         if ($cr) {
             return redirect(route('master.eselon.index'))->with([

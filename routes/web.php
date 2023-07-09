@@ -77,6 +77,7 @@ use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\Presensi\LaporanVisitController;
 use App\Http\Controllers\Presensi\RekapAbsensHarianController;
 use App\Http\Controllers\Presensi\TotalPresensiController;
+use App\Http\Controllers\RoleMenuController;
 use App\Http\Controllers\UbahPassword;
 use App\Http\Controllers\Users\DireksiController;
 use App\Http\Controllers\Users\FinanceController;
@@ -1119,6 +1120,20 @@ Route::middleware(['auth'])
 
                         });
 
+            });
+
+        Route::prefix('setting')
+            ->name("setting.")
+            ->group(function(){
+                Route::prefix('role-menu')
+                ->name("role-menu.")
+                ->controller(RoleMenuController::class)
+                ->group(function(){
+                    Route::get('index','index')->name('index');
+                    Route::get('manage/{tingkat}','manage')->name('manage');
+                    Route::post('manage-save','manageSave')->name('manage-save');
+                    Route::get('datatable','datatable')->name('datatable');
+                });
             });
     });
 

@@ -4,7 +4,10 @@
     {{ Breadcrumbs::render('shift') }}
 @endsection
 @section('header_action')
+
+@if(getPermission('masterDataJamKerja','C'))
 <a href="{{route("master.jam_kerja.add")}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+@endif
 @endsection
 @section('content')
 <div class="invoice-body">

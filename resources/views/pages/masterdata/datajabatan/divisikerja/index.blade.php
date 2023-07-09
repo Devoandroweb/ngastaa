@@ -4,7 +4,7 @@
     {{ Breadcrumbs::render('divisi-kerja') }}
 @endsection
 @section('header_action')
-@if (!role('finance'))
+@if (getPermission('masterDataDivisiKerja','C'))
 <a href="{{route('master.skpd.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
 @endsection

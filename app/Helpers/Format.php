@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\MRoleMenu;
 use App\Models\Perusahaan;
 use Illuminate\Support\Facades\Request;
 use Spatie\Permission\Models\Role;
@@ -17,6 +18,28 @@ function role($string)
     }else{
         return false;
     }
+}
+
+function getLevelUser(){
+    if(!role('owner') || !role('admin')){
+        $jabatanAkhir = auth()->user()->jabatan_akhir->where('is_akhir',1)->first();
+        return $jabatanAkhir?->tingkat?->eselon?->kode_eselon;
+    }
+    return null;
+}
+function getIdUser(){
+    return auth()->user()?->id;
+}
+function getNipUser(){
+    return auth()->user()?->nip;
+}
+function getKodeJabatanUser(){
+    $jabatanAkhir = auth()->user()->jabatan_akhir->where('is_akhir',1)->first();
+    return $jabatanAkhir?->tingkat?->kode_tingkat;
+}
+function getKodeSkpdUser(){
+    $jabatanAkhir = auth()->user()->jabatan_akhir->where('is_akhir',1)->first();
+    return $jabatanAkhir?->skpd?->kode_skpd;
 }
 
 function storage($file)
@@ -479,7 +502,7 @@ function activeMenu($key = "")
     if(in_array($key,$urlPathArray)){
         return "active";
     }
-    
+
     return "";
 }
 
@@ -721,4 +744,50 @@ function excelColumnToNumber($column)
 
     // Mengembalikan nomor kolom
     return $columnNumber;
+}
+function convertTextCrud($value){
+    switch ($value) {
+        case 'C':
+            return "Tambah";
+        case 'R':
+            return "Lihat";
+        case 'U':
+            return "Ubah";
+        case 'D':
+            return "Hapus";
+        case 'I':
+            return "Import";
+        case 'E':
+            return "Export";
+        case 'RST':
+            return "Reset";
+        case 'US':
+            return "Ubah Shift";
+        case 'L':
+                return "Log";
+        case 'UQR':
+                return "Unduh QR";
+        case 'UG':
+            return "Upload Gaji";
+        case 'RG':
+            return "Regenerate";
+        case 'DT':
+            return "Detail";
+        default:
+            # code...
+            break;
+    }
+}
+function getPermission($kodeMenu,$permisson){
+    $kodeTingkat = getKodeJabatanUser();
+    $roleMenus = MRoleMenu::where('kode_tingkat',$kodeTingkat)->get();
+    foreach ($roleMenus as $key => $value) {
+        if($kodeMenu == $value->kode_menu){
+            $permissions = explode(",",$value->has_permission);
+            if(in_array($permisson,$permissions)){
+                return true;
+            }
+        }
+    }
+    return false;
 }

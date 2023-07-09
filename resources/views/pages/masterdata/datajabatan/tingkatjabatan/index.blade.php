@@ -17,6 +17,7 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>No</th>
+            <th>Nama Divisi</th>
             <th>Kode Tingkat</th>
             <th>Nama Tingkat</th>
             <th>Nama Eselon</th>
@@ -57,6 +58,9 @@
                         "data": 'DT_RowIndex',
                         orderable: false,
                         searchable: false,
+                    },{
+                        data: 'nama_skpd',
+                        name: 'nama_skpd',
                     },{
                         data: 'kode_tingkat',
                         name: 'kode_tingkat',

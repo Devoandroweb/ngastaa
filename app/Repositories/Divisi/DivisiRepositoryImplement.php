@@ -50,6 +50,7 @@ class DivisiRepositoryImplement extends Eloquent implements DivisiRepository{
             $this->skpd->updateOrCreate(['id' => $id], $data);
             return true;
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             return false;
         }
     }

@@ -4,7 +4,9 @@
     {{ Breadcrumbs::render('shift') }}
 @endsection
 @section('header_action')
+@if(getPermission('masterDataShift','C'))
 <a href="{{route("master.shift.add")}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+@endif
 @endsection
 @section('content')
 <div class="invoice-body">
@@ -29,11 +31,11 @@
                         <th>{{__('Jam Tepat Pulang')}}</th>
                         <th>{{__('Jam Tutup Pulang')}}</th>
                         <th>{{__('Toleransi Pulang')}}</th>
-                        
+
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                 </tbody>
             </table>
         </div>
@@ -43,7 +45,7 @@
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("master/shift/datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -116,12 +118,12 @@
                         data: 'toleransi_pulang',
                         name: 'toleransi_pulang',
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
     <script src="{{asset('/')}}delete.js"></script>
-    
+
 @endpush

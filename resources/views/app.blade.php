@@ -37,7 +37,11 @@
    	<!-- Wrapper -->
 	<div class="hk-wrapper" data-layout="vertical" data-layout-style="default" data-menu="light" data-footer="simple">
 		@include('panels.navbar')
+        @if(role('owner') || role('admin'))
 		@include('panels.sidebar')
+        @else
+		@include('panels.sidebar-new')
+        @endif
 		<!-- Main Content -->
 		<div class="hk-pg-wrapper">
 			<div class="container-fluid px-4">
@@ -52,14 +56,14 @@
 	@include('panels.js-script')
 	<script>
         $(document).ready(function() {
-            $('input').on('keypress', function (event) {
-                var regex = new RegExp("^[a-zA-Z0-9 ]+$");
-                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-                if (!regex.test(key)) {
-                	event.preventDefault();
-                	return false;
-                }
-            });
+            // $('input').on('keypress', function (event) {
+            //     var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+            //     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+            //     if (!regex.test(key)) {
+            //     	event.preventDefault();
+            //     	return false;
+            //     }
+            // });
         });
 		$.ajaxSetup({
 			headers: {

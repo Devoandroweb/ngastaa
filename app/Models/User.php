@@ -20,6 +20,7 @@ use App\Models\Pegawai\RiwayatStatus;
 use App\Models\Presensi\TotalCutiDetail;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
+use App\Traits\CreatedUpdatedBy;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,7 +31,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, CreatedUpdatedBy;
 
     protected $guarded = [];
 

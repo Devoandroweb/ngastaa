@@ -107,7 +107,7 @@ class GeneratePayrollController extends Controller
         // dd($kode_skpd);
         $kode_payroll = date("YmdHis") . generateRandomString();
 
-        
+
     }
 
     public function regenerate(GeneratePayroll $generate)
@@ -242,11 +242,20 @@ class GeneratePayrollController extends Controller
                 return is_aktif($row->is_aktif);
             })
             ->addColumn('opsi', function ($row) {
+                $html = "";
 
-                $html = "<a class='dropdown-item me-2' href='" . route('payroll.generate.regenerate', $row->id) . "'><i class='dropdown-icon fas fa-recycle'></i><span>Regenerate</span></a>";
-                $html .= "<a class='dropdown-item detail text-info' href='" . route('payroll.generate.detail', $row->id) . "'><i class='dropdown-icon fas fa-info-circle'></i><span>Detail</span></a>";
-                $html .= "<a class='dropdown-item delete text-danger' href='" . route('payroll.generate.delete', $row->id) . "'><i class='dropdown-icon far fa-trash-alt'></i><span>Delete</span></a>";
-
+                if(getPermission('payrollGenerate','RG')){
+                    $html .= "<a class='dropdown-item me-2' href='" . route('payroll.generate.regenerate', $row->id) . "'><i class='dropdown-icon fas fa-recycle'></i><span>Regenerate</span></a>";
+                }
+                if(getPermission('payrollGenerate','DT')){
+                    $html .= "<a class='dropdown-item detail text-info' href='" . route('payroll.generate.detail', $row->id) . "'><i class='dropdown-icon fas fa-info-circle'></i><span>Detail</span></a>";
+                }
+                if(getPermission('payrollGenerate','D')){
+                    $html .= "<a class='dropdown-item delete text-danger' href='" . route('payroll.generate.delete', $row->id) . "'><i class='dropdown-icon far fa-trash-alt'></i><span>Delete</span></a>";
+                }
+                if($html == ""){
+                    return "-";
+                }
                 return makeOpsiTable($html);
             })
             ->rawColumns(['opsi', 'status'])
@@ -287,6 +296,7 @@ class GeneratePayrollController extends Controller
                     return number_indo($row->total);
                 })
                 ->addColumn('opsi', function ($row) use ($generate) {
+
                     if($row->is_aktif == 1){
                         $html = "<a class='dropdown-item approval text-danger me-2' href='" . route('payroll.generate.rejected', [$generate,$row->id]) . "'><i class='dropdown-icon far fa-times-circle'></i><span>Batalkan</span></a>";
                     }else{

@@ -525,3 +525,9 @@ Breadcrumbs::for('profile-perusahaan', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('ubah-password-update', function (BreadcrumbTrail $trail) {
     $trail->push('Ubah Password');
 });
+
+# Setting
+Breadcrumbs::for('role-menu', function (BreadcrumbTrail $trail) {
+    $trail->push('Role Menu Management', "#");
+    $trail->push('Role Menu Management', route('setting.role-menu.index'));
+});

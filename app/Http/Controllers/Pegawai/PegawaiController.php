@@ -7,6 +7,7 @@ use App\Exports\ExportSampleImportPegawai;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
+use App\Models\Master\Eselon;
 use App\Models\Master\Skpd;
 use App\Models\Master\Tingkat;
 use App\Models\Pegawai\Imei;
@@ -31,6 +32,7 @@ class PegawaiController extends Controller
     }
     public function index()
     {
+
         $skpd = Skpd::all();
         return view('pages/pegawai/pegawai/index',compact('skpd'));
     }
@@ -115,6 +117,7 @@ class PegawaiController extends Controller
 
     public function store()
     {
+        // dd(request()->all());
         $rules = [
             'nip' => 'required',
             'nik' => 'required',
@@ -144,6 +147,7 @@ class PegawaiController extends Controller
             $rules['kode_tingkat'] = 'required';
         }
         $data = request()->validate($rules);
+        // dd($data);
         $nip = $data['nip'];
 
         // dd($data);
@@ -157,22 +161,47 @@ class PegawaiController extends Controller
             // dd($data);
             $data['password'] = Hash::make($nip);
             $dataInsert = collect($data);
+
+            if(getLevelUser() == 5){
+                $kodeSkpd = getKodeSkpdUser();
+                $eselon = Eselon::where('kode_eselon',6)->first();
+                if($eselon == null){
+                    return redirect()->back()->with([
+                        'type' => 'error',
+                        'messages' => "Level Jabatan 'Pegawai' tidak di temukan, Hubungi Administrator"
+                    ]);
+                }
+                $tingkat = Tingkat::where('kode_eselon',6)->where('kode_skpd',$kodeSkpd)->first();
+                if($tingkat == null){
+                    return redirect()->back()->with([
+                        'type' => 'error',
+                        'messages' => "Tingkat Jabatan 'Pegawai' tidak di temukan, Hubungi Administrator"
+                    ]);
+                }
+                RiwayatJabatan::create([
+                    'nip' => $nip,
+                    'kode_tingkat' => $tingkat?->kode_tingkat,
+                    'kode_skpd' => getKodeSkpdUser(),
+                    'is_akhir' => 1,
+                    'jenis_jabatan' => 1
+                ]);
+            }else{
+                # Add Jabatan
+                RiwayatJabatan::create([
+                    'nip' => $nip,
+                    'kode_tingkat' => $data['kode_tingkat'],
+                    'kode_skpd' => $data['kode_skpd'],
+                    'is_akhir' => 1,
+                    'jenis_jabatan' => 1
+                ]);
+            }
+
             $cr = User::create($dataInsert->forget(['kode_skpd','kode_tingkat'])->toArray());
             TotalPresensi::firstOrCreate([
                 'nip' => $nip,
                 'periode_bulan' =>  date("Y-m")
             ]);
             $cr->assignRole('pegawai');
-
-            # Add Jabatan
-            RiwayatJabatan::create([
-                'nip' => $nip,
-                'kode_tingkat' => $data['kode_tingkat'],
-                'kode_skpd' => $data['kode_skpd'],
-                'is_akhir' => 1,
-                'jenis_jabatan' => 1
-            ]);
-
         } else {
             $user =  User::where('nip', $nip);
             if(request()->hasFile('image')){
@@ -235,6 +264,7 @@ class PegawaiController extends Controller
         // dd($kodeSkpd);
 
         $kodeSkpd = request()->query('kode_skpd');
+
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
         return $dataTables->of($pegawai)
             ->addColumn('images', function ($row) {
@@ -274,10 +304,15 @@ class PegawaiController extends Controller
             })
             ->addColumn('opsi', function ($row) {
                 $html = "-";
-                if(!role('finance')){
+                if(getPermission('pegawai','U')){
+
                     $html = "<a class='me-2 edit' tooltip='Ubah' href='" . route('pegawai.pegawai.edit', $row->nip) . "'>" . icons('pencil') . "</a>";
+                }
+                if(getPermission('pegawai','D')){
                     // $html = "<a tooltip='detail' class='me-2 text-info' href='" . route('pegawai.pegawai.detail', $row->nip) . "'>" . icons('arror-circle-right') . "</a>";
                     $html .= "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('pegawai.pegawai.delete', $row->nip) . "'>" . icons('trash') . "</a>";
+                }
+                if(getPermission('pegawai','US')){
                     $html .= "<a class='me-2 shift text-warning' tooltip='Ubah Shift' href='" . route('pegawai.pegawai.shift', $row) . "'>" . icons('refresh') . "</a>";
                 }
                 return $html;

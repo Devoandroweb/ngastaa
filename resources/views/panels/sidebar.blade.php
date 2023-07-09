@@ -52,6 +52,7 @@
         $data = ["pegawai","setting","menuPerusahaan",
                 "masterDataStatusPegawai","masterDataDivisiKerja","masterDataTingkatJabatan","masterDataLevelJabatan","masterDataTingkatPendidikan","masterDataJurusan","masterDataKursus","masterDataLokasiKerja","masterDataLokasiVisit","masterDataHariLibur","masterDataIzin","masterDataShift","masterDataJamKerja","masterDataGajiUMK","masterDataTunjangan","masterDataLembur","masterDataKomponenPotonganTelat","masterDataKomponenBonus","masterDataKomponenPotongan","masterDataPenghargaan","masterDataRiwayatLainnya","masterDataReimbursement",
                 "payrollGenerate","payrollPenambahan","payrollPengurangan","absensiHarian","absensiRekap","absensiTotal","dataPengajuanIzin","dataPengajuanLembur","dataPengajuanReimbursement","dataPengajuanShift","laporanPresensi","laporanDivisi","laporanVisit","laporanAktifitas","infoPengumuman",
+                "setting"
             ];
         foreach ($data as $value) {
             $$value = true;
@@ -67,15 +68,35 @@
             $$value = true;
         }
     }
+
+    // $levelUser = getLevelUser();
+    // $menu = \App\Models\MRoleMenu::where('kode_level','level_'.$levelUser)->get();
+    // dd($menu->pluck('kode_menu')->toArray());
     $roleLevel2 = role('level_2'); // HR
     $roleLevel3 = role('level_3'); // BUK
     $roleLevel4 = role('level_4'); // PIC
+
+    // if($roleLevel3){
+    //     $data = $menu->pluck('kode_menu')->toArray();
+    //     foreach ($data as $value) {
+    //         $$value = true;
+    //     }
+    // }
     if($roleLevel2){
         $data = ["pegawai","hrd",
                 "masterDataDivisiKerja","masterDataLokasiKerja","masterDataLokasiVisit",
                 "absensiHarian","absensiRekap","absensiTotal",
                 "dataPengajuanIzin","dataPengajuanLembur","dataPengajuanReimbursement","dataPengajuanShift",
                 "laporanPresensi","laporanDivisi","laporanVisit","laporanAktifitas"
+                ];
+        foreach ($data as $value) {
+            $$value = true;
+        }
+    }
+    if($roleLevel3){
+        $data = ["pegawai","hrd",
+                "masterDataDivisiKerja","masterDataLokasiKerja","masterDataLokasiVisit","masterDataJamKerja","masterDataShift",
+                "payrollGenerate",
                 ];
         foreach ($data as $value) {
             $$value = true;
@@ -645,13 +666,25 @@
                         </a>
                     </li>
                     @endif
+
                     @if($setting)
                     {{-- Setting --}}
                     <div class="menu-gap d-block d-md-none"></div>
                     <div class="nav-header d-block d-md-none">
                         <span>Setting</span>
                     </div>
+                    <li class="nav-item d-block {{activeMenu("role-menu")}}">
+                        <a class="nav-link" href="{{route('setting.role-menu.index')}}">
+                            <span class="nav-icon-wrap">
+                                <span class="svg-icon">
+                                    {!!icons('building')!!}
+                                </span>
+                            </span>
+                            <span class="nav-link-text">Role Management</span>
+                        </a>
+                    </li>
                     @endif
+
                     @if($menuPerusahaan)
                     {{-- Manajemen User --}}
                     <li class="nav-item d-block d-md-none {{activeMenu("manajemen-user")}}">

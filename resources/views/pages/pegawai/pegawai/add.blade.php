@@ -5,6 +5,12 @@
     {{-- <h1>Data Pegawai <small class="text-muted">/ Tambah Pegawai</small> </h1> --}}
 @endsection
 @section('content')
+@if(session('messages'))
+<div class="alert alert-inv alert-inv-@if(session('type') == 'error'){{'danger'}}@else{{'success'}}@endif alert-wth-icon alert-dismissible fade show" role="alert">
+	<span class="alert-icon-wrap"><i class="zmdi @if(session('type') == 'error') {{'zmdi-bug'}}  @else {{'zmdi-check-circle'}} @endif "></i></span> {{session('messages')}}
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 <form class="edit-post-form" action="{{route('pegawai.pegawai.store')}}" method="post">
     @csrf
     <div class="row mb-4">
