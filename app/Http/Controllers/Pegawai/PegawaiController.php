@@ -162,7 +162,7 @@ class PegawaiController extends Controller
             $data['password'] = Hash::make($nip);
             $dataInsert = collect($data);
 
-            if(getLevelUser() == 5){
+            if(role('owner') || role('admin')){
                 $kodeSkpd = getKodeSkpdUser();
                 $eselon = Eselon::where('kode_eselon',6)->first();
                 if($eselon == null){
