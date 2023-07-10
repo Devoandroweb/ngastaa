@@ -139,7 +139,7 @@
         <a class="navbar-brand" href="{{url("/")}}">
                 <img class="brand-img img-fluid" width="40px" src="{{url('public/'.$perusahaan->logo)}}" alt="brand" />
                 {{-- <img class="brand-img img-fluid" src="{{asset('/')}}dist/img/Jampack.svg" alt="brand" /> --}}
-                <span class="fw-bold ms-2">DSM Absen</span>
+                <span class="fw-bold ms-2">{{config('app.name')}}</span>
             </a>
             <button class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle">
                 <span class="icon">
