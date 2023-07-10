@@ -68,7 +68,7 @@
                 </b></td>
         </tr>
         @php
-            
+
         $jabatan = array_key_exists('0', $pegawai->jabatan_akhir->toArray()) ? $pegawai->jabatan_akhir[0] : null;
 
         $skpd           =  $jabatan?->skpd?->nama;
@@ -104,7 +104,7 @@
                     <font face="Arial" size=1>: {{ strtoupper(bulan($bulan)) }} / {{ $tahun }}</font>
                 </b></td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;"
                 colspan=4 height="12" align="left" valign=top><b>
                     <font face="Arial" size=1>PERSENTASE KEHADIRAN</font>
@@ -113,7 +113,7 @@
                 colspan=6 align="left" valign=top><b>
                     <font face="Arial" size=1>: {{ $totalAkhir }} %</font>
                 </b></td>
-        </tr>
+        </tr> --}}
         <tr>
             <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
                 height="12" align="right" valign=top><b>
@@ -165,9 +165,9 @@
                 // dd("$tahun-$bulan-$i");
                 $telat_datang = 0;
                 $cepat_pulang = 0;
-                
+
                 $cek_data_datang = $semua_data ?  ($semua_data->tanggal_datang ? date('H:i', strtotime($semua_data->tanggal_datang)) : "-" ): '';
-                
+
                 if ($semua_data) {
 
                     if($shift_id != $semua_data->kode_shift){
@@ -177,10 +177,10 @@
 
                     if($semua_data->tanggal_datang){
                         if (strtotime($semua_data->tanggal_datang) >= strtotime(date('Y-m-d', strtotime($day)) . " " . $setting->jam_tepat_datang . ":59")) {
-                            $dateTimeObject1 = date_create($day . " " . $setting->jam_tepat_datang); 
-                            $dateTimeObject2 = date_create($semua_data->tanggal_datang); 
-                            
-                            $difference = date_diff($dateTimeObject1, $dateTimeObject2); 
+                            $dateTimeObject1 = date_create($day . " " . $setting->jam_tepat_datang);
+                            $dateTimeObject2 = date_create($semua_data->tanggal_datang);
+
+                            $difference = date_diff($dateTimeObject1, $dateTimeObject2);
 
                             $telat_datang += $difference->h * 60;
                             $telat_datang += $difference->i;
@@ -191,10 +191,10 @@
 
                     if($semua_data->tanggal_pulang){
                             if (strtotime(date('Y-m-d', strtotime($day)) . " " . $setting->jam_tepat_pulang . ":00") >= strtotime($semua_data->tanggal_pulang)) {
-                                $dateTimeObject1 = date_create($day . " " . $setting->jam_tepat_pulang . ":00"); 
-                                $dateTimeObject2 = date_create($semua_data->tanggal_pulang); 
-                                
-                                $difference = date_diff($dateTimeObject1, $dateTimeObject2); 
+                                $dateTimeObject1 = date_create($day . " " . $setting->jam_tepat_pulang . ":00");
+                                $dateTimeObject2 = date_create($semua_data->tanggal_pulang);
+
+                                $difference = date_diff($dateTimeObject1, $dateTimeObject2);
 
                                 $cepat_pulang += $difference->h * 60;
                                 $cepat_pulang += $difference->i;
@@ -207,7 +207,7 @@
                 $cek_data_istirahat = $semua_data ? ($semua_data->tanggal_istirahat ? date('H:i', strtotime($semua_data->tanggal_istirahat)) : '-' ) : '';
                 $cek_data_pulang = $semua_data ? ($semua_data->tanggal_pulang ? date('H:i', strtotime($semua_data->tanggal_pulang)) : '-') : '';
                 $liburAtauIzin = '';
-       
+
             @endphp
             <tr>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"

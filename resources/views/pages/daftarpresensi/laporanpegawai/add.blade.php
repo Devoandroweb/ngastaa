@@ -1,6 +1,6 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Laporan Pegawai</h2>
+    <h2 class="pg-title">Laporan Presensi Pegawai</h2>
     {{ Breadcrumbs::render('laporan-pegawai') }}
 @endsection
 @section('content')
@@ -10,7 +10,7 @@
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
-<form class="form-laporan" method="get">
+<form class="form-laporan" method="get" class="form">
     @csrf
     <div class="row">
         <div class="form-group has-validation">
@@ -58,9 +58,9 @@
             </div>
         </div>
     </div>
-    <input type="hidden" name="xl" value="false">
-    <button id="pdf" class="btn  btn-custom btn-submit btn-danger icon-wthot-bg approv" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
-    <button id="excel" class="btn  btn-custom btn-submit btn-success icon-wthot-bg reject" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
+    <input type="hidden" name="xl" value="0">
+    <button id="pdf" class="btn btn-custom btn-submit btn-danger icon-wthot-bg approv" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
+    <button id="excel" class="btn btn-custom btn-submit btn-success icon-wthot-bg reject" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
     {{-- <button class="btn  btn-custom me-2 btn-danger icon-wthot-bg approv"><span><i class="far fa-file-pdf"></i><span> Download PDF</span></span></button>
     <button class="btn  btn-custom  btn-success icon-wthot-bg reject"><span><i class="far fa-file-excel"></i><span> Download Excel</span></span></button> --}}
 
@@ -71,7 +71,7 @@
 <script>
 initDevisi();
 function initDevisi(){
-    let getDivisi = (url) => { 
+    let getDivisi = (url) => {
         var element = $('#kode_divisi');
         let loading = loadingProccesText(element)
         $.ajax({url: url, success: function(data){
@@ -83,7 +83,7 @@ function initDevisi(){
                     id: item['kode_skpd'],
                 }
             })
-            
+
             element.removeAttr("disabled")
             element.select2({
                 placeholder:"Pilih Divisi atau ketik disini",
@@ -129,14 +129,16 @@ function initSelectPegawai(data,value_skpd,element = null){
     }).trigger("change");
 }
 $(".btn-submit").on("click", function (e) {
+    e.preventDefault();
     if($(this).attr("id") == "pdf"){
-        $("[name=xl]").val(false);
+        $("[name=xl]").val(0);
         $(".form-laporan").attr("action","{{route('pengajuan.presensi.laporan_pegawai_download')}}").submit();
     }
     if($(this).attr("id") == "excel"){
-        $("[name=xl]").val(true);
+        $("[name=xl]").val(1);
         $(".form-laporan").attr("action","{{route('pengajuan.presensi.laporan_pegawai_download')}}?xl=true").submit();
     }
+    $(".form").submit();
 });
 // =============================
 function cekPegawai(){
@@ -150,6 +152,6 @@ function cekPegawai(){
 
 // /pengajuan/presensi/laporan-pegawai-download?nip=${data.nip}&bulan=${data.bulan}&tahun=${data.tahun}`, '_blank', 'noopener,noreferrer
 </script>
-    
+
 @endpush
 @include("pages.daftarpresensi.laporanpegawai.js")

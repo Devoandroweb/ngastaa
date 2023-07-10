@@ -3,8 +3,10 @@
 use App\Models\Master\HariLibur;
 use App\Models\Master\Payroll\Absensi;
 use App\Models\Master\Shift;
+use App\Models\MJamKerja;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPresensi;
+use App\Models\Presensi\TotalPresensiDetail;
 
 function hari_kerja($bulan, $tahun)
 {
@@ -64,7 +66,7 @@ function kehadiran($nip, $bulan, $tahun)
         $whereNotInString = false;
     }
 
-    $kehadiran = DataPresensi::select('tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'created_at', 'kode_shift')
+    $kehadiran = TotalPresensiDetail::select('tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'created_at', 'kode_shift','kode_jam_kerja')
                     ->whereMonth('created_at', $bulan)
                     ->whereYear("created_at", $tahun)
                     ->where('nip', $nip)
@@ -82,10 +84,16 @@ function kehadiran($nip, $bulan, $tahun)
     $shift_id = "";
     $shift =  new Shift();
     foreach ($kehadiran as $hadir) {
+        if(is_null($hadir->kode_jam_kerja)){
+            if($shift_id != $hadir->kode_shift){
+                $shift = get_shift($hadir->kode_shift);
+                $shift_id = $hadir->kode_shift;
+            }
+        }else{
+            if($shift_id != $hadir->kode_jam_kerja){
+                $shift = get_jam_kerja($hadir->kode_jam_kerja);
+                $shift_id = $hadir->kode_jam_kerja;
 
-        if($shift_id != $hadir->kode_shift){
-            $shift = get_shift($hadir->kode_shift);
-            $shift_id = $hadir->kode_shift;
         }
 
         $tanggal = date("Y-m-d", strtotime("$hadir->created_at"));
@@ -95,30 +103,30 @@ function kehadiran($nip, $bulan, $tahun)
 
             // Hari kerja
             $hari_angka = date("w", strtotime("$hadir->created_at"));
-    
+
             // Hari Libur Nasional
             $hari_libur = check_libur(date("Y-m-d", strtotime($hadir->created_at)));
             if ($hari_angka == 0 || $hari_angka == 6 || $hari_libur == true) {
                 $absen_libur += 1;
             }
-    
+
             if ($hadir->tanggal_datang != "" || $hadir->tanggal_istirahat != "" || $hadir->tanggal_pulang != "") {
                 if ($hadir->tanggal_datang != "") {
-                    //Pengurangan Telat 
+                    //Pengurangan Telat
                     if (strtotime($hadir->tanggal_datang) >= strtotime(date("Y-m-d", strtotime($hadir->tanggal_datang)) . " " . $shift->jam_tepat_datang . ":59")) {
                         $dateTimeObject1 = date_create(date("Y-m-d", strtotime($hadir->tanggal_datang)) . " " . $shift->jam_tepat_datang . ":59");
                         $dateTimeObject2 = date_create($hadir->tanggal_datang);
                         $difference = date_diff($dateTimeObject1, $dateTimeObject2);
                         $telat_datang = $difference->h * 60;
                         $telat_datang += $difference->i;
-    
+
                         array_push($total_telat_datang, perhitungan_persen_telat($telat_datang));
                     }
                 }else{
                     array_push($total_telat_datang, perhitungan_persen_telat(255));
                 }
-    
-    
+
+
                 if ($hadir->tanggal_pulang != "") {
                     // Pengurangan Cepat Pulang
                     if (strtotime($hadir->tanggal_pulang) <= strtotime(date("Y-m-d", strtotime($hadir->tanggal_pulang)) . " " . $shift->jam_tepat_pulang . ":00")) {
@@ -165,7 +173,10 @@ function get_shift($kode_shift)
 {
     return Shift::where('kode_shift', $kode_shift)->first();
 }
-
+function get_jam_kerja($kode_jam_kerja)
+{
+    return MJamKerja::where('kode_jam_kerja', $kode_jam_kerja)->first();
+}
 function check_libur($tanggal)
 {
     $libur = HariLibur::where('tanggal_mulai', '<=', $tanggal)->where('tanggal_selesai', '>=', $tanggal)->count();
@@ -210,4 +221,5 @@ function badgeApproval($text)
             break;
     }
     return '<span class="badge badge-'.$color.' ms-3 d-md-inline-block text-capitalize d-none">'.$text.'</span>';
+}
 }

@@ -95,4 +95,11 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
 
         }
     }
+    function getFirstPegawai($nip){
+
+        $pegawai = User::where('users.nip', $nip)
+            ->first();
+            // dd($pegawai);
+        return $pegawai;
+    }
 }

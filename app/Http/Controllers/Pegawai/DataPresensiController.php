@@ -11,13 +11,21 @@ use App\Models\Master\Skpd;
 use App\Models\Master\Visit;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\Pegawai\DataVisit;
+use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
+use App\Repositories\Pegawai\PegawaiRepository;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class DataPresensiController extends Controller
 {
+    protected $pegawaiRepository;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     public function index()
     {
 
@@ -103,24 +111,9 @@ class DataPresensiController extends Controller
         $tahun = request('tahun') ?? date('Y');
         $nip = request('pegawai');
         $xl = request('xl');
-        // dd($xl);
-        $role = role('opd');
-        $pegawai = User::where('nip', $nip)
-            ->when($role, function ($qr) {
-                $user = auth()->user()->jabatan_akhir;
-                $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                $skpd = '';
-                if ($jabatan) {
-                    $skpd = $jabatan->kode_skpd;
-                }
+        // dd($nip);
+        $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
 
-                $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                        ->where('riwayat_jabatan.kode_skpd', $skpd)
-                        ->where('riwayat_jabatan.is_akhir', 1);
-                });
-            })
-            ->first();
         // dd($pegawai);
         if($pegawai == null){
             return redirect()->back()->with([
@@ -128,7 +121,7 @@ class DataPresensiController extends Controller
                 'messages' => 'Data Laporan tidak di temukan'
             ]);
         }else{
-            if ($xl == "true") {
+            if ($xl == 1) {
                 $date = date("YmdHis");
                 $response = Excel::download(new LaporanPegawaiExport($bulan, $tahun, $xl, $pegawai), "pegawai-$nip-$date.xlsx", \Maatwebsite\Excel\Excel::XLSX);
                 ob_end_clean();
@@ -156,7 +149,7 @@ class DataPresensiController extends Controller
         $xl = request('xl');
         $role = role('opd');
 
-        $presensi = DataPresensi::where('kode_tingkat', $kode)
+        $presensi = TotalPresensiDetail::where('kode_tingkat', $kode)
             ->select('nip')
             ->whereMonth('created_at', $bulan)
             ->groupBy('nip')

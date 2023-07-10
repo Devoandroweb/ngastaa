@@ -612,11 +612,11 @@ var _TABLE = null;
                         orderable: false,
                         searchable: false,
                     },{
-                        data: 'resource.nip',
-                        name: 'resource.nip',
+                        data: 'nip',
+                        name: 'nip',
                     },{
-                        data: 'resource.name',
-                        name: 'resource.name',
+                        data: 'name',
+                        name: 'name',
                     },{
                         data: 'divisi_kerja',
                         name: 'divisi_kerja',
@@ -631,7 +631,5 @@ var _TABLE = null;
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
-
-
 </script>
 @endpush

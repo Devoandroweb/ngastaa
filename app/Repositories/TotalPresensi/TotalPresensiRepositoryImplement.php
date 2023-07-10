@@ -62,7 +62,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
         // $this->date = date("Y-m-d");
         // $this->dateNow = $this->date;
-        $this->periodeBulan = date("Y-m");
+        $this->periodeBulan = "2023-06";
         // $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
         // $this->dataPresensi2 =  DataPresensi::whereDate('created_at', '=', $this->date)->where('hitung',0);
 
@@ -89,20 +89,22 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
             $this->dataPresensi2 =  DataPresensi::whereDate('created_at', $this->date)->where('hitung',0);
 
-
             $this->calculatePresensi();
         }
     }
     function calculatePresensi()
     {
+        // dd($this->checkAppStatusCalculate());
             if($this->checkAppStatusCalculate()){
                 return 0;
             }
             $dataInsertTotalPresensiDetail = [];
             $dataInsertTotalIzinDetail = [];
-            $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
+            $this->allPegawai = $this->pegawaiRepository->allPegawaiWithRole()->get();
+            // dd($this->allPegawai);
             foreach ($this->allPegawai as $pegawai) {
                 $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
+                // dd($indexTotalPegawai);
                 if($indexTotalPegawai == ""){
                     continue;
                 }

@@ -53,6 +53,7 @@ class Presensi extends Command
             fwrite($file, "Sukses hitung ".now());
             // fwrite($file, "run command berhasil");
             fclose($file);
+            $this->info("Sukses hitung ".now());
             //code...
         } catch (\Throwable $th) {
             $fileError = fopen('error_cronjob.txt','a');
@@ -60,6 +61,7 @@ class Presensi extends Command
             // fwrite($fileError, "run command berhasil");
             fclose($fileError);
             //throw $th;
+            $this->info($th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now());
             DB::rollBack();
         }
         return Command::SUCCESS;

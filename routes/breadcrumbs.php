@@ -422,7 +422,7 @@ Breadcrumbs::for('pengajuan-approved-shift', function (BreadcrumbTrail $trail) {
 // Pengajuan | Laporan Pegawai
 Breadcrumbs::for('laporan-pegawai', function (BreadcrumbTrail $trail) {
     $trail->push('Laporan', "#");
-    $trail->push('Laporan Pegawai', route('pengajuan.presensi.laporan_pegawai'));
+    $trail->push('Laporan Presensi Pegawai', route('pengajuan.presensi.laporan_pegawai'));
 });
 
 // Pengajuan | Laporan Divisi

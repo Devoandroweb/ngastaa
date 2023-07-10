@@ -650,10 +650,10 @@ function normalDateSystem($date){
 }
 function arrayTanggal(){
 
-    $tanggal = range(1, 25); // Membuat array dari 1 hingga 30
+    $tanggal = range(19, 30); // Membuat array dari 1 hingga 30
 
-    // $bulan = "05"; // Mendapatkan bulan saat ini
-    $bulan = date('m'); // Mendapatkan bulan saat ini
+    $bulan = "06"; // Mendapatkan bulan saat ini
+    // $bulan = date('m'); // Mendapatkan bulan saat ini
     $tahun = date('Y'); // Mendapatkan tahun saat ini
 
     $hasil = array(); // Membuat array kosong
