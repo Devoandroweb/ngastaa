@@ -58,8 +58,8 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
             ['columns_name'=>'J','options'=>$statusKawin],
             ['columns_name'=>'K','options'=>$golDarah],
             ['columns_name'=>'Q','options'=>$statusPegawai],
-            ['columns_name'=>'R','options'=>$optionDivisi],
-            ['columns_name'=>'S','options'=>$optionJabatan],
+            // ['columns_name'=>'R','options'=>$optionDivisi],
+            // ['columns_name'=>'S','options'=>$optionJabatan],
         ];
         // dd($selects);
         $this->selects=$selects;
@@ -86,8 +86,9 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
             "Jl. Sukadana No. A2 Semarang, Kota Semarang",
             "Jl. Sukadana No. A2 Semarang, Kota Semarang",
             "Kontrak",
-            "Head Office PT Deta Sukses Makmur",
-            "Finance"]
+            // "Head Office PT Deta Sukses Makmur",
+            // "Finance"
+            ]
         ]);
     }
     function startRow() : Int {
@@ -114,8 +115,8 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
             "Alamat Domisili",
             "Alamat KTP",
             "Status",
-            "Divisi",
-            "Jabatan"
+            // "Divisi",
+            // "Jabatan"
         ];
     }
     public function columnFormats(): array
@@ -182,7 +183,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
 
                 // lock all cells then unlock the cell
                 $sheet->getParent()->getActiveSheet()
-                    ->getStyle('A2:S4000')
+                    ->getStyle('A2:Q4000')
                     ->getProtection()
                     ->setLocked(Protection::PROTECTION_UNPROTECTED);
 

@@ -328,11 +328,19 @@ class PegawaiController extends Controller
 
     public function import_pegawai()
     {
-        request()->validate([
+        $rules = [
             'file' => 'required|mimes:xlsx',
-            // 'kode_skpd' => 'required',
-        ]);
-        $import = new ImportPegawaiExcell();
+        ];
+        if(role('admin') || role('owner')){
+            $rules['kode_skpd'] = 'required';
+        }
+        $data = request()->validate($rules);
+        if(role('admin') || role('owner')){
+            $kodeSkpd = $data['kode_skpd'];
+        }else{
+            $kodeSkpd = getKodeSkpdUser();
+        }
+        $import = new ImportPegawaiExcell($kodeSkpd);
         Excel::import($import, request()->file('file')->store('file'));
         // dd($import->errorMessage(),$import->errorStatus());
         if($import->errorStatus()){

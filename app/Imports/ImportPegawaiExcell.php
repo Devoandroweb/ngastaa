@@ -28,9 +28,11 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleShe
     protected $skpd;
     protected $i = 0;
     function __construct(
-        // $kodeSkpd,
+        $kodeSkpd,
     ) {
-        // $this->kodeSkpd = $kodeSkpd;
+        if(role('admin') && role('owner')){
+            $this->kodeSkpd = $kodeSkpd;
+        }
         $this->statusPegawai = StatusPegawai::class;
         $this->skpd = Skpd::with('tingkatMany');
     }
@@ -89,11 +91,11 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleShe
                 ]);
                 $no++;
 
-                // # Save to Riwayat Divisi
-                // RiwayatJabatan::create([
-                //     'nip' => $nip,
-                //     'kode_skpd' => $this->kodeSkpd
-                // ]);
+                # Save to Riwayat Divisi
+                RiwayatJabatan::create([
+                    'nip' => $nip,
+                    'kode_skpd' => $this->kodeSkpd
+                ]);
 
             }
             # Insert Into Total Presensi
