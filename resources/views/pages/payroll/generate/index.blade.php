@@ -4,10 +4,10 @@
     {{ Breadcrumbs::render('generate-payroll') }}
 @endsection
 @section('header_action')
-@if(getPermission('payrollGenerate','I'))
+@if(getPermission('payrollGenerate','I') || role('admin') || role('owner'))
 <a href="{{route('payroll.import.index')}}" class="btn btn-info me-2"><i class="fas fa-file-import"></i> {{__('Import')}}</a>
 @endif
-@if(getPermission('payrollGenerate','C'))
+@if(getPermission('payrollGenerate','C') || role('admin') || role('owner'))
 <a href="{{route('payroll.generate.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
 @endsection

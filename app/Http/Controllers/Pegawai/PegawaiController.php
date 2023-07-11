@@ -304,15 +304,15 @@ class PegawaiController extends Controller
             })
             ->addColumn('opsi', function ($row) {
                 $html = "-";
-                if(getPermission('pegawai','U')){
+                if(getPermission('pegawai','U') || role('admin') || role('owner')){
 
                     $html = "<a class='me-2 edit' tooltip='Ubah' href='" . route('pegawai.pegawai.edit', $row->nip) . "'>" . icons('pencil') . "</a>";
                 }
-                if(getPermission('pegawai','D')){
+                if(getPermission('pegawai','D') || role('admin') || role('owner')){
                     // $html = "<a tooltip='detail' class='me-2 text-info' href='" . route('pegawai.pegawai.detail', $row->nip) . "'>" . icons('arror-circle-right') . "</a>";
                     $html .= "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('pegawai.pegawai.delete', $row->nip) . "'>" . icons('trash') . "</a>";
                 }
-                if(getPermission('pegawai','US')){
+                if(getPermission('pegawai','US') || role('admin') || role('owner')){
                     $html .= "<a class='me-2 shift text-warning' tooltip='Ubah Shift' href='" . route('pegawai.pegawai.shift', $row) . "'>" . icons('refresh') . "</a>";
                 }
                 return $html;

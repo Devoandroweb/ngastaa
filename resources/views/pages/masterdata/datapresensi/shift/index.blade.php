@@ -4,7 +4,7 @@
     {{ Breadcrumbs::render('shift') }}
 @endsection
 @section('header_action')
-@if(getPermission('masterDataShift','C'))
+@if(getPermission('masterDataShift','C') || role('admin') || role('owner'))
 <a href="{{route("master.shift.add")}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
 @endsection

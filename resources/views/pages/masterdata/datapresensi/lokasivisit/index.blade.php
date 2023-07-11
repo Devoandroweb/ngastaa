@@ -4,7 +4,7 @@
     {{ Breadcrumbs::render('lokasi-visit') }}
 @endsection
 @section('header_action')
-@if(getPermission('masterDataLokasiVisit','C'))
+@if(getPermission('masterDataLokasiVisit','C') || role('admin') || role('owner'))
 <a href="{{route('master.visit.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
 @endsection

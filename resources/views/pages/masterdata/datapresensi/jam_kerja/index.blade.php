@@ -5,7 +5,7 @@
 @endsection
 @section('header_action')
 
-@if(getPermission('masterDataJamKerja','C'))
+@if(getPermission('masterDataJamKerja','C') || role('admin') || role('owner'))
 <a href="{{route("master.jam_kerja.add")}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
 @endsection

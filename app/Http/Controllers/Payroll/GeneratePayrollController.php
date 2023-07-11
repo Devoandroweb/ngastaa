@@ -244,13 +244,13 @@ class GeneratePayrollController extends Controller
             ->addColumn('opsi', function ($row) {
                 $html = "";
 
-                if(getPermission('payrollGenerate','RG')){
+                if(getPermission('payrollGenerate','RG') || role('admin') || role('owner')){
                     $html .= "<a class='dropdown-item me-2' href='" . route('payroll.generate.regenerate', $row->id) . "'><i class='dropdown-icon fas fa-recycle'></i><span>Regenerate</span></a>";
                 }
-                if(getPermission('payrollGenerate','DT')){
+                if(getPermission('payrollGenerate','DT') || role('admin') || role('owner')){
                     $html .= "<a class='dropdown-item detail text-info' href='" . route('payroll.generate.detail', $row->id) . "'><i class='dropdown-icon fas fa-info-circle'></i><span>Detail</span></a>";
                 }
-                if(getPermission('payrollGenerate','D')){
+                if(getPermission('payrollGenerate','D') || role('admin') || role('owner')){
                     $html .= "<a class='dropdown-item delete text-danger' href='" . route('payroll.generate.delete', $row->id) . "'><i class='dropdown-icon far fa-trash-alt'></i><span>Delete</span></a>";
                 }
                 if($html == ""){
