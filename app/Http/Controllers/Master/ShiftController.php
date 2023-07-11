@@ -129,10 +129,10 @@ class ShiftController extends Controller
             })
             ->addColumn('opsi', function ($row) {
                 $html = "";
-                if(getPermission('masterDataShift','U')){
+                if(getPermission('masterDataShift','U') || role('owner') || role('admin')){
                     $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.shift.edit', $row->id) . "'>" . icons('pencil') . "</a>";
                 }
-                if(getPermission('masterDataShift','D')){
+                if(getPermission('masterDataShift','D') || role('owner') || role('admin')){
                     $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.shift.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 }
                 if($html == ""){

@@ -117,13 +117,13 @@ class VisitController extends Controller
             })
             ->addColumn('opsi', function ($row) {
                 $html = "";
-                if(getPermission('masterDataLokasiVisit','U')){
+                if(getPermission('masterDataLokasiVisit','U') || role('owner') || role('admin')){
                     $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.visit.edit', $row->id) . "'>" . icons('pencil') . "</a>";
                 }
-                if(getPermission('masterDataLokasiVisit','D')){
+                if(getPermission('masterDataLokasiVisit','D') || role('owner') || role('admin')){
                     $html .= "<a class='delete text-danger me-2' tooltip='Hapus' href='" . route('master.visit.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 }
-                if(getPermission('masterDataLokasiVisit','UQR')){
+                if(getPermission('masterDataLokasiVisit','UQR') || role('owner') || role('admin')){
                     $html .= "<a class='text-info' tooltip='Hapus' href='" . url('visit_qr/'.$row->qr) . "'>" . icons('download') . " Unduh QR</a>";
                 }
                 if($html == ""){

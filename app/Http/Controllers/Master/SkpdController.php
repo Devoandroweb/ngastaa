@@ -159,13 +159,13 @@ class SkpdController extends Controller
                 $html = "-";
                 // $html = "<a class='me-2 reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
 
-                if(getPermission('masterDataDivisiKerja','U')){
+                if(getPermission('masterDataDivisiKerja','U')  || role('owner') || role('admin')){
                     $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.skpd.edit', $row->id) . "'>" . icons('pencil') . "</a>";
                 }
-                if(getPermission('masterDataDivisiKerja','RST')){
+                if(getPermission('masterDataDivisiKerja','RST') || role('owner') || role('admin')){
                     $html .= "<a class='me-2 reset' tooltip='Reset' href='" . route('master.skpd.reset', $row->id) . "'>" . icons('refresh') . "</a>";
                 }
-                if(getPermission('masterDataDivisiKerja','D')){
+                if(getPermission('masterDataDivisiKerja','D') || role('owner') || role('admin')){
                     $html .= "<a class='delete text-danger delete' tooltip='Hapus' href='" . route('master.skpd.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 }
                 return $html;

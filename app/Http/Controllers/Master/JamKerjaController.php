@@ -130,10 +130,10 @@ class JamKerjaController extends Controller
             })
             ->addColumn('opsi', function ($row) {
                 $html = "";
-                if(getPermission('masterDataJamKerja','U')){
+                if(getPermission('masterDataJamKerja','U') || role('owner') || role('admin')){
                     $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.jam_kerja.edit', $row->id) . "'>" . icons('pencil') . "</a>";
                 }
-                if(getPermission('masterDataJamKerja','D')){
+                if(getPermission('masterDataJamKerja','D') || role('owner') || role('admin')){
                     $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.jam_kerja.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 }
                 if($html == ""){
