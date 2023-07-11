@@ -5,13 +5,13 @@
     {{ Breadcrumbs::render('detail-pegawai') }}
 @endsection
 @section('header_action')
-@if(getPermission('pegawai','E'))
+@if(getPermission('pegawai','E') || role('owner') || role('admin'))
 <a href="{{route('pegawai.pegawai.export')}}" class="btn btn-danger me-3"><i class="fas fa-file-import"></i> {{__('Export')}}</a>
 @endif
-@if(getPermission('pegawai','I'))
+@if(getPermission('pegawai','I')  || role('owner') || role('admin'))
 <a href="{{route('pegawai.pegawai.import_add')}}" class="btn btn-success me-3"><i class="fas fa-file-import"></i> {{__('Import')}}</a>
 @endif
-@if(getPermission('pegawai','C'))
+@if(getPermission('pegawai','C') || role('owner') || role('admin'))
 <a href="{{route('pegawai.pegawai.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endif
 @endsection
