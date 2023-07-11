@@ -16,11 +16,12 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\Collection\Cells;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Protection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithEvents, ShouldAutoSize, WithStyles, WithTitle, WithStartRow, WithColumnFormatting
+class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithEvents, WithStyles, WithTitle, WithStartRow, WithColumnFormatting
 {
 
     protected  $selects;
@@ -97,7 +98,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
     {
         return [
             "No",
-            "NIP",
+            "No Induk Pegawai",
             "Gelar Depan",
             "Gelar Belakang",
             "Nama",
@@ -121,25 +122,13 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
     {
         return [
             'M' => NumberFormat::FORMAT_NUMBER,
+            'G' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
     public function styles(Worksheet $sheet)
     {
-        $lastColumn = $sheet->getHighestColumn();
 
         // Make sure you enable worksheet protection if you need any of the worksheet or cell protection features!
-        $sheet->getParent()->getActiveSheet()->getProtection()->setSheet(true);
-
-        // lock all cells then unlock the cell
-        $sheet->getParent()->getActiveSheet()
-            ->getStyle('A2:S4000')
-            ->getProtection()
-            ->setLocked(Protection::PROTECTION_UNPROTECTED);
-
-        $sheet->getParent()->getActiveSheet()->getStyle('B')->getAlignment()->setVertical("middle");
-        $sheet->getParent()->getActiveSheet()->getStyle('B')->getAlignment()->setHorizontal("left");
-        $sheet->getParent()->getActiveSheet()->getStyle('M')->getAlignment()->setVertical("middle");
-        $sheet->getParent()->getActiveSheet()->getStyle('M')->getAlignment()->setHorizontal("left");
 
         return [
             // Style the first row as bold text.
@@ -152,7 +141,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
         return [
             // handle by a closure.
             AfterSheet::class => function(AfterSheet $event) {
-
+                $sheet = $event->sheet;
                 $row_count = $this->row_count;
                 $column_count = $this->column_count;
                 foreach ($this->selects as $select) {
@@ -178,18 +167,30 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
                         $cell = $event->sheet->getCell("{$drop_column}{$i}");
                         $cell->setDataValidation(clone $validation);
 
-                        // Add data validation error alert
-                        $cell->getStyle()->getFont()->setBold(true);
-                        $cell->getStyle()->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED));
-                        $cell->getStyle()->getFont()->setSize(12);
                     }
 
-                    // Set columns to autosize
                     for ($i = 1; $i <= $column_count; $i++) {
                         $column = Coordinate::stringFromColumnIndex($i);
                         $event->sheet->getColumnDimension($column)->setAutoSize(true);
                     }
                 }
+                $sheet->getStyle('G')
+                    ->getNumberFormat()
+                    ->setFormatCode('dd/mm/yyyy');
+
+                $sheet->getParent()->getActiveSheet()->getProtection()->setSheet(true);
+
+                // lock all cells then unlock the cell
+                $sheet->getParent()->getActiveSheet()
+                    ->getStyle('A2:S4000')
+                    ->getProtection()
+                    ->setLocked(Protection::PROTECTION_UNPROTECTED);
+
+                $sheet->getParent()->getActiveSheet()->getStyle('B')->getAlignment()->setVertical("middle");
+                $sheet->getParent()->getActiveSheet()->getStyle('B')->getAlignment()->setHorizontal("left");
+                $sheet->getParent()->getActiveSheet()->getStyle('M')->getAlignment()->setVertical("middle");
+                $sheet->getParent()->getActiveSheet()->getStyle('M')->getAlignment()->setHorizontal("left");
+
 
             },
         ];

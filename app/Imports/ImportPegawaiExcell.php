@@ -12,9 +12,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class ImportPegawaiExcell implements ToCollection, WithStartRow
+class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleSheets
 {
     /**
     * @param Collection $collection
@@ -33,6 +34,12 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         $this->statusPegawai = StatusPegawai::class;
         $this->skpd = Skpd::with('tingkatMany');
     }
+    public function sheets(): array
+    {
+        return [
+            0 => $this,
+        ];
+    }
     public function collection(Collection $collection)
     {
         $no = 0;
@@ -43,7 +50,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
             $insertIntoTotalPresensi = [];
 
             foreach ($collection as $iter => $row ) {
-
+                echo $row[0];
                 if($row[0] == null){
                     continue;
                 };
@@ -52,27 +59,26 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 // array_push($data,$row);
 
                 $this->nipExisting($row[1]);
+                // dd($iter,$row[4]);
                 $nip = $this->checkNip($row[1],$i);
                 $item = new User();
                 $item->nip = $nip;
                 $item->password = Hash::make($nip);
                 $item->gelar_depan = $row[2];
-                // dd($iter,$row[4]);
                 $item->gelar_belakang = $row[3];
                 $item->name = $row[4];
-
                 $item->tempat_lahir = $row[5];
                 $item->tanggal_lahir = $this->checkTanggal($row[6],$i);
-                $item->jenis_kelamin = $this->checkJenisKelamin(strtolower($row[7]),$i);
+                $item->jenis_kelamin = $row[7];
                 $item->kode_agama = $row[8];
-                $item->kode_kawin = $this->checkKawin(strtolower($row[9]),$i);
-                $item->golongan_darah = $this->checkGolonganDarah($row[10],$i);
+                $item->kode_kawin = $row[9];
+                $item->golongan_darah = $row[10];
                 $item->nik = $row[11];
                 $item->no_hp = $row[12];
                 $item->email = $row[13];
                 $item->alamat = $row[14];
                 $item->alamat_ktp = $row[15];
-                $item->kode_status = $this->checkStatusPegawai($row[16],$i); // harus sesuai kode pada table status_pegawai
+                $item->kode_status = $row[16]; // harus sesuai kode pada table status_pegawai
                 $item->save();
                 $item->assignRole('pegawai');
                 $i++;
@@ -88,7 +94,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                 //     'nip' => $nip,
                 //     'kode_skpd' => $this->kodeSkpd
                 // ]);
-                
+
             }
             # Insert Into Total Presensi
             TotalPresensi::insert($insertIntoTotalPresensi);
@@ -96,9 +102,10 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         } catch (\Throwable $th) {
 
             DB::rollBack();
-            // dd($th->getMessage());
+
             $this->statusError = true;
-            $this->errorMessage = $th->getTraceAsString()." | ".$no;
+            $this->errorMessage = $th->getMessage();
+
             //throw $th;
         }
     }
@@ -220,7 +227,6 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     }
 
     function alertMessageNip($nip){
-
         return "NIP ($nip) Sudah di gunakan ";
     }
     function errorMessage(){
