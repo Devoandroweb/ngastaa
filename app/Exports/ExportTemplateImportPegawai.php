@@ -63,7 +63,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
         // dd($selects);
         $this->selects=$selects;
         $this->row_count=1000;//number of rows that will have the dropdown
-        $this->column_count=20;//number of columns to be auto sized
+        $this->column_count=19;//number of columns to be auto sized
     }
     public function collection()
     {

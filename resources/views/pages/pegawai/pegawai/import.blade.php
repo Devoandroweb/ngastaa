@@ -18,7 +18,7 @@
 @enderror
 <form class="edit-post-form" action="{{route('pegawai.pegawai.import_pegawai')}}" method="post" enctype="multipart/form-data">
     @csrf
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md">
             <label class="form-label">Divisi Kerja</label>
             <div class="form-group has-validation">
@@ -26,7 +26,7 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="form-group has-validation">
             <div class="row">

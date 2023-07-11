@@ -27,34 +27,40 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     protected $skpd;
     protected $i = 0;
     function __construct(
-        $kodeSkpd,
+        // $kodeSkpd,
     ) {
-        $this->kodeSkpd = $kodeSkpd;
+        // $this->kodeSkpd = $kodeSkpd;
         $this->statusPegawai = StatusPegawai::class;
         $this->skpd = Skpd::with('tingkatMany');
     }
     public function collection(Collection $collection)
     {
+        $no = 0;
         DB::beginTransaction();
         try {
             //code...
             $i = 2;
             $insertIntoTotalPresensi = [];
 
-            foreach ($collection as $row ) {
-                if($row[0] == null || $row[6] == ""){
+            foreach ($collection as $iter => $row ) {
+
+                if($row[0] == null){
                     continue;
                 };
+
                 // dd(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[6]));
                 // array_push($data,$row);
+
                 $this->nipExisting($row[1]);
                 $nip = $this->checkNip($row[1],$i);
                 $item = new User();
                 $item->nip = $nip;
                 $item->password = Hash::make($nip);
                 $item->gelar_depan = $row[2];
+                // dd($iter,$row[4]);
                 $item->gelar_belakang = $row[3];
                 $item->name = $row[4];
+
                 $item->tempat_lahir = $row[5];
                 $item->tanggal_lahir = $this->checkTanggal($row[6],$i);
                 $item->jenis_kelamin = $this->checkJenisKelamin(strtolower($row[7]),$i);
@@ -75,23 +81,24 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
                     'nip' => $nip,
                     'periode_bulan' =>  date("Y-m")
                 ]);
+                $no++;
 
-                # Save to Riwayat Divisi
-                RiwayatJabatan::create([
-                    'nip' => $nip,
-                    'kode_skpd' => $this->kodeSkpd
-                ]);
+                // # Save to Riwayat Divisi
+                // RiwayatJabatan::create([
+                //     'nip' => $nip,
+                //     'kode_skpd' => $this->kodeSkpd
+                // ]);
+                
             }
             # Insert Into Total Presensi
-            // dd($data);
             TotalPresensi::insert($insertIntoTotalPresensi);
             DB::commit();
         } catch (\Throwable $th) {
 
             DB::rollBack();
-
+            // dd($th->getMessage());
             $this->statusError = true;
-            $this->errorMessage = $th->getMessage();
+            $this->errorMessage = $th->getTraceAsString()." | ".$no;
             //throw $th;
         }
     }
@@ -101,6 +108,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     }
     function checkNip($value,$i){
         if($value == "" || $value == null){
+
             return throw new Exception("NIP tidak boleh kosong, Kesalahan pada baris Excel ke $i");
         }
         return $value;
@@ -108,6 +116,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     function nipExisting($nip){
 
         if(User::where('nip',$nip)->first() != null){
+
             return throw new Exception($this->alertMessageNip($nip));
         }
         return $nip;
@@ -156,7 +165,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     function checkKawin($row,$i){
         try {
 
-            if(strtolower($row) == "kawin" || strtolower($row) == "belum kawin"){
+            if(strtolower($row) == "menikah" || strtolower($row) == "belum menikah"){
                 return throw new Exception($this->errorKawin($i));
             }
             return $row;
@@ -211,6 +220,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
     }
 
     function alertMessageNip($nip){
+
         return "NIP ($nip) Sudah di gunakan ";
     }
     function errorMessage(){
@@ -265,7 +275,8 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow
         }
     }
     function searchData($data,$column,$comparison){
-        foreach($data as $value){
+
+        foreach($data->get() as $value){
             if(strtolower($value->{$column}) == strtolower($comparison)){
                 return $value->{$column};
             }

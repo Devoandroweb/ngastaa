@@ -162,7 +162,7 @@ class PegawaiController extends Controller
             $data['password'] = Hash::make($nip);
             $dataInsert = collect($data);
 
-            if(!role('owner') || !role('admin')){
+            if(!role('owner') && !role('admin')){
                 $kodeSkpd = getKodeSkpdUser();
                 $eselon = Eselon::where('kode_eselon',6)->first();
                 if($eselon == null){
@@ -330,10 +330,11 @@ class PegawaiController extends Controller
     {
         request()->validate([
             'file' => 'required|mimes:xlsx',
-            'kode_skpd' => 'required',
+            // 'kode_skpd' => 'required',
         ]);
-        $import = new ImportPegawaiExcell(request('kode_skpd'));
+        $import = new ImportPegawaiExcell();
         Excel::import($import, request()->file('file')->store('file'));
+        // dd($import->errorMessage(),$import->errorStatus());
         if($import->errorStatus()){
             return to_route('pegawai.pegawai.import_add')->with([
                 'type' => 'error',
