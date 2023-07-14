@@ -113,8 +113,16 @@ class DataPresensiController extends Controller
         $xl = request('xl');
         // dd($nip);
         $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
-
-        // dd($pegawai);
+        $jamKerja = $pegawai->jamKerja->where('is_akhir',1)->first()?->jamKerja;
+        if(!$jamKerja){
+            $jamKerja = $pegawai->shift->where('is_akhir',1)->first()?->shift;
+        }
+        if($jamKerja == null){
+            return redirect()->back()->with([
+                'type' => 'error',
+                'messages' => 'Jam Kerja atau Shift tidak di temukan'
+            ]);
+        }
         if($pegawai == null){
             return redirect()->back()->with([
                 'type' => 'error',
@@ -128,7 +136,9 @@ class DataPresensiController extends Controller
                 return $response;
                 // return view('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'));
             } else {
-                $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'))->setPaper('a4', 'potrait');
+
+                $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai','jamKerja'))->setPaper('a4', 'landscape');
+                // $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'))->setPaper('a4', 'potrait');
                 // ob_end_clean();
                 return $pdf->stream();
             }

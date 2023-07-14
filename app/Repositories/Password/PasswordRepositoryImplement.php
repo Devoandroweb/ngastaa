@@ -27,6 +27,7 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
         $password_baru = request('password_baru');
 
         $cek = Hash::check($password, $auth->user()->password);
+
         if($cek){
             $pass = Hash::make($password_baru);
             return $auth->user()->update(['password' => $pass]);
@@ -36,18 +37,23 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
     }
     function changePasswordMobile(){
         // Write something awesome :)
+
         $nip = request('nip');
         $password_lama = request('password_lama');
         $password_baru = request('password_baru');
+
         if($password_lama == $password_baru){
             return 0;
         }
         $user = User::where('nip',$nip)->first();
 
         $cek = Hash::check($password_lama, $user->password);
+
         if($cek){
-            $user->password = Hash::make($password_baru);
-            $user->update();
+
+            User::where('nip',$nip)->update([
+               'password' => Hash::make($password_baru)
+            ]);
             return 1;
         }else{
             return 2;

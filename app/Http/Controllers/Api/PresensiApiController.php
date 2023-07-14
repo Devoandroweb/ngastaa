@@ -205,8 +205,9 @@ class PresensiApiController extends Controller
         // $date = request('date');
         $date = request("date");
         $toler1Min = strtotime("-5 minutes");
+        $toler1Min = strtotime('2023-07-14 07:56:00');
         $dateSend = strtotime($date);
-
+        // dd(date("Y-m-d H:i:s",));
         // if($image_64){
         //     $foto = "presensi/$nip/$imageName";
         //     Storage::disk('public')->put("/$foto", $image);
@@ -214,7 +215,7 @@ class PresensiApiController extends Controller
         // }else{
         //     $foto = "";
         // }
-
+        // dd($toler1Min);
         $timeZone = request('timezone') ?? 'WITA';
 
         if ($timeZone == 'WIB') {
@@ -251,7 +252,7 @@ class PresensiApiController extends Controller
             $kode_jam_kerja = $user->jamKerja->where('is_akhir',1)->first()?->kode_jam_kerja;
         }elseif($user->riwayat_shift->where('is_akhir',1)->count() > 0){
             // dd($user->riwayat_shift[0]);
-            $kode_shift = $user->riwayat_shift[0]->kode_shift;
+            $kode_shift = $user->riwayat_shift->where('is_akhir',1)->first()?->kode_shift;
         }
         // dd("$kode_shift | $kode_jam_kerja",$user);
         $shift = Shift::where('kode_shift', $kode_shift)->first();
@@ -282,7 +283,7 @@ class PresensiApiController extends Controller
         }
 
 
-        // dd($dateSend <= $tutupPagiTime);
+        dd(date('Y-m-d H:i:s',$dateSend),date("Y-m-d H:i:s",$tutupPagiTime), $dateSend >= $bukaPagiTime,$dateSend <= $tutupPagiTime,"$kode_shift | $kode_jam_kerja");
 
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
         // if (true) { # PAGI

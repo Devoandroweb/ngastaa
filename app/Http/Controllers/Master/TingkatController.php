@@ -16,21 +16,10 @@ class TingkatController extends Controller
 {
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $tingkat = Tingkat::when($search, function ($qr, $search) {
-            $qr->where('nama', 'LIKE', "%$search%");
-        })
-            ->paginate($limit);
-
-        $tingkat->appends(request()->all());
-
-        $tingkat = TingkatResource::collection($tingkat);
-
+        $skpd = Skpd::orderBy('nama')->get();
         // return inertia('Master/Tingkat/index', compact('tingkat'));
 
-        return view('pages/masterdata/datajabatan/tingkatjabatan/index');
+        return view('pages/masterdata/datajabatan/tingkatjabatan/index',compact('skpd'));
     }
 
     public function json($skpd = null)
@@ -208,7 +197,11 @@ class TingkatController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
+        
         $model = Tingkat::with('eselon');
+        if(request('kode_skpd') != 0){
+            $model->where('kode_skpd',request('kode_skpd'));
+        }
         return $dataTables->eloquent($model)
             ->addColumn('nama_eselon', function ($row) {
                 return $row->eselon?->nama ?? "-";

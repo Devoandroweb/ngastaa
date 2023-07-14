@@ -8,6 +8,17 @@ use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
 
+function check_libur($tanggal)
+{
+    $libur = HariLibur::where('tanggal_mulai', '<=', $tanggal)->where('tanggal_selesai', '>=', $tanggal)->count();
+    if($libur > 0){
+        return true;
+    }else{
+        return false;
+
+    }
+}
+
 function hari_kerja($bulan, $tahun)
 {
     $number = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
@@ -66,7 +77,7 @@ function kehadiran($nip, $bulan, $tahun)
         $whereNotInString = false;
     }
 
-    $kehadiran = TotalPresensiDetail::select('tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'created_at', 'kode_shift','kode_jam_kerja')
+    $kehadiran = DataPresensi::select('tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'created_at', 'kode_shift','kode_jam_kerja')
                     ->whereMonth('created_at', $bulan)
                     ->whereYear("created_at", $tahun)
                     ->where('nip', $nip)
@@ -177,16 +188,7 @@ function get_jam_kerja($kode_jam_kerja)
 {
     return MJamKerja::where('kode_jam_kerja', $kode_jam_kerja)->first();
 }
-function check_libur($tanggal)
-{
-    $libur = HariLibur::where('tanggal_mulai', '<=', $tanggal)->where('tanggal_selesai', '>=', $tanggal)->count();
-    if($libur > 0){
-        return true;
-    }else{
-        return false;
 
-    }
-}
 
 function perhitungan_persen_telat($menit, $keterangan = 1)
 {

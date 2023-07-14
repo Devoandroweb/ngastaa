@@ -5,12 +5,30 @@
 @endsection
 
 @section('content')
+@if(role('owner') || role('admin') || role('finance'))
+<div class="input-group me-3 mb-3 ">
+    <span class="input-affix-wrapper">
+
+        <div class="row w-50 ms-auto">
+            <div class="col-sm-12 ps-0">
+                <select name="skpd" class="form-control divisi px-2" id="">
+                    <option selected value="0">Semua Divisi</option>
+                    @foreach ($skpd as $s)
+                        <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </span>
+</div>
+@endif
 @if(session('messages'))
 <div class="alert alert-inv alert-inv-@if(session('type') == 'error'){{'danger'}}@else{{'success'}}@endif alert-wth-icon alert-dismissible fade show" role="alert">
 	<span class="alert-icon-wrap"><i class="zmdi @if(session('type') == 'error') {{'zmdi-bug'}}  @else {{'zmdi-check-circle'}} @endif "></i></span> {{session('messages')}}
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
+
 <table id="data" class="table mt-2 nowrap w-100 mb-5 table-responsive table-bordered">
     <thead>
         <tr className="fw-bolder text-muted">
@@ -73,7 +91,11 @@
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
-
+        $(".divisi").select2();
+        $('.divisi').on('select2:select', function (e) {
+            var data = e.params.data;
+            _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()
+        });
     </script>
     <script src="{{asset('/')}}delete.js"></script>
 

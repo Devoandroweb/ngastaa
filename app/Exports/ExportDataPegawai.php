@@ -10,19 +10,22 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ExportDataPegawai implements FromArray,WithHeadings,WithStyles,ShouldAutoSize,WithColumnFormatting,WithEvents
+class ExportDataPegawai implements FromArray,WithHeadings,WithStyles,ShouldAutoSize,WithColumnFormatting,WithEvents,WithTitle
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     protected $pegawais;
+    protected $nameSheet;
     protected $pegawaiRepository;
-    function __construct($pegawaiRepository){
-        $this->pegawais = $pegawaiRepository->allPegawaiWithRole()->get();
+    function __construct($pegawaiRepository,$kodeSkpd,$nameSheet){
+        $this->nameSheet = $nameSheet;
+        $this->pegawais = $pegawaiRepository->allPegawaiWithRole($kodeSkpd)->get();
         // dd($this->pegawais);
     }
     public function array() : Array
@@ -33,7 +36,7 @@ class ExportDataPegawai implements FromArray,WithHeadings,WithStyles,ShouldAutoS
                 $key+1,
                 $pegawai->nip,
                 $pegawai->gelar_depan,
-                $pegawai->nama,
+                $pegawai->name,
                 $pegawai->gelar_belakang,
                 $pegawai->tempat_lahir,
                 tanggal_indo($pegawai->tanggal_lahir),
@@ -85,12 +88,14 @@ class ExportDataPegawai implements FromArray,WithHeadings,WithStyles,ShouldAutoS
             // Style the first row as bold text.
             1    => ['font' => ['bold' => true]],
             "M"    => ['alignment' => ['alignLeft' => true]],
+            "B"    => ['alignment' => ['alignLeft' => true]],
         ];
     }
     public function columnFormats(): array
     {
         return [
             'M' => NumberFormat::FORMAT_NUMBER,
+            'B' => NumberFormat::FORMAT_TEXT,
         ];
     }
     public function registerEvents(): array
@@ -101,5 +106,9 @@ class ExportDataPegawai implements FromArray,WithHeadings,WithStyles,ShouldAutoS
                     $workSheet->freezePane('C2');
                 }
             ];
+    }
+    public function title(): string
+    {
+        return $this->nameSheet;
     }
 }

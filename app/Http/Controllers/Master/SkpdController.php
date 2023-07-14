@@ -20,20 +20,7 @@ class SkpdController extends Controller
     }
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
 
-        $skpd = Skpd::when($search, function ($qr, $search) {
-            $qr->where('nama', 'LIKE', "%$search%")
-                ->orWhere('singkatan', 'LIKE', "%$search%")
-                ->orWhereRelation('atasan', 'nama', "%$search%");
-        })
-            ->paginate($limit);
-        $skpd->appends(request()->all());
-
-        $skpd = SkpdResource::collection($skpd);
-
-        // return inertia('Master/Skpd/index', compact('skpd'));
         $titlePage = "Data Divisi Kerja"; //wajib
         return view('pages/masterdata/datajabatan/divisikerja/index', compact('titlePage'));
     }

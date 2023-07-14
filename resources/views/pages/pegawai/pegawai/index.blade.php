@@ -126,7 +126,7 @@
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
-        @if (!role('finance'))
+        @if(getPermission('pegawai','U') || role('owner') || role('admin'))
             $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
                 var data = _TABLE.row(this).data();
                 window.location.href = data.detail;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pegawai;
 
 use App\Exports\ExportDataPegawai;
+use App\Exports\ExportDataPegawaiWithDivision;
 use App\Exports\ExportSampleImportPegawai;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Select\SelectResource;
@@ -101,6 +102,7 @@ class PegawaiController extends Controller
 
     public function delete(User $pegawai)
     {
+        RiwayatJabatan::where('nip',$pegawai->nip)->delete();
         $cr = $pegawai->delete();
         if ($cr) {
             return redirect(route('pegawai.pegawai.index'))->with([
@@ -265,7 +267,7 @@ class PegawaiController extends Controller
 
         $kodeSkpd = request()->query('kode_skpd');
 
-        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd)->orderBy('users.created_at','desc')->get(['users.*','users.id as id_user']);
         return $dataTables->of($pegawai)
             ->addColumn('images', function ($row) {
                 return '<div>
@@ -278,12 +280,7 @@ class PegawaiController extends Controller
 
             })
             ->addColumn('nama_jabatan', function ($row) {
-                $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
-                if( $jabatan != null){
-                    $skpd = $jabatan?->skpd?->nama;
-                    return '<p>' . ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama) . '</p><p>' . $skpd . '</p>';
-                }
-                return "-";
+                return '<p>'.$row->getDivisi().'</p><p>'.$row->getJabatan().'</p>';
             })
             ->addColumn('level', function ($row) {
                 $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
@@ -333,14 +330,17 @@ class PegawaiController extends Controller
         ];
         if(role('admin') || role('owner')){
             $rules['kode_skpd'] = 'required';
+            $rules['kode_tingkat'] = 'required';
         }
         $data = request()->validate($rules);
         if(role('admin') || role('owner')){
             $kodeSkpd = $data['kode_skpd'];
+            $kodeTingkat = $data['kode_tingkat'];
         }else{
             $kodeSkpd = getKodeSkpdUser();
+            $kodeTingkat = null;
         }
-        $import = new ImportPegawaiExcell($kodeSkpd);
+        $import = new ImportPegawaiExcell($kodeSkpd,$kodeTingkat);
         Excel::import($import, request()->file('file')->store('file'));
         // dd($import->errorMessage(),$import->errorStatus());
         if($import->errorStatus()){
@@ -372,7 +372,8 @@ class PegawaiController extends Controller
         //     ]);
     }
     function export(){
-        $response = Excel::download(new ExportDataPegawai($this->pegawaiRepository), "data-pegawai.xlsx");
+        $datetime = date("YmdHis");
+        $response = Excel::download(new ExportDataPegawaiWithDivision($this->pegawaiRepository), "data-pegawai-{$datetime}.xlsx");
         ob_end_clean();
         return $response;
     }

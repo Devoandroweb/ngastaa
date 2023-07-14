@@ -45,11 +45,13 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         }
 
         $pegawai = User::whereNot('users.nip',null)->with('riwayat_jabatan');
-        // dd(User::role('pegawai')->get());
+
+        // dd(getIdUser());
+
         if(getLevelUser() == "5"){
             $pegawai->where('created_by',getIdUser());
         }else{
-            // dd(getLevelUser());
+            // dd($role);
             $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
                 // ambil level jabatan user
                 // dd($kodeSkpd);
@@ -66,8 +68,8 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                     });
                 });
             });
-            // dd($kodeSkpd);
-            if($role && $kodeSkpd != 0 && $kodeSkpd != null){
+            // dd($role && $kodeSkpd != 0 && $kodeSkpd != null);
+            if(!$role && $kodeSkpd != 0 && $kodeSkpd != null){
                 $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
                     $qt->on('riwayat_jabatan.nip', 'users.nip')
                     ->where('is_akhir', 1)

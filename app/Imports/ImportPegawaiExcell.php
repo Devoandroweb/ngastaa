@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Master\Skpd;
 use App\Models\Master\StatusPegawai;
+use App\Models\Master\Tingkat;
 use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
@@ -24,14 +25,17 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleShe
     protected $statusError = false;
     protected $errorRow = 0;
     protected $kodeSkpd = 0;
+    protected $kodeTingkat = 0;
     protected $statusPegawai;
     protected $skpd;
     protected $i = 0;
     function __construct(
         $kodeSkpd,
+        $kodeTingkat,
     ) {
-        if(role('admin') && role('owner')){
-            $this->kodeSkpd = $kodeSkpd;
+        $this->kodeSkpd = $kodeSkpd;
+        if(role('admin') || role('owner')){
+            $this->kodeTingkat = $kodeTingkat;
         }
         $this->statusPegawai = StatusPegawai::class;
         $this->skpd = Skpd::with('tingkatMany');
@@ -90,12 +94,24 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleShe
                     'periode_bulan' =>  date("Y-m")
                 ]);
                 $no++;
-
-                # Save to Riwayat Divisi
-                RiwayatJabatan::create([
-                    'nip' => $nip,
-                    'kode_skpd' => $this->kodeSkpd
-                ]);
+                if(role('admin') || role('owner')){
+                    # Save to Riwayat Divisi
+                    RiwayatJabatan::create([
+                        'nip' => $nip,
+                        'kode_skpd' => $this->kodeSkpd,
+                        'kode_tingkat' => $this->kodeTingkat,
+                        'jenis_jabatan' => 1,
+                        'is_akhir' => 1
+                    ]);
+                }else{
+                    RiwayatJabatan::create([
+                        'nip' => $nip,
+                        'kode_skpd' => $this->kodeSkpd,
+                        'kode_tingkat' => $this->checkExistingJabatanPegawai($this->kodeSkpd),
+                        'jenis_jabatan' => 1,
+                        'is_akhir' => 1
+                    ]);
+                }
 
             }
             # Insert Into Total Presensi
@@ -227,7 +243,15 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleShe
             // $this->errorMessage = $th->getMessage();
         }
     }
-
+    function checkExistingJabatanPegawai($kodeSkpd){
+        // dd($kodeSkpd);
+        $tingkat = Tingkat::where('kode_eselon',6)->where('kode_skpd',$kodeSkpd)->first();
+        // dd($tingkat,$kodeSkpd);
+        if(!$tingkat){
+            return throw new Exception("Jabatan 'Pegawai' tidak ada, Hubungi Administrator");
+        }
+        return $tingkat->kode_tingkat;
+    }
     function alertMessageNip($nip){
         return "NIP ($nip) Sudah di gunakan ";
     }

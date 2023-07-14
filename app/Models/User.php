@@ -136,6 +136,21 @@ class User extends Authenticatable
         $gelar_belakang = ($this->gelar_belakang != "") ? " ".$this->gelar_belakang :"";
         return "{$gelar_depan}{$this->name}{$gelar_belakang}";
     }
+    function getJabatan(){
+        $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
+        if( $jabatan != null){
+            return  ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
+        }
+        return "-";
+    }
+    function getDivisi(){
+        $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
+        if( $jabatan != null){
+            $skpd = $jabatan?->skpd?->nama;
+            return $skpd;
+        }
+        return "-";
+    }
     public function getImagesAttribute()
     {
         return $this->image ? asset("storage/$this->image") : asset("no-image.png");
@@ -158,6 +173,9 @@ class User extends Authenticatable
 
     function jamKerja(){
         return $this->hasMany(RiwayatJamKerja::class,'nip','nip');
+    }
+    function shift(){
+        return $this->hasMany(RiwayatShift::class,'nip','nip');
     }
     function foto(){
         $jk = str_replace(" ","",$this->jenis_kelamin);

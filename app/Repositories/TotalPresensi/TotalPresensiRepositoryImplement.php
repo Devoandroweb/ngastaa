@@ -41,6 +41,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     protected $dateNow;
     protected $totalPresensiDetail = [];
     protected $periodeBulan;
+    protected $tanggalDatang = null;
     public function __construct(
         PegawaiRepository $pegawaiRepository,
 
@@ -80,7 +81,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         // $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
         // dd("done");
         // $tanggalBulan = ['2023-04-25','2023-04-26'];
-        $tanggalBulan = arrayTanggal();
+        $tanggalBulan = arrayTanggal("06","2023",1,31);
         // dd($tanggalBulan);
         foreach ($tanggalBulan as $value) {
             $this->date = $value;
@@ -149,6 +150,9 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                         'status' => implode(",",$status),
                         'kode_cuti' => null,
                         'periode_bulan' => $this->periodeBulan,
+                        'tanggal_datang' => null,
+                        'tanggal_istirahat' => null,
+                        'tanggal_pulang' => null,
                     ]);
 
                 }else{
@@ -189,6 +193,9 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             'status' => implode(",",$status),
                             'kode_cuti' => null,
                             'periode_bulan' => $this->periodeBulan,
+                            'tanggal_datang' => $presensi->tanggal_datang,
+                            'tanggal_istirahat' => $presensi->tanggal_istirahat,
+                            'tanggal_pulang' => $presensi->tanggal_pulang,
                         ]);
                     }
                 }

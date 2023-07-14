@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Master\Skpd;
 use App\Models\Master\Tingkat;
 use App\Models\MMenu;
 use App\Models\MRoleMenu;
@@ -11,7 +12,8 @@ use Yajra\DataTables\DataTables;
 class RoleMenuController extends Controller
 {
     function index(){
-        return view('pages.setting.role_management.index');
+        $skpd = Skpd::orderBy('nama')->get();
+        return view('pages.setting.role_management.index',compact('skpd'));
     }
     function manage(Tingkat $tingkat){
         $menus = MMenu::all();
@@ -38,6 +40,9 @@ class RoleMenuController extends Controller
     }
     function datatable(DataTables $dataTables){
         $tingkat = Tingkat::with('roleMenu');
+        if(request('kode_skpd') != 0){
+            $tingkat->where('kode_skpd',request('kode_skpd'));
+        }
         return $dataTables->of($tingkat)
         ->addColumn('nama_skpd', function ($row) {
             return $row->skpd?->nama ?? "-";

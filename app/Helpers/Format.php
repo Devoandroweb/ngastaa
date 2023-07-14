@@ -566,18 +566,20 @@ function generateStatusAbsen($status)
 function convertStatusAbsen($status)
 {
     switch ($status) {
-        case 1:
+        case "1":
             return 'Masuk';
-            break;
-        case 2:
+        case "2":
             return 'Telat';
-            break;
-        case 3:
+        case "3":
             return 'Tidak Masuk';
-            break;
-        case 4:
+        case "4":
             return 'Izin';
-            break;
+        case "5":
+            return 'Tanpa Absen Pulang';
+        case "6":
+            return 'Pulang Cepat';
+        case "7":
+            return 'Piket';
         default:
             break;
     }
@@ -648,13 +650,13 @@ function roleFormat(){
 function normalDateSystem($date){
     return date("Y-m-d",strtotime(str_replace("/","-",$date)));
 }
-function arrayTanggal(){
+function arrayTanggal($month,$year,$start,$end){
 
-    $tanggal = range(19, 30); // Membuat array dari 1 hingga 30
+    $tanggal = range($start, $end); // Membuat array dari 1 hingga 30
 
-    $bulan = "06"; // Mendapatkan bulan saat ini
-    // $bulan = date('m'); // Mendapatkan bulan saat ini
-    $tahun = date('Y'); // Mendapatkan tahun saat ini
+    // $bulan = "06"; // Mendapatkan bulan saat ini
+    $bulan = $month; // Mendapatkan bulan saat ini
+    $tahun = $year; // Mendapatkan tahun saat ini
 
     $hasil = array(); // Membuat array kosong
 
@@ -665,6 +667,35 @@ function arrayTanggal(){
 
     return $hasil; // Menampilkan array tanggal
 
+}
+function lastDayInThisMonth($tahun,$bulan){
+    $tanggalTerakhir = date('t', strtotime($tahun . '-' . $bulan . '-01'));
+    return $tanggalTerakhir;
+}
+function convertDateToNameDay($tanggal){
+
+    $namaHariInggris = date('l', strtotime($tanggal));
+    $namaHariIndonesia = '';
+
+    $namaHariInggris = strtolower($namaHariInggris); // Mengubah menjadi huruf kecil
+
+    // Array untuk mengonversi nama hari dalam bahasa Inggris menjadi Indonesia
+    $konversiHari = array(
+        'sunday'    => 'Minggu',
+        'monday'    => 'Senin',
+        'tuesday'   => 'Selasa',
+        'wednesday' => 'Rabu',
+        'thursday'  => 'Kamis',
+        'friday'    => 'Jumat',
+        'saturday'  => 'Sabtu'
+    );
+
+    if (array_key_exists($namaHariInggris, $konversiHari)) {
+        $namaHariIndonesia = $konversiHari[$namaHariInggris];
+    } else {
+        $namaHariIndonesia = 'Hari tidak valid';
+    }
+    return $namaHariIndonesia;
 }
 function cekHariAkhirPekan($tanggal) {
     $hariIni = date('N',strtotime($tanggal)); // Mendapatkan kode hari saat ini (1-7, dengan 1 adalah Senin dan 7 adalah Minggu)
