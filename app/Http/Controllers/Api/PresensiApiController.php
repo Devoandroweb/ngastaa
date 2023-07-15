@@ -235,8 +235,6 @@ class PresensiApiController extends Controller
         if ($dateSend < $toler1Min) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Harap memperbaiki jam Handphone Anda!']),400);
         }
-
-
         if (!$user) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'User tidak ditemukan!']),400);
         }
