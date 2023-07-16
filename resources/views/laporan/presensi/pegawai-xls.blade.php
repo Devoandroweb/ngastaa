@@ -1,301 +1,157 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-
-<head>
-
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>Laporan Pegawai</title>
-    <meta name="generator" content="LibreOffice 7.2.5.2 (Linux)" />
-    <meta name="created" content="2022-05-07T13:02:00" />
-    <meta name="changed" content="2022-06-22T20:09:28" />
-    <meta name="KSOProductBuildVer" content="1033-3.2.0.6370" />
-
-    <style type="text/css">
-        body,
-        div,
-        table,
-        thead,
-        tbody,
-        tfoot,
-        tr,
-        th,
-        td,
-        p {
-            font-family: "Times New Roman";
-            font-size: x-small
+@php
+    $GLOBALS['dataPresensi'] = \App\Models\Presensi\TotalPresensiDetail::whereNip($pegawai->nip)->whereBetween('tanggal',[$tahun."-".$bulan."-01",$tahun."-".$bulan."-".lastDayInThisMonth($bulan,$tahun)])->get();
+    // dd(lastDayInThisMonth("2023","06"));
+    // dd($jamKerja);
+    $styleTable = "border:1px solid black;";
+    function searchDataPresensi($tanggal){
+        foreach ($GLOBALS['dataPresensi'] as $key => $value) {
+            if($value->tanggal == $tanggal){
+                return $value;
+            }
         }
-    </style>
+        return null;
+    }
+    function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
+        // dd($jamDatang, $jamTepatDatang);
 
-</head>
+        $jamTepatDatang = strtotime($jamTepatDatang." +".$toleransi." Minutes");
+        $jamDatang = strtotime($jamDatang);
+        $result = "-";
+        if($jamDatang > $jamTepatDatang){
+            $selisihDetik = abs($jamTepatDatang - $jamDatang);
+            $selisihMenit = floor($selisihDetik / 60);
+            $result = $selisihDetik;
 
-<body>
-    <table>
-        <tr>
-            <td colspan=10 height="20" align="center" valign=bottom><b>
-                    <font face="Arial" size=1>DRAFT RINCIAN KEHADIRAN
-                    </font>
-                </b></td>
-        </tr>
-        @php
-            $hariKerja = hari_kerja($bulan, $tahun);
-            $kehadiran = kehadiran($pegawai->email, $bulan, $tahun, $hariKerja);
-            $totalAkhir = $kehadiran['total_akhir'];
-        @endphp
-        <tr>
-            <td colspan=10 height="20" align="left" valign=middle><b>
-                    <font face="Arial" size=1>TANGGAL CETAK : {{ strtoupper(tanggal_indo(date('Y-m-d'))) }}</font>
-                </b></td>
-        </tr>
-        <tr>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=4 height="20" align="left" valign=top><b>
-                    <font face="Arial" size=1>NO PEGAWAI</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=6 align="left" valign=top><b>
-                    <font face="Arial" size=1>: {{ $pegawai->nip }}</font>
-                </b></td>
-        </tr>
-        <tr>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=4 height="20" align="left" valign=top><b>
-                    <font face="Arial" size=1>NAMA</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=6 align="left" valign=top><b>
-                    <font face="Arial" size=1>: {{ $pegawai->name }}</font>
-                </b></td>
-        </tr>
-        @php
-            
-        $jabatan = array_key_exists('0', $pegawai->jabatan_akhir->toArray()) ? $pegawai->jabatan_akhir[0] : null;
+            $jam = floor($selisihMenit / 60); // Menghitung jam
+            $menit = $selisihMenit % 60;
+            if($jam != 0){
+                return $jam ." Jam ".$menit." Menit";
+            }
+            if($menit != 0){
+                return $menit." Menit";
+            }
+            return "-";
+        }
+        return $result;
+    }
+    function hitungCepatPulang($jamTepatPulang,$jamPulang){
+        // dd($jamPulang, $jamTepatPulang);
+        if($jamPulang){
+            $jamTepatPulang = strtotime($jamTepatPulang);
+            $jamPulang = strtotime($jamPulang);
+            $result = "-";
+            if($jamPulang < $jamTepatPulang){
+                $selisihDetik = abs($jamTepatPulang - $jamPulang);
+                $selisihMenit = floor($selisihDetik / 60);
+                $result = $selisihDetik;
 
-        $skpd           =  $jabatan?->skpd?->nama;
-        $nama_jabatan   =  $jabatan?->tingkat?->nama;
-        @endphp
-        <tr>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=4 height="20" align="left" valign=top><b>
-                    <font face="Arial" size=1>JABATAN</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=6 align="left" valign=top><b>
-                    <font face="Arial" size=1>: {{ $nama_jabatan }}</font>
-                </b></td>
-        </tr>
-        <tr>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=4 height="20" align="left" valign=top><b>
-                    <font face="Arial" size=1>DIVISI</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=6 align="left" valign=top><b>
-                    <font face="Arial" size=1>: {{ $skpd }}</font>
-                </b></td>
-        </tr>
-        <tr>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=4 height="20" align="left" valign=top><b>
-                    <font face="Arial" size=1>BULAN / TAHUN</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=6 align="left" valign=top><b>
-                    <font face="Arial" size=1>: {{ strtoupper(bulan($bulan)) }} / {{ $tahun }}</font>
-                </b></td>
-        </tr>
-        <tr>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;"
-                colspan=4 height="20" align="left" valign=top><b>
-                    <font face="Arial" size=1>PERSENTASE KEHADIRAN</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=6 align="left" valign=top><b>
-                    <font face="Arial" size=1>: {{ $totalAkhir }} %</font>
-                </b></td>
-        </tr>
-        <tr>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                height="20" align="right" valign=top><b>
-                    <font face="Arial" size=1>No</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                align="left" valign=top><b>
-                    <font face="Arial" size=1>Hari</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                colspan=2 align="left" valign=top><b>
-                    <font face="Arial" size=1>Tanggal</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                align="center" valign=top><b>
-                    <font face="Arial" size=1>Jam datang</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                align="center" valign=top><b>
-                    <font face="Arial" size=1>Telat datang</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                align="center" valign=top><b>
-                    <font face="Arial" size=1>Jam Istirahat</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                align="center" valign=top><b>
-                    <font face="Arial" size=1>Jam Pulang</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                align="center" valign=top><b>
-                    <font face="Arial" size=1>Cepat Pulang</font>
-                </b></td>
-            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                align="left" valign=top><b>
-                    <font face="Arial" size=1>Keterangan</font>
-                </b></td>
-        </tr>
-        @php
-            $number = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-            $shift_id = "";
-            $setting = new App\Models\Master\Shift();
-        @endphp
-
-        @for ($i = 1; $i <= $number; $i++)
-            @php
-                $day = date('Y-m-d', strtotime("$tahun-$bulan-$i"));
-                $semua_data = kehadiran_pegawai("$tahun-$bulan-$i", $pegawai->nip);
-                
-                $telat_datang = 0;
-                $cepat_pulang = 0;
-                $cek_data_datang = $semua_data ?  ($semua_data->tanggal_datang ? date('H:i', strtotime($semua_data->tanggal_datang)) : "-" ): '';
-                
-                if ($semua_data) {
-
-                    if($shift_id != $semua_data->kode_shift){
-                        $setting = get_shift($semua_data->kode_shift);
-                        $shift_id = $semua_data->kode_shift;
-                    }
-
-                    if($semua_data->tanggal_datang){
-                        if (strtotime($semua_data->tanggal_datang) >= strtotime(date('Y-m-d', strtotime($day)) . " " . $setting->jam_tepat_datang . ":59")) {
-                            $dateTimeObject1 = date_create($day . " " . $setting->jam_tepat_datang); 
-                            $dateTimeObject2 = date_create($semua_data->tanggal_datang); 
-                            
-                            $difference = date_diff($dateTimeObject1, $dateTimeObject2); 
-
-                            $telat_datang += $difference->h * 60;
-                            $telat_datang += $difference->i;
-                        }
-                    }else{
-                        $telat_datang = 225;
-                    }
-
-                    if($semua_data->tanggal_pulang){
-                            if (strtotime(date('Y-m-d', strtotime($day)) . " " . $setting->jam_tepat_pulang . ":00") >= strtotime($semua_data->tanggal_pulang)) {
-                                $dateTimeObject1 = date_create($day . " " . $setting->jam_tepat_pulang . ":00"); 
-                                $dateTimeObject2 = date_create($semua_data->tanggal_pulang); 
-                                
-                                $difference = date_diff($dateTimeObject1, $dateTimeObject2); 
-
-                                $cepat_pulang += $difference->h * 60;
-                                $cepat_pulang += $difference->i;
-                        }
-                    }else{
-                        $cepat_pulang = 225;
-                    }
+                $jam = floor($selisihMenit / 60); // Menghitung jam
+                $menit = $selisihMenit % 60;
+                if($jam != 0){
+                    return $jam ." Jam ".$menit." Menit";
                 }
-
-                $cek_data_istirahat = $semua_data ? ($semua_data->tanggal_istirahat ? date('H:i', strtotime($semua_data->tanggal_istirahat)) : '-' ) : '';
-                $cek_data_pulang = $semua_data ? ($semua_data->tanggal_pulang ? date('H:i', strtotime($semua_data->tanggal_pulang)) : '-') : '';
-                $liburAtauIzin = '';
-            @endphp
+                if($menit != 0){
+                    return $menit." Menit";
+                }
+                return "-";
+            }
+            return $result;
+        }else{
+            return "-";
+        }
+    }
+@endphp
+<html>
+    <body>
+        <table>
             <tr>
-                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                    width="12" height="20" align="center" valign=top sdval="1">
-                    <font face="Arial" size=1 color="#000000">{{ $i }}</font>
-                </td>
-                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                    width="15" align="left" valign=top>
-                    <font face="Arial" size=1>{{ hari(date('w', strtotime($day))) }}</font>
-                </td>
-                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                    colspan=2 align="center" valign=top>
-                    <font face="Arial" size=1> {{ tanggal_indo($day) }}</font>
-                </td>
-                @if ($cek_data_datang || $cek_data_pulang || $cek_data_istirahat)
-                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" width="15"
-                        align="center" valign=top>
-                        <font face="Arial" size=1 color="#000000">{{ $cek_data_datang }}</font>
-                    </td>
-                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" width="15"
-                        align="center" valign=top>
-                        <font face="Arial" size=1 color="#000000">{{ $telat_datang }} Menit</font>
-                    </td>
-                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" width="15"
-                        align="center" valign=top>
-                        <font face="Arial" size=1>{{ $cek_data_istirahat }}</font>
-                    </td>
-                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" width="15"
-                        align="center" valign=top>
-                        <font face="Arial" size=1 color="#000000">{{ $cek_data_pulang }}</font>
-                    </td>
-                    <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" width="15"
-                        align="center" valign=top>
-                        <font face="Arial" size=1>{{ $cepat_pulang }} Menit</font>
-                    </td>
-                @else
-                    @php
-                        if(date('w', strtotime($day)) != 0 && date('w', strtotime($day)) != 6){
-                            $liburAtauIzin = "Tanpa Keterangan";
-                        }
-                        $hari = date('l', strtotime("$tahun-$bulan-$i"));
-                        //$libur = check_libur("$tahun-$bulan-$i");
-                        //if($libur){
-                        //    $liburAtauIzin = $libur->keterangan;
-                       // }
-                    @endphp
-                    <td width="15" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; background-color:{{ $hari == 'Saturday' || $hari == 'Sunday' ? '#f1416c' : 'white' }}"
-                        align="center" valign=top>
-                        <font face="Arial" size=1 color="#000000">-</font>
-                    </td>
-                    <td width="15" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; background-color:{{ $hari == 'Saturday' || $hari == 'Sunday' ? '#f1416c' : 'white' }}"
-                        align="center" valign=top>
-                        <font face="Arial" size=1 color="#000000">-</font>
-                    </td>
-                    <td width="15" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; background-color:{{ $hari == 'Saturday' || $hari == 'Sunday' ? '#f1416c' : 'white' }}"
-                        align="center" valign=top>
-                        <font face="Arial" size=1>-</font>
-                    </td>
-                    <td width="15" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; background-color:{{ $hari == 'Saturday' || $hari == 'Sunday' ? '#f1416c' : 'white' }}"
-                        align="center" valign=top sdval="0" sdnum="1033;0;H:MM:SS;@">
-                        <font face="Arial" size=1 color="#000000">-</font>
-                    </td>
-                    <td width="15" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; background-color:{{ $hari == 'Saturday' || $hari == 'Sunday' ? '#f1416c' : 'white' }}"
-                        align="center" valign=top>
-                        <font face="Arial" size=1>-</font>
-                    </td>
-                @endif
-                <td width="15" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; background-color:{{ $liburAtauIzin != '' ? '#f1416c' : 'white' }};  color:{{ $liburAtauIzin != '' ? 'white' : 'black' }};"
-                    align="left" valign=middle>
-                    <font color="#000000">{{ $liburAtauIzin }}</font>
-                </td>
+                <td colspan="10" style="text-align: center;font-size:15pt;font-weight:bold;"><h3>DRAFT RINCIAN KEHADIRAN</h3></td>
             </tr>
-        @endfor
-
+        </table>
         <tr>
-            <td colspan="7"></td>
-            <td colspan=3 height="150" align="center" valign=top><b>
-                    <br>
-                    <br>
-                    <font face="Arial" size=1>................... , {{ strtoupper(tanggal_indo(date('Y-m-d'))) }}</font>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <font face="Arial" size=1>{{ $pegawai->name }}</font>
-                    <br>
-                    <font face="Arial" size=1>No. Pegawai : {{ $pegawai->nip }}</font>
-                </b></td>
+            <td colspan="3">TANGGAL CETAK : {{tanggal_indo(date('Y-m-d'))}}</td>
         </tr>
-    </table>
-</body>
+        <tr><td></td></tr>
+        <table width="100%">
+            <tr>
+                <td colspan="2">NO INDUK PEGAWAI</td>
+                <td>: {{$pegawai->nip}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">NAMA</td>
+                <td colspan="8">: {{$pegawai->name}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">JABATAN</td>
+                <td colspan="8">: {{$pegawai->getJabatan()}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">DIVISI</td>
+                <td colspan="8">: {{$pegawai->getDivisi()}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">BULAN / TAHUN</td>
+                <td colspan="8">: {{$bulan." / ".$tahun}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">SHIFT/JAM KERJA</td>
+                <td colspan="8">: {{$jamKerja->nama}}</td>
+            </tr>
+        </table>
+        <br>
+        <table width="100%">
+            <tr>
+                <th style="{{$styleTable}}font-weight:bold">No</th>
+                <th style="{{$styleTable}}font-weight:bold">Status</th>
+                <th style="{{$styleTable}}font-weight:bold">Hari</th>
+                <th style="{{$styleTable}}font-weight:bold">Tanggal</th>
+                <th style="{{$styleTable}}font-weight:bold">Jam Datang</th>
+                <th style="{{$styleTable}}font-weight:bold">Telat Datang</th>
+                <th style="{{$styleTable}}font-weight:bold">Jam Istirahat</th>
+                <th style="{{$styleTable}}font-weight:bold">Jam Pulang</th>
+                <th style="{{$styleTable}}font-weight:bold">Pulang Cepat</th>
+                <th style="{{$styleTable}}font-weight:bold">Keterangan</th>
+            </tr>
+            @foreach (arrayTanggal("06","2023",1,lastDayInThisMonth("2023","06")) as $i => $item)
 
+                @php
+                    $statusName = "-";
+                    $presensi = searchDataPresensi($item);
+                    $jamDatang = $presensi?->tanggal_datang ? date("H:i",strtotime($presensi?->tanggal_datang)) : "-" ;
+                    $jamIstirahat = $presensi?->tanggal_istirahat ? date("H:i",strtotime($presensi?->tanggal_istirahat)) : "-" ;
+                    $jamPulang = $presensi?->tanggal_pulang ? date("H:i",strtotime($presensi?->tanggal_pulang)) : "-" ;
+                    if($presensi){
+                        $status = explode(",",$presensi->status);
+                        if($status[0] == ""){
+                            $status = [];
+                        }
+                        if (count($status) > 0) {
+                            $statusName = "";
+                            foreach ($status as $iter => $value) {
+                                $statusName .= convertStatusAbsen($value);
+                                if($iter != (count($status)-1)){
+                                    $statusName .= ", ";
+                                }
+                            }
+                        }
+                    }
+                @endphp
+                <tr>
+                    @php
+                        $styleBgYellow = "background: yellow;";
+                    @endphp
+                    <td style="text-align: center;{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{$i+1}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{$statusName}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{convertDateToNameDay($item)}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{tanggal_indo($item)}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{$jamDatang}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{hitungTelat($item." ".$jamKerja->jam_tepat_datang,$presensi?->tanggal_datang,$jamKerja->toleransi_datang)}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{$jamIstirahat}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{$jamPulang}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif">{{hitungCepatPulang($item." ".$jamKerja->jam_tepat_pulang,$presensi?->tanggal_pulang)}}</td>
+                    <td style="{{$styleTable}}@if(!$presensi) {{$styleBgYellow}} @endif"></td>
+                </tr>
+            @endforeach
+        </table>
+    </body>
 </html>

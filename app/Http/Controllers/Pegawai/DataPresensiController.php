@@ -131,12 +131,11 @@ class DataPresensiController extends Controller
         }else{
             if ($xl == 1) {
                 $date = date("YmdHis");
-                $response = Excel::download(new LaporanPegawaiExport($bulan, $tahun, $xl, $pegawai), "pegawai-$nip-$date.xlsx", \Maatwebsite\Excel\Excel::XLSX);
+                $response = Excel::download(new LaporanPegawaiExport($bulan, $tahun, $xl, $pegawai,$jamKerja), "pegawai-$nip-$date.xlsx", \Maatwebsite\Excel\Excel::XLSX);
                 ob_end_clean();
                 return $response;
                 // return view('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'));
             } else {
-
                 $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai','jamKerja'))->setPaper('a4', 'landscape');
                 // $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'))->setPaper('a4', 'potrait');
                 // ob_end_clean();

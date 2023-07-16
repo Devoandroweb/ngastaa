@@ -7,5 +7,5 @@ use LaravelEasyRepository\Repository;
 interface IzinRepository extends Repository{
 
     // Write something awesome :)
-    public function calculateTotalIzin($nip);
+    public function calculateTotalIzin($nip,$periodeBulan);
 }

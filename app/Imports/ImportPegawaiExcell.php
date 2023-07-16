@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleSheets
+class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleSheets
 {
     /**
     * @param Collection $collection
@@ -40,10 +41,10 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow, WithMultipleShe
         $this->statusPegawai = StatusPegawai::class;
         $this->skpd = Skpd::with('tingkatMany');
     }
-    public function sheets(): array
+    public function sheets() : array
     {
         return [
-            0 => $this,
+            0 => $this
         ];
     }
     public function collection(Collection $collection)

@@ -241,7 +241,9 @@ class ImportGaji implements ToCollection, WithEvents, WithCalculatedFormulas
             },
         ];
     }
-
+    function startRow(){
+        return 2;
+    }
     #Message Handle
     function checkExistingTunjangan($tunjangan){
         if(!$tunjangan){

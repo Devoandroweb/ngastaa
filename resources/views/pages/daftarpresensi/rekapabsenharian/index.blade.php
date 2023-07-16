@@ -107,7 +107,7 @@
         var m = date.getMonth()+1;
         var lastDay = new Date(y, m, 0).getDate();
         var datatableElement = '<table id="data" class="table mt-2 nowrap w-100 mb-5 table-bordered"></table>';
-        const _COLUMNS = [
+        var _COLUMNS = [
             {'title':'NO','data':'DT_RowIndex', 'orderable':false ,'searchable': false},
             {'title':'JABATAN','data':'jabatan','name':'jabatan','searchable': false},
             {'title':'NIP','data':'nip','name':'nip'},
@@ -153,6 +153,7 @@
         })
         $(".divisi").on("select2:select",function(e){
             _KODE_SKPD = e.params.data.id;
+            console.log(_DATERANGE);
             setDataTable(_COLUMNS,_START_DATE,_END_DATE);
         });
 
@@ -227,6 +228,7 @@
                         {'title':'Nip','data':'nip','name':'nip'},
                         {'title':'Nama Pegawai','data':'nama_pegawai','name':'name','searchable': false},
                     ];
+
                     dateRange.forEach(e => {
                         var date = e.split("-");
                         var tanggal = new Date(e);
@@ -238,8 +240,12 @@
                     // console.log("ini primary",_COLUMNS_PRIMARY)
                     console.log(col)
                     _TABLE_REKAP_HARIAN.destroy();
-                    _TABLE_REKAP_HARIAN = null;
                     $("#datatable").empty();
+                    _TABLE_REKAP_HARIAN = null;
+                    _START_DATE = date_start
+                    _END_DATE = date_end
+                    _COLUMNS = col
+                    console.log(col,date_start,date_end);
                     setDataTable(col,date_start,date_end);
                 }
             );

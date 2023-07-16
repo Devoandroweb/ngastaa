@@ -8,6 +8,7 @@ use App\Exports\ExportSampleImportPegawai;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
+use App\Imports\ImportTemplateProtection;
 use App\Models\Master\Eselon;
 use App\Models\Master\Skpd;
 use App\Models\Master\Tingkat;
@@ -340,6 +341,27 @@ class PegawaiController extends Controller
             $kodeSkpd = getKodeSkpdUser();
             $kodeTingkat = null;
         }
+
+        # Validasi Template ----------------------------------------
+        try {
+            //code...
+            $importTemplate = new ImportTemplateProtection();
+            Excel::import($importTemplate, request()->file('file')->store('file'));
+            // dd($importTemplate->errorStatus());
+            if($importTemplate->errorStatus()){
+                return to_route('pegawai.pegawai.import_add')->with([
+                    'type' => 'error',
+                    'messages' => $importTemplate->message()
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return to_route('pegawai.pegawai.import_add')->with([
+                'type' => 'error',
+                'messages' => 'Template Tidak Sesuai, Silahkan unduh ulang'
+            ]);
+        }
+        # -----------------------------------------------------------
+
         $import = new ImportPegawaiExcell($kodeSkpd,$kodeTingkat);
         Excel::import($import, request()->file('file')->store('file'));
         // dd($import->errorMessage(),$import->errorStatus());

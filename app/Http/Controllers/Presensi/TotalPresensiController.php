@@ -105,16 +105,16 @@ class TotalPresensiController extends Controller
                 return $row->getFullName();
             })
             ->addColumn('masuk',function($row){
-                return $row->totalPresensiDetail->where('status', 1)->count();
+                return $row->totalPresensiDetail->where('status','like', '1')->count();
             })
             ->addColumn('telat',function($row){
-                return $row->totalPresensiDetail->where('status', 2)->count();
+                return $row->totalPresensiDetail->where('status','like', '2')->count();
             })
             ->addColumn('alfa',function($row){
-                return $row->totalPresensiDetail->where('status', 3)->count();
+                return $row->totalPresensiDetail->where('status','like', '3')->count();
             })
-            ->addColumn('izin',function($row){
-                return $this->izinRepository->calculateTotalIzin($row->nip);
+            ->addColumn('izin',function($row) use ($periode){
+                return $this->izinRepository->calculateTotalIzin($row->nip,$periode);
             })
             ->addColumn('href_masuk',function($row){
                 return route('presensi.total_presensi.detail_absen',['user'=>$row,'status'=>1]);

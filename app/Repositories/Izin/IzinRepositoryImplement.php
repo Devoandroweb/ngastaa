@@ -5,6 +5,7 @@ namespace App\Repositories\Izin;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Izin;
 use App\Models\Presensi\TotalIzin;
+use App\Models\Presensi\TotalIzinDetail;
 
 class IzinRepositoryImplement extends Eloquent implements IzinRepository{
 
@@ -15,18 +16,18 @@ class IzinRepositoryImplement extends Eloquent implements IzinRepository{
     */
     protected $model;
     protected $dataTotalIzin;
-    protected $periode_bulan;
-    public function __construct(TotalIzin $mdTotalIzin)
+    protected $periodeBulan;
+    public function __construct(TotalIzinDetail $mdTotalIzinDetail)
     {
-        $this->dataTotalIzin = $mdTotalIzin->get();
-        $this->periode_bulan = date("Y-m");
+        $this->dataTotalIzin = $mdTotalIzinDetail->get();
+        $this->periodeBulan = date("Y-m");
     }
 
-    function calculateTotalIzin($nip){
+    function calculateTotalIzin($nip,$periodeBulan){
         $result = 0;
         foreach ($this->dataTotalIzin as $totalIzin) {
-            if($totalIzin->nip == $nip){
-                $result += $totalIzin->total;
+            if($totalIzin->nip == $nip && $totalIzin->periode_bulan == $periodeBulan){
+                $result++;
             }
         }
         return $result;

@@ -606,7 +606,7 @@
                         </a>
                     </li>
                     @endif
-                    @if($laporanDivisi)
+                    {{-- @if($laporanDivisi)
                     <li class="nav-item {{activeMenu("laporan-divisi")}}">
                         <a class="nav-link" href="{{route('pengajuan.presensi.laporan_divisi')}}">
                             <span class="nav-icon-wrap">
@@ -618,7 +618,7 @@
                             <span class="nav-link-text">Divisi</span>
                         </a>
                     </li>
-                    @endif
+                    @endif --}}
                     @if($laporanVisit)
                     <li class="nav-item {{activeMenu("laporan-visit")}}">
                         <a class="nav-link" href="{{route('presensi.laporan_visit.index')}}">

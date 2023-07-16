@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Pegawai\RiwayatShift;
 use App\Repositories\Password\PasswordRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -31,6 +32,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         $user = User::where('email', $request->email)->orWhere('nip', $request->email)->first();
         if (!auth()->attempt($credentials)) {
+            // dd(password_verify($request->password, $user->password));
             if(!$user || !password_verify($request->password, $user->password)){
                 return response()->json([
                     'status' => FALSE,

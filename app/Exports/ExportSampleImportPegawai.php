@@ -16,8 +16,9 @@ class ExportSampleImportPegawai implements WithMultipleSheets
 
         $sheets[] = new ExportTemplateImportPegawai();
         $sheets[] = new ExportMasterDivisiAndJabatan();
+        $sheets[] = new ExportTemplateProtection();
 
         return $sheets;
     }
-    
+
 }

@@ -81,7 +81,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         // $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
         // dd("done");
         // $tanggalBulan = ['2023-04-25','2023-04-26'];
-        $tanggalBulan = arrayTanggal("06","2023",1,31);
+        $tanggalBulan = arrayTanggal("06","2023",19,30);
         // dd($tanggalBulan);
         foreach ($tanggalBulan as $value) {
             $this->date = $value;
@@ -135,7 +135,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             'kode_cuti' => $izin->kode_cuti,
                             'periode_bulan' => $this->periodeBulan,
                         ]);
-                        TotalIzin::where('nip',$pegawai->nip)->where('kode_cuti',$izin->kode_cuti)->update($this->dataTotalIzin[$indexTotalIzin]);
+                        // TotalIzin::where('nip',$pegawai->nip)->where('kode_cuti',$izin->kode_cuti)->update($this->dataTotalIzin[$indexTotalIzin]);
                         TotalIzinDetail::insert($dataInsertTotalIzinDetail);
                     }else{
                         #Alfa

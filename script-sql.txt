@@ -16,3 +16,7 @@ ALTER TABLE `m_menu` ADD `sub_menu` TEXT NOT NULL AFTER `nama`;
 ALTER TABLE `role_menu` ADD `has_permission` VARCHAR(20) NOT NULL AFTER `kode_menu`;
 
 ALTER TABLE `total_presensi_detail` CHANGE `status` `status` VARCHAR(30) NOT NULL COMMENT '1 : Masuk\r\n2 : Telat\r\n3 : Alpha\r\n4 : Izin\r\n';
+ALTER TABLE `users` CHANGE `password` `password` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+INSERT INTO `app_status_function` (`id`, `name`, `value`) VALUES (NULL, 'excel_template_pegawai_version', '1');
+ALTER TABLE `app_status_function` CHANGE `value` `value` TEXT NOT NULL;
+
