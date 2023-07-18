@@ -19,7 +19,7 @@ class CCronjobs extends Controller
             DB::transaction(function(){
                 // $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
                 $resultCalculate = $this->totalPresensiRepository->manualCaculate();
-
+                // dd($resultCalculate);
                 if ($resultCalculate == 0) {
                     return response()->json([
                         'status' => FALSE,

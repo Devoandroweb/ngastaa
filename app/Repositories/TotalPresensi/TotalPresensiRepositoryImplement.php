@@ -100,7 +100,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
             $this->dataPresensi2 =  DataPresensi::whereDate('created_at', $this->date)->where('hitung',0);
 
-            $this->calculatePresensi();
+            return $this->calculatePresensi();
+
         }
     }
     function calculatePresensi()
@@ -111,7 +112,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             // }
             $dataInsertTotalPresensiDetail = [];
             $dataInsertTotalIzinDetail = [];
-            $this->allPegawai = $this->pegawaiRepository->allPegawaiWithRole()->get();
+            $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
             // dd($this->allPegawai);
             foreach ($this->allPegawai as $pegawai) {
                 $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
