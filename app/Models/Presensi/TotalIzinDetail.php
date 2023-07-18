@@ -10,7 +10,7 @@ class TotalIzinDetail extends Model
 {
     use HasFactory;
     protected $table = 'total_izin_detail';
-    protected $fillable = ['nip', 'kode_cuti', 'tanggal'];
+    protected $fillable = ['nip', 'kode_cuti', 'tanggal','periode_bulan'];
     function pegawai(){
         return $this->hasOne(User::class,'nip','nip');
     }

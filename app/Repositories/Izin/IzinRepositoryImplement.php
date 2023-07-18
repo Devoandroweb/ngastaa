@@ -32,4 +32,25 @@ class IzinRepositoryImplement extends Eloquent implements IzinRepository{
         }
         return $result;
     }
+    function saveToTotalIzinDetail($izin) {
+        $tanggalStart = $izin->tanggal_mulai;
+        $tanggalEnd = $izin->tanggal_selesai;
+
+        $tanggal = arrayTanggal($tanggalStart,$tanggalEnd);
+        // dd(count($tanggal) > 12);
+        if(count($tanggal) > 12){
+            return false;
+        }
+        $dataSave = [];
+        foreach ($tanggal as $tgl) {
+            $dataSave[] = [
+                'nip' => $izin->nip,
+                'kode_cuti' => $izin->kode_cuti,
+                'tanggal' => $tgl,
+                'periode_bulan' => date("Y-m",strtotime($tgl)),
+            ];
+        }
+        TotalIzinDetail::insert($dataSave);
+        return true;
+    }
 }

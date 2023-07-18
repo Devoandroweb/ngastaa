@@ -81,7 +81,7 @@ class RekapAbsensHarianController extends Controller
         }else{
             $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])->get()  ;
         }
-
+        // dd($this->mTotalPresensiDetail);
         if($mUsers->get()->count() == 0){
             $mUsers = User::role('pegawai')->when($search,function($q)use($search){
                         return $q->where('users.name','like','%'.$search.'%');
@@ -136,8 +136,12 @@ class RekapAbsensHarianController extends Controller
                     // $this->hadir = 0;
 
                     $status = $this->getStatusInmTotalPresensiDetail($tanggal->format('Y-m-d'),$row->nip);
-                    if ($status != null) {
-                        if(in_array($status,[1,2,5,6,7])){
+                    // dd($status)
+                    $status = collect(explode(",",$status));
+                    $statusPresensi = collect(["1","2","5","6","7"]);
+                    if ($status->count() != 0) {
+                        $intersect = $status->intersect($statusPresensi);
+                        if($intersect->isNotEmpty()){
                             $hadir++;
                         }
                     }
@@ -161,7 +165,7 @@ class RekapAbsensHarianController extends Controller
     }
     function getStatusInmTotalPresensiDetail($tanggal,$nip)
     {
-        // dd($this->mTotalPresensiDetail->get());
+        // dd($this->mTotalPresensiDetail);
         $result = null;
         foreach ($this->mTotalPresensiDetail as $value) {
             if($tanggal == $value->tanggal && $nip == $value->nip){

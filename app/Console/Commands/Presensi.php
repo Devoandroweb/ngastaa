@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class Presensi extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -31,6 +30,7 @@ class Presensi extends Command
      *
      * @return int
      */
+
     public function handle()
     {
         try {
@@ -45,8 +45,7 @@ class Presensi extends Command
             // }
 
             DB::transaction(function(){
-                \App\Repositories\TotalPresensi\TotalPresensiRepository::calculatePresensi();
-                // $resultCalculate = $this->totalPresensiRepository->manualCaculate();
+                
             });
             DB::commit();
             $file = fopen('cronjob.txt','a');

@@ -225,3 +225,5 @@ function badgeApproval($text)
     return '<span class="badge badge-'.$color.' ms-3 d-md-inline-block text-capitalize d-none">'.$text.'</span>';
 }
 }
+
+

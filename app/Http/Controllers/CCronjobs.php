@@ -15,7 +15,6 @@ class CCronjobs extends Controller
         $this->totalPresensiRepository = $totalPresensiRepository;
     }
     function calculatePresensi(){
-        // dd(DB::connection()->getDatabaseName());
         try {
             DB::transaction(function(){
                 // $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
@@ -34,11 +33,9 @@ class CCronjobs extends Controller
                 'message' => 'Berhasil menghitung presensi untuk hari ini, silahkan klik link berikut untuk meninjau perhitungan, <br>
                 <a href="'.route("presensi.total_presensi.index").'">Tinjau</a>'
             ]);
-            // $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
 
         } catch (\Throwable $th) {
-            // return report($th->getMessage());
-            // DB::rollBack();
+            DB::rollBack();
             $fileError = fopen('error_cronjob.txt','a');
             fwrite($fileError, $th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now());
             fclose($fileError);

@@ -9,7 +9,7 @@ trait CreatedUpdatedBy
     public static function bootCreatedUpdatedBy()
     {
         $guard = "web";
-        
+
         // if(auth()->guard('siswa')->check()){
         //     $guard = 'siswa';
         // }
@@ -29,4 +29,5 @@ trait CreatedUpdatedBy
             }
         });
     }
+    
 }

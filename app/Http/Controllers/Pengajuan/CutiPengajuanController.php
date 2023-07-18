@@ -9,12 +9,17 @@ use App\Models\Master\Cuti;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\RiwayatCuti;
 use App\Models\User;
+use App\Repositories\Izin\IzinRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 
 class CutiPengajuanController extends Controller
 {
+    protected $izinRepository;
+    function __construct(IzinRepository $izinRepository){
+        $this->izinRepository = $izinRepository;
+    }
     public function index()
     {
         $search = request('s');
@@ -115,11 +120,20 @@ class CutiPengajuanController extends Controller
             'status' => 1,
         ];
 
-        tambah_log($cuti->nip, "App\Pegawai\DataPengajuanCuti", $id, 'terima');
+
 
         $up = $cuti->update($pengajuan);
 
         if ($up) {
+            # Tambah ke Total Izin Detail
+            // dd($this->izinRepository->saveToTotalIzinDetail($cuti));
+            if(!$this->izinRepository->saveToTotalIzinDetail($cuti)){
+                return redirect()->back()->withInput()->with([
+                    'type' => 'error',
+                    'messages' => "Gagal, Izin tidak boleh lebih dari 12 Hari"
+                ]);
+            }
+            # Tambah ke Riwayat Cuti
             RiwayatCuti::create([
                 'nip' => $cuti->nip,
                 'tanggal_mulai' => $cuti->tanggal_mulai,
@@ -140,7 +154,7 @@ class CutiPengajuanController extends Controller
                 }
                 dispatch(new ProcessWaNotif($no_hp, "Pengajuan {$cuti?->cuti?->nama} telah diterima $catatan!"));
             }
-
+            tambah_log($cuti->nip, "App\Pegawai\DataPengajuanCuti", $id, 'terima');
             return redirect(route('pengajuan.cuti.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil, diterima!"

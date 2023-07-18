@@ -650,21 +650,18 @@ function roleFormat(){
 function normalDateSystem($date){
     return date("Y-m-d",strtotime(str_replace("/","-",$date)));
 }
-function arrayTanggal($month,$year,$start,$end){
-
-    $tanggal = range($start, $end); // Membuat array dari 1 hingga 30
-
-    // $bulan = "06"; // Mendapatkan bulan saat ini
-    $bulan = $month; // Mendapatkan bulan saat ini
-    $tahun = $year; // Mendapatkan tahun saat ini
+function arrayTanggal($start,$end){
 
     $hasil = array(); // Membuat array kosong
 
-    foreach ($tanggal as $tgl) {
-        $tanggal_format = sprintf("%02d", $tgl); // Formatkan tanggal dengan leading zero jika diperlukan
-        $hasil[] = $tahun . '-' . $bulan . '-' . $tanggal_format;
+    $tanggal_awal_akhir = new DatePeriod(
+        new DateTime($start),
+        new DateInterval('P1D'),
+        new DateTime($end."+1 Days")
+    );
+    foreach ($tanggal_awal_akhir as $tanggal ) {
+        $hasil[] = $tanggal->format("Y-m-d");
     }
-
     return $hasil; // Menampilkan array tanggal
 
 }

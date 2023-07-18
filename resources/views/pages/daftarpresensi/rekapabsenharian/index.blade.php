@@ -104,7 +104,7 @@
         var date=new Date();
         var d = date.getDate()
         var y = date.getFullYear()
-        var m = date.getMonth()+1;
+        var m = date.getMonth()+1
         var lastDay = new Date(y, m, 0).getDate();
         var datatableElement = '<table id="data" class="table mt-2 nowrap w-100 mb-5 table-bordered"></table>';
         var _COLUMNS = [
@@ -237,7 +237,13 @@
                     });
                     col.push({'title':'REKAP','data':'rekap','name':null,'orderable':false ,'searchable': false})
 
-                    // console.log("ini primary",_COLUMNS_PRIMARY)
+                    if((col.length - 5) > 31){
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Tanggal tidak boleh lebih dari 31 hari'
+                        })
+                        return;
+                    }
                     console.log(col)
                     _TABLE_REKAP_HARIAN.destroy();
                     $("#datatable").empty();
@@ -252,14 +258,14 @@
             // $(".drp-calendar.right").hide();
             // $(".drp-calendar.left").addClass("single");
 
-            $(".calendar-table").on("DOMSubtreeModified", function () {
-                var el = $(".prev.available").parent().children().last();
-                if (el.hasClass("next available")) {
-                    return;
-                }
-                el.addClass("next available");
-                el.append("<span></span>");
-            });
+            // $(".calendar-table").on("DOMSubtreeModified", function () {
+            //     var el = $(".prev.available").parent().children().last();
+            //     if (el.hasClass("next available")) {
+            //         return;
+            //     }
+            //     el.addClass("next available");
+            //     el.append("<span></span>");
+            // });
         }
 
     </script>
