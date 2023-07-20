@@ -11,6 +11,8 @@ interface PegawaiRepository extends Repository{
     function getFirstPegawai($nip);
     function getAllPegawai();
     function getPegawaiWhereJabatan($kodeJabatan);
+    function getPegawaiWhereLevelJabatan($kodeEselon);
+    function getPegawaiWhereDivisiKerja($kodeSkpd);
     function updatoOrCreatoToTotalPresensi();
 
 }

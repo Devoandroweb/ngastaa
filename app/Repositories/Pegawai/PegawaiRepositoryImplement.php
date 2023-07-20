@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Pegawai;
 
+use App\Models\Master\Eselon;
+use App\Models\Master\Tingkat;
 use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Presensi\TotalPresensi;
 use LaravelEasyRepository\Implementations\Eloquent;
@@ -107,6 +109,15 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
     }
     function getPegawaiWhereJabatan($kodeJabatan) {
         $riwayatJabatan = RiwayatJabatan::where('kode_tingkat',$kodeJabatan)->where('is_akhir',1)->get();
+        return $riwayatJabatan;
+    }
+    function getPegawaiWhereLevelJabatan($kodeEselon){
+        $kodeTingkat = Tingkat::where('kode_eselon',$kodeEselon)->get()->pluck('kode_tingkat');
+        $riwayatJabatan = RiwayatJabatan::whereIn('kode_tingkat',$kodeTingkat)->where('is_akhir',1)->get();
+        return $riwayatJabatan;
+    }
+    function getPegawaiWhereDivisiKerja($kodeSkpd) {
+        $riwayatJabatan = RiwayatJabatan::where('kode_skpd',$kodeSkpd)->where('is_akhir',1)->get();
         return $riwayatJabatan;
     }
 }

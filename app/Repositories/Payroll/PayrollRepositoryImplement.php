@@ -82,7 +82,15 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
             if($value->is_periode == 1){
                 # cek bulan dan tahun
                 if($value->bulan == $this->bulan && $value->tahun == $this->tahun){
-
+                    # Mendapatkan NIP
+                    $nipArray = $this->getKeterangan($value->keterangan,$value);
+                    foreach ($nipArray as $nip) {
+                        $tunjangan[] = [
+                            'nip' => $nip,
+                            'kode_tambahan' => $value->kode_tambah,
+                            'keterangan' => $value->tunjangan?->nama,
+                        ];
+                    }
                 }
             }
         }
@@ -202,7 +210,11 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
                 return explode(",",$daftarTambahPayroll->kode_keterangan);
             case '2': # Jabatan Terpilih
                 return $this->pegawaiRepository->getPegawaiWhereJabatan($daftarTambahPayroll->kode_keterangan)->pluck('nip');
-            default:
+            case '3': # Level Jabatan
+                return $this->pegawaiRepository->getPegawaiWhereLevelJabatan($daftarTambahPayroll->kode_keterangan)->pluck('nip');
+            case '4': # Divisi Kerja
+                return $this->pegawaiRepository->getPegawaiWhereDivisiKerja($daftarTambahPayroll->kode_keterangan)->pluck('nip');
+                default:
                 # code...
                 break;
         }

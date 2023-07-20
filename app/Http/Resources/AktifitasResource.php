@@ -22,6 +22,7 @@ class AktifitasResource extends JsonResource
             'foto' => url('public/'.$this->foto),
             'created_at' => hari(date("w",strtotime($this->created_at))).", ".tanggal_indo($this->created_at),
             'dimulai_pada' => date("H:i:s",strtotime($this->created_at)),
+            'keterangan' => $this->keterangan ?? "-",
         ];
     }
 }
