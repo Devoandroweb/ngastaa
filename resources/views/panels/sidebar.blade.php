@@ -28,6 +28,7 @@
 
     $payrollGenerate = false;
     $payrollPenambahan = false;
+    $payrollBonus = false;
     $payrollPengurangan = false;
 
     $absensiHarian = false;
@@ -51,7 +52,7 @@
     if(role('owner') || role('admin')){
         $data = ["pegawai","setting","menuPerusahaan",
                 "masterDataStatusPegawai","masterDataDivisiKerja","masterDataTingkatJabatan","masterDataLevelJabatan","masterDataTingkatPendidikan","masterDataJurusan","masterDataKursus","masterDataLokasiKerja","masterDataLokasiVisit","masterDataHariLibur","masterDataIzin","masterDataShift","masterDataJamKerja","masterDataGajiUMK","masterDataTunjangan","masterDataLembur","masterDataKomponenPotonganTelat","masterDataKomponenBonus","masterDataKomponenPotongan","masterDataPenghargaan","masterDataRiwayatLainnya","masterDataReimbursement",
-                "payrollGenerate","payrollPenambahan","payrollPengurangan","absensiHarian","absensiRekap","absensiTotal","dataPengajuanIzin","dataPengajuanLembur","dataPengajuanReimbursement","dataPengajuanShift","laporanPresensi","laporanDivisi","laporanVisit","laporanAktifitas","infoPengumuman",
+                "payrollGenerate","payrollPenambahan","payrollBonus","payrollPengurangan","absensiHarian","absensiRekap","absensiTotal","dataPengajuanIzin","dataPengajuanLembur","dataPengajuanReimbursement","dataPengajuanShift","laporanPresensi","laporanDivisi","laporanVisit","laporanAktifitas","infoPengumuman",
                 "setting"
             ];
         foreach ($data as $value) {
@@ -61,7 +62,7 @@
 
     if(role('finance')){
         $data = ["pegawai","hrd",
-                "payrollGenerate","payrollPenambahan","payrollPengurangan",
+                "payrollGenerate","payrollBonus","payrollPenambahan","payrollPengurangan",
                 "dataPengajuanReimbursement"
                 ];
         foreach ($data as $value) {
@@ -114,21 +115,6 @@
             $$value = true;
         }
     }
-    # PEGAWAI #
-    // $pegawai = role('owner') || role('admin') || role('opd');
-
-    // $hrd = role('owner') || role('admin') || role('opd');
-    // $masterData = role('owner') || role('admin');
-    // $masterPayroll = role('owner') || role('admin') || role('finance');
-    // $absensiHarian = role('owner') || role('admin');
-    // $absensiRekap = role('owner') || role('admin');
-    // $absensiTotal = role('owner') || role('admin');
-    // $dataPengajuan = role('owner') || role('admin');
-    // $laporanPresensi = role('owner') || role('admin');
-    // $laporanDivisi = role('owner') || role('admin');
-    // $laporanVisit = role('owner') || role('admin');
-    // $laporanAktifitas = role('owner') || role('admin');
-    // $infoPengumuman = role('owner') || role('admin');
 
 @endphp
 
@@ -481,12 +467,17 @@
                                     @endif
                                     @if($payrollPenambahan)
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('payroll.tambah.index')}}"><span class="nav-link-text">Daftar Penambahan</span></a>
+                                        <a class="nav-link" href="{{route('payroll.tambah.index')}}"><span class="nav-link-text">Tunjangan</span></a>
+                                    </li>
+                                    @endif
+                                    @if($payrollBonus)
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{route('payroll.bonus.index')}}"><span class="nav-link-text">Bonus</span></a>
                                     </li>
                                     @endif
                                     @if($payrollPengurangan)
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('payroll.kurang.index')}}"><span class="nav-link-text">Daftar Pengurangan</span></a>
+                                        <a class="nav-link" href="{{route('payroll.kurang.index')}}"><span class="nav-link-text">Potongan</span></a>
                                     </li>
                                     @endif
                                 </ul>

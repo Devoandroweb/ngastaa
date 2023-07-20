@@ -17,7 +17,7 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
-            <th>{{__('Nama Komponen')}}</th>
+            <th>{{__('Nama Potongan')}}</th>
             <th>{{__('Periode')}}</th>
             <th>{{__('Berdasarkan')}}</th>
             <th>{{__('Detail')}}</th>
@@ -25,14 +25,14 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("payroll.kurang.datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -40,7 +40,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -75,12 +75,12 @@
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
     <script src="{{asset('/')}}delete.js"></script>
-    
+
 @endpush

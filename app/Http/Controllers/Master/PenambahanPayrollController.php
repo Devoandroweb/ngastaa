@@ -51,7 +51,7 @@ class PenambahanPayrollController extends Controller
 
     public function edit(Tambahan $tambahan)
     {
-        
+
         $tunjangan = array_map('trim', explode(',', $tambahan->kode_persen));
         SelectResource::withoutWrapping();
         $tunjangan = SelectResource::collection(Tunjangan::whereIn("kode_tunjangan", $tunjangan)->get());
@@ -87,9 +87,9 @@ class PenambahanPayrollController extends Controller
             'nilai' => 'required',
         ];
 
-        if (!request('id')) {
-            $rules['kode_tambah'] = 'required|unique:ms_tambahan';
-        }
+        // if (!request('id')) {
+        //     $rules['kode_tambah'] = 'required|unique:ms_tambahan';
+        // }
         if (request('satuan') == '2') {
             $rules['kode_persen'] = 'required';
         }
@@ -138,7 +138,7 @@ class PenambahanPayrollController extends Controller
         $model = Tambahan::query();
         return $dataTables->eloquent($model)
             ->addColumn('nilai', function ($row) {
-                return number_indo($row->nilai) . " (" . satuan($row->satuan) . ") <br> <b class='text-success'>" . ($row->satuan == 2 ? master_tunjangan($row->kode_persen) : "") . '<b>';
+                return number_indo($row->nilai);
             })
             ->addColumn('opsi', function ($row) {
 

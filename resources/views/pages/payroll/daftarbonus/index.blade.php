@@ -1,10 +1,10 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Daftar Tunjangan</h2>
-    {{ Breadcrumbs::render('daftar-penambahan') }}
+    <h2 class="pg-title">Daftar Bonus</h2>
+    {{ Breadcrumbs::render('daftar-bonus') }}
 @endsection
 @section('header_action')
-<a href="{{route('payroll.tambah.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+<a href="{{route('payroll.bonus.add')}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
 @endsection
 @section('content')
 @if(session('messages'))
@@ -17,7 +17,7 @@
     <thead>
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
-            <th>{{__('Nama Tunjangan')}}</th>
+            <th>{{__('Nama Bonus')}}</th>
             <th>{{__('Periode')}}</th>
             <th>{{__('Berdasarkan')}}</th>
             <th>{{__('Detail')}}</th>
@@ -34,7 +34,7 @@
     <script >
 
         var _TABLE = null;
-        var _URL_DATATABLE = '{{route("payroll.tambah.datatable")}}';
+        var _URL_DATATABLE = '{{route("payroll.bonus.datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
         // SESUAIKAN FIELD EDIT MODAL
         setDataTable();

@@ -1,6 +1,6 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Daftar Penambahan</h2>
+    <h2 class="pg-title">Buat Tunjangan</h2>
     {{ Breadcrumbs::render('tambah-daftar-penambahan') }}
 @endsection
 @section('content')
@@ -10,9 +10,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group has-validation">
-                <label class="form-label">Komponen</label>
+                <label class="form-label">Tunjangan</label>
                 <select class="form-control komponen" name="kode_tambah" required>
-                    
+
                 </select>
             </div>
         </div>
@@ -34,7 +34,7 @@
         </select>
     </div>
     <div class="element-keterangan"></div>
-    
+
     <button type="submit" class="btn btn-primary">Simpan</button>
     <a href="{{route('payroll.tambah.index')}}" class="btn btn-light">Kembali</a>
 </form>
@@ -47,7 +47,7 @@ function searchId($id,$data)
         endif;
     endforeach;
     return false;
-}    
+}
 @endphp
 @endsection
 @push('js')
@@ -60,28 +60,28 @@ function searchId($id,$data)
         var komponen = $('.komponen');
         $('.komponen').select2({
             ajax: {
-                url: "{{route('master.payroll.penambahan.json')}}",
+                url: "{{route('master.payroll.tunjangan.json')}}",
                 processResults: function (data) {
                     console.log(data);
-                    
+
                     return {
                         results: $.map(data, function (item) {
                             return {
                                 text: item['label'],
-                                id: item['kode_tambah']
+                                id: item['kode_tunjangan']
                             }
                         })
                     };
                 }
             },
-            
+
         });
-        
+
 
         $(".periode").select2();
         $(".keterangan").select2();
-        
-        $('.periode').change(function (e) { 
+
+        $('.periode').change(function (e) {
             e.preventDefault();
             console.log($(this).val())
             if($(this).val() == 1){
@@ -92,7 +92,7 @@ function searchId($id,$data)
                 $('.element-periode').empty();
             }
         });
-        $('.keterangan').change(function (e) { 
+        $('.keterangan').change(function (e) {
             e.preventDefault();
             console.log($(this).val())
             if($(this).val() == 1){

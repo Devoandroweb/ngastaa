@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppStatusFunction;
+use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,9 +11,14 @@ use Illuminate\Support\Facades\DB;
 class CCronjobs extends Controller
 {
     protected $totalPresensiRepository;
-    function __construct(TotalPresensiRepository $totalPresensiRepository)
+    protected $payrollRepository;
+    function __construct(
+        TotalPresensiRepository $totalPresensiRepository,
+        PayrollRepository $payrollRepository,
+    )
     {
         $this->totalPresensiRepository = $totalPresensiRepository;
+        $this->payrollRepository = $payrollRepository;
     }
     function calculatePresensi(){
         try {
@@ -64,5 +70,8 @@ class CCronjobs extends Controller
             ]);
         }
 
+    }
+    function calculatePayroll(){
+        $this->payrollRepository->hitungPayroll();
     }
 }

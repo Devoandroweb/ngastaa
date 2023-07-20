@@ -35,6 +35,7 @@ use App\Http\Controllers\Master\TingkatController;
 use App\Http\Controllers\Master\UmkController;
 use App\Http\Controllers\Master\VisitController;
 use App\Http\Controllers\Payroll\CustomPayrollController;
+use App\Http\Controllers\Payroll\DaftarBonusPayrollController;
 use App\Http\Controllers\Payroll\GeneratePayrollController;
 use App\Http\Controllers\Payroll\KurangPayrollController;
 use App\Http\Controllers\Payroll\TambahPayrollController;
@@ -109,6 +110,7 @@ Route::get('/getroute', function () {
 Route::controller(CCronjobs::class)
         ->group(function(){
             Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
+            Route::get('calculate-payroll','calculatePayroll')->name('calculate-payroll');
             Route::get('reset-app-status-calculate-presensi','resetAppStatusCalculatePresensi')->name('reset-app-status-calculate-presensi');
         });
 
@@ -517,7 +519,7 @@ Route::middleware(['auth'])
                         Route::get('delete/{Rlainnya}', 'delete')->name('delete');
                     });
 
-                    // NEW DATATABLEa
+                    // NEW DATATABLE
                     // ============== Data Riwayat ===================
                     Route::get('jabatan/{pegawai}/datatable', [PegawaiJabatanController::class, "datatable"]);
                     Route::get('kgb/{pegawai}/datatable', [RiwayatKgbController::class, "datatable"]);
@@ -559,6 +561,18 @@ Route::middleware(['auth'])
                         Route::post('store', 'store')->name('store');
                         Route::get('edit/{tambah}', 'edit')->name('edit');
                         Route::get('delete/{tambah}', 'delete')->name('delete');
+                        Route::get('datatable', 'datatable')->name('datatable');
+                    });
+
+                Route::controller(DaftarBonusPayrollController::class)
+                    ->prefix('bonus')
+                    ->name("bonus.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('add', 'add')->name('add');
+                        Route::post('store', 'store')->name('store');
+                        Route::get('edit/{bonus}', 'edit')->name('edit');
+                        Route::get('delete/{bonus}', 'delete')->name('delete');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
 
@@ -765,7 +779,6 @@ Route::middleware(['auth'])
                                     Route::get('edit/{tambahan}', 'edit')->name('edit');
                                     Route::get('delete/{tambahan}', 'delete')->name('delete');
                                     Route::get('datatable', 'datatable')->name('datatable');
-
                                 });
 
                             Route::controller(PenguranganPayrollController::class)

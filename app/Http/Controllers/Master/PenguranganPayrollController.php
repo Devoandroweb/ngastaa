@@ -80,9 +80,9 @@ class PenguranganPayrollController extends Controller
             'nilai' => 'required',
         ];
 
-        if (!request('id')) {
-            $rules['kode_kurang'] = 'required|unique:ms_pengurangan';
-        }
+        // if (!request('id')) {
+        //     $rules['kode_kurang'] = 'required|unique:ms_pengurangan';
+        // }
         if (request('satuan') == 2) {
             $rules['kode_persen'] = 'required';
         }
@@ -130,7 +130,7 @@ class PenguranganPayrollController extends Controller
         $model = Pengurangan::query();
         return $dataTables->eloquent($model)
             ->addColumn('nilai', function ($row) {
-                return number_indo($row->nilai) . " (" . satuan($row->satuan) . ") <br> <b class='text-danger'>" . ($row->satuan == 2 ? master_tunjangan($row->kode_persen) : "") . '<b>';
+                return number_indo($row->nilai) . " (" . satuan($row->satuan) . ")";
             })
             ->addColumn('opsi', function ($row) {
 

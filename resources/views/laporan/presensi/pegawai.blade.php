@@ -10,54 +10,30 @@
         }
         return null;
     }
-    function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
-        // dd($jamDatang, $jamTepatDatang);
+    function hitungTelatText($jamTepatDatang,$jamDatang,$toleransi){
+        $selisihMenit = hitungTelat($jamTepatDatang,$jamDatang,$toleransi);
 
-        $jamTepatDatang = strtotime($jamTepatDatang." +".$toleransi." Minutes");
-        $jamDatang = strtotime($jamDatang);
-        $result = "-";
-        if($jamDatang > $jamTepatDatang){
-            $selisihDetik = abs($jamTepatDatang - $jamDatang);
-            $selisihMenit = floor($selisihDetik / 60);
-            $result = $selisihDetik;
-
-            $jam = floor($selisihMenit / 60); // Menghitung jam
-            $menit = $selisihMenit % 60;
-            if($jam != 0){
-                return $jam ." Jam ".$menit." Menit";
-            }
-            if($menit != 0){
-                return $menit." Menit";
-            }
-            return "-";
+        $jam = floor($selisihMenit / 60); // Menghitung jam
+        $menit = $selisihMenit % 60;
+        if($jam != 0){
+            return $jam ." Jam ".$menit." Menit";
         }
-        return $result;
+        if($menit != 0){
+            return $menit." Menit";
+        }
+        return "-";
     }
-    function hitungCepatPulang($jamTepatPulang,$jamPulang){
-        // dd($jamPulang, $jamTepatPulang);
-        if($jamPulang){
-            $jamTepatPulang = strtotime($jamTepatPulang);
-            $jamPulang = strtotime($jamPulang);
-            $result = "-";
-            if($jamPulang < $jamTepatPulang){
-                $selisihDetik = abs($jamTepatPulang - $jamPulang);
-                $selisihMenit = floor($selisihDetik / 60);
-                $result = $selisihDetik;
-
-                $jam = floor($selisihMenit / 60); // Menghitung jam
-                $menit = $selisihMenit % 60;
-                if($jam != 0){
-                    return $jam ." Jam ".$menit." Menit";
-                }
-                if($menit != 0){
-                    return $menit." Menit";
-                }
-                return "-";
-            }
-            return $result;
-        }else{
-            return "-";
+    function hitungCepatPulangText($jamTepatPulang,$jamPulang){
+        $selisihMenit = hitungCepatPulang($jamTepatPulang,$jamPulang);
+        $jam = floor($selisihMenit / 60); // Menghitung jam
+        $menit = $selisihMenit % 60;
+        if($jam != 0){
+            return $jam ." Jam ".$menit." Menit";
         }
+        if($menit != 0){
+            return $menit." Menit";
+        }
+        return "-";
     }
 @endphp
 <html>
@@ -118,7 +94,7 @@
                 <th>Pulang Cepat</th>
                 <th>Keterangan</th>
             </tr>
-            @foreach (arrayTanggal("06","2023",1,lastDayInThisMonth("2023","06")) as $i => $item)
+            @foreach (arrayTanggal("$tahun-$bulan-1","$tahun-$bulan-".lastDayInThisMonth($tahun,$bulan)) as $i => $item)
 
                 @php
                     $statusName = "-";
@@ -148,10 +124,10 @@
                     <td>{{convertDateToNameDay($item)}}</td>
                     <td>{{tanggal_indo($item)}}</td>
                     <td>{{$jamDatang}}</td>
-                    <td>{{hitungTelat($item." ".$jamKerja->jam_tepat_datang,$presensi?->tanggal_datang,$jamKerja->toleransi_datang)}}</td>
+                    <td>{{hitungTelatText($item." ".$jamKerja->jam_tepat_datang,$presensi?->tanggal_datang,$jamKerja->toleransi_datang)}}</td>
                     <td>{{$jamIstirahat}}</td>
                     <td>{{$jamPulang}}</td>
-                    <td>{{hitungCepatPulang($item." ".$jamKerja->jam_tepat_pulang,$presensi?->tanggal_pulang)}}</td>
+                    <td>{{hitungCepatPulangText($item." ".$jamKerja->jam_tepat_pulang,$presensi?->tanggal_pulang)}}</td>
                     <td></td>
                 </tr>
             @endforeach

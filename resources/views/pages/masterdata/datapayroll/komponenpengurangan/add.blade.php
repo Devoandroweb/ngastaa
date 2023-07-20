@@ -29,7 +29,7 @@
             </select>
         </div>
     </div>
-    <div class="element-presentase"></div>
+    {{-- <div class="element-presentase"></div> --}}
     <div class="row">
         <div class="form-group">
             <label class="form-label">{{__('Nilai')}}</label>
@@ -46,33 +46,33 @@
 @push('js')
 <script>
 
-    var selectPersentase = '';
-    $("#satuan").change(function (e) { 
-        e.preventDefault();
-        buildPresentaseParent($(this).val())
-    });
-    function buildPresentaseParent(val){
-        var placeholder = '';
-        var idEl = null;
-        selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpengurangan.select-sumber-pengurangan-dari')!!}";
-       
-        if(val == 2){
-            $(".element-presentase").html(selectPersentase);
-            idEl = "#input_tags_presentase";
-            placeholder = "Pilih Presentase";
-            // $(idEl).select2("destroy")
-            $(idEl).select2({
-                tags: true,
-                tokenSeparators: [',', ' '],
-                placeholder: placeholder,
-                allowClear: true
-            });
-        }else{
-            $(".element-presentase").empty();;
-        }
-        // enableButtonSave();
+    // var selectPersentase = '';
+    // $("#satuan").change(function (e) {
+    //     e.preventDefault();
+    //     buildPresentaseParent($(this).val())
+    // });
+    // function buildPresentaseParent(val){
+    //     var placeholder = '';
+    //     var idEl = null;
+    //     selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpengurangan.select-sumber-pengurangan-dari')!!}";
 
-    }
+    //     if(val == 2){
+    //         $(".element-presentase").html(selectPersentase);
+    //         idEl = "#input_tags_presentase";
+    //         placeholder = "Pilih Presentase";
+    //         // $(idEl).select2("destroy")
+    //         $(idEl).select2({
+    //             tags: true,
+    //             tokenSeparators: [',', ' '],
+    //             placeholder: placeholder,
+    //             allowClear: true
+    //         });
+    //     }else{
+    //         $(".element-presentase").empty();;
+    //     }
+    //     // enableButtonSave();
+
+    // }
 </script>
-    
+
 @endpush

@@ -3,50 +3,38 @@
 namespace App\Http\Controllers\Payroll;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Payroll\TambahPayrollResource;
-use App\Http\Resources\SelectTingkatResource;
-use App\Models\Master\Tingkat;
-use App\Models\Payroll\DaftarTambahPayroll;
+use App\Models\Payroll\DaftarBonusPayroll;
+use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class TambahPayrollController extends Controller
+class DaftarBonusPayrollController extends Controller
 {
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $tambah = DaftarTambahPayroll::latest()->paginate($limit);
-
-        $tambah->appends(request()->all());
-        $tambah = TambahPayrollResource::collection($tambah);
-        // return inertia('Payroll/Tambah/index', compact('tambah'));
-        return view('pages/payroll/daftarpenambahan/index', compact('tambah'));
+        return view('pages/payroll/daftarbonus/index');
     }
 
     public function add()
     {
-        $tambah = new DaftarTambahPayroll();
-        $tingkat = Tingkat::with(str_repeat('children.', 99))->whereNull('parent_id')->get();
-        return view('pages/payroll/daftarpenambahan/add', compact('tambah', 'tingkat'));
+        $bonus = new DaftarBonusPayroll();
+        return view('pages/payroll/daftarbonus/add',compact('bonus'));
     }
 
-    public function edit(DaftarTambahPayroll $tambah)
+    public function edit(DaftarBonusPayroll $bonus)
     {
-        $tingkat = Tingkat::with(str_repeat('children.', 99))->whereNull('parent_id')->get();
-        return view('pages/payroll/daftarpenambahan/edit', compact('tambah', 'tingkat'));
+        return view('pages/payroll/daftarbonus/edit', compact('bonus'));
     }
 
-    public function delete(DaftarTambahPayroll $tambah)
+    public function delete(DaftarBonusPayroll $bonus)
     {
-        $cr = $tambah->delete();
+        $cr = $bonus->delete();
         if ($cr) {
-            return redirect(route('payroll.tambah.index'))->with([
+            return redirect(route('payroll.bonus.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil, dihapus!"
             ]);
         } else {
-            return redirect(route('payroll.tambah.index'))->with([
+            return redirect(route('payroll.bonus.index'))->with([
                 'type' => 'error',
                 'messages' => "Gagal, dihapus!"
             ]);
@@ -55,9 +43,8 @@ class TambahPayrollController extends Controller
 
     public function store()
     {
-        // dd(request()->all());
         $rules = [
-            'kode_tambah' => 'required',
+            'kode_bonus' => 'required',
             'bulan' => 'nullable',
             'tahun' => 'nullable',
             'is_periode' => 'required',
@@ -99,7 +86,7 @@ class TambahPayrollController extends Controller
 
         $id = request('id');
 
-        $cr = DaftarTambahPayroll::updateOrCreate(
+        $cr = DaftarBonusPayroll::updateOrCreate(
             [
                 'id' => $id,
             ],
@@ -107,12 +94,12 @@ class TambahPayrollController extends Controller
         );
 
         if ($cr) {
-            return redirect(route('payroll.tambah.index'))->with([
+            return redirect(route('payroll.bonus.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil, diperbaharui!"
             ]);
         } else {
-            return redirect(route('payroll.tambah.index'))->with([
+            return redirect(route('payroll.bonus.index'))->with([
                 'type' => 'error',
                 'messages' => "Gagal, diperbaharui!"
             ]);
@@ -120,8 +107,8 @@ class TambahPayrollController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $tambah = DaftarTambahPayroll::get();
-        return $dataTables->of($tambah)
+        $bonus = DaftarBonusPayroll::get();
+        return $dataTables->of($bonus)
             ->addColumn('detail', function ($row) {
                 return detail_keterangan($row->keterangan, $row->kode_keterangan);
             })
@@ -132,12 +119,12 @@ class TambahPayrollController extends Controller
                 return $row->is_periode == 1 ? bulan($row->bulan) . " / " . $row->tahun : "Selamanya";
             })
             ->addColumn('nama', function ($row) {
-                return $row->tunjangan?->nama;
+                return $row->tambah?->nama;
             })
             ->addColumn('opsi', function ($row) {
 
-                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('payroll.tambah.edit', $row->id) . "'>" . icons('pencil') . "</a>";
-                $html .= "<a class='text-danger delete' tooltip='Hapus' href='" . route('payroll.tambah.delete', $row->id) . "'>" . icons('trash') . "</a>";
+                $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('payroll.bonus.edit', $row->id) . "'>" . icons('pencil') . "</a>";
+                $html .= "<a class='text-danger delete' tooltip='Hapus' href='" . route('payroll.bonus.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 return $html;
             })
             ->rawColumns(['opsi'])

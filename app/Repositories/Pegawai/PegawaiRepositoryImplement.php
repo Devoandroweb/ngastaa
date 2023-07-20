@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Pegawai;
 
+use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Presensi\TotalPresensi;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\User;
@@ -103,5 +104,9 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             ->first();
             // dd($pegawai);
         return $pegawai;
+    }
+    function getPegawaiWhereJabatan($kodeJabatan) {
+        $riwayatJabatan = RiwayatJabatan::where('kode_tingkat',$kodeJabatan)->where('is_akhir',1)->get();
+        return $riwayatJabatan;
     }
 }

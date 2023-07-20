@@ -8,5 +8,7 @@ interface PayrollRepository extends Repository{
 
     // Write something awesome :)
     function insertWithDivisi($kodePayroll);
-    function calculatePresensi();
+    function calculatePresensi($nip);
+    function hitungPayroll();
+
 }

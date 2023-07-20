@@ -348,15 +348,29 @@ Breadcrumbs::for('import-payroll', function (BreadcrumbTrail $trail) {
 // Payroll | Daftar Penambahan
 Breadcrumbs::for('daftar-penambahan', function (BreadcrumbTrail $trail) {
     $trail->push('Payroll', "#");
-    $trail->push('Daftar Penambahan', route('payroll.tambah.index'));
+    $trail->push('Daftar Tunjangan', route('payroll.tambah.index'));
 });
 Breadcrumbs::for('tambah-daftar-penambahan', function (BreadcrumbTrail $trail) {
     $trail->parent('daftar-penambahan');
-    $trail->push('Tambah Daftar Penambahan');
+    $trail->push('Tambah Daftar Tunjangan');
 });
 Breadcrumbs::for('edit-daftar-penambahan', function (BreadcrumbTrail $trail) {
     $trail->parent('daftar-penambahan');
-    $trail->push('Edit Daftar Penambahan');
+    $trail->push('Edit Daftar Tunjangan');
+});
+
+// Payroll | Daftar Penambahan
+Breadcrumbs::for('daftar-bonus', function (BreadcrumbTrail $trail) {
+    $trail->push('Payroll', "#");
+    $trail->push('Daftar Bonus', route('payroll.bonus.index'));
+});
+Breadcrumbs::for('tambah-daftar-bonus', function (BreadcrumbTrail $trail) {
+    $trail->parent('daftar-bonus');
+    $trail->push('Tambah Daftar Bonus');
+});
+Breadcrumbs::for('edit-daftar-bonus', function (BreadcrumbTrail $trail) {
+    $trail->parent('daftar-bonus');
+    $trail->push('Edit Daftar Bonus');
 });
 
 // Payroll | Daftar Potongan

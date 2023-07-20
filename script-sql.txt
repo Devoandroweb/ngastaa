@@ -5,9 +5,9 @@ ALTER TABLE `data_payroll` ADD `persen_kehadiran` INT NOT NULL DEFAULT '0' AFTER
 ALTER TABLE `skpd` ADD `pemilik` VARCHAR(100) NOT NULL COMMENT 'ini berisi NIP' AFTER `deleted_at`;
 ALTER TABLE `skpd` CHANGE `pemilik` `pemilik` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'ini berisi NIP';
 
-CREATE TABLE `ngastaa`.`m_menu` (`id` INT NOT NULL AUTO_INCREMENT , `kode_menu` VARCHAR(120) NOT NULL , `nama` VARCHAR(120) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE  `m_menu` (`id` INT NOT NULL AUTO_INCREMENT , `kode_menu` VARCHAR(120) NOT NULL , `nama` VARCHAR(120) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `m_menu` ADD `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `nama`, ADD `updated_at` DATETIME NULL DEFAULT NULL AFTER `created_at`;
-CREATE TABLE `ngastaa`.`role_menu` (`id` INT NOT NULL AUTO_INCREMENT , `kode_level` INT NOT NULL COMMENT 'untuk level jabatan' , `kode_menu` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE  `role_menu` (`id` INT NOT NULL AUTO_INCREMENT , `kode_level` INT NOT NULL COMMENT 'untuk level jabatan' , `kode_menu` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `role_menu` CHANGE `kode_level` `kode_level` VARCHAR(110) NOT NULL COMMENT 'untuk level jabatan', CHANGE `kode_menu` `kode_menu` VARCHAR(110) NOT NULL;
 ALTER TABLE `users` ADD `created_by` INT NOT NULL DEFAULT '0' AFTER `updated_at`;
 ALTER TABLE `users` ADD `updated_by` INT NOT NULL DEFAULT '0' AFTER `created_by`;
@@ -19,4 +19,18 @@ ALTER TABLE `total_presensi_detail` CHANGE `status` `status` VARCHAR(30) NOT NUL
 ALTER TABLE `users` CHANGE `password` `password` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 INSERT INTO `app_status_function` (`id`, `name`, `value`) VALUES (NULL, 'excel_template_pegawai_version', '1');
 ALTER TABLE `app_status_function` CHANGE `value` `value` TEXT NOT NULL;
+
+CREATE TABLE `daftar_bonus_payroll` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kode_bonus` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_periode` tinyint(4) DEFAULT 0 COMMENT '0 berarti selamanya',
+  `bulan` tinyint(4) DEFAULT NULL,
+  `tahun` year(4) DEFAULT NULL,
+  `keterangan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '0 Semua Pegawai, 1 Pegawai Terpilih, 2 Jabatan Terpilih, 3 Level Jabatan, 4 Divisi Kerja',
+  `kode_keterangan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ALTER TABLE `daftar_bonus_payroll` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
 

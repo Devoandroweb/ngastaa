@@ -40,7 +40,7 @@
             </select>
         </div>
     </div>
-    <div class="element-presentase"></div>
+    {{-- <div class="element-presentase"></div> --}}
     <div class="row">
         <div class="form-group">
             <label class="form-label">{{__('Nilai')}}</label>
@@ -59,42 +59,39 @@
 @endsection
 @push('js')
 <script>
-    buildPresentaseParent('{{$pengurangan->satuan}}')
-    $("#satuan").change(function (e) { 
-        e.preventDefault();
-        buildPresentaseParent($(this).val())
-    });
-    var selectPersentase = '';
-    function buildPresentaseParent(val){
-        var placeholder = '';
-        var idEl = null;
-        
-        @if($pengurangan->satuan == 2)
-            selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari-edit',$tunjangan)!!}";
-        @else
-            selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari')!!}";
-        @endif
-        
-        
+    // buildPresentaseParent('{{$pengurangan->satuan}}')
+    // $("#satuan").change(function (e) {
+    //     e.preventDefault();
+    //     buildPresentaseParent($(this).val())
+    // });
+    // var selectPersentase = '';
+    // function buildPresentaseParent(val){
+    //     var placeholder = '';
+    //     var idEl = null;
 
-        
-        if(val == 2){
-            $(".element-presentase").html(selectPersentase);
-            idEl = "#input_tags_presentase";
-            placeholder = "Pilih Presentase";
-            // $(idEl).select2("destroy")
-            $(idEl).select2({
-                tags: true,
-                tokenSeparators: [',', ' '],
-                placeholder: placeholder,
-                allowClear: true
-            });
-        }else{
-            $(".element-presentase").empty();;
-        }
-        // enableButtonSave();
+    //     @if($pengurangan->satuan == 2)
+    //         selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari-edit',$tunjangan)!!}";
+    //     @else
+    //         selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari')!!}";
+    //     @endif
 
-    }
+    //     if(val == 2){
+    //         $(".element-presentase").html(selectPersentase);
+    //         idEl = "#input_tags_presentase";
+    //         placeholder = "Pilih Presentase";
+    //         // $(idEl).select2("destroy")
+    //         $(idEl).select2({
+    //             tags: true,
+    //             tokenSeparators: [',', ' '],
+    //             placeholder: placeholder,
+    //             allowClear: true
+    //         });
+    //     }else{
+    //         $(".element-presentase").empty();;
+    //     }
+    //     // enableButtonSave();
+
+    // }
 </script>
-    
+
 @endpush

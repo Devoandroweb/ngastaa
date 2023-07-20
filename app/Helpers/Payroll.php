@@ -55,31 +55,25 @@ function master_tunjangan($id)
 function keterangan($id)
 {
     switch ($id) {
-        case 'semua':
+        case '0':
             return "Semua Pegawai";
-            break;
         case '1':
             return "Pegawai Tertentu";
-            break;
         case '2':
             return "Tingkat Jabatan";
-            break;
         case '3':
             return "Level Jabatan";
-            break;
         case '4':
             return "Divisi Kerja";
-            break;
 
         default:
             return "Err";
-            break;
     }
 }
 
 function detail_keterangan($keterangan, $kode_keterangan)
 {
-    if ($keterangan == "semua") {
+    if ($keterangan == "0") {
         return " - ";
     }
     if ($keterangan == "1") {

@@ -226,4 +226,34 @@ function badgeApproval($text)
 }
 }
 
+function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
+    // dd($jamDatang, $jamTepatDatang);
 
+    $jamTepatDatang = strtotime($jamTepatDatang." +".$toleransi." Minutes");
+    $jamDatang = strtotime($jamDatang);
+    $result = 0;
+    if($jamDatang > $jamTepatDatang){
+        $selisihDetik = abs($jamTepatDatang - $jamDatang);
+        $selisihMenit = floor($selisihDetik / 60);
+
+        return $selisihMenit;
+    }
+    return $result;
+}
+function hitungCepatPulang($jamTepatPulang,$jamPulang){
+    // dd($jamPulang, $jamTepatPulang);
+    if($jamPulang){
+        $jamTepatPulang = strtotime($jamTepatPulang);
+        $jamPulang = strtotime($jamPulang);
+        $result = 0;
+        if($jamPulang < $jamTepatPulang){
+            $selisihDetik = abs($jamTepatPulang - $jamPulang);
+            $selisihMenit = floor($selisihDetik / 60);
+
+            return $selisihMenit;
+        }
+        return $result;
+    }else{
+        return 0;
+    }
+}
