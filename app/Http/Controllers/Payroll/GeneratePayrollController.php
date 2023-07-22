@@ -131,10 +131,10 @@ class GeneratePayrollController extends Controller
             ],200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th->getMessage());
+            // dd($th->getMessage());
             return response()->json([
                 'status' => false,
-                'messages' => "Gagal, Ada kesalahan saat membuat Payroll!"
+                'messages' => "Gagal, Ada kesalahan saat membuat Payroll! : ".$th->getMessage()
             ],500);
         }
 
