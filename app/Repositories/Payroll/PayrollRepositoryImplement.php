@@ -162,7 +162,7 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
                 # cek bulan dan tahun
                 if($value->bulan == $this->bulan && $value->tahun == $this->tahun){
                     # Mendapatkan NIP
-                    if(in_array($pegawai->nip,$nipArray)){
+                    if(in_array($pegawai->nip,$nipArray ?? [])){
                         if($value->tunjangan?->satuan == 1){
                             $nilai = $this->hitungGajiDariPersen($value->tunjangan?->nilai);
                         }else{
@@ -180,7 +180,7 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
                     }
                 }
             }else{ # Selamanya
-                if(in_array($pegawai->nip,$nipArray)){
+                if(in_array($pegawai->nip,$nipArray ?? [])){
                     if($value->tunjangan?->satuan == 1){
                         $nilai = $this->hitungGajiDariPersen($value->tunjangan?->nilai);
                     }else{
@@ -219,7 +219,7 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
                 # cek bulan dan tahun
                 if($value->bulan == $this->bulan && $value->tahun == $this->tahun){
                     # Mendapatkan NIP
-                    if(in_array($pegawai->nip,$nipArray)){
+                    if(in_array($pegawai->nip,$nipArray ?? [])){
                         if($value->tambah?->satuan == 2){
                             $nilai = $this->hitungGajiDariPersen($value->tambah?->nilai);
                         }else{
@@ -237,7 +237,7 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
                     }
                 }
             }else{ # Selamanya
-                if(in_array($pegawai->nip,$nipArray)){
+                if(in_array($pegawai->nip,$nipArray ?? [])){
                     if($value->tambah?->satuan == 1){
                         $nilai = $this->hitungGajiDariPersen($value->tambah?->nilai);
                     }else{
@@ -276,7 +276,7 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
                 # cek bulan dan tahun
                 if($value->bulan == $this->bulan && $value->tahun == $this->tahun){
                     # Mendapatkan NIP
-                    if(in_array($pegawai->nip,$nipArray)){
+                    if(in_array($pegawai->nip,$nipArray ?? [])){
                         if($value->kurang?->satuan == 2){
                             $nilai = $this->hitungGajiDariPersen($value->kurang?->nilai);
                         }else{
@@ -295,7 +295,7 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
                 }
             }else{ # Selamanya
                 // dd($pegawai,$nipArray);
-                if(in_array($pegawai->nip,$nipArray)){
+                if(in_array($pegawai->nip,$nipArray ?? [])){
                     if($value->kurang?->satuan == 2){
                         $nilai = $this->hitungGajiDariPersen($value->kurang?->nilai);
                     }else{
@@ -373,14 +373,16 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
             $jamKerja = $jamKerja?->jamKerja ?? $shift?->shift;
             $status = explode(",",$absen->status);
             // dd($status,$absen->id);
-            if(in_array(2,$status)){
-                $telat++;
-                $telatMenit += hitungTelat($absen?->tanggal." ".$jamKerja?->jam_tepat_pulang,$absen?->tanggal_pulang,$jamKerja?->toleransi);
-            }
-            if(in_array(6,$status)){
-                $pulangCepat++;
-                $pulangCepatMenit += hitungCepatPulang($absen?->tanggal." ".$jamKerja?->jam_tepat_pulang,$absen?->tanggal_pulang);
-                // dd($pulangCepatMenit);
+            if($status){
+                if(in_array(2,$status)){
+                    $telat++;
+                    $telatMenit += hitungTelat($absen?->tanggal." ".$jamKerja?->jam_tepat_pulang,$absen?->tanggal_pulang,$jamKerja?->toleransi);
+                }
+                if(in_array(6,$status)){
+                    $pulangCepat++;
+                    $pulangCepatMenit += hitungCepatPulang($absen?->tanggal." ".$jamKerja?->jam_tepat_pulang,$absen?->tanggal_pulang);
+                    // dd($pulangCepatMenit);
+                }
             }
         }
         return [
