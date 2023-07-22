@@ -136,20 +136,35 @@ class User extends Authenticatable
         $gelar_belakang = ($this->gelar_belakang != "") ? " ".$this->gelar_belakang :"";
         return "{$gelar_depan}{$this->name}{$gelar_belakang}";
     }
-    function getJabatan(){
+    function getNamaJabatan(){
         $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
         if( $jabatan != null){
-            return  ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
+            return  ((is_null($jabatan->tingkat?->nama)) ? null : $jabatan->tingkat?->nama);
         }
-        return "-";
+        return null;
     }
-    function getDivisi(){
+    function getNamaDivisi(){
         $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
         if( $jabatan != null){
             $skpd = $jabatan?->skpd?->nama;
             return $skpd;
         }
-        return "-";
+        return null;
+    }
+    function getJabatan(){
+        $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
+        if( $jabatan != null){
+            return  ((is_null($jabatan->tingkat)) ? null : $jabatan->tingkat);
+        }
+        return null;
+    }
+    function getDivisi(){
+        $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
+        if( $jabatan != null){
+            $skpd = $jabatan?->skpd;
+            return $skpd;
+        }
+        return null;
     }
     public function getImagesAttribute()
     {

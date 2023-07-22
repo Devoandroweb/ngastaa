@@ -11,7 +11,7 @@
             ];
         @endphp
         @if ($data != null)
-            @if(searchId($s->id,$data))
+            @if($s->kode_tingkat==$data)
                 <option selected value="{{json_encode($json)}}">{{$s->nama}}</option>
             @else
                 <option value="{{json_encode($json)}}">{{$s->nama}}</option>

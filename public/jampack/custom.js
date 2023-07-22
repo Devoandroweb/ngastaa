@@ -22,6 +22,9 @@ function setNumeric(){
     $(".numeric").autoNumeric('init',{aPad:false, aDec: ',', aSep: '.'});
     console.log("set numeric success");
 }
+function clearNumeric(value){
+    return value.split(".").join("")
+}
 function toRupiah(el,value){
     el.autoNumeric('init',{aPad:false, aDec: ',', aSep: '.'});
     el.autoNumeric('set',value);

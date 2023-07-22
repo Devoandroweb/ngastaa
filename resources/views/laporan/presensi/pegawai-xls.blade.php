@@ -59,11 +59,11 @@
             </tr>
             <tr>
                 <td colspan="2">JABATAN</td>
-                <td colspan="8">: {{$pegawai->getJabatan()}}</td>
+                <td colspan="8">: {{$pegawai->getNamaJabatan()}}</td>
             </tr>
             <tr>
                 <td colspan="2">DIVISI</td>
-                <td colspan="8">: {{$pegawai->getDivisi()}}</td>
+                <td colspan="8">: {{$pegawai->getNamaDivisi()}}</td>
             </tr>
             <tr>
                 <td colspan="2">BULAN / TAHUN</td>

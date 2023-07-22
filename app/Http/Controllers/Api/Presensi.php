@@ -15,7 +15,6 @@ class Presensi extends Controller
         PresensiRepository $presensiRepository
     ){
         $this->presensiRepository = $presensiRepository;
-
     }
     function index($nip){
         try {

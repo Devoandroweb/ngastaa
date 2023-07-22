@@ -144,10 +144,10 @@ class PegawaiController extends Controller
         if (!request('id')) {
             $rules['nik'] = 'required|unique:users';
             $rules['nip'] = 'required|unique:users';
-        }
-        if (role('admin') || role('owner')) {
-            $rules['kode_skpd'] = 'required';
-            $rules['kode_tingkat'] = 'required';
+            if (role('admin') || role('owner')) {
+                $rules['kode_skpd'] = 'required';
+                $rules['kode_tingkat'] = 'required';
+            }
         }
         $data = request()->validate($rules);
         // dd($data);
@@ -281,7 +281,7 @@ class PegawaiController extends Controller
 
             })
             ->addColumn('nama_jabatan', function ($row) {
-                return '<p>'.$row->getDivisi().'</p><p>'.$row->getJabatan().'</p>';
+                return '<p>'.$row->getNamaDivisi().'</p><p>'.$row->getNamaJabatan().'</p>';
             })
             ->addColumn('level', function ($row) {
                 $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;

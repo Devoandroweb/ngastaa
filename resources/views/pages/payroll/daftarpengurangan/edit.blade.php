@@ -14,7 +14,7 @@
             <div class="form-group has-validation">
                 <label class="form-label">Komponen</label>
                 <select class="form-control komponen" name="kode_kurang" required>
-                    @foreach (\App\Models\Master\Payroll\Potongan::orderBy('nama')->get() as $item)
+                    @foreach (\App\Models\Master\Payroll\Pengurangan::orderBy('nama')->get() as $item)
                         @if($kurang->kode_kurang == $item->kode_kurang)
                             <option selected value="{{$item->kode_kurang}}">{{$item->nama}}</option>
                         @else
@@ -67,11 +67,11 @@ function searchId($id,$data)
 @endsection
 @push('js')
     <script>
-        var buildKomponen = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-periode')!!}";
+        var buildKomponen = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-periode',$kurang)!!}";
         var buildPegawai = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-pegawai',$kurang->kode_keterangan)!!}";
-        var buildJabatan = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-jabatan')!!}";
-        var buildEselon = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-eselon')!!}";
-        var buildSkpd = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-divisi')!!}";
+        var buildJabatan = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-jabatan',$kurang->kode_keterangan)!!}";
+        var buildEselon = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-eselon',$kurang->kode_keterangan)!!}";
+        var buildSkpd = "{!!includeAsJsString('pages/payroll/daftarpengurangan/element-divisi',$kurang->kode_keterangan)!!}";
         $('.komponen').select2({
             // minimumInputLength: 2,
             placeholder: "Ketikkan Komponen Potongan",

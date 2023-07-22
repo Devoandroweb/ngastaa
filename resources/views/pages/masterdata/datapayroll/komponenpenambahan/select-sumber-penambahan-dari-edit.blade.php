@@ -11,7 +11,7 @@
                     endif;
                 endforeach;
                 return false;
-            }    
+            }
         @endphp
         @foreach(\App\Models\Master\Payroll\Tunjangan::get() as $s)
         @php
@@ -28,4 +28,6 @@
             @endif
         @endforeach
     </select>
+    <p class="text-danger"><b>Persen</b> akan di hitung dari presentase <b>Gaji Pokok</b></p>
+
 </div>

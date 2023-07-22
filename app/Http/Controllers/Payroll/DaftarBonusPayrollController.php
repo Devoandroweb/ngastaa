@@ -121,6 +121,9 @@ class DaftarBonusPayrollController extends Controller
             ->addColumn('nama', function ($row) {
                 return $row->tambah?->nama;
             })
+            ->addColumn('nilai', function ($row) {
+                return $row->tambah?->nilai;
+            })
             ->addColumn('opsi', function ($row) {
 
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('payroll.bonus.edit', $row->id) . "'>" . icons('pencil') . "</a>";

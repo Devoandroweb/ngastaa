@@ -21,6 +21,7 @@
             <th>{{__('Periode')}}</th>
             <th>{{__('Berdasarkan')}}</th>
             <th>{{__('Detail')}}</th>
+            <th>{{__('Nilai')}}</th>
             <th>{{__('Opsi')}}</th>
         </tr>
     </thead>
@@ -69,6 +70,9 @@
                     },{
                         data: 'detail',
                         name: 'detail',
+                    },{
+                        data: 'nilai',
+                        name: 'nilai',
                     },{
                         data: 'opsi',
                         name: 'opsi',

@@ -44,7 +44,7 @@
     <div class="row">
         <div class="form-group">
             <label class="form-label">{{__('Nilai')}}</label>
-            <input class="form-control @error('nilai') is-invalid @enderror"  placeholder="Masukkan Nilai" value="{{$pengurangan->nilai}}" name="nilai">
+            <input class="form-control numeric @error('nilai') is-invalid @enderror"  placeholder="Masukkan Nilai" value="{{$pengurangan->nilai}}" name="nilai">
              <div class="invalid-feedback">
                 {{ $errors->first('nilai') }}
             </div>
@@ -59,6 +59,28 @@
 @endsection
 @push('js')
 <script>
+    setNumeric()
+    $("#satuan").change(function (e) {
+
+        e.preventDefault();
+        var satuan = $(this).val();
+        if(satuan == 2){
+            $("[name=nilai]").attr('min','0');
+            $("[name=nilai]").attr('max','100');
+        }else{
+            $("[name=nilai]").removeAttr('min');
+            $("[name=nilai]").removeAttr('max');
+        }
+    });
+    $("[name=nilai]").change(function (e) {
+        e.preventDefault();
+        if($("#satuan").val() == 2){
+            if(clearNumeric($(this).val()) > 100){
+                $(this).val(100);
+            }
+        }
+    });
+
     // buildPresentaseParent('{{$pengurangan->satuan}}')
     // $("#satuan").change(function (e) {
     //     e.preventDefault();

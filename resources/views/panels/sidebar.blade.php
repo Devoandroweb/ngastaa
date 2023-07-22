@@ -377,17 +377,17 @@
                                         <ul class="nav flex-column">
                                             @if($masterDataGajiUMK)
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{route('master.payroll.umk.index')}}"><span class="nav-link-text">Master Gaji Umk</span></a>
+                                                <a class="nav-link" href="{{route('master.payroll.umk.index')}}"><span class="nav-link-text">Gaji Umk</span></a>
                                             </li>
                                             @endif
                                             @if($masterDataTunjangan)
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{route('master.payroll.tunjangan.index')}}"><span class="nav-link-text">Master Tunjangan</span></a>
+                                                <a class="nav-link" href="{{route('master.payroll.tunjangan.index')}}"><span class="nav-link-text">Tunjangan</span></a>
                                             </li>
                                             @endif
                                             @if($masterDataLembur)
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{route('master.payroll.lembur.index')}}"><span class="nav-link-text">Master Lembur</span></a>
+                                                <a class="nav-link" href="{{route('master.payroll.lembur.index')}}"><span class="nav-link-text">Lembur</span></a>
                                             </li>
                                             @endif
                                             @if($masterDataKomponenPotonganTelat)

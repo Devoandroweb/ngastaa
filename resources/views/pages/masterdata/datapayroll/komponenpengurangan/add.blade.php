@@ -46,33 +46,55 @@
 @push('js')
 <script>
 
-    // var selectPersentase = '';
-    // $("#satuan").change(function (e) {
-    //     e.preventDefault();
-    //     buildPresentaseParent($(this).val())
-    // });
-    // function buildPresentaseParent(val){
-    //     var placeholder = '';
-    //     var idEl = null;
-    //     selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpengurangan.select-sumber-pengurangan-dari')!!}";
+setNumeric()
+    $("#satuan").change(function (e) {
 
-    //     if(val == 2){
-    //         $(".element-presentase").html(selectPersentase);
-    //         idEl = "#input_tags_presentase";
-    //         placeholder = "Pilih Presentase";
-    //         // $(idEl).select2("destroy")
-    //         $(idEl).select2({
-    //             tags: true,
-    //             tokenSeparators: [',', ' '],
-    //             placeholder: placeholder,
-    //             allowClear: true
-    //         });
-    //     }else{
-    //         $(".element-presentase").empty();;
-    //     }
-    //     // enableButtonSave();
+        e.preventDefault();
+        var satuan = $(this).val();
+        if(satuan == 2){
+            $("[name=nilai]").attr('min','0');
+            $("[name=nilai]").attr('max','100');
+        }else{
+            $("[name=nilai]").removeAttr('min');
+            $("[name=nilai]").removeAttr('max');
+        }
+    });
+    $("[name=nilai]").change(function (e) {
+        e.preventDefault();
+        if($("#satuan").val() == 2){
+            if(clearNumeric($(this).val()) > 100){
+                $(this).val(100);
+            }
+        }
+    });
 
-    // }
+    var selectPersentase = '';
+    $("#satuan").change(function (e) {
+        e.preventDefault();
+        buildPresentaseParent($(this).val())
+    });
+    function buildPresentaseParent(val){
+        var placeholder = '';
+        var idEl = null;
+        selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpengurangan.select-sumber-pengurangan-dari')!!}";
+
+        if(val == 2){
+            $(".element-presentase").html(selectPersentase);
+            idEl = "#input_tags_presentase";
+            placeholder = "Pilih Presentase";
+            // $(idEl).select2("destroy")
+            $(idEl).select2({
+                tags: true,
+                tokenSeparators: [',', ' '],
+                placeholder: placeholder,
+                allowClear: true
+            });
+        }else{
+            $(".element-presentase").empty();;
+        }
+        // enableButtonSave();
+
+    }
 </script>
 
 @endpush

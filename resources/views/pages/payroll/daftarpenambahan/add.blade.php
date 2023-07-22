@@ -34,7 +34,7 @@
         </select>
     </div>
     <div class="element-keterangan"></div>
-
+    
     <button type="submit" class="btn btn-primary">Simpan</button>
     <a href="{{route('payroll.tambah.index')}}" class="btn btn-light">Kembali</a>
 </form>

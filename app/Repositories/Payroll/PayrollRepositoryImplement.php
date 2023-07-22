@@ -2,13 +2,19 @@
 
 namespace App\Repositories\Payroll;
 
+use App\Jobs\ProcessWaNotif;
 use App\Models\Master\Payroll\Absensi;
 use App\Models\User;
+use Illuminate\Support\Str;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Payroll;
+use App\Models\Payroll\DaftarBonusPayroll;
 use App\Models\Payroll\DaftarKurangPayroll;
 use App\Models\Payroll\DaftarTambahPayroll;
+use App\Models\Payroll\DataPayroll;
 use App\Models\Payroll\GeneratePayroll;
+use App\Models\Payroll\PayrollKurang;
+use App\Models\Payroll\PayrollTambah;
 use App\Models\Presensi\TotalIzinDetail;
 use App\Models\Presensi\TotalPresensiDetail;
 use App\Repositories\Pegawai\PegawaiRepository;
@@ -28,9 +34,11 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
     protected $mAbsensiPulang;
     protected $daftarKurangPayroll;
     protected $daftarTambahPayroll;
+    protected $daftarBonusPayroll;
 
     protected $bulan; # Bulan
     protected $tahun; # Tahun
+    protected $gajiPokok = 0;
     public function __construct(
         GeneratePayroll $mGeneratePayroll,
         TotalPresensiDetail $mTotalPresensiDetail,
@@ -39,12 +47,14 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
         Absensi $mAbsensi,
         DaftarKurangPayroll $daftarKurangPayroll,
         DaftarTambahPayroll $daftarTambahPayroll,
+        DaftarBonusPayroll $daftarBonusPayroll,
     )
     {
         $this->pegawaiRepository = $pegawaiRepository;
         $this->mGeneratePayroll = $mGeneratePayroll;
-        $this->daftarKurangPayroll = $daftarKurangPayroll;
-        $this->daftarTambahPayroll = $daftarTambahPayroll;
+        $this->daftarKurangPayroll = $daftarKurangPayroll->get();
+        $this->daftarTambahPayroll = $daftarTambahPayroll->get();
+        $this->daftarBonusPayroll = $daftarBonusPayroll->get();
         $this->mTotalPresensiDetail = $mTotalPresensiDetail;
         $this->mTotalIzinDetail = $mTotalIzinDetail;
         $this->mAbsensiDatang = $mAbsensi->where('keterangan',1)->get();
@@ -70,53 +80,249 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
 
         }
     }
-    function hitungPayroll(){
-        dd();
-        // $this->calculatePresensi(28);
+    function hitungPayrollWithDivisi($kodeSkpd,$kodePayroll,$bulan,$tahun){
+        if($kodeSkpd){
+            $pegawais = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd)->get();
+        }else{
+            $pegawais = $this->pegawaiRepository->getAllPegawai()->get();
+        }
+        // dd("adoaskdoa",$pegawais);
+        foreach ($pegawais as $pegawai) {
+            $this->hitungPayroll($pegawai,$kodePayroll,$bulan,$tahun);
+        }
+    }
+    function hitungPayroll($pegawai,$kodePayroll,$bulan,$tahun){
+
+        $presentaseAbsen = 100 - $this->calculatePresensi($pegawai);
+        $this->gajiPokok = $this->hitungGajiPokok($pegawai);
+
+        $tunjangan = $this->hitungTunjangan($pegawai,$kodePayroll);
+        $listTunjangan = $tunjangan['data'];
+        $totalTunjangan = $tunjangan['total'];
+
+        $bonus = $this->hitungBonus($pegawai,$kodePayroll);
+        $listBonus = $bonus['data'];
+        $totalBonus = $bonus['total'];
+
+        $potongan = $this->hitungPotongan($pegawai,$kodePayroll);
+        $listPotongan = $potongan['data'];
+        $totalPotongan = $potongan['total'];
+        // dd($bonus,$tunjangan,$potongan);
+        # data_payroll (detail dari masing-masing record generate_payroll)
+        $this->simpanDataPayroll($kodePayroll,$bulan,$tahun,$pegawai,$this->gajiPokok,$totalTunjangan,$totalBonus,$totalPotongan,$presentaseAbsen);
+        # payroll_kurang (untuk menyimpan detail potongan payroll)
+        $this->simpanPayrollTambah($listTunjangan);
+        $this->simpanPayrollTambah($listBonus);
+        # payroll_tambah (untuk menyimpan detail tambahan payroll)
+        $this->simpanPayrollKurang($listPotongan);
+        send_wa($pegawai->no_hp, 'Hallo, Payroll telah digenerate anda dapat memeriksa payroll anda, jika terdapat keselahan silahkan komunikasi ke HR paling lambat 3 hari setelah digenerate!');
+
 
     }
-    function hitungTunjangan(){
+    # Save
+    function simpanDataPayroll($kodePayroll,$bulan,$tahun,$pegawai,$gajiPokok,$totalTunjangan,$totalBonus,$totalPotongan,$presentaseAbsen){
+        DataPayroll::create([
+            'kode_payroll'=>$kodePayroll,
+            'bulan'=>$bulan,
+            'tahun'=>$tahun,
+            'nip'=>$pegawai?->nip,
+            'kode_tingkat'=>$pegawai?->getJabatan()?->kode_tingkat,
+            'jabatan'=>$pegawai?->getNamaJabatan(),
+            'divisi'=>$pegawai?->getNamaDivisi(),
+            'gaji_pokok'=>$gajiPokok,
+            'tunjangan'=>$totalTunjangan,
+            'total_penambahan'=>$totalBonus,
+            'total_potongan'=>$totalPotongan,
+            'presen_kehadiran' => $presentaseAbsen,
+            'total' => ($gajiPokok+$totalTunjangan+$totalBonus)-$totalPotongan
+        ]);
+    }
+    function simpanPayrollTambah($data){
+        return PayrollTambah::insert($data);
+    }
+    function simpanPayrollKurang($data){
+        return PayrollKurang::insert($data);
+    }
+    function hitungGajiPokok($pegawai){
+        return $pegawai->getJabatan()->gaji_pokok ?? 0;
+    }
+    function hitungTunjangan($pegawai,$kodePayroll){
         $tunjangan = [];
+        $totalTunjangan = 0;
+        // dd($this->daftarTambahPayroll);
         foreach ($this->daftarTambahPayroll as $key => $value) {
+            if($value->keterangan != 0){
+                $nipArray = $this->getKeteranganTambahPayroll($value->keterangan,$value);
+            }else{
+                $nipArray = $this->pegawaiRepository->getAllPegawai()->pluck('nip');
+            }
+            // dd($nipArray,$value);
             # Cek is_periode
-            if($value->is_periode == 1){
+            if($value->is_periode == 1){ # Tidak Selamanya
                 # cek bulan dan tahun
                 if($value->bulan == $this->bulan && $value->tahun == $this->tahun){
                     # Mendapatkan NIP
-                    $nipArray = $this->getKeterangan($value->keterangan,$value);
-                    foreach ($nipArray as $nip) {
+                    if(in_array($pegawai->nip,$nipArray)){
+                        if($value->tunjangan?->satuan == 1){
+                            $nilai = $this->hitungGajiDariPersen($value->tunjangan?->nilai);
+                        }else{
+                            $nilai = $value->tunjangan?->nilai;
+                        }
+                        // dd($nilai);
                         $tunjangan[] = [
-                            'nip' => $nip,
+                            'kode_payroll' => $kodePayroll,
+                            'nip' => $pegawai->nip,
                             'kode_tambahan' => $value->kode_tambah,
                             'keterangan' => $value->tunjangan?->nama,
+                            'nilai' => $nilai,
                         ];
+                        $totalTunjangan += (int)$nilai;
                     }
+                }
+            }else{ # Selamanya
+                if(in_array($pegawai->nip,$nipArray)){
+                    if($value->tunjangan?->satuan == 1){
+                        $nilai = $this->hitungGajiDariPersen($value->tunjangan?->nilai);
+                    }else{
+                        $nilai = $value->tunjangan?->nilai;
+                    }
+
+                    $tunjangan[] = [
+                        'kode_payroll' => $kodePayroll,
+                        'nip' => $pegawai->nip,
+                        'kode_tambahan' => $value->kode_tambah,
+                        'keterangan' => $value->tunjangan?->nama,
+                        'nilai' => $nilai,
+                    ];
+                    $totalTunjangan += (int)$nilai;
                 }
             }
         }
+        return [
+            'data' => $tunjangan,
+            'total' => $totalTunjangan,
+        ];
     }
-    function hitungBonus(){
+    function hitungBonus($pegawai,$kodePayroll){
+        $bonus = [];
+        $totalBonus = 0;
+        // dd($this->daftarTambahPayroll);
+        foreach ($this->daftarBonusPayroll as $key => $value) {
+            if($value->keterangan != 0){
+                $nipArray = $this->getKeteranganTambahPayroll($value->keterangan,$value);
+            }else{
+                $nipArray = $this->pegawaiRepository->getAllPegawai()->pluck('nip');
+            }
+            # Cek is_periode
+            if($value->is_periode == 1){ # Tidak Selamanya
+                // dd($nipArray);
+                # cek bulan dan tahun
+                if($value->bulan == $this->bulan && $value->tahun == $this->tahun){
+                    # Mendapatkan NIP
+                    if(in_array($pegawai->nip,$nipArray)){
+                        if($value->tambah?->satuan == 2){
+                            $nilai = $this->hitungGajiDariPersen($value->tambah?->nilai);
+                        }else{
+                            $nilai = $value->tambah?->nilai;
+                        }
+                        // dd($nilai,$value->tambah?->satuan,$this->gajiPokok);
+                        $bonus[] = [
+                            'kode_payroll' => $kodePayroll,
+                            'nip' => $pegawai->nip,
+                            'kode_tambahan' => $value->kode_bonus,
+                            'keterangan' => $value->tambah?->nama,
+                            'nilai' => $nilai,
+                        ];
+                        $totalBonus += (int)$nilai;
+                    }
+                }
+            }else{ # Selamanya
+                if(in_array($pegawai->nip,$nipArray)){
+                    if($value->tambah?->satuan == 1){
+                        $nilai = $this->hitungGajiDariPersen($value->tambah?->nilai);
+                    }else{
+                        $nilai = $value->tambah?->nilai;
+                    }
 
-    }
-    function hitungPotongan($nip){
-        $daftarPotongan = $this->daftarKurangPayroll->get();
-        $potongan = [];
-        #semua pegawai
-        foreach ($daftarPotongan as $key => $dp) {
-            $potongan[] = [
-                'keterangan'=>$dp->kurang?->nama,
-                'kode_kurang'=>$dp->kode_kurang,
-                'nip'=>$nip,
-                'nilai'=>$dp->kurang?->nilai
-            ];
+                    $bonus[] = [
+                        'kode_payroll' => $kodePayroll,
+                        'nip' => $pegawai->nip,
+                        'kode_tambahan' => $value->kode_bonus,
+                        'keterangan' => $value->tambah?->nama,
+                        'nilai' => $nilai,
+                    ];
+                    $totalBonus += (int)$nilai;
+                }
+            }
         }
+        return [
+            'data' => $bonus,
+            'total' => $totalBonus,
+        ];
     }
-    function calculatePresensi($nip){
-        $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
+    function hitungPotongan($pegawai,$kodePayroll){
+        $potongan = [];
+        $totalPotongan = 0;
+        // dd($this->daftarTambahPayroll);
+        foreach ($this->daftarKurangPayroll as $key => $value) {
+            if($value->keterangan != 0){
+                $nipArray = $this->getKeteranganKurangPayroll($value->keterangan,$value);
+            }else{
+                $nipArray = $this->pegawaiRepository->getAllPegawai()->pluck('nip')->toArray();
+            }
+            // dd($nipArray,$value);
+            # Cek is_periode
+            if($value->is_periode == 1){ # Tidak Selamanya
+                # cek bulan dan tahun
+                if($value->bulan == $this->bulan && $value->tahun == $this->tahun){
+                    # Mendapatkan NIP
+                    if(in_array($pegawai->nip,$nipArray)){
+                        if($value->kurang?->satuan == 2){
+                            $nilai = $this->hitungGajiDariPersen($value->kurang?->nilai);
+                        }else{
+                            $nilai = $value->kurang?->nilai;
+                        }
+                        // dd($nilai);
+                        $potongan[] = [
+                            'kode_payroll' => $kodePayroll,
+                            'nip' => $pegawai->nip,
+                            'kode_kurang' => $value->kode_kurang,
+                            'keterangan' => $value->kurang?->nama,
+                            'nilai' => $nilai,
+                        ];
+                        $totalPotongan += (int)$nilai;
+                    }
+                }
+            }else{ # Selamanya
+                // dd($pegawai,$nipArray);
+                if(in_array($pegawai->nip,$nipArray)){
+                    if($value->kurang?->satuan == 2){
+                        $nilai = $this->hitungGajiDariPersen($value->kurang?->nilai);
+                    }else{
+                        $nilai = $value->kurang?->nilai;
+                    }
 
+                    $potongan[] = [
+                        'kode_payroll' => $kodePayroll,
+                        'nip' => $pegawai->nip,
+                        'kode_kurang' => $value->kode_kurang,
+                        'keterangan' => $value->kurang?->nama,
+                        'nilai' => $nilai,
+                    ];
+                    $totalPotongan += (int)$nilai;
+                }
+            }
+        }
+        return [
+            'data' => $potongan,
+            'total' => $totalPotongan,
+        ];
+    }
+    function calculatePresensi($pegawai){
         // $pegawai->load('jamKerja','shift');
 
         $totalAbsen = $this->rekapAbsen($pegawai,1,26,25); #telat dan cepat pulang
+        // dd($totalAbsen);
         $telat = $totalAbsen['telat'];
         $cepatPulang = $totalAbsen['pulangCepat'];
         #dd($cepatPulang);
@@ -164,8 +370,9 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
         $shift = $pegawai->shift->where('is_akhir',1)->first();
 
         foreach ($rekapAbsensi as $absen) {
-            $jamKerja = $jamKerja ?? $shift;
+            $jamKerja = $jamKerja?->jamKerja ?? $shift?->shift;
             $status = explode(",",$absen->status);
+            // dd($status,$absen->id);
             if(in_array(2,$status)){
                 $telat++;
                 $telatMenit += hitungTelat($absen?->tanggal." ".$jamKerja?->jam_tepat_pulang,$absen?->tanggal_pulang,$jamKerja?->toleransi);
@@ -173,9 +380,9 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
             if(in_array(6,$status)){
                 $pulangCepat++;
                 $pulangCepatMenit += hitungCepatPulang($absen?->tanggal." ".$jamKerja?->jam_tepat_pulang,$absen?->tanggal_pulang);
+                // dd($pulangCepatMenit);
             }
         }
-
         return [
             'pulangCepat' => ['menit'=>$pulangCepatMenit,'jumlah'=>$pulangCepat],
             'telat' => ['menit'=>$telatMenit,'jumlah'=>$telat],
@@ -199,22 +406,41 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
         // dd($no);
         return 0;
     }
-    function hitungGajiDariPersen($totalGaji,$persen){
-
+    function hitungGajiDariPersen($persen){
+        return $this->gajiPokok * $persen / 100;
     }
 
     #Function Support
-    function getKeterangan($keterangan,$daftarTambahPayroll){
+    function getKeteranganTambahPayroll($keterangan,$daftarTambahPayroll){
+        $kodeKeterangan = explode(",",$daftarTambahPayroll->kode_keterangan);
+        // dd($kodeKeterangan);
         switch ($keterangan) {
             case '1': # Pegawai Tertentu
-                return explode(",",$daftarTambahPayroll->kode_keterangan);
+                return $kodeKeterangan;
             case '2': # Jabatan Terpilih
-                return $this->pegawaiRepository->getPegawaiWhereJabatan($daftarTambahPayroll->kode_keterangan)->pluck('nip');
+                return $this->pegawaiRepository->getPegawaiWhereJabatan($kodeKeterangan)->pluck('nip')->toArray();
             case '3': # Level Jabatan
-                return $this->pegawaiRepository->getPegawaiWhereLevelJabatan($daftarTambahPayroll->kode_keterangan)->pluck('nip');
+                return $this->pegawaiRepository->getPegawaiWhereLevelJabatan($kodeKeterangan)->pluck('nip')->toArray();
             case '4': # Divisi Kerja
-                return $this->pegawaiRepository->getPegawaiWhereDivisiKerja($daftarTambahPayroll->kode_keterangan)->pluck('nip');
-                default:
+                return $this->pegawaiRepository->getPegawaiWhereDivisiKerja($kodeKeterangan)->pluck('nip')->toArray();
+            default:
+                # code...
+                break;
+        }
+    }
+    function getKeteranganKurangPayroll($keterangan,$daftarKurangPayroll){
+        $kodeKeterangan = explode(",",$daftarKurangPayroll->kode_keterangan);
+        // dd($kodeKeterangan);
+        switch ($keterangan) {
+            case '1': # Pegawai Tertentu
+                return $kodeKeterangan;
+            case '2': # Jabatan Terpilih
+                return $this->pegawaiRepository->getPegawaiWhereJabatan($kodeKeterangan)->pluck('nip')->toArray();
+            case '3': # Level Jabatan
+                return $this->pegawaiRepository->getPegawaiWhereLevelJabatan($kodeKeterangan)->pluck('nip')->toArray();
+            case '4': # Divisi Kerja
+                return $this->pegawaiRepository->getPegawaiWhereDivisiKerja($kodeKeterangan)->pluck('nip')->toArray();
+            default:
                 # code...
                 break;
         }

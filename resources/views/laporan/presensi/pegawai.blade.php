@@ -65,11 +65,11 @@
             </tr>
             <tr>
                 <td>JABATAN</td>
-                <td>: {{$pegawai->getJabatan()}}</td>
+                <td>: {{$pegawai->getNamaJabatan()}}</td>
             </tr>
             <tr>
                 <td>DIVISI</td>
-                <td>: {{$pegawai->getDivisi()}}</td>
+                <td>: {{$pegawai->getNamaDivisi()}}</td>
             </tr>
             <tr>
                 <td>BULAN / TAHUN</td>

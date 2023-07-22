@@ -71,8 +71,8 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                     });
                 });
             });
-            // dd($role && $kodeSkpd != 0 && $kodeSkpd != null);
-            if(!$role && $kodeSkpd != 0 && $kodeSkpd != null){
+            // dd($role,$kodeSkpd);
+            if($role && $kodeSkpd != 0 && $kodeSkpd != null){
                 $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
                     $qt->on('riwayat_jabatan.nip', 'users.nip')
                     ->where('is_akhir', 1)
@@ -108,16 +108,16 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         return $pegawai;
     }
     function getPegawaiWhereJabatan($kodeJabatan) {
-        $riwayatJabatan = RiwayatJabatan::where('kode_tingkat',$kodeJabatan)->where('is_akhir',1)->get();
+        $riwayatJabatan = RiwayatJabatan::whereIn('kode_tingkat',$kodeJabatan)->where('is_akhir',1)->get();
         return $riwayatJabatan;
     }
     function getPegawaiWhereLevelJabatan($kodeEselon){
-        $kodeTingkat = Tingkat::where('kode_eselon',$kodeEselon)->get()->pluck('kode_tingkat');
+        $kodeTingkat = Tingkat::whereIn('kode_eselon',$kodeEselon)->get()->pluck('kode_tingkat')->toArray();
         $riwayatJabatan = RiwayatJabatan::whereIn('kode_tingkat',$kodeTingkat)->where('is_akhir',1)->get();
         return $riwayatJabatan;
     }
     function getPegawaiWhereDivisiKerja($kodeSkpd) {
-        $riwayatJabatan = RiwayatJabatan::where('kode_skpd',$kodeSkpd)->where('is_akhir',1)->get();
+        $riwayatJabatan = RiwayatJabatan::whereIn('kode_skpd',$kodeSkpd)->where('is_akhir',1)->get();
         return $riwayatJabatan;
     }
 }

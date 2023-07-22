@@ -106,7 +106,7 @@ class PenambahanPayrollController extends Controller
         }
 
         $data['nilai'] = number_to_sql($data['nilai']);
-
+        
         $cek = false;
         if (!request('id')) {
             $cek = Tambahan::where('kode_tambah', $data['kode_tambah'])->first();

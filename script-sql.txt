@@ -34,3 +34,10 @@ CREATE TABLE `daftar_bonus_payroll` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ALTER TABLE `daftar_bonus_payroll` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
 
+ALTER TABLE `ms_tunjangan` ADD `jenis_nilai` BIGINT NOT NULL DEFAULT '0' AFTER `nama`, ADD `nilai` BIGINT NOT NULL DEFAULT '0' AFTER `jenis_nilai`;
+ALTER TABLE `ms_tunjangan` CHANGE `jenis_nilai` `jenis_nilai` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '0 : Nominal, 1 : persen';
+ALTER TABLE `ms_tunjangan` CHANGE `jenis_nilai` `satuan` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '0 : Nominal, 1 : persen';
+
+
+ALTER TABLE `payroll_tambah` CHANGE `kode_payroll` `kode_payroll` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+ALTER TABLE `payroll_kurang` CHANGE `kode_payroll` `kode_payroll` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;

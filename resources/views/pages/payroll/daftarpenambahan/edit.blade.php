@@ -69,11 +69,11 @@ function searchId($id,$data)
 @endsection
 @push('js')
     <script>
-        var buildKomponen = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-periode')!!}";
+        var buildKomponen = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-periode',$tambah)!!}";
         var buildPegawai = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-pegawai',$tambah->kode_keterangan)!!}";
-        var buildJabatan = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-jabatan')!!}";
-        var buildEselon = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-eselon')!!}";
-        var buildSkpd = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-divisi')!!}";
+        var buildJabatan = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-jabatan',$tambah->kode_keterangan)!!}";
+        var buildEselon = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-eselon',$tambah->kode_keterangan)!!}";
+        var buildSkpd = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-divisi',$tambah->kode_keterangan)!!}";
         console.log(buildPegawai);
         $('.komponen').select2({
             // minimumInputLength: 2,

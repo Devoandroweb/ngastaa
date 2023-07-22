@@ -81,6 +81,8 @@ class PayrollTunjanganContoller extends Controller
         $rules = [
             'kode_tunjangan' => 'required',
             'nama' => 'required',
+            'satuan' => 'required',
+            'nilai' => 'required',
         ];
 
         if (!request('id')) {
@@ -88,7 +90,8 @@ class PayrollTunjanganContoller extends Controller
         }
 
         $data = request()->validate($rules);
-
+        $data['nilai'] = number_to_sql($data['nilai']);
+        
         $cr = Tunjangan::updateOrCreate(['id' => request('id')], $data);
 
         if ($cr) {
@@ -112,6 +115,13 @@ class PayrollTunjanganContoller extends Controller
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('master.payroll.tunjangan.edit', $row->id) . "'>" . icons('pencil') . "</a>";
                 $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.payroll.tunjangan.delete', $row->id) . "'>" . icons('trash') . "</a>";
                 return $html;
+            })
+            ->editColumn('nilai', function ($row) {
+
+                if($row->satuan == 1){
+                    return $row->nilai."% (dari Gaji Pokok)";
+                }
+                return number_indo($row->nilai);
             })
             ->rawColumns(['opsi'])
             ->addIndexColumn()

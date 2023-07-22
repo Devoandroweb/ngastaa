@@ -1,6 +1,6 @@
 @extends('app')
 @section('breadcrumps')
-    <h2 class="pg-title">Edit Daftar Penambahan</h2>
+    <h2 class="pg-title">Edit Daftar Bonus</h2>
     {{ Breadcrumbs::render('edit-daftar-bonus') }}
 @endsection
 @section('content')
@@ -69,12 +69,12 @@ function searchId($id,$data)
 @endsection
 @push('js')
     <script>
-        var buildKomponen = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-periode')!!}";
-        var buildPegawai = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-pegawai',$bonus->kode_keterangan)!!}";
-        var buildJabatan = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-jabatan')!!}";
-        var buildEselon = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-eselon')!!}";
-        var buildSkpd = "{!!includeAsJsString('pages/payroll/daftarpenambahan/element-divisi')!!}";
-        console.log(buildPegawai);
+        var buildKomponen = "{!!includeAsJsString('pages/payroll/daftarbonus/element-periode',$bonus)!!}";
+        var buildPegawai = "{!!includeAsJsString('pages/payroll/daftarbonus/element-pegawai',$bonus->kode_keterangan)!!}";
+        var buildJabatan = "{!!includeAsJsString('pages/payroll/daftarbonus/element-jabatan',$bonus->kode_keterangan)!!}";
+        var buildEselon = "{!!includeAsJsString('pages/payroll/daftarbonus/element-eselon',$bonus->kode_keterangan)!!}";
+        var buildSkpd = "{!!includeAsJsString('pages/payroll/daftarbonus/element-divisi',$bonus->kode_keterangan)!!}";
+        // console.log(buildPegawai);
         $('.komponen').select2({
             // minimumInputLength: 2,
             placeholder: "Ketikkan Komponen Potongan",

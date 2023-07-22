@@ -35,13 +35,14 @@
                     <option value="2" selected>Persen</option>
                 @endif
             </select>
+            <p class="text-danger"><b>Persen</b> akan di hitung dari presentase <b>Gaji Pokok</b></p>
         </div>
     </div>
-    <div class="element-presentase"></div>
+    {{-- <div class="element-presentase"></div> --}}
     <div class="row">
         <div class="form-group">
             <label class="form-label">{{__('Nilai')}}</label>
-            <input class="form-control"  placeholder="Masukkan Nilai" value="{{$tambahan->nilai}}" name="nilai">
+            <input class="form-control numeric"  placeholder="Masukkan Nilai" value="{{$tambahan->nilai}}" name="nilai">
         </div>
     </div>
 
@@ -53,42 +54,63 @@
 @endsection
 @push('js')
 <script>
-    buildPresentaseParent('{{$tambahan->satuan}}')
+    setNumeric()
     $("#satuan").change(function (e) {
+
         e.preventDefault();
-        buildPresentaseParent($(this).val())
-    });
-    var selectPersentase = '';
-    function buildPresentaseParent(val){
-        var placeholder = '';
-        var idEl = null;
-
-        @if($tambahan->satuan == 2)
-            selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari-edit',$tunjangan)!!}";
-        @else
-            selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari')!!}";
-        @endif
-
-
-
-
-        if(val == 2){
-            $(".element-presentase").html(selectPersentase);
-            idEl = "#input_tags_presentase";
-            placeholder = "Pilih Presentase";
-            // $(idEl).select2("destroy")
-            $(idEl).select2({
-                tags: true,
-                tokenSeparators: [',', ' '],
-                placeholder: placeholder,
-                allowClear: true
-            });
+        var satuan = $(this).val();
+        if(satuan == 2){
+            $("[name=nilai]").attr('min','0');
+            $("[name=nilai]").attr('max','100');
         }else{
-            $(".element-presentase").empty();;
+            $("[name=nilai]").removeAttr('min');
+            $("[name=nilai]").removeAttr('max');
         }
-        // enableButtonSave();
+    });
+    $("[name=nilai]").change(function (e) {
+        e.preventDefault();
+        if($("#satuan").val() == 2){
+            if(clearNumeric($(this).val()) > 100){
+                $(this).val(100);
+            }
+        }
+    });
+    // buildPresentaseParent('{{$tambahan->satuan}}')
+    // $("#satuan").change(function (e) {
+    //     e.preventDefault();
+    //     buildPresentaseParent($(this).val())
+    // });
+    // var selectPersentase = '';
+    // function buildPresentaseParent(val){
+    //     var placeholder = '';
+    //     var idEl = null;
 
-    }
+    //     @if($tambahan->satuan == 2)
+    //         selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari-edit',$tunjangan)!!}";
+    //     @else
+    //         selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari')!!}";
+    //     @endif
+
+
+
+
+    //     if(val == 2){
+    //         $(".element-presentase").html(selectPersentase);
+    //         idEl = "#input_tags_presentase";
+    //         placeholder = "Pilih Presentase";
+    //         // $(idEl).select2("destroy")
+    //         $(idEl).select2({
+    //             tags: true,
+    //             tokenSeparators: [',', ' '],
+    //             placeholder: placeholder,
+    //             allowClear: true
+    //         });
+    //     }else{
+    //         $(".element-presentase").empty();;
+    //     }
+    //     // enableButtonSave();
+
+    // }
 </script>
 
 @endpush

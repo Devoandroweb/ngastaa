@@ -281,9 +281,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         $shift = $this->searchShift($kode_shift);
 
         if($shift != null){
-            $jam_tutup_pulang = strtotime($shift->jam_tutup_pulang);
-            $jamTepatNToleransi = $this->date." ".date("H:i:s", strtotime("+{$shift->toleransi_pulang} minutes",$jam_tutup_pulang));
-            // dd($jamTepatNToleransi);
+            $jam_tepat_pulang = strtotime($shift->jam_tepat_pulang);
+            $jamTepatNToleransi = $this->date." ".date("H:i:s", strtotime("-{$shift->toleransi_pulang} minutes",$jam_tepat_pulang));
+            // if($this->date == "2023-06-26"){
+            //     dd($jamTepatNToleransi,$tanggal_pulang,date("H:i:s",$jam_tepat_pulang), date("Y-m-d H:i:s", strtotime($tanggal_pulang)) <= date("Y-m-d H:i:s",strtotime($jamTepatNToleransi)));
+            // }
             if(date("Y-m-d H:i:s", strtotime($tanggal_pulang)) <= date("Y-m-d H:i:s",strtotime($jamTepatNToleransi))){
                 return true;
             }

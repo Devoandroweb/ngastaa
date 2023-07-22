@@ -83,19 +83,19 @@ class PenguranganPayrollController extends Controller
         // if (!request('id')) {
         //     $rules['kode_kurang'] = 'required|unique:ms_pengurangan';
         // }
-        if (request('satuan') == 2) {
-            $rules['kode_persen'] = 'required';
-        }
+        // if (request('satuan') == 2) {
+        //     $rules['kode_persen'] = 'required';
+        // }
 
         $data = request()->validate($rules);
 
-        $kode = [];
-        if (request('satuan') == 2) {
-            foreach (request('kode_persen') as $k) {
-                array_push($kode, trim(json_decode($k)->kode_tunjangan));
-            }
-            $data['kode_persen'] = implode(',', $kode);
-        }
+        // $kode = [];
+        // if (request('satuan') == 2) {
+        //     foreach (request('kode_persen') as $k) {
+        //         array_push($kode, trim(json_decode($k)->kode_tunjangan));
+        //     }
+        //     $data['kode_persen'] = implode(',', $kode);
+        // }
 
         $data['nilai'] = number_to_sql($data['nilai']);
 

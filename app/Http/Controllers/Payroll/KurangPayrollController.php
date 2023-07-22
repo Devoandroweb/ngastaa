@@ -142,6 +142,12 @@ class KurangPayrollController extends Controller
             ->addColumn('kurang', function ($row) {
                 return $row->kurang?->nama;
             })
+            ->addColumn('nilai', function ($row) {
+                if($row->kurang?->satuan == 2){
+                    return $row->kurang?->nilai."% (dari Gaji Pokok)";
+                }
+                return number_indo($row->kurang?->nilai);
+            })
             ->addColumn('opsi', function ($row) {
 
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('payroll.kurang.edit', $row['id']) . "'>" . icons('pencil') . "</a>";

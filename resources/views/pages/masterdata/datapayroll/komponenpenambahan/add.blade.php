@@ -30,9 +30,10 @@
                 <option value="1">Rupiah</option>
                 <option value="2">Persen</option>
             </select>
+            <p class="text-danger"><b>Persen</b> akan di hitung dari presentase <b>Gaji Pokok</b></p>
         </div>
     </div>
-    <div class="element-presentase"></div>
+    {{-- <div class="element-presentase"></div> --}}
     <div class="row">
         <div class="form-group">
             <label class="form-label">{{__('Nilai')}}</label>
@@ -48,34 +49,54 @@
 @endsection
 @push('js')
 <script>
+    setNumeric()
+    $("#satuan").change(function (e) {
 
-    var selectPersentase = '';
-    $("#satuan").change(function (e) { 
         e.preventDefault();
-        buildPresentaseParent($(this).val())
-    });
-    function buildPresentaseParent(val){
-        var placeholder = '';
-        var idEl = null;
-        selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari')!!}";
-       
-        if(val == 2){
-            $(".element-presentase").html(selectPersentase);
-            idEl = "#input_tags_presentase";
-            placeholder = "Pilih Presentase";
-            // $(idEl).select2("destroy")
-            $(idEl).select2({
-                tags: true,
-                tokenSeparators: [',', ' '],
-                placeholder: placeholder,
-                allowClear: true
-            });
+        var satuan = $(this).val();
+        if(satuan == 2){
+            $("[name=nilai]").attr('min','0');
+            $("[name=nilai]").attr('max','100');
         }else{
-            $(".element-presentase").empty();;
+            $("[name=nilai]").removeAttr('min');
+            $("[name=nilai]").removeAttr('max');
         }
-        // enableButtonSave();
+    });
+    $("[name=nilai]").change(function (e) {
+        e.preventDefault();
+        if($("#satuan").val() == 2){
+            if(clearNumeric($(this).val()) > 100){
+                $(this).val(100);
+            }
+        }
+    });
+    // var selectPersentase = '';
+    // $("#satuan").change(function (e) {
+    //     e.preventDefault();
+    //     buildPresentaseParent($(this).val())
+    // });
+    // function buildPresentaseParent(val){
+    //     var placeholder = '';
+    //     var idEl = null;
+    //     selectPersentase = "{!!includeAsJsString('pages.masterdata.datapayroll.komponenpenambahan.select-sumber-penambahan-dari')!!}";
 
-    }
+    //     if(val == 2){
+    //         $(".element-presentase").html(selectPersentase);
+    //         idEl = "#input_tags_presentase";
+    //         placeholder = "Pilih Presentase";
+    //         // $(idEl).select2("destroy")
+    //         $(idEl).select2({
+    //             tags: true,
+    //             tokenSeparators: [',', ' '],
+    //             placeholder: placeholder,
+    //             allowClear: true
+    //         });
+    //     }else{
+    //         $(".element-presentase").empty();;
+    //     }
+    //     // enableButtonSave();
+
+    // }
 </script>
-    
+
 @endpush

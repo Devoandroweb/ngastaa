@@ -1,9 +1,10 @@
 <div class="form-group">
-    <label class="form-label">Pilih Level</label>
+    <label class="form-label">Pilih Divisi</label>
     <select class="form-control skpd" name="kode_keterangan" required>
 
         @foreach (\App\Models\Master\Skpd::orderBy('nama')->get() as $s)
         @php
+            // dd($data);
             $json = [
                 "value" => $s->kode_skpd,
                 "label" => $s->nama,
@@ -11,7 +12,7 @@
             ];
         @endphp
         @if ($data != null)
-            @if(searchId($s->id,$data))
+            @if($s->kode_skpd == $data)
                 <option selected value="{{json_encode($json)}}">{{$s->nama}}</option>
             @else
                 <option value="{{json_encode($json)}}">{{$s->nama}}</option>

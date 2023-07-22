@@ -241,11 +241,12 @@ function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
     return $result;
 }
 function hitungCepatPulang($jamTepatPulang,$jamPulang){
-    // dd($jamPulang, $jamTepatPulang);
     if($jamPulang){
+        // dd($jamPulang, $jamTepatPulang, $jamPulang < $jamTepatPulang);
         $jamTepatPulang = strtotime($jamTepatPulang);
         $jamPulang = strtotime($jamPulang);
         $result = 0;
+
         if($jamPulang < $jamTepatPulang){
             $selisihDetik = abs($jamTepatPulang - $jamPulang);
             $selisihMenit = floor($selisihDetik / 60);

@@ -19,19 +19,19 @@
             <th>{{__('No')}}</th>
             <th>{{__('Kode')}}</th>
             <th>{{__('Nama')}}</th>
-            <th>{{__('Nilai')}}</th>
+            <th>{{__('Nominal')}}</th>
             <th>{{__('Opsi')}}</th>
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("master/payroll/penambahan/datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -39,7 +39,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -71,12 +71,12 @@
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
     <script src="{{asset('/')}}delete.js"></script>
-    
+
 @endpush

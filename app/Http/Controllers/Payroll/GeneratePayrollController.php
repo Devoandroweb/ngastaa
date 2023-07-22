@@ -11,11 +11,18 @@ use App\Models\Payroll\GeneratePayroll;
 use App\Models\Payroll\PayrollKurang;
 use App\Models\Payroll\PayrollTambah;
 use App\Models\User;
+use App\Repositories\Payroll\PayrollRepository;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use PDF;
 use Yajra\DataTables\DataTables;
 
 class GeneratePayrollController extends Controller
 {
+    protected $payrollRepository;
+    function __construct(PayrollRepository $payrollRepository){
+        $this->payrollRepository = $payrollRepository;
+    }
     public function index()
     {
         return view('pages/payroll/generate/index');
@@ -101,12 +108,35 @@ class GeneratePayrollController extends Controller
     //     ]);
     // }
     function store() {
-        $bulan = request('bulan') ?? date("m");
-        $tahun = request('tahun') ?? date("Y");
-        $kode_skpd = request('kode_skpd');
-        // dd($kode_skpd);
-        $kode_payroll = date("YmdHis") . generateRandomString();
+        try {
+            DB::transaction(function() {
+                $bulan = request('bulan') ?? date("m");
+                $tahun = request('tahun') ?? date("Y");
+                $kode_skpd = request('kode_skpd');
+                $kodePayroll = date("YmdHis") . Str::uuid()->toString();
+                # generate_payroll (list payroll yang sudah di generate)
+                GeneratePayroll::updateOrCreate(['kode_payroll' => $kodePayroll],
+                [
+                    'bulan' => $bulan,
+                    'tahun' => $tahun,
+                    'kode_skpd' => $kode_skpd,
+                ]);
+                $this->payrollRepository->hitungPayrollWithDivisi($kode_skpd,$kodePayroll,$bulan,$tahun);
 
+            });
+            DB::commit();
+            return redirect()->back()->with([
+                'type' => 'success',
+                'messages' => "Berhasil, Pemberitahuan melalui Whatsapp jika payroll berhasil digenerate!"
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // dd($th->getMessage());
+            return redirect()->back()->with([
+                'type' => 'error',
+                'messages' => "Gagal, Ada kesalahan saat membuat Payroll!"
+            ]);
+        }
 
     }
 

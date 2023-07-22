@@ -134,6 +134,12 @@ class TambahPayrollController extends Controller
             ->addColumn('nama', function ($row) {
                 return $row->tunjangan?->nama;
             })
+            ->addColumn('nilai', function ($row) {
+                if($row->tunjangan?->satuan == 1){
+                    return $row->tunjangan?->nilai."% (dari Gaji Pokok)";
+                }
+                return number_indo($row->tunjangan?->nilai);
+            })
             ->addColumn('opsi', function ($row) {
 
                 $html = "<a class='me-2 edit' tooltip='Edit' href='" . route('payroll.tambah.edit', $row->id) . "'>" . icons('pencil') . "</a>";
