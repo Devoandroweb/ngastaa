@@ -35,7 +35,7 @@ class Presensi extends Controller
     function checkStatusAbsen($nip)
     {
         try{
-            $presensiPegawai = DataPresensi::where('nip',$nip)->whereDate('created_at', '=', date("Y-m-d"))->first();
+            $presensiPegawai = $this->presensiRepository->getPresensiDay($nip);
             $data['status'] = true;
 
             if($presensiPegawai != null){

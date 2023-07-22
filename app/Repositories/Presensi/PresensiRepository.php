@@ -8,4 +8,5 @@ interface PresensiRepository extends Repository{
 
     // Write something awesome :)
     function presensiDay($nip);
+    function getPresensiDay($nip);
 }

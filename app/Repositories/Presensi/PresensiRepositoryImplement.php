@@ -24,26 +24,7 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
         $this->mDataPresensi = $mDataPresensi;
     }
     function presensiDay($nip){
-        # ambil absen hari ini
-        $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d'))->latest()->first();
-        # cek apakah hari ini ada?
-
-        if(is_null($data)){
-            # jika tidak ada maka cari absen kemaren
-            $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d',strtotime("-1 days")))->latest()->first();
-            // dd($data);
-            $jamDatang = date("H:i:s",strtotime($data?->tanggal_datang));
-            # cari shift nya
-            # $shift = $data->user->shift->where('is_akhir',1)->first() ?? $data->user->jamKerja->where('is_akhir',1)->first();
-            // dd($shift->shift);
-            # dd($this->hitungRangeJam($shift->shift->jam_tepat_pulang,"23:59:59"),$shift->shift->jam_tepat_pulang,$shift->shift);
-            # hitung apakah shift lebih dari 8 jam dengan perbandingan jam 23:59:59
-            // dd($this->hitungRangeJam($jamDatang,"23:59:59"),$jamDatang,$data);
-
-            if($this->hitungRangeJam($jamDatang,"23:59:59") >= 8){
-                $data = null;
-            }
-        }
+        $data = $this->getPresensiDay($nip);
         # cari shift nya
         # ambil jam pulang
         # hitung
@@ -86,6 +67,29 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
 
         // Format output range jam
         return (int)$rangeJam->format('%H');
+    }
+    function getPresensiDay($nip){
+        # ambil absen hari ini
+        $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d'))->latest()->first();
+        # cek apakah hari ini ada?
+
+        if(is_null($data)){
+            # jika tidak ada maka cari absen kemaren
+            $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d',strtotime("-1 days")))->latest()->first();
+            // dd($data);
+            $jamDatang = date("H:i:s",strtotime($data?->tanggal_datang));
+            # cari shift nya
+            # $shift = $data->user->shift->where('is_akhir',1)->first() ?? $data->user->jamKerja->where('is_akhir',1)->first();
+            // dd($shift->shift);
+            # dd($this->hitungRangeJam($shift->shift->jam_tepat_pulang,"23:59:59"),$shift->shift->jam_tepat_pulang,$shift->shift);
+            # hitung apakah shift lebih dari 8 jam dengan perbandingan jam 23:59:59
+            // dd($this->hitungRangeJam($jamDatang,"23:59:59"),$jamDatang,$data);
+
+            if($this->hitungRangeJam($jamDatang,"23:59:59") >= 8){
+                $data = null;
+            }
+        }
+        return $data;
     }
     // Write something awesome :)
 }
