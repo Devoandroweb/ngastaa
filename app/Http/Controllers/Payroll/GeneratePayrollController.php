@@ -128,14 +128,14 @@ class GeneratePayrollController extends Controller
             return response()->json([
                 'status' => true,
                 'messages' => "Berhasil, Pemberitahuan melalui Whatsapp jika payroll berhasil digenerate!"
-            ]);
+            ],200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            // dd($th->getMessage());
+            dd($th->getMessage());
             return response()->json([
                 'status' => false,
                 'messages' => "Gagal, Ada kesalahan saat membuat Payroll!"
-            ]);
+            ],500);
         }
 
     }
