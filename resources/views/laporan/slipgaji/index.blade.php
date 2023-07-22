@@ -147,8 +147,8 @@
     <body>
         @php
             $perusahan = getPerusahaan();
-            $kehadiran = kehadiran($payroll->nip, $payroll->bulan, $payroll->tahun);
-            $persen_kehadiran = $kehadiran['total_akhir'];
+            // $kehadiran = kehadiran($payroll->nip, $payroll->bulan, $payroll->tahun);
+            $persen_kehadiran = $payroll->persen_kehadiran;
         @endphp
         <header>
             <table width="100%" style="">
@@ -221,15 +221,15 @@
                     <tr style="border-bottom: 1px solid #D3D3D3;">
                         <td colspan="2">
                             <div class="title" style="font-family: poppins">Gaji Pokok <span style="float:right;">Rp. {{ number_indo($payroll->gaji_pokok) }}</span></div>
-                            {{-- <ul style="list-style: none"> --}}
-                                {{-- <li class="title" style="font-family: poppins;">Gaji Pokok <span style="float:right;">Rp. {{ number_indo($payroll->gaji_pokok) }}</span></li> --}}
-                                {{-- <li>Kehadiran  <span style="float:right;">{{ number_indo($persen_kehadiran) }} %</span></li> --}}
-                            {{-- </ul> --}}
+                            <ul style="list-style: none">
+                                <li>Kehadiran  <span style="float:right;">{{ number_indo($persen_kehadiran) }} %</span></li>
+                            </ul>
                         </td>
                         <td style="text-align: right;">
                             <div style="font-family: poppins;font-weight: 600;float:right;">Rp. {{ number_indo($payroll->gaji_pokok) }}</div>
                         </td>
                     </tr>
+                    @if(count($penambahan) != 0)
                     <tr style="border-bottom: 0.1px solid #D3D3D3 !important;">
                         <td colspan="2">
                             <div class="title" style="font-family: poppins">Tunjangan</div>
@@ -243,6 +243,8 @@
                             <div style="font-family: poppins;font-weight: 600;">Rp. {{ number_indo($payroll->total_penambahan) }}</div>
                         </td>
                     </tr>
+                    @endif
+                    @if(count($potongan) != 0)
                     <tr style="">
                         <td colspan="2">
                             <div class="title" style="font-family: poppins">Potongan</div>
@@ -256,6 +258,7 @@
                             <div style="font-family: poppins;font-weight: 600;">Rp. {{ number_indo($payroll->total_potongan) }}</div>
                         </td>
                     </tr>
+                    @endif
                 </table>
                 <table class="total" width="100%;">
                     <tr>

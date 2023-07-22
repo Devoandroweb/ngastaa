@@ -125,15 +125,15 @@ class GeneratePayrollController extends Controller
 
             });
             DB::commit();
-            return redirect()->back()->with([
-                'type' => 'success',
+            return response()->json([
+                'status' => true,
                 'messages' => "Berhasil, Pemberitahuan melalui Whatsapp jika payroll berhasil digenerate!"
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
             // dd($th->getMessage());
-            return redirect()->back()->with([
-                'type' => 'error',
+            return response()->json([
+                'status' => false,
                 'messages' => "Gagal, Ada kesalahan saat membuat Payroll!"
             ]);
         }
@@ -259,7 +259,7 @@ class GeneratePayrollController extends Controller
     }
     public function datatable(DataTables $dataTables)
     {
-        $model = GeneratePayroll::query();
+        $model = GeneratePayroll::orderBy('created_at','desc');
         // dd($model);
         return $dataTables->eloquent($model)
             ->addColumn('divisi', function ($row) {

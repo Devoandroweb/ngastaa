@@ -133,7 +133,7 @@ class PayrollRepositoryImplement extends Eloquent implements PayrollRepository{
             'tunjangan'=>$totalTunjangan,
             'total_penambahan'=>$totalBonus,
             'total_potongan'=>$totalPotongan,
-            'presen_kehadiran' => $presentaseAbsen,
+            'persen_kehadiran' => $presentaseAbsen,
             'total' => ($gajiPokok+$totalTunjangan+$totalBonus)-$totalPotongan
         ]);
     }
