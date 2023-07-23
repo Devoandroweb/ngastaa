@@ -41,3 +41,7 @@ ALTER TABLE `ms_tunjangan` CHANGE `jenis_nilai` `satuan` BIGINT(20) NOT NULL DEF
 
 ALTER TABLE `payroll_tambah` CHANGE `kode_payroll` `kode_payroll` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `payroll_kurang` CHANGE `kode_payroll` `kode_payroll` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+ALTER TABLE `payroll_tambah` CHANGE `nilai` `nilai` DOUBLE NOT NULL DEFAULT '0';
+ALTER TABLE `payroll_kurang` CHANGE `nilai` `nilai` DOUBLE NOT NULL DEFAULT '0';
+ALTER TABLE `payroll_kurang` CHANGE `nilai` `nilai` DOUBLE NULL DEFAULT '0';
+ALTER TABLE `payroll_tambah` CHANGE `nilai` `nilai` DOUBLE NULL DEFAULT '0';

@@ -131,7 +131,7 @@
         }
     }
     var progress100 = () => {
-        if(perc <= 100){
+        if(perc < 100){
             perc += 1;
             ElprogressBar.text(perc+'%');
             ElprogressBar.attr('aria-valuenow',perc);
