@@ -190,32 +190,12 @@ class PresensiApiController extends Controller
         $kordinat = request('kordinat');
         $kode_shift = request('kode_shift');
         $kode_tingkat = request('kode_tingkat');
-        // dd(request()->all());
-        // dd(request('image'));
-        // $image_64 = request('image');
 
-        // $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
-        // $extension = request('image')->getClientOriginalExtension();
-
-        // $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
-        // $image = str_replace($replace, '', $image_64);
-        // $image = str_replace(' ', '+', $image);
-        // $imageName = date("YmdHis") . Str::random(10) . '.' . $extension;
-
-        // $date = request('date');
         $date = request("date");
         $toler1Min = strtotime("-5 minutes");
-        $toler1Min = strtotime('2023-07-14 07:56:00');
+        // $toler1Min = strtotime('2023-07-14 07:56:00');
         $dateSend = strtotime($date);
-        // dd(date("Y-m-d H:i:s",));
-        // if($image_64){
-        //     $foto = "presensi/$nip/$imageName";
-        //     Storage::disk('public')->put("/$foto", $image);
 
-        // }else{
-        //     $foto = "";
-        // }
-        // dd($toler1Min);
         $timeZone = request('timezone') ?? 'WITA';
 
         if ($timeZone == 'WIB') {
@@ -227,9 +207,7 @@ class PresensiApiController extends Controller
         } else {
             $tanggalIn = date('Y-m-d H:i:s');
         }
-        // dd(date("H:i:s",$toler1Min));
-        // dd(date("Y-m-d H:i:s",$dateSend));
-        // dd(date("Y-m-d H:i:s",$toler1Min));
+
         $user = User::where('nip', $nip)->with('riwayat_shift','jamKerja')->first();
 
         if ($dateSend < $toler1Min) {
@@ -246,19 +224,26 @@ class PresensiApiController extends Controller
         // }
         $kode_shift = null;
         $kode_jam_kerja = null;
-        if($user->jamKerja->where('is_akhir',1)->count() > 0){
-            $kode_jam_kerja = $user->jamKerja->where('is_akhir',1)->first()?->kode_jam_kerja;
-        }elseif($user->riwayat_shift->where('is_akhir',1)->count() > 0){
-            // dd($user->riwayat_shift[0]);
-            $kode_shift = $user->riwayat_shift->where('is_akhir',1)->first()?->kode_shift;
+
+        $jadwalShiftUser = $user->jadwalShift->where('tanggal',date('Y-m-d',strtotime($date)))->first();
+        $jamKerjaUser = $user->jamKerja->where('is_akhir',1);
+        $riwayatShiftUser = $user->riwayat_shift->where('is_akhir',1);
+
+        if($jadwalShiftUser != null){
+            $kode_shift = $jadwalShiftUser->kode_shift;
+        }elseif($jamKerjaUser->count() > 0){
+            $kode_jam_kerja = $jamKerjaUser->first()?->kode_jam_kerja;
+        }elseif($riwayatShiftUser->count() > 0){
+            $kode_shift = $riwayatShiftUser->first()?->kode_shift;
         }
-        // dd("$kode_shift | $kode_jam_kerja",$user);
+
         $shift = Shift::where('kode_shift', $kode_shift)->first();
         $jamkerja = MJamKerja::where('kode', $kode_jam_kerja)->first();
 
         if($shift == null && $jamkerja == null){
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Jam Kerja atau Shift Tidak Temukan !!', 'keterangan' => '']),200);
         }
+        // dd($shift,$jamkerja);
         if($jamkerja != null){
             $shift = $jamkerja;
             $bukaPagiTime = strtotime($jamkerja->jam_buka_datang);
@@ -469,11 +454,7 @@ class PresensiApiController extends Controller
                 }
             }
         } else {
-            // $dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime
 
-            // $dateSend = date("Y-m-d H:i:s",$dateSend);
-            // $dateO = ($dateSend <= $tutupPagiTime);
-            // $tutupPagiTime = $shift->jam_tutup_datang;
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => "Anda tidak berada diwaktu presensi"]),200);
         }
     }

@@ -45,3 +45,5 @@ ALTER TABLE `payroll_tambah` CHANGE `nilai` `nilai` DOUBLE NOT NULL DEFAULT '0';
 ALTER TABLE `payroll_kurang` CHANGE `nilai` `nilai` DOUBLE NOT NULL DEFAULT '0';
 ALTER TABLE `payroll_kurang` CHANGE `nilai` `nilai` DOUBLE NULL DEFAULT '0';
 ALTER TABLE `payroll_tambah` CHANGE `nilai` `nilai` DOUBLE NULL DEFAULT '0';
+
+CREATE TABLE `ngastaa_lawas`.`jadwal_shift` (`id` INT NOT NULL AUTO_INCREMENT , `nip` VARCHAR(225) NOT NULL , `kode_shift` VARCHAR(225) NOT NULL , `tanggal` DATE NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

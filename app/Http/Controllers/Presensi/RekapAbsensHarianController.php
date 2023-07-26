@@ -66,6 +66,7 @@ class RekapAbsensHarianController extends Controller
         // dd("oke");
         $rawColumn = [];
         // dd(User::where('name','like','%a%')->get());
+        // dd($kodeSkpd);
         $mUsers = User::role('pegawai')->where('owner',0)->when($search,function($q)use($search){
                         // dd($search);
                         return $q->where('users.name','like','%'.$search.'%');

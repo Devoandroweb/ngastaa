@@ -73,9 +73,9 @@ use App\Http\Controllers\Pengajuan\LemburPengajuanController;
 use App\Http\Controllers\Pengajuan\ReimbursementPengajuanController;
 use App\Http\Controllers\Pengajuan\ShiftPengajuanController;
 use App\Http\Controllers\PengumumanController;
-use App\Http\Controllers\PenjadwalanShiftController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\Presensi\LaporanVisitController;
+use App\Http\Controllers\Presensi\PenjadwalanShiftController;
 use App\Http\Controllers\Presensi\RekapAbsensHarianController;
 use App\Http\Controllers\Presensi\TotalPresensiController;
 use App\Http\Controllers\RoleMenuController;
@@ -130,6 +130,16 @@ Route::middleware(['auth'])
         Route::post('ubah-password-update', [UbahPassword::class, 'update'])->name('ubah.password.update');
         Route::get('download-template-import', [PegawaiController::class,'donwloadTemplate'])->name('donwload_template_import');
 
+        Route::prefix('penjadwalanshift')
+                ->controller(PenjadwalanShiftController::class)
+                    ->name("penjadwalanshift.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::post('update', 'update')->name('update');
+                        Route::get('export', 'export')->name('export');
+                        Route::get('datatable', 'datatable')->name('datatable');
+                    });
+
         Route::prefix('presensi')
             ->name("presensi.")
             ->group(function () {
@@ -145,18 +155,6 @@ Route::middleware(['auth'])
                     Route::get('datatable_detail_izin/{nip}', 'datatable_detail_izin')->name('datatable_detail_izin');
                     Route::get('datatable_detail_absen/{nip}/{status}', 'datatable_detail_absen')->name('datatable_detail_absen');
                 });
-
-                Route::prefix('penjadwalanshift')
-                ->controller(PenjadwalanShiftController::class)
-                    ->name("penjadwalanshift.")
-                    ->group(function () {
-                        Route::get('', 'index')->name('index');
-                        Route::get('add', 'add')->name('add');
-                        Route::post('store', 'store')->name('store');
-                        Route::get('edit/{penjadwalanshift}', 'edit')->name('edit');
-                        Route::get('delete/{penjadwalanshift}', 'delete')->name('delete');
-                        Route::get('datatable', 'datatable')->name('datatable');
-                    });
 
                 Route::prefix('rekapabsen')
                 ->controller(RekapAbsensHarianController::class)

@@ -192,6 +192,9 @@ class User extends Authenticatable
     function shift(){
         return $this->hasMany(RiwayatShift::class,'nip','nip');
     }
+    function jadwalShift(){
+        return $this->hasMany(MJadwalShift::class,'nip','nip');
+    }
     function foto(){
         $jk = str_replace(" ","",$this->jenis_kelamin);
         $foto = $this->image;

@@ -261,6 +261,20 @@ class PegawaiController extends Controller
         return view('pages.pegawai.pegawai.add-shift',compact('for','Rshift','pegawai','front'));
 
     }
+    function perpanjangKontrak(){
+        $nips = request('nip');
+        $dateStart = date("Y-m-d");
+        $dateEnd = date("Y-m-d",request('date_kontrak'));
+        foreach ($nips as $nip) {
+            $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
+            # cari jabatan
+            $jabatan = $pegawai->getJabatan();
+            # update kontrak jabatan pada riwayat jabatan
+            $jabatan->update([
+                'tanggal_kontrak' => $dateEnd
+            ]);
+        }
+    }
     public function datatable(DataTables $dataTables)
     {
 

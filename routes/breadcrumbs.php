@@ -8,6 +8,13 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 //  with `$trail`. This is nice for IDE type checking and completion.
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
+
+# Setting
+Breadcrumbs::for('penjadwalan-shift', function (BreadcrumbTrail $trail) {
+    $trail->push('Penjadwalan Shift', "#");
+    $trail->push('Penjadwalan Shift', route('penjadwalanshift.index'));
+});
+
 // Profil Pegawai
 Breadcrumbs::for('profile-pegawai', function (BreadcrumbTrail $trail) {
     $trail->push('Data Pegawai', route('pegawai.pegawai.index'));

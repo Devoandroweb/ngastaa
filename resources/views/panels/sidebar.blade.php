@@ -189,9 +189,9 @@
                     @if($hrd)
                     @include('panels.sidebar-hrd')
                     @endif
-                    <li class="nav-item d-none">
+                    <li class="nav-item {{activeMenu("penjadwalanshift")}}">
                         {{-- {{activeMenu("pegawai")}} --}}
-                        <a class="nav-link" href="{{route('presensi.penjadwalanshift.index')}}">
+                        <a class="nav-link" href="{{route('penjadwalanshift.index')}}">
                             <span class="nav-icon-wrap">
                                 <span class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-report" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

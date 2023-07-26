@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use App\Models\MJadwalShift;
 use App\Models\Pegawai\RiwayatShift;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,4 +20,5 @@ class Shift extends Model
     {
         return $this->hasMany(RiwayatShift::class, 'kode_shift', 'kode_shift');
     }
+    
 }

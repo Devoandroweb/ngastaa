@@ -51,7 +51,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
 
         // dd(getIdUser());
 
-        if(getLevelUser() == "5"){
+        if(getLevelUser() == "5"){ # Pegawai
             $pegawai->where('created_by',getIdUser());
         }else{
             // dd($role);

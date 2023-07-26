@@ -5,6 +5,9 @@
     {{ Breadcrumbs::render('detail-pegawai') }}
 @endsection
 @section('header_action')
+@if(getPermission('pegawai','PK') || role('owner') || role('admin'))
+<a href="#" class="btn btn-info me-3"><i class="fas fa-file-import"></i> {{__('Perpanjang Kontrak')}}</a>
+@endif
 @if(getPermission('pegawai','E') || role('owner') || role('admin'))
 <a href="{{route('pegawai.pegawai.export')}}" class="btn btn-danger me-3"><i class="fas fa-file-import"></i> {{__('Export')}}</a>
 @endif
