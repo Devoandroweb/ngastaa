@@ -21,7 +21,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Protection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithEvents, WithStyles, WithTitle, WithStartRow, WithColumnFormatting
+class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithEvents, WithStyles, WithTitle, WithStartRow
 {
 
     protected  $selects;
@@ -119,13 +119,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
             // "Jabatan"
         ];
     }
-    public function columnFormats(): array
-    {
-        return [
-            'M' => NumberFormat::FORMAT_NUMBER,
-            'G' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-        ];
-    }
+
     public function styles(Worksheet $sheet)
     {
 
@@ -175,9 +169,12 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
                         $event->sheet->getColumnDimension($column)->setAutoSize(true);
                     }
                 }
-                $sheet->getStyle('G')
+                $sheet->getStyle('G2:G4000')
                     ->getNumberFormat()
-                    ->setFormatCode('dd/mm/yyyy');
+                    ->setFormatCode(NumberFormat::FORMAT_NUMBER);
+                $sheet->getStyle('M2:M4000')
+                    ->getNumberFormat()
+                    ->setFormatCode(NumberFormat::FORMAT_TEXT);
 
                 $sheet->getParent()->getActiveSheet()->getProtection()->setSheet(true);
 
