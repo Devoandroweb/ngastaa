@@ -31,10 +31,11 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         // foreach ($pegawai as $value) {
         //     $value->assignRole('pegawai');
         // }
-        // dd("done");
+        // dd(role('pegawai'));
         if(role('pegawai')){
             $kodeSkpd = auth()->user()->jabatan_akhir->first()?->skpd?->kode_skpd;
         }
+        // dd($kodeSkpd);
         if($forApi){
             # FOR WEB_SERVICES
             $role = false;
@@ -49,40 +50,38 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
 
         $pegawai = User::whereNot('users.nip',null)->with('riwayat_jabatan');
 
-        // dd(getIdUser());
+        // dd(getLevelUser());
 
         if(getLevelUser() == "5"){ # Pegawai
             $pegawai->where('created_by',getIdUser());
-        }else{
-            // dd($role);
-            $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
-                // ambil level jabatan user
-                // dd($kodeSkpd);
-                // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
-                $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser, $kodeSkpd){
-                    if($kodeSkpd != 0 || $kodeSkpd != null){
-                        $q->where('kode_skpd',$kodeSkpd);
-                    }
-                    $q->where('is_akhir',1);
-                    $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
-                        $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
-                            $q->where('kode_eselon','>',(int)$levelJabatanUser);
-                        });
+        }
+        $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
+            // ambil level jabatan user
+            // dd($kodeSkpd);
+            // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
+            $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser, $kodeSkpd){
+                if($kodeSkpd != 0 || $kodeSkpd != null){
+                    $q->where('kode_skpd',$kodeSkpd);
+                }
+                $q->where('is_akhir',1);
+                $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
+                    $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
+                        $q->where('kode_eselon','>',(int)$levelJabatanUser);
                     });
                 });
             });
-            // dd($role,$kodeSkpd);
-            if($role && $kodeSkpd != 0 && $kodeSkpd != null){
-                $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                    ->where('is_akhir', 1)
-                    ->where('riwayat_jabatan.deleted_at', null);
-                    // dd($kodeSkpd);
-                    if($kodeSkpd != null && (int)$kodeSkpd != 0){
-                        $qt->where('kode_skpd', $kodeSkpd);
-                    }
-                });
-            }
+        });
+        // dd($role,$kodeSkpd);
+        if($role && $kodeSkpd != 0 && $kodeSkpd != null){
+            $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
+                $qt->on('riwayat_jabatan.nip', 'users.nip')
+                ->where('is_akhir', 1)
+                ->where('riwayat_jabatan.deleted_at', null);
+                // dd($kodeSkpd);
+                if($kodeSkpd != null && (int)$kodeSkpd != 0){
+                    $qt->where('kode_skpd', $kodeSkpd);
+                }
+            });
         }
         return $pegawai;
     }

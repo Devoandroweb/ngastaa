@@ -158,14 +158,15 @@
               }
             })
         });
+
         $('.show-all').on('click', function () {
             _DATATABLE.page.len(-1).draw();
         })
+
         $(".divisi").on("select2:select",function(e){
             _KODE_SKPD = e.params.data.id;
             setDataTable(_COLUMNS,_START_DATE,_END_DATE);
         });
-
 
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
@@ -180,6 +181,7 @@
                 allowClear: true
             }).val($(this).data('kodeshift')).change();
         });
+
         $(".btn-simpan").click(function (e) {
             e.preventDefault();
             saveShift($(this))

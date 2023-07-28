@@ -152,4 +152,18 @@ function inExt(value, array) {
     }
     return false;
 }
-
+function removeInObject(arrayObject,key,key_value){
+    //Find index of specific object using findIndex method.
+    var objIndex = arrayObject.findIndex((obj => obj[key] == key_value));
+    if(objIndex != -1){
+        arrayObject.splice(objIndex,1);
+        return true;
+    }
+    return false;
+}
+function inObject(value, arrayOject, key) {
+    for(var i = 0; i < arrayOject.length; i++) {
+        if(arrayOject[i][key] == value) return true;
+    }
+    return false;
+}

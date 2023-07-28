@@ -42,10 +42,10 @@ class PegawaiController extends Controller
     public function json()
     {
         $q = request('q');
-        $pegawai = User::where('owner',0)->orderBy('name')->get();
+        $kodeSkpd = request()->query('kode_skpd');
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd)->get();
         SelectResource::withoutWrapping();
         $pegawai = SelectResource::collection($pegawai);
-
         return response()->json($pegawai);
     }
 
