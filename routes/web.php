@@ -216,6 +216,7 @@ Route::middleware(['auth'])
                         Route::get('json-skpd', 'json_skpd')->name('json_skpd');
                         Route::post('store', 'store')->name('store');
                         Route::post('upload', 'upload')->name('upload');
+                        Route::post('update-kontrak', 'updateKontrak')->name('update-kontrak');
                         Route::get('edit/{pegawai}', 'edit')->name('edit');
                         Route::get('detail/{pegawai}', 'detail')->name('detail');
                         Route::get('detail/pribadi/{pegawai}', 'detailPribadi')->name('detail_pribadi');

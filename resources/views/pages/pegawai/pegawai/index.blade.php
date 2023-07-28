@@ -86,7 +86,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-                <form action="#">
+                <form id="form-modal" action="#">
                     <div class="form-group">
                         <label for="" class="form-label">Tanggal Akhir Kontrak</label>
                         <div class="input-group">
@@ -148,10 +148,10 @@
 
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("pegawai.pegawai.datatable")}}';
-
         var listPegawai = []
-        // SESUAIKAN COLUMN DATATABLE
-        // SESUAIKAN FIELD EDIT MODAL
+        const btnLoading = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`;
+
+        /* DATATABLE */
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
@@ -200,6 +200,8 @@
 
             });
         }
+        /* END DATATABLE */
+
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
         @if(getPermission('pegawai','U') || role('owner') || role('admin'))
             $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
@@ -217,12 +219,18 @@
         @if(getPermission('pegawai','PK') || role('owner') || role('admin'))
         initDatePickerSingle();
         const modalKontrak = new bootstrap.Modal(document.getElementById("modalKontrak"),{backdrop:'static',keyboard:true});
+
         $(document).on('click',"#btnModalKontrak", function () {
+
             modalKontrak.show();
             $("#sp").prop('checked',true)
             $("#pegawai-tertentu").hide();
             $("#modalKontrak").find("#select-pegawai").attr('disabled');
             initDevisi()
+        });
+        $(".btn-simpan").click(function (e) {
+            e.preventDefault();
+            saveShift($(this))
         });
         $("[name=type]").click(function(e){
             console.log($(this).val())
@@ -280,7 +288,7 @@
                     clearInterval(loading)
                     var data = $.map(data, function (item) {
                         return {
-                            text: item['label'],
+                            text: `<b>[ ${item['nip']} ]</b> ${item['label']}`,
                             id: item['nip'],
                         }
                     })
@@ -289,7 +297,16 @@
                     element.select2({
                         placeholder:"Ketik Nama Pegawai",
                         data : data,
-                        dropdownParent: $('#modalKontrak')
+                        dropdownParent: $('#modalKontrak'),
+                        escapeMarkup: function(markup) {
+                            return markup;
+                        },
+                        templateResult: function(data) {
+                            return data.text;
+                        },
+                        templateSelection: function(data) {
+                            return data.text;
+                        }
                     }).val(null).change()
                 }});
             }
@@ -315,6 +332,47 @@
             if(listPegawai.length == 0){
                 $('#list-pegawai').html('<div class="text-center text-light">Tidak ada Pegawai</div>');
             }
+        }
+        function saveShift(elBtn){
+            var btn = elBtn.html();
+            elBtn.attr('disabled');
+            elBtn.html(btnLoading);
+            $.ajax({
+                type: "post",
+                url: "{{route('pegawai.pegawai.update-kontrak')}}",
+                data: $("#form-modal").serialize(),
+                dataType: "JSON",
+                success: function (response) {
+                    modalKontrak.hide()
+                    clearModal()
+                    Swal.fire(
+                      'Sukses Update',
+                      response.message,
+                      'success'
+                    )
+                    elBtn.removeAttr('disabled');
+                    elBtn.html(btn);
+                    _TABLE.ajax.reload()
+                    return true;
+                },
+                error:function(response){
+                    modalKontrak.hide()
+                    Swal.fire(
+                      'Error',
+                      'Error Server',
+                      'error'
+                    )
+                    elBtn.removeAttr('disabled');
+                    elBtn.html(btn);
+                    return false;
+                }
+            });
+        }
+        function clearModal(){
+            $("#modalKontrak").find("#pt").prop('checked',true);
+            listPegawai = [];
+            $("#alert-pegawai").empty()
+            checkListPegawai()
         }
         @endif
     </script>

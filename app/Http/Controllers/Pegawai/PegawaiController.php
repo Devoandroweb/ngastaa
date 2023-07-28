@@ -261,19 +261,33 @@ class PegawaiController extends Controller
         return view('pages.pegawai.pegawai.add-shift',compact('for','Rshift','pegawai','front'));
 
     }
-    function perpanjangKontrak(){
-        $nips = request('nip');
-        $dateStart = date("Y-m-d");
-        $dateEnd = date("Y-m-d",request('date_kontrak'));
-        foreach ($nips as $nip) {
-            $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
-            # cari jabatan
-            $jabatan = $pegawai->getJabatan();
-            # update kontrak jabatan pada riwayat jabatan
-            $jabatan->update([
-                'tanggal_kontrak' => $dateEnd
-            ]);
+    function updateKontrak(){
+        try {
+            $nips = request('list-pegawai');
+            // $dateStart = date("Y-m-d");
+            $dateEnd = date("Y-m-d",request('date_kontrak'));
+            foreach ($nips as $nip) {
+                $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
+                # cari jabatan
+                $jabatan = $pegawai->jabatan_akhir()->first();
+                # update kontrak jabatan pada riwayat jabatan
+                $jabatan->update([
+                    'tanggal_tmt' => $dateEnd
+                ]);
+            }
+            return response()->json([
+                'status' => TRUE,
+                'message' => 'Berhasil Update Kontrak'
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => FALSE,
+                'message' => 'Gagal Update Kontrak',
+                'error' => $th->getMessage()
+            ],500);
         }
+
+
     }
     public function datatable(DataTables $dataTables)
     {
