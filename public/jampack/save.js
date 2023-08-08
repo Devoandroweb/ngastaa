@@ -1,8 +1,5 @@
 // submit data
-var _LOADING = `<div class="loadingio-spinner-ellipsis-ul1uzlc5yan"><div class="ldio-cvh2xv40fr">
-<div></div><div></div><div></div><div></div><div></div>
-</div></div>
-<p>Tunggu sebentar, sedang memuat halaman ....`;
+var _LOADING = buildLoading();
 var validateTooltipInvalid = (msg)=>{
     return `<div class="invalid-feedback">${msg}</div>`;
 }
@@ -20,7 +17,7 @@ function saveForm(form,url,statusSubmit,method = "post",igoneinput = [], withFil
         }else if(statusSubmit == 2){//update
             msg = 'Mengubah';
         }
-    
+
         if(withFile){
             data = new FormData(form[0]);
         }else{
@@ -29,7 +26,7 @@ function saveForm(form,url,statusSubmit,method = "post",igoneinput = [], withFil
         }
         if(validate){
             $("#btn-submit").attr('disabled','disabled');
-            
+
             var option = {
                 type: method,
                 url: url,
@@ -44,7 +41,7 @@ function saveForm(form,url,statusSubmit,method = "post",igoneinput = [], withFil
                         position: 'bottomRight'
                     });
                     output(true)
-                   
+
                 },
                 error : function (response){
                     errorValidateMessage(response.responseJSON.errors)
@@ -62,16 +59,16 @@ function saveForm(form,url,statusSubmit,method = "post",igoneinput = [], withFil
         output(false)
     })
     // ---------------------------
-    
+
 }
 function loadingFormStart(){
     $(".target-view").addClass("d-none");
     $(".loading").html(_LOADING);
-}; 
+};
 function loadingFormStop(){
     $(".target-view").removeClass("d-none");
     $(".loading").empty();
-}; 
+};
 
 function validateInput(form,ingoneInputName = [], errorMessage = []){
     var output = true;
@@ -82,7 +79,7 @@ function validateInput(form,ingoneInputName = [], errorMessage = []){
     var allInput = [{el:input,text:'input'},{el:select,text:'select'},{el:textarea,text:'textarea'}];
     console.log(allInput);
     allInput.forEach(function(v,i){
-        $.each(v.el, function (indexInArray,element) { 
+        $.each(v.el, function (indexInArray,element) {
             var name = element.name;
             var checked = 0;
             //cek input ignore
@@ -98,7 +95,7 @@ function validateInput(form,ingoneInputName = [], errorMessage = []){
                         $(nameElement).addClass("is-invalid");
                         $(nameElement).siblings(".select2-container").find(".select2-selection--single").addClass("is-invalid");
                         validateInput++;
-                    }else{  
+                    }else{
                         $(nameElement).siblings(".select2-container").find(".select2-selection--single").removeClass("is-invalid");
                         $(nameElement).removeClass("is-invalid");
                     }

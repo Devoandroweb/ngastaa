@@ -13,17 +13,22 @@ use App\Models\Pegawai\DataPresensi;
 use App\Models\Pegawai\DataVisit;
 use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
+use App\Repositories\Pdf\PdfRepository;
 use App\Repositories\Pegawai\PegawaiRepository;
+use Illuminate\Support\Facades\File;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
-
+use Response;
 class DataPresensiController extends Controller
 {
     protected $pegawaiRepository;
+    protected $pdfRepository;
     function __construct(
-        PegawaiRepository $pegawaiRepository
+        PegawaiRepository $pegawaiRepository,
+        PdfRepository $pdfRepository,
     ){
+        $this->pdfRepository = $pdfRepository;
         $this->pegawaiRepository = $pegawaiRepository;
     }
     public function index()
@@ -136,7 +141,7 @@ class DataPresensiController extends Controller
                 return $response;
                 // return view('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'));
             } else {
-                $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai','jamKerja'))->setPaper('a4', 'landscape');
+                $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai);
                 // $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'))->setPaper('a4', 'potrait');
                 // ob_end_clean();
                 return $pdf->stream();
@@ -274,4 +279,43 @@ class DataPresensiController extends Controller
             ->addIndexColumn()
             ->toJson();
     }
+    public function generate_laporan_pegawai()
+    {
+        $bulan = request('bulan') ?? date('m');
+        $tahun = request('tahun') ?? date('Y');
+        $nip = request('pegawai');
+        $xl = request('xl');
+        // dd($nip);
+        $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
+        $jamKerja = $pegawai->jamKerja->where('is_akhir',1)->first()?->jamKerja;
+        if(!$jamKerja){
+            $jamKerja = $pegawai->shift->where('is_akhir',1)->first()?->shift;
+        }
+        if($jamKerja == null){
+            return response()->json([
+                'status' => false,
+                'messages' => 'Jam Kerja atau Shift tidak di temukan'
+            ]);
+        }
+        if($pegawai == null){
+            return response()->json([
+                'status' => false,
+                'messages' => 'Data Laporan tidak di temukan'
+            ]);
+        }
+        $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja);
+        $pdfLocation = 'show-pdf/presensi-pegawai.pdf';
+        $pdf->save(public_path($pdfLocation));
+
+        return response()->json([
+            'status' => true,
+            'messages' => 'Data Laporan di temukan',
+            'file' => public_path($pdfLocation)
+        ]);
+    }
+    function showPdf(){
+        $path = request()->query('path');
+        return response()->file($path);
+    }
+
 }

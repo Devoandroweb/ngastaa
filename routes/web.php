@@ -626,6 +626,8 @@ Route::middleware(['auth'])
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::get('laporan-pegawai', 'laporan_pegawai')->name('laporan_pegawai');
+                        Route::get('show-pdf', 'showPdf')->name('show_pdf');
+                        Route::get('generate-laporan-pegawai', 'generate_laporan_pegawai')->name('generate_laporan_pegawai');
                         Route::get('laporan-pegawai-download', 'laporan_pegawai_download')->name('laporan_pegawai_download');
                         Route::get('laporan-divisi', 'laporan_divisi')->name('laporan_divisi');
                         Route::get('laporan-divisi-download', 'laporan_divisi_download')->name('laporan_divisi_download');

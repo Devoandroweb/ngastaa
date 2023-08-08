@@ -39,8 +39,15 @@ class Presensi extends Controller
             $data['status'] = true;
 
             if($presensiPegawai != null){
+
+
                 if($presensiPegawai->tanggal_datang != null && $presensiPegawai->tanggal_pulang != null){
-                    $data['absen_status'] = 2;
+                    if(shiftMalam(date('H:i:s',strtotime($presensiPegawai->tanggal_datang)), date('H:i:s',strtotime($presensiPegawai->tanggal_pulang)))){
+                        $data['absen_status'] = 0;
+                    }else{
+                        $data['absen_status'] = 2;
+                    }
+                    // $data['absen_status'] = 2;
                 }else{
                     $data['absen_status'] = 1;
                 }

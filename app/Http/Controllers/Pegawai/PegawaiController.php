@@ -51,16 +51,8 @@ class PegawaiController extends Controller
 
     public function json_skpd()
     {
-        $skpd = request()->query('skpd');
-
-        $pegawai = User::role('pegawai')
-            ->select('users.name', 'users.nip')
-            ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
-            ->leftJoin('tingkat', 'tingkat.kode_tingkat', 'riwayat_jabatan.kode_tingkat')
-            ->where('riwayat_jabatan.is_akhir', 1)
-            ->where('tingkat.kode_skpd', $skpd)
-            ->orderBy('name')
-            ->get();
+        $kodeSkpd = request()->query('skpd');
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd)->get();
         SelectResource::withoutWrapping();
         $pegawai = SelectResource::collection($pegawai);
 

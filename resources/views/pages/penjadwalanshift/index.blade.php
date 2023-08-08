@@ -4,8 +4,9 @@
     {{ Breadcrumbs::render('penjadwalan-shift') }}
 @endsection
 @section('header_action')
+    @if(getPermission('penjadwalanShift','E') || role('owner') || role('admin'))
     <button class="btn btn-success me-3 export" data-ext="excel"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Export Excel</span></span></button>
-    <button class="btn btn-info show-all"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Show All</span></span></button>
+    @endif
 @endsection
 @section('content')
 <style>
@@ -16,6 +17,7 @@
         background: #ffcccc !important;
         cursor: not-allowed !important;
     }
+    @if(getPermission('penjadwalanShift','U') || role('owner') || role('admin'))
     tbody tr .time{
         cursor: pointer;
     }
@@ -43,6 +45,7 @@
     tbody tr .time:hover .btn-ubah{
         display: block;
     }
+    @endif
 </style>
 
 <div class="row justify-content-end">
@@ -124,6 +127,7 @@
         ];
         var _START_DATE = y+"/"+m+"/01";
         var _END_DATE = y+"/"+m+"/"+lastDay;
+
         var _DATATABLE = null;
         var _KODE_SKPD = $(".divisi").val();
         var _DATERANGE = getDatesRange(_START_DATE,_END_DATE);
@@ -169,7 +173,7 @@
         });
 
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
-
+        @if(getPermission('penjadwalanShift','U') || role('owner') || role('admin'))
         $(document).on('click',".show-edit", function () {
             modalEditShift.show()
             var data = _DATATABLE.row($(this).closest('tr')).data()
@@ -181,7 +185,7 @@
                 allowClear: true
             }).val($(this).data('kodeshift')).change();
         });
-
+        @endif
         $(".btn-simpan").click(function (e) {
             e.preventDefault();
             saveShift($(this))
@@ -260,14 +264,15 @@
             var maxHoverDays = 31;
             var maxDate = new Date();
             maxDate.setDate(maxDate.getDate() + 31);
-
+            console.log(maxDate);
             $(".daterangepicker-maks-month").daterangepicker({
                 // singleDatePicker: true,
                 // linkedCalendars: false,
-                startDate: $(".daterangepicker-maks-month").val(),
+                startDate: "{{date('01/m/Y')}}",
+                endDate: "{{date('t/m/Y')}}",
                 showDropdowns: true,
                 autoApply: true,
-                maxDate:maxDate, // ILINGNO CAK
+                // maxDate:maxDate, // ILINGNO CAK
                 minYear: 1970,
                 maxYear: new Date().getFullYear(),
                 locale: {

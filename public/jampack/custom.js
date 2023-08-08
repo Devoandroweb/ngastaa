@@ -167,3 +167,9 @@ function inObject(value, arrayOject, key) {
     }
     return false;
 }
+function buildLoading(){
+    return `<div class="loadingio-spinner-ellipsis-ul1uzlc5yan"><div class="ldio-cvh2xv40fr">
+    <div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+    <p>Tunggu sebentar, sedang memuat halaman ....`;
+}

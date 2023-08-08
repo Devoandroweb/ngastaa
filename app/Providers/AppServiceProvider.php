@@ -12,6 +12,8 @@ use App\Repositories\Password\PasswordRepository;
 use App\Repositories\Password\PasswordRepositoryImplement;
 use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\Payroll\PayrollRepositoryImplement;
+use App\Repositories\Pdf\PdfRepository;
+use App\Repositories\Pdf\PdfRepositoryImplement;
 use App\Repositories\Pegawai\PegawaiRepository;
 use App\Repositories\Pegawai\PegawaiRepositoryImplement;
 use App\Repositories\Pengumuman\PengumumanRepository;
@@ -43,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PayrollRepository::class,PayrollRepositoryImplement::class);
         $this->app->bind(DivisiRepository::class,DivisiRepositoryImplement::class);
         $this->app->bind(JamKerjaRepository::class,JamKerjaRepositoryImplement::class);
+        $this->app->bind(PdfRepository::class,PdfRepositoryImplement::class);
     }
 
     /**

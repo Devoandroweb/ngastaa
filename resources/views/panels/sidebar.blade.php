@@ -2,6 +2,7 @@
 @php
     $pegawai = false;
     $hrd = false;
+    $penjadwalanShift = false;
 
     $masterDataStatusPegawai = false;
     $masterDataDivisiKerja = false;

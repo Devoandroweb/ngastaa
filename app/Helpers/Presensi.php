@@ -258,3 +258,20 @@ function hitungCepatPulang($jamTepatPulang,$jamPulang){
         return 0;
     }
 }
+function shiftMalam($jamAwal, $jamAkhir) {
+    $waktuAwal = strtotime($jamAwal);
+    $waktuAkhir = strtotime($jamAkhir);
+
+    if ($waktuAwal === false || $waktuAkhir === false) {
+        return false; // Format waktu tidak valid
+    }
+
+    $jamAwalTengahMalam = strtotime("00:00:00");
+    $jamAkhirTengahMalam = strtotime("23:59:59");
+
+    if (($waktuAwal < $jamAwalTengahMalam && $waktuAkhir > $jamAkhirTengahMalam) || ($waktuAwal > $waktuAkhir)) {
+        return true; // Melewati tengah malam
+    }
+
+    return false; // Tidak melewati tengah malam
+}

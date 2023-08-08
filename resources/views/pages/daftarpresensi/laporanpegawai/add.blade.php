@@ -10,7 +10,7 @@
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
-<form class="form-laporan" method="get" class="form">
+<form class="form-laporan mb-2" method="get">
     @csrf
     <div class="row">
         <div class="form-group has-validation">
@@ -59,12 +59,14 @@
         </div>
     </div>
     <input type="hidden" name="xl" value="0">
-    <button id="pdf" class="btn btn-custom btn-submit btn-danger icon-wthot-bg approv" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
-    <button id="excel" class="btn btn-custom btn-submit btn-success icon-wthot-bg reject" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
+    <button id="pdf" class="btn btn-custom btn-submit btn-danger icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
+    <button id="excel" class="btn btn-custom btn-submit btn-success icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
+    <button id="show" class="btn btn-custom btn-show btn-info icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-eye"></i> </span><span>Tampilkan</span></span></button>
     {{-- <button class="btn  btn-custom me-2 btn-danger icon-wthot-bg approv"><span><i class="far fa-file-pdf"></i><span> Download PDF</span></span></button>
     <button class="btn  btn-custom  btn-success icon-wthot-bg reject"><span><i class="far fa-file-excel"></i><span> Download Excel</span></span></button> --}}
-
+    {{-- <embed src="{{public_path('document-laporan-presensi-pegawai.pdf')}}" type="application/pdf" width="300px" height="500px"></embed> --}}
 </form>
+<div id="iframe-pdf" class="text-center mb-2"></div>
 @endsection
 
 @push('js')
@@ -88,7 +90,7 @@ function initDevisi(){
             element.select2({
                 placeholder:"Pilih Divisi atau ketik disini",
                 data : data
-            }).val("").change(function(){
+            }).val(null).change(function(){
                 getPegawai("{{route('pegawai.pegawai.json_skpd')}}",$(this).val());
                 if($(this).val() != null){
                     $('#select_pegawai').removeAttr("disabled")
@@ -124,7 +126,7 @@ function initSelectPegawai(data,value_skpd,element = null){
     element.select2({
         placeholder:"Pilih Pegawai atau ketik disini",
         data : data
-    }).val(value_skpd).change(function(){
+    }).val("").change(function(){
         cekPegawai()
     }).trigger("change");
 }
@@ -140,15 +142,40 @@ $(".btn-submit").on("click", function (e) {
     }
     $(".form").submit();
 });
+$("#show").on("click", function (e) {
+    e.preventDefault()
+    getPresensiPegawai()
+});
 // =============================
 function cekPegawai(){
     if($('#select_pegawai').val() == null || $('#select_pegawai').val() == ""){
         $(".btn-submit").prop("disabled",true);
+        $(".btn-show").prop("disabled",true);
     }else{
         $(".btn-submit").prop("disabled",false);
+        $(".btn-show").prop("disabled",false);
     }
 }
-
+function getPresensiPegawai(){
+    $("#iframe-pdf").html(buildLoading())
+    $.ajax({
+        type: "get",
+        url: "{{route('pengajuan.presensi.generate_laporan_pegawai')}}",
+        dataType: "JSON",
+        data: $(".form-laporan").serialize(),
+        success: function (response) {
+            if(response.status){
+                $("#iframe-pdf").html(`<embed class="iframe-pdf" src="{{route('pengajuan.presensi.show_pdf')}}?path=${response.file}" type="application/pdf" width="100%" height="800" frameborder="0"></embed>`)
+            }else{
+                Swal.fire(
+                  'Gagal',
+                  response.messages,
+                  'error'
+                )
+            }
+        }
+    });
+}
 
 // /pengajuan/presensi/laporan-pegawai-download?nip=${data.nip}&bulan=${data.bulan}&tahun=${data.tahun}`, '_blank', 'noopener,noreferrer
 </script>
