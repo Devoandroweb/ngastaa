@@ -1,4 +1,4 @@
-@extends('app') 
+@extends('app')
 @section('content')
 @section('breadcrumps')
     <h2 class="pg-title">Tambah Gaji Umk</h2>
@@ -9,12 +9,13 @@
     @if($umk != null)
         <input type="hidden" name="id"type="text" value="{{$umk->id}}">
     @endif
-        
+
     <div class="row">
         <div class="col">
             <div class="form-group has-validation">
-            <label class="form-label">Kode umk<span class="text-danger">*</span></label>
-                <input class="form-control mb-3  @error('kode_umk') is-invalid @enderror"  value="" placeholder="Masukkan Kode umk" name="kode_umk">
+                <label class="form-label">Kode umk<span class="text-danger">*</span></label>
+                <input class="form-control @error('kode_umk') is-invalid @enderror"  value="" placeholder="Masukkan Kode umk" name="kode_umk">
+                <div class="invalid-feedback">{{$errors->first('kode_umk')}}</div>
             </div>
         </div>
     </div>
@@ -35,7 +36,7 @@
                     @foreach ($kabupaten as $kab)
                         <option value="{{$kab->code}}">{{$kab->name}}</option>
                     @endforeach
-                </select>        
+                </select>
             </div>
         </div>
         <div class="col-md-6">

@@ -19,4 +19,8 @@ class MJamKerja extends Model
     {
         return $this->hasMany(RiwayatJamKerja::class, 'kode', 'kode_jam_kerja');
     }
+    public function hariJamKerja()
+    {
+        return $this->hasMany(HariJamKerja::class, 'kode_jam_kerja', 'kode');
+    }
 }

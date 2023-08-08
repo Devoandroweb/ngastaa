@@ -2,6 +2,7 @@
 
 use App\Models\MRoleMenu;
 use App\Models\Perusahaan;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -819,3 +820,22 @@ function getPermission($kodeMenu,$permisson){
     }
     return false;
 }
+function hitungRangeJam($jamA, $jamB)
+    {
+        // Parsing jam A dan jam B menjadi objek Carbon
+        $carbonJamA = Carbon::createFromFormat('H:i:s', $jamA);
+        $carbonJamB = Carbon::createFromFormat('H:i:s', $jamB);
+
+        // Pastikan $carbonJamA selalu merupakan jam awal dan $carbonJamB selalu merupakan jam akhir
+        if ($carbonJamB < $carbonJamA) {
+            $temp = $carbonJamA;
+            $carbonJamA = $carbonJamB;
+            $carbonJamB = $temp;
+        }
+
+        // Hitung selisih jam antara jam awal dan jam akhir
+        $rangeJam = $carbonJamA->diff($carbonJamB);
+
+        // Format output range jam
+        return (int)$rangeJam->format('%H');
+    }

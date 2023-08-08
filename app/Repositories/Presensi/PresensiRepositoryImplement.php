@@ -16,19 +16,22 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
     * @property DataPresensi|mixed $model;
     */
     protected $mDataPresensi;
+    protected $date;
 
     public function __construct(
         DataPresensi $mDataPresensi
     )
     {
         $this->mDataPresensi = $mDataPresensi;
+        $this->date = date("Y-m-d");
+        // $this->date = "2023-08-04";
     }
     function presensiDay($nip){
         $data = $this->getPresensiDay($nip);
         # cari shift nya
         # ambil jam pulang
         # hitung
-        $dataVisit = DataVisit::where('nip',$nip)->whereDate('created_at', date('Y-m-d'))->first();
+        $dataVisit = DataVisit::where('nip',$nip)->whereDate('created_at', $this->date)->first();
         // dd($dataVisit,$data);
         if($data != null || $dataVisit != null){
             $data = [
@@ -49,30 +52,11 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
         }
         return $data;
     }
-    function hitungRangeJam($jamA, $jamB)
-    {
-        // Parsing jam A dan jam B menjadi objek Carbon
-        $carbonJamA = Carbon::createFromFormat('H:i:s', $jamA);
-        $carbonJamB = Carbon::createFromFormat('H:i:s', $jamB);
 
-        // Pastikan $carbonJamA selalu merupakan jam awal dan $carbonJamB selalu merupakan jam akhir
-        if ($carbonJamB < $carbonJamA) {
-            $temp = $carbonJamA;
-            $carbonJamA = $carbonJamB;
-            $carbonJamB = $temp;
-        }
-
-        // Hitung selisih jam antara jam awal dan jam akhir
-        $rangeJam = $carbonJamA->diff($carbonJamB);
-
-        // Format output range jam
-        return (int)$rangeJam->format('%H');
-    }
     function getPresensiDay($nip){
         # ambil absen hari ini
-        $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d'))->latest()->first();
+        $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', $this->date)->latest()->first();
         # cek apakah hari ini ada?
-
         if(is_null($data)){
             # jika tidak ada maka cari absen kemaren
             $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d',strtotime("-1 days")))->latest()->first();
@@ -83,9 +67,9 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
             // dd($shift->shift);
             # dd($this->hitungRangeJam($shift->shift->jam_tepat_pulang,"23:59:59"),$shift->shift->jam_tepat_pulang,$shift->shift);
             # hitung apakah shift lebih dari 8 jam dengan perbandingan jam 23:59:59
-            // dd($this->hitungRangeJam($jamDatang,"23:59:59"),$jamDatang,$data);
+            # dd($this->hitungRangeJam($jamDatang,"23:59:59"),$jamDatang,$data);
 
-            if($this->hitungRangeJam($jamDatang,"23:59:59") >= 8){
+            if(hitungRangeJam($jamDatang,"23:59:59") >= 8){
                 $data = null;
             }
         }

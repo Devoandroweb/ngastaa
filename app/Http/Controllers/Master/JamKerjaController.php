@@ -6,27 +6,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Master\JamKerjaResource;
 use App\Http\Resources\Select\SelectResource;
+use App\Models\HariJamKerja;
 use App\Models\MJamKerja;
+use App\Repositories\JamKerja\JamKerjaRepository;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class JamKerjaController extends Controller
 {
+    protected $jamKerjaRepository;
+    function __construct(JamKerjaRepository $jamKerjaRepository){
+        $this->jamKerjaRepository = $jamKerjaRepository;
+    }
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $jamKerja = MJamKerja::when($search, function ($qr, $search) {
-            $qr->where('nama', 'LIKE', "%$search%");
-        })
-            ->paginate($limit);
-
-        $jamKerja->appends(request()->all());
-
-        $jamKerja = JamKerjaResource::collection($jamKerja);
-
-        // return inertia('Master/MJamKerja/index', compact('jam_kerja'));
-
         return view('pages/masterdata/datapresensi/jam_kerja/index');
     }
 
@@ -48,19 +42,20 @@ class JamKerjaController extends Controller
     {
         $jamKerja = null;
         $for = 0;
-        // return inertia('Master/MJamKerja/Add', compact('jam_kerja'));
-        return view('pages.masterdata.datapresensi.jam_kerja.add', compact('jamKerja','for'));
+        $hari = [];
+        return view('pages.masterdata.datapresensi.jam_kerja.add', compact('jamKerja','for','hari'));
     }
 
     public function edit(MJamKerja $jamKerja)
     {
-        // return inertia('Master/MJamKerja/Add', compact('jam_kerja'));
         $for = 1;
+        $jamKerja->load('hariJamKerja');
         return view('pages.masterdata.datapresensi.jam_kerja.add', compact('jamKerja','for'));
     }
 
     public function delete(MJamKerja $jamKerja)
     {
+        HariJamKerja::where('kode_jam_kerja',$jamKerja->kode)->delete();
         $cr = $jamKerja->delete();
         if ($cr) {
             return redirect(route('master.jam_kerja.index'))->with([
@@ -77,72 +72,125 @@ class JamKerjaController extends Controller
 
     public function store()
     {
-        // dd(request()->all());
         $rules = [
             'kode' => 'required',
             'nama' => 'required',
-            'jam_buka_datang' => 'required',
-            'jam_tepat_datang' => 'required',
-            'jam_tutup_datang' => 'required',
-            'toleransi_datang' => 'nullable',
-            'jam_buka_istirahat' => 'nullable',
-            'jam_tepat_istirahat' => 'nullable',
-            'jam_tutup_istirahat' => 'nullable',
-            'toleransi_istirahat' => 'nullable',
-            'jam_buka_pulang' => 'required',
-            'jam_tepat_pulang' => 'required',
-            'jam_tutup_pulang' => 'required',
-            'toleransi_pulang' => 'nullable',
         ];
 
         if (!request('id')) {
             $rules['kode'] = 'required|unique:m_jam_kerja';
         }
-
         $data = request()->validate($rules);
+        try {
+            DB::transaction(function()use($data){
+                // dd(request()->all());
 
-        $cr = MJamKerja::updateOrCreate(['id' => request('id')], $data);
 
-        if ($cr) {
+                for ($i=1; $i <= 7; $i++) {
+                    $filler = request('filler_'.$i);
+                    if($filler == 2){
+                        $dataHariJamKerja = [
+                            'kode_jam_kerja' => $data['kode'],
+                            'hari' => $i,
+                            'jam_buka_datang' => request('jam_buka_datang')[$i-1],
+                            'jam_tepat_datang' => request('jam_tepat_datang')[$i-1],
+                            'jam_tutup_datang' => request('jam_tutup_datang')[$i-1],
+                            'toleransi_datang' => request('toleransi_datang')[$i-1],
+                            'jam_buka_istirahat' => request('jam_buka_istirahat')[$i-1],
+                            'jam_tepat_istirahat' => request('jam_tepat_istirahat')[$i-1],
+                            'jam_tutup_istirahat' => request('jam_tutup_istirahat')[$i-1],
+                            'toleransi_istirahat' => request('toleransi_istirahat')[$i-1],
+                            'jam_buka_pulang' => request('jam_buka_pulang')[$i-1],
+                            'jam_tepat_pulang' => request('jam_tepat_pulang')[$i-1],
+                            'jam_tutup_pulang' => request('jam_tutup_pulang')[$i-1],
+                            'toleransi_pulang' => request('toleransi_pulang')[$i-1],
+                            'tipe' => request('filler_'.$i)
+                        ];
+                    }elseif($filler == 1){
+                        if(request('filler_'.request('copy-other-day-'.$i)) == 0){
+                            HariJamKerja::where([
+                                "kode_jam_kerja" => $data['kode'],
+                                "hari" => $i
+                            ])->delete();
+                            continue;
+                        }else{
+                            $dataHariJamKerja = [
+                                'kode_jam_kerja'=>$data['kode'],
+                                'hari' => $i,
+                                'tipe' => $filler,
+                                'parent' => request('copy-other-day-'.$i)
+                            ];
+                        }
+                    }
+                    if(in_array($filler,[1,2])){
+                        HariJamKerja::updateOrCreate(
+                            [
+                                'kode_jam_kerja'=>$data['kode'],
+                                'hari' => $i
+                            ],
+                            $dataHariJamKerja
+                        );
+                    }
+                }
+                // dd("okde");
+                MJamKerja::updateOrCreate(['id' => request('id')],['kode'=>$data['kode'],'nama'=>$data['nama']]);
+            });
+            DB::commit();
             return redirect(route('master.jam_kerja.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil!"
             ]);
-        } else {
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // dd($th->getMessage());
             return redirect(route('master.jam_kerja.index'))->with([
                 'type' => 'error',
-                'messages' => "Gagal!"
+                'messages' => $th->getMessage()
             ]);
         }
+
+
+
     }
     public function datatable(DataTables $dataTables)
     {
+        $rawColumns = ['opsi'];
         $model = MJamKerja::query();
-        return $dataTables->eloquent($model)
-            ->addColumn('toleransi_istirahat', function ($row) {
-                return $row->toleransi_istirahat . " m";
-            })
-            ->addColumn('toleransi_pulang', function ($row) {
-                return $row->toleransi_pulang . " m";
-            })
-            ->addColumn('toleransi_datang', function ($row) {
-                return $row->toleransi_datang . " m";
-            })
-            ->addColumn('opsi', function ($row) {
-                $html = "";
-                if(getPermission('masterDataJamKerja','U') || role('owner') || role('admin')){
-                    $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.jam_kerja.edit', $row->id) . "'>" . icons('pencil') . "</a>";
+        $dt = $dataTables->eloquent($model);
+        $dt->addColumn('hari', function ($row) {
+            return $row->toleransi_istirahat . " m";
+        });
+        for ($i=1; $i <= 7 ; $i++) {
+            $hari = strtolower(hari($i));
+            array_push($rawColumns,$hari);
+            $dt->addColumn($hari, function ($row) use ($i,$hari){
+                $hariJamKerja = $this->jamKerjaRepository->searchHariJamKerja($row->kode,$i);
+                if($hariJamKerja){
+                    return '<a href="#" class="text-primary detail-jam" tooltip="Klik untuk Melihat detail Jam" data-hari="'.$hari.'" data-tipe="'.$hariJamKerja->tipe.'" data-parent="'.strtolower(hari($hariJamKerja->parent)).'"><i class="far fa-eye"></i> Lihat</a>';
                 }
-                if(getPermission('masterDataJamKerja','D') || role('owner') || role('admin')){
-                    $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.jam_kerja.delete', $row->id) . "'>" . icons('trash') . "</a>";
-                }
-                if($html == ""){
-                    return "-";
-                }
-                return $html;
-            })
-            ->rawColumns(['opsi'])
-            ->addIndexColumn()
-            ->toJson();
+                return "-";
+            });
+            $dt->addColumn($hari."_json", function ($row) use ($i){
+                // return json_encode($this->jamKerjaRepository->searchHariJamKerja($row->kode,$i));
+                return $this->jamKerjaRepository->searchHariJamKerja($row->kode,$i);
+            });
+        }
+
+        $dt->addColumn('opsi', function ($row) {
+            $html = "";
+            if(getPermission('masterDataJamKerja','U') || role('owner') || role('admin')){
+                $html .= "<a class='me-2 edit' tooltip='Edit' href='" . route('master.jam_kerja.edit', $row->id) . "'>" . icons('pencil') . "</a>";
+            }
+            if(getPermission('masterDataJamKerja','D') || role('owner') || role('admin')){
+                $html .= "<a class='delete text-danger' tooltip='Hapus' href='" . route('master.jam_kerja.delete', $row->id) . "'>" . icons('trash') . "</a>";
+            }
+            if($html == ""){
+                return "-";
+            }
+            return $html;
+        });
+        return $dt->rawColumns($rawColumns)
+        ->addIndexColumn()
+        ->toJson();
     }
 }

@@ -13,11 +13,10 @@
 @endif
 @section('content')
 <form class="edit-post-form" action="{{route('master.jam_kerja.store')}}?for={{$for}}" method="post">
-    @csrf
     @if($jamKerja != null)
         <input type="hidden" name="id"type="text" value="{{$jamKerja->id}}">
     @endif
-
+    @csrf
     <div class="row">
         <div class="col-md-6">
             <div class="form-group has-validation">
@@ -25,6 +24,8 @@
                 <input class="form-control mb-3 @error('kode') is-invalid @enderror" type="text" value="{{$jamKerja->kode ?? null}}" placeholder="Masukkan Kode Jam Kerja" name="kode">
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
             <div class="form-group has-validation">
                 <label class="form-label">Nama Jam Kerja<span class="text-danger">*</span></label>
@@ -32,93 +33,49 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Buka Datang<span class="text-danger">*</span></label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_datang') is-invalid @enderror" type="text" value="{{($jamKerja != null) ? date("H:i:s",strtotime($jamKerja->jam_buka_datang)) : date("H:i:s")}}" name="jam_buka_datang">
-            </div>
+    <ul class="nav nav-light nav-tabs">
+        @for ($i=1; $i <= 7 ; $i++)
+        <li class="nav-item">
+            <a class="nav-link {{($i==1)?'active':''}}" data-bs-toggle="tab" href="#tab_day_{{$i}}">
+                <span class="nav-link-text">{{hari($i)}}</span>
+            </a>
+        </li>
+        @endfor
+    </ul>
+    <div class="tab-content pt-2">
+        @for ($day=1; $day <= 7 ;$day++)
+        <div class="tab-pane fade {{($day==1)?'show active':''}}" id="tab_day_{{$day}}">
+            @include("pages.masterdata.datapresensi.jam_kerja.form",["day"=>$day,"hariJamKerja"=>$jamKerja?->hariJamKerja?->where('hari',$day)->first()])
         </div>
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Tepat Datang<span class="text-danger">*</span></label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_tepat_datang') is-invalid @enderror" type="text" value="{{$jamKerja->jam_tepat_datang ?? null}}" name="jam_tepat_datang">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Tutup Datang<span class="text-danger">*</span></label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_tutup_datang') is-invalid @enderror" type="text" value="{{$jamKerja->jam_tutup_datang ?? null}}" name="jam_tutup_datang">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group has-validation">
-            <label class="form-label">Toleransi Datang</label>
-            <input class="form-control mb-3 @error('toleransi_datang') is-invalid @enderror" type="number" value="{{$jamKerja->toleransi_datang ?? ''}}" placeholder="Masukkan Toleransi Datang" name="toleransi_datang" value="">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Buka Istirahat</label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_istirahat') is-invalid @enderror" type="text" value="{{$jamKerja->jam_buka_istirahat ?? null}}" name="jam_buka_istirahat">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Tepat Istirahat</label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_tepat_istirahat') is-invalid @enderror" type="text" value="{{$jamKerja->jam_tepat_istirahat ?? null}}" name="jam_tepat_istirahat">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Tutup Istirahat</label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_tutup_istirahat') is-invalid @enderror" type="text" value="{{$jamKerja->jam_tutup_istirahat ?? null}}" name="jam_tutup_istirahat">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group has-validation">
-            <label class="form-label">Toleransi Istirahat</label>
-            <input class="form-control mb-3 @error('toleransi_istirahat') is-invalid @enderror" type="number" value="{{$jamKerja->toleransi_istirahat ?? null}}" placeholder="Masukkan Toleransi Istirahat" name="toleransi_istirahat" value="">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Buka pulang</label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_pulang') is-invalid @enderror" type="text" value="{{$jamKerja->jam_buka_pulang ?? null}}" placeholder="" name="jam_buka_pulang">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Tepat pulang</label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_tepat_pulang') is-invalid @enderror" type="text" value="{{$jamKerja->jam_tepat_pulang ?? null}}" placeholder="" name="jam_tepat_pulang">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group has-validation">
-                <label class="form-label">Jam Tutup pulang</label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_tutup_pulang') is-invalid @enderror" type="text" value="{{$jamKerja->jam_tutup_pulang ?? null}}" placeholder="" name="jam_tutup_pulang">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group has-validation">
-            <label class="form-label">Toleransi pulang</label>
-            <input class="form-control mb-3 @error('toleransi_pulang') is-invalid @enderror" type="number" value="{{$jamKerja->toleransi_pulang ?? null}}" placeholder="Masukkan Toleransi pulang" name="toleransi_pulang" value="">
-        </div>
+        @endfor
     </div>
     <button type="submit" class="btn btn-primary">Simpan</button>
-    <a href="{{route('master.shift.index')}}" class="btn btn-light">{{__('Kembali')}}</a>
+    <a href="{{route('master.jam_kerja.index')}}" class="btn btn-light">{{__('Kembali')}}</a>
 
 </form>
 @endsection
 
 @push("js")
 <script>
-    initDatePickerSingle();
-    initTimePicker();
+    initDatePickerSingle()
+    initTimePicker()
+    for (let i = 1; i <= 7; i++) {
+        hideShowForm(i,$(".checked-type-"+i+":checked"))
+        $(".checked-type-"+i).click(function(){
+            hideShowForm(i,$(".checked-type-"+i+":checked"))
+        })
+    }
+    function hideShowForm(day,el){
+        if(el.val() == 0){
+            $(".copy-other-day-"+day).hide();
+            $(".form-clock-"+day).hide();
+        }else if(el.val() == 1){
+            $(".copy-other-day-"+day).show();
+            $(".form-clock-"+day).hide();
+        }else if(el.val() == 2){
+            $(".copy-other-day-"+day).hide();
+            $(".form-clock-"+day).show();
+        }
+    }
 </script>
 @endpush

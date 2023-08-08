@@ -47,3 +47,28 @@ ALTER TABLE `payroll_kurang` CHANGE `nilai` `nilai` DOUBLE NULL DEFAULT '0';
 ALTER TABLE `payroll_tambah` CHANGE `nilai` `nilai` DOUBLE NULL DEFAULT '0';
 
 CREATE TABLE `jadwal_shift` (`id` INT NOT NULL AUTO_INCREMENT , `nip` VARCHAR(225) NOT NULL , `kode_shift` VARCHAR(225) NOT NULL , `tanggal` DATE NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `hari_jam_kerja` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kode_jam_kerja` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hari` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jam_buka_datang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tepat_datang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tutup_datang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `toleransi_datang` int(11) DEFAULT NULL COMMENT 'dalam menit',
+  `jam_buka_istirahat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tepat_istirahat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tutup_istirahat` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `toleransi_istirahat` int(11) DEFAULT NULL COMMENT 'dalam menit',
+  `jam_buka_pulang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tepat_pulang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_tutup_pulang` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `toleransi_pulang` int(11) DEFAULT NULL COMMENT 'dalam menit',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ALTER TABLE `hari_jam_kerja` ADD `tipe` INT NOT NULL DEFAULT '0' AFTER `toleransi_pulang`, ADD `parent` INT NULL DEFAULT NULL AFTER `tipe`;
+ALTER TABLE `hari_jam_kerja` ADD PRIMARY KEY(`id`);
+ALTER TABLE `hari_jam_kerja` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `aktifitas` CHANGE `jam_mulai` `jam_mulai` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `aktifitas` ADD `jam_selesai` DATETIME NULL DEFAULT NULL AFTER `jam_mulai`;

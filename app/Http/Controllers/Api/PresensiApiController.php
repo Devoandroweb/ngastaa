@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\PresensiLaporanApiResource;
 use App\Http\Resources\Api\PresensiListOpdApiResource;
 use App\Http\Resources\Api\ShiftApiResource;
+use App\Models\HariJamKerja;
+use App\Repositories\JamKerja\JamKerjaRepository;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Str;
 use App\Jobs\ProcessWaNotif;
@@ -15,16 +17,25 @@ use App\Models\MJamKerja;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\Pegawai\RiwayatShift;
 use App\Models\User;
+use App\Repositories\Presensi\PresensiRepository;
 use Illuminate\Support\Facades\Storage;
 
 class PresensiApiController extends Controller
 {
     protected $pegawaiRepository;
+    protected $presensiRepository;
+    protected $jamKerjaRepository;
+    protected $dateAbsen;
     // protected $pegawaiWithRole;
     function __construct(
-        PegawaiRepository $pegawaiRepository
+        PegawaiRepository $pegawaiRepository,
+        PresensiRepository $presensiRepository,
+        JamKerjaRepository $jamKerjaRepository,
     ){
         $this->pegawaiRepository = $pegawaiRepository;
+        $this->presensiRepository = $presensiRepository;
+        $this->jamKerjaRepository = $jamKerjaRepository;
+        $this->dateAbsen = date("Y-m-d");
     }
     public function lokasi()
     {
@@ -190,10 +201,11 @@ class PresensiApiController extends Controller
         $kordinat = request('kordinat');
         $kode_shift = request('kode_shift');
         $kode_tingkat = request('kode_tingkat');
+        $numberDay = date('N');
 
         $date = request("date");
-        $toler1Min = strtotime("-5 minutes");
-        // $toler1Min = strtotime('2023-07-14 07:56:00');
+        // $toler1Min = strtotime("-5 minutes");
+        $toler1Min = strtotime('2023-08-04 07:40:00');
         $dateSend = strtotime($date);
 
         $timeZone = request('timezone') ?? 'WITA';
@@ -236,10 +248,9 @@ class PresensiApiController extends Controller
         }elseif($riwayatShiftUser->count() > 0){
             $kode_shift = $riwayatShiftUser->first()?->kode_shift;
         }
-
+        $jamkerja = $this->jamKerjaRepository->searchHariJamKerja($kode_jam_kerja,$numberDay);
         $shift = Shift::where('kode_shift', $kode_shift)->first();
-        $jamkerja = MJamKerja::where('kode', $kode_jam_kerja)->first();
-
+        
         if($shift == null && $jamkerja == null){
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Jam Kerja atau Shift Tidak Temukan !!', 'keterangan' => '']),200);
         }
@@ -265,12 +276,14 @@ class PresensiApiController extends Controller
             $tutupSoreTime = strtotime($shift->jam_tutup_pulang);
         }
 
+        # Cek Shift Malam
+
 
         // dd(date('Y-m-d H:i:s',$dateSend),date("Y-m-d H:i:s",$tutupPagiTime), $dateSend >= $bukaPagiTime,$dateSend <= $tutupPagiTime,"$kode_shift | $kode_jam_kerja");
 
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
         // if (true) { # PAGI
-            $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', date('Y-m-d'))->count();
+            $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', $this->dateAbsen)->count();
             if ($cek > 0) {
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pagi ini!']),200);
             } else {
@@ -313,9 +326,9 @@ class PresensiApiController extends Controller
                 }
             }
         } else if ($dateSend >= $bukaSiangTime && $dateSend <= $tutupSiangTime) {
-            $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', date('Y-m-d'))->first();
+            $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', $this->dateAbsen)->first();
             if ($cek) {
-                $cekSiang = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', date('Y-m-d'))->count();
+                $cekSiang = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', $this->dateAbsen)->count();
                 if ($cekSiang > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi siang ini!']),200);
                 } else {
@@ -333,7 +346,7 @@ class PresensiApiController extends Controller
                     }
                 }
             } else {
-                $cekSiang2 = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', date('Y-m-d'))->count();
+                $cekSiang2 = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', $this->dateAbsen)->count();
                 if ($cekSiang2 > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi siang ini!']),200);
                 } else {
@@ -360,10 +373,14 @@ class PresensiApiController extends Controller
                 }
             }
         } else if ($dateSend >= $bukaSoreTime && $dateSend <= $tutupSoreTime) {
-            $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', date('Y-m-d'))->first();
-            $cekSiang = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', date('Y-m-d'))->first();
+            if($this->getShiftMalam($nip)){
+                $cek = $this->getShiftMalam($nip);
+            }else{
+                $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', $this->dateAbsen)->first();
+            }
+            $cekSiang = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', $this->dateAbsen)->first();
             if ($cek) {
-                $cekSore = DataPresensi::where('nip', $nip)->whereDate('tanggal_pulang', date('Y-m-d'))->count();
+                $cekSore = DataPresensi::where('nip', $nip)->whereDate('tanggal_pulang', $this->dateAbsen)->count();
                 if ($cekSore > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi sore ini!']),200);
                 } else {
@@ -390,7 +407,7 @@ class PresensiApiController extends Controller
                     }
                 }
             } elseif ($cekSiang) {
-                $cekSore3 = DataPresensi::where('nip', $nip)->whereDate('tanggal_pulang', date('Y-m-d'))->count();
+                $cekSore3 = DataPresensi::where('nip', $nip)->whereDate('tanggal_pulang', $this->dateAbsen)->count();
                 if ($cekSore3 > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi sore ini!']),200);
                 } else {
@@ -417,7 +434,7 @@ class PresensiApiController extends Controller
                     }
                 }
             } else {
-                $cekSore2 = DataPresensi::where('nip', $nip)->whereDate('tanggal_pulang', date('Y-m-d'))->count();
+                $cekSore2 = DataPresensi::where('nip', $nip)->whereDate('tanggal_pulang', $this->dateAbsen)->count();
                 if ($cekSore2 > 0) {
                     return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi sore ini!']));
                 } else {
@@ -454,7 +471,6 @@ class PresensiApiController extends Controller
                 }
             }
         } else {
-
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => "Anda tidak berada diwaktu presensi"]),200);
         }
     }
@@ -551,6 +567,34 @@ class PresensiApiController extends Controller
         } catch (\Throwable $th) {
             return response()->json(buildResponseGagal($th->getMessage()), 404);
         }
+    }
+    function existingAbsenDay($nip){
+        try {
+            //code...
+            $data = $this->presensiRepository->getPresensiDay($nip);
+            if(!is_null($data?->tanggal_datang) && !is_null($data?->tanggal_pulang)){
+                return response()->json(buildResponseSukses(['status'=>true]), 200);
+            }
+            return response()->json(buildResponseSukses(['status'=>false]), 200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => "Terjadi Kesalahan"]),200);
+        }
+    }
+    function getShiftMalam($nip){
+        # ambil absen hari ini
+        $data = DataPresensi::where('nip', $nip)->whereDate('created_at', $this->dateAbsen)->latest()->first();
+        # cek apakah hari ini ada?
+        if(is_null($data)){
+            # jika tidak ada maka cari absen kemaren
+            $data = DataPresensi::where('nip', $nip)->whereDate('created_at', date('Y-m-d',strtotime("{$this->dateAbsen} -1 days")))->latest()->first();
+
+            $jamDatang = date("H:i:s",strtotime($data?->tanggal_datang));
+
+            if(hitungRangeJam($jamDatang,"23:59:59") >= 8){
+                $data = null;
+            }
+        }
+        return $data;
     }
     function uploadFotoAbsen($nip){
         if (request()->file('image')) {

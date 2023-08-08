@@ -32,7 +32,9 @@ class PenjadwalanShiftController extends Controller
     public function index()
     {
         $skpd = Skpd::orderBy('nama')->get();
-        $shift = Shift::all();
+        $shift = Shift::get();
+        // dd($shift);
+
         return view('pages.penjadwalanshift.index',compact('skpd','shift'));
     }
     function update(){
@@ -84,15 +86,14 @@ class PenjadwalanShiftController extends Controller
         $dateEnd = date('Y-m-t');
         $periodeBulan = date("Y-m");
         $rawColumn = [];
-
-        $this->mJadwalShift = $this->mJadwalShift->whereBetween('tanggal',[$dateStart,$dateEnd])->get();
-
-        // dd(request()->query('date_start') && request()->query('date_end'));
-        if (request()->query('date_start') && request()->query('date_end') ) {
+        // dd(request()->query('date_start'), request()->query('date_end'));
+        if (request()->query('date_start') && request()->query('date_end')) {
             $dateStart = date("Y-m-d",strtotime(request()->query('date_start')));
             $dateEnd = date("Y-m-d",strtotime(request()->query('date_end')));
             $periodeBulan = null;
         }
+        $this->mJadwalShift = $this->mJadwalShift->whereBetween('tanggal',[$dateStart,$dateEnd])->get();
+        // dd($this->mJadwalShift,$dateStart,$dateEnd);
         $mUsers = User::role('pegawai')->where('owner',0)->when($search,function($q)use($search){
             // dd($search);
             return $q->where('users.name','like','%'.$search.'%');
@@ -136,9 +137,13 @@ class PenjadwalanShiftController extends Controller
                 // $this->hadir = 0;
                 $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal,$i,$dt){
                     // return $this->getShift($row->kode_shift) ?? "-";
+
                     $jadwalShift = $this->getJadwalShift($row->nip,$tanggal->format('Y-m-d'));
+
                     $html = "";
                     $shift = null;
+
+
                     if($jadwalShift){
                         // dd($jadwalShift);
                         $shift = $jadwalShift->shift;
@@ -173,7 +178,7 @@ class PenjadwalanShiftController extends Controller
     }
     function getJadwalShift($nip,$tanggal){
         foreach ($this->mJadwalShift as $value) {
-            if($nip === $value->nip && $tanggal == $value->tanggal){
+            if($nip == $value->nip && $tanggal == $value->tanggal){
                 return $value;
             }
         }

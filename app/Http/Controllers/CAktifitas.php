@@ -58,6 +58,12 @@ class CAktifitas extends Controller
             }
             return $nama_jabatan;
         })
+        ->editColumn('jam_mulai',function($row){
+            return date("H:i:s",strtotime($row->jam_mulai));
+        })
+        ->editColumn('jam_selesai',function($row){
+            return date("H:i:s",strtotime($row->jam_selesai));
+        })
         ->editColumn('created_at',function($row){
             return tanggal_indo($row->created_at);
         })

@@ -21,7 +21,6 @@ function initTimePicker(){
         singletDatePicker: true,
         timePicker24Hour: true,
         timePickerIncrement: 1,
-        startDate: $(this).val(),
         locale: {
             format: 'hh:mm'
         }

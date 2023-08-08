@@ -217,4 +217,21 @@ function optionJenisInstansi($jenisinstansi = null)
     }
     return $html;
 }
+function checkBoxDay($days = [],$col = 1){
+    $html = "<div class='row'>";
+    for ($i=1; $i <= 7; $i++) {
+        $checked = "";
+        if(in_array($i,$days)){
+            $checked = "checked";
+        }
+        $html .= '<div class="col mb-1">
+            <div class="form-check form-switch">
+                <input type="checkbox" id="day-'.$i.'" name="hari[]" class="form-check-input" '.$checked.' value="'.$i.'">
+                <label class="form-check-label" for="day-'.$i.'">'.hari($i).'</label>
+            </div>
+        </div>';
+    }
+    $html .= "</div>";
+    return $html;
+}
 

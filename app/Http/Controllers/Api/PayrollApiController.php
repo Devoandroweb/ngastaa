@@ -31,9 +31,7 @@ class PayrollApiController extends Controller
             // $payrollTambah = PayrollTambah::where($where)->get();
             $payrollKurang = PayrollKurang::where($where)->get();
 
-            $totalTambah = (int)$dataPayroll->total_penambahan; # Bonus
-            $totalKurang = (int)$dataPayroll->total_potongan; # Potongan
-            $totalGaji = ((int)$dataPayroll->gaji_pokok + (int)$dataPayroll->tunjangan + $totalTambah) - $totalKurang;
+            $totalGaji = (int)$dataPayroll->total;
 
             # Pengurangan
             $listPayrollKurang = [];

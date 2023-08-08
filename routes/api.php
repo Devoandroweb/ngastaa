@@ -55,6 +55,7 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('', 'index');
             Route::post('store', 'store');
             Route::get('lists-opd', 'listOpd');
+            Route::post('checkout', 'checkOut');
         });
 
     Route::controller(PresensiApiController::class)
@@ -67,6 +68,7 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('lists-opd', 'listsOpd');
             Route::get('shift', 'shift');
             Route::get('lokasi', 'lokasi');
+            Route::get('existing-presensi-day/{nip}', 'existingAbsenDay');
         });
 
     Route::controller(VisitApiController::class)

@@ -23,6 +23,7 @@
             <th>{{__('No. Pegawai Nama')}}</th>
             <th>{{__('Jabatan')}}</th>
             <th>{{__('Jam Mulai')}}</th>
+            <th>{{__('Jam Selesai')}}</th>
             <th>{{__('Tanggal')}}</th>
             <th>{{__('Keterangan')}}</th>
         </tr>
@@ -144,6 +145,10 @@
                     },{
                         data: 'jam_mulai',
                         name: 'jam_mulai',
+                        searchable: false,
+                    },{
+                        data: 'jam_selesai',
+                        name: 'jam_selesai',
                         searchable: false,
                     },{
                         data: 'created_at',

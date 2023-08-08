@@ -86,4 +86,15 @@ class CApiAktifitas extends Controller
         }
 
     }
+    function checkOut(){
+        try{
+            $idAktifitas = request('id_aktifitas');
+            $dataAktifitas = MAktifitas::find($idAktifitas);
+            $dataAktifitas->jam_selesai = date("Y-m-d H:i:s");
+            $dataAktifitas->update();
+            return response()->json(buildResponseSukses(['status' => 'Success', 'messages' =>'Sukses Checkout Aktifitas']),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseSukses($th->getMessage()),400);
+        }
+    }
 }
