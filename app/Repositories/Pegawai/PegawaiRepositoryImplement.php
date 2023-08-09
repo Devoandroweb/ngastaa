@@ -72,15 +72,21 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             });
         });
         // dd($role,$kodeSkpd);
-        if($role && $kodeSkpd != 0 && $kodeSkpd != null){
+        if($role){
             $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
-                $qt->on('riwayat_jabatan.nip', 'users.nip')
-                ->where('is_akhir', 1)
-                ->where('riwayat_jabatan.deleted_at', null);
-                // dd($kodeSkpd);
-                if($kodeSkpd != null && (int)$kodeSkpd != 0){
-                    $qt->where('kode_skpd', $kodeSkpd);
+                // dd($where);
+                $qt->on('riwayat_jabatan.nip', 'users.nip');
+                // dd($kodeSkpd != null,$kodeSkpd != 0,$kodeSkpd);
+                if($kodeSkpd != null && $kodeSkpd != 0){
+                    $qt->where([
+                        "is_akhir" => 1,
+                        "kode_skpd" => $kodeSkpd
+                    ]);
+                }else{
+                    $qt->where('is_akhir', 1);
                 }
+                $qt->where('riwayat_jabatan.deleted_at', null);
+                // dd($kodeSkpd);
             });
         }
         return $pegawai;

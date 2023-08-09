@@ -57,8 +57,8 @@
 
 @push("js")
 <script>
-    initDatePickerSingle()
-    initTimePicker()
+    // initDatePickerSingle()
+    // initTimePicker()
     for (let i = 1; i <= 7; i++) {
         hideShowForm(i,$(".checked-type-"+i+":checked"))
         $(".checked-type-"+i).click(function(){

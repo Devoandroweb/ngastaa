@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Models\MJadwalShift;
 use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Pegawai\RiwayatShift;
 use LaravelEasyRepository\Implementations\Eloquent;
@@ -17,16 +18,19 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
     protected $mUser;
     protected $mRiwayatKerja;
     protected $mRiwayatShift;
+    protected $mJadwalShift;
 
     public function __construct(
         User $mUser,
         RiwayatJamKerja $mRiwayatKerja,
         RiwayatShift $mRiwayatShift,
+        MJadwalShift $mJadwalShift,
     )
     {
         $this->mUser = $mUser;
         $this->mRiwayatKerja = $mRiwayatKerja;
         $this->mRiwayatShift = $mRiwayatShift;
+        $this->mJadwalShift = $mJadwalShift;
     }
     function getUserWithIndentity($nip){
         $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->has('jabatan_akhir')->first();
@@ -41,6 +45,8 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
 
             $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
         }
+
+        // $jadwalShift = $this->mJadwalShift->where('hari',date(''))
         $RjamKerja = $this->mRiwayatKerja::with('jamKerja')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
         $shift = $this->mRiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
 
