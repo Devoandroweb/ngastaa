@@ -17,11 +17,18 @@
     @if($shift != null)
         <input type="hidden" name="id"type="text" value="{{$shift->id}}">
     @endif
-    
+
     <div class="row">
+        <div class="col-md-12">
+            <div class="form-group has-validation">
+                <label class="form-label">Divisi Kerja </label>
+                <select class="form-control jabatanDivisi mb-3 " name="kode_skpd" disabled>
+                </select>
+            </div>
+        </div>
         <div class="col-md-6">
             <div class="form-group has-validation">
-                <label class="form-label">kode shift<span class="text-danger">*</span></label>
+                <label class="form-label">Kode Shift<span class="text-danger">*</span></label>
                 <input class="form-control mb-3 @error('kode_shift') is-invalid @enderror" type="text" value="{{$shift->kode_shift ?? null}}" placeholder="Masukkan Kode Shift" name="kode_shift">
             </div>
         </div>
@@ -119,6 +126,34 @@
 @push("js")
 <script>
     initDatePickerSingle();
-    initTimePicker();
+    // initTimePicker();
+    initDevisi();
+    function initDevisi(kode_skpd = null){
+        let getDivisi = (url) => {
+            var element = $('.jabatanDivisi');
+            let loading = loadingProccesText(element)
+            $.ajax({url: url, success: function(data){
+                element.empty()
+                clearInterval(loading)
+                var data = $.map(data, function (item) {
+                    return {
+                        text: item['label'],
+                        id: item['kode_skpd'],
+                    }
+                })
+
+                if(kode_skpd == null && data.length != 0){
+                    kode_skpd = data[0].id;
+                }
+
+                element.removeAttr("disabled")
+                element.select2({
+                    placeholder:"Pilih Divisi atau ketik disini",
+                    data : data
+                }).val(kode_skpd).change();
+            }});
+        }
+        getDivisi("{{route('master.skpd.json')}}")
+    }
 </script>
 @endpush

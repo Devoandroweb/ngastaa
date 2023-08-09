@@ -17,6 +17,7 @@
                     <tr className="fw-bolder text-muted">
                         <th>{{__('No')}}</th>
                         <th>{{__('Opsi')}}</th>
+                        <th>{{__('Divisi')}}</th>
                         <th>{{__('Kode')}}</th>
                         <th>{{__('Nama Shift')}}</th>
                         <th>{{__('Jam Buka Datang')}}</th>
@@ -75,6 +76,9 @@
                         name: 'opsi',
                         orderable: false,
                         searchable: false
+                    },{
+                        data: 'divisi',
+                        name: 'divisi',
                     },{
                         data: 'kode_shift',
                         name: 'kode_shift',

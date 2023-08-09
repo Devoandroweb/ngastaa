@@ -35,20 +35,37 @@
     }
 </style>
 @if(role('owner') || role('admin') || role('finance'))
-<div class="input-group me-3 mb-3 ">
-    <span class="input-affix-wrapper">
-
-        <div class="row w-50 ms-auto">
-            <div class="col-sm-12 ps-0">
-                <select name="skpd" class="form-control divisi px-2" id="">
-                    <option selected value="0">Semua Divisi</option>
-                    @foreach ($skpd as $s)
-                        <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </span>
+<div class="row mb-4 m-auto">
+    <div class="col-md-3 ps-0">
+        <select name="kode_skpd" class="form-control divisi px-2" id="">
+            <option selected value="0">Semua Divisi</option>
+            @foreach ($skpd as $s)
+                @if((Session::get('current_select_skpd')['pegawai'] ?? 0) == $s->kode_skpd)
+                <option value="{{$s->kode_skpd}}" @selected(true)>{{$s->nama}}</option>
+                @else
+                <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-3 ps-0">
+        <select name="kode_lokasi" class="form-control divisi px-2" id="">
+            <option selected value="0">Semua Lokasi Kerja</option>
+            @foreach ($lokasiKerja as $s)
+                @if((Session::get('current_select_lokasi')['pegawai'] ?? 0) == $s->kode_lokasi)
+                <option value="{{$s->kode_lokasi}}" @selected(true)>{{$s->nama}}</option>
+                @else
+                <option value="{{$s->kode_lokasi}}">{{$s->nama}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-5 ps-0">
+        <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
+    </div>
+    <div class="col-md-1 ps-0">
+        <button type="button" class="btn btn-warning w-100 h-100 text-center btn-cari"><i class="fas fa-search"></i> Cari</button>
+    </div>
 </div>
 @endif
 @if(session('messages'))
@@ -144,8 +161,6 @@
 @endsection
 @push('js')
     <script >
-
-
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("pegawai.pegawai.datatable")}}';
         var listPegawai = []
@@ -159,14 +174,19 @@
                 scrollX: true,
                 processing: true,
                 serverSide: true,
+                bFilter:false,
+                searchDelay: 0, // Menetapkan penundaan pencarian menjadi 0
+                search: {
+                    smart: false // Menonaktifkan pencarian cerdas
+                },
                 ajax: {
-                    url: _URL_DATATABLE,
+                    url: _URL_DATATABLE+"?kode_skpd="+$(".divisi").val(),
                 },
                 rowReorder: {
                     selector: 'td:nth-child(1)'
                 },
                 language:{
-                    searchPlaceholder: "Cari",
+                    searchPlaceholder: "Ketik Lalu Enter",
                     search: ""
                 },
                 columns: [{
@@ -201,7 +221,11 @@
             });
         }
         /* END DATATABLE */
-
+        $('#data_filter input').unbind().bind('keyup', function(e) {
+            if (e.keyCode == 13) {
+                _TABLE.search(this.value).draw();
+            }
+        });
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
         @if(getPermission('pegawai','U') || role('owner') || role('admin'))
             $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
@@ -209,12 +233,8 @@
                 window.location.href = data.detail;
             });
         @endif
-        _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()
+        // _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()
         $(".divisi").select2();
-        $('.divisi').on('select2:select', function (e) {
-            var data = e.params.data;
-            _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()
-        });
         // JS FOR MODAL
         @if(getPermission('pegawai','PK') || role('owner') || role('admin'))
         initDatePickerSingle();
@@ -239,6 +259,9 @@
             }else{
                 $("#pegawai-tertentu").hide();
             }
+        })
+        $(".btn-cari").click(function(e){
+            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val())
         })
         $('#select-pegawai').on('select2:select',function(e){
             var data = e.params.data;
@@ -267,6 +290,7 @@
                         }
                     })
                     var value_divisi = data[0].id;
+
                     element.removeAttr("disabled")
                     element.select2({
                         placeholder:"Pilih Divisi atau ketik disini",
@@ -373,6 +397,9 @@
             listPegawai = [];
             $("#alert-pegawai").empty()
             checkListPegawai()
+        }
+        function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai){
+            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}`).load()
         }
         @endif
     </script>

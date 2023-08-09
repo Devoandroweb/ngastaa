@@ -20,6 +20,8 @@ use App\Repositories\Pengumuman\PengumumanRepository;
 use App\Repositories\Pengumuman\PengumumanRepositoryImplement;
 use App\Repositories\Presensi\PresensiRepository;
 use App\Repositories\Presensi\PresensiRepositoryImplement;
+use App\Repositories\Shift\ShiftRepository;
+use App\Repositories\Shift\ShiftRepositoryImplement;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use App\Repositories\TotalPresensi\TotalPresensiRepositoryImplement;
 use App\Repositories\User\UserRepository;
@@ -46,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DivisiRepository::class,DivisiRepositoryImplement::class);
         $this->app->bind(JamKerjaRepository::class,JamKerjaRepositoryImplement::class);
         $this->app->bind(PdfRepository::class,PdfRepositoryImplement::class);
+        $this->app->bind(ShiftRepository::class,ShiftRepositoryImplement::class);
     }
 
     /**

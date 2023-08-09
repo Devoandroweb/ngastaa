@@ -12,10 +12,11 @@
 @endif
 @endif
 <form class="edit-post-form" action="{{route('pegawai.shift.store',$pegawai->nip)}}?for={{$for}}{{(isset($front)) ? $front : '' }}" method="post">
-    @csrf 
+    @csrf
     @if($Rshift != null)
     <input type="hidden" name="id" value="{{$Rshift->id}}">
     @endif
+    <input type="hidden" name="kode_skpd" value="{{$pegawai->getDivisi()?->kode_skpd}}">
     <div class="row mb-3 {{(isset($front)) ? 'd-none' : '' }}">
         <div class="col-md-4">
             <label class="form-label">Pilihan<span class="text-danger">*</span></label>
@@ -30,7 +31,7 @@
             <div class="form-check">
                 <input type="radio" id="shif_tidak_aktif" name="is_akhir" value="0" class="form-check-input" {{$Rshift?->is_akhir == 0 ? 'checked':'' }}>
                 <label class="form-check-label" for="shif_tidak_aktif">Shif Tidak Aktif</label>
-            </div>    
+            </div>
         </div>
     </div>
     <div class="row">
@@ -41,7 +42,7 @@
             <div class="form-group">
                 <select class="form-control Shift" name="kode_shift" required>
                     <option selected disabled>Select Shif</option>
-                    
+
                 </select>
                 <div class="invalid-feedback">
                     {{ $errors->first('kode_shift') }}

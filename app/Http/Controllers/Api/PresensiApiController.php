@@ -36,6 +36,7 @@ class PresensiApiController extends Controller
         $this->presensiRepository = $presensiRepository;
         $this->jamKerjaRepository = $jamKerjaRepository;
         $this->dateAbsen = date("Y-m-d");
+        // $this->dateAbsen = "2023-08-09";
     }
     public function lokasi()
     {
@@ -202,10 +203,10 @@ class PresensiApiController extends Controller
         $kode_shift = request('kode_shift');
         $kode_tingkat = request('kode_tingkat');
         $numberDay = date('N');
-
+        // dd($numberDay);
         $date = request("date");
-        // $toler1Min = strtotime("-5 minutes");
-        $toler1Min = strtotime('2023-08-04 07:40:00');
+        $toler1Min = strtotime("-5 minutes");
+        // $toler1Min = strtotime('2023-08-09 07:40:00');
         $dateSend = strtotime($date);
 
         $timeZone = request('timezone') ?? 'WITA';
@@ -237,10 +238,10 @@ class PresensiApiController extends Controller
         $kode_shift = null;
         $kode_jam_kerja = null;
 
-        $jadwalShiftUser = $user->jadwalShift->where('tanggal',date('Y-m-d',strtotime($date)))->first();
+        $jadwalShiftUser = $user->jadwalShift->where('tanggal',date('Y-m-d',strtotime($date)))->where('nip',$nip)->first();
         $jamKerjaUser = $user->jamKerja->where('is_akhir',1);
         $riwayatShiftUser = $user->riwayat_shift->where('is_akhir',1);
-
+        // dd($jadwalShiftUser,$jamKerjaUser,$riwayatShiftUser);
         if($jadwalShiftUser != null){
             $kode_shift = $jadwalShiftUser->kode_shift;
         }elseif($jamKerjaUser->count() > 0){
@@ -249,8 +250,9 @@ class PresensiApiController extends Controller
             $kode_shift = $riwayatShiftUser->first()?->kode_shift;
         }
         $jamkerja = $this->jamKerjaRepository->searchHariJamKerja($kode_jam_kerja,$numberDay);
+        // dd($kode_jam_kerja,$jamkerja);
         $shift = Shift::where('kode_shift', $kode_shift)->first();
-        
+
         if($shift == null && $jamkerja == null){
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Jam Kerja atau Shift Tidak Temukan !!', 'keterangan' => '']),200);
         }
@@ -373,6 +375,7 @@ class PresensiApiController extends Controller
                 }
             }
         } else if ($dateSend >= $bukaSoreTime && $dateSend <= $tutupSoreTime) {
+            // dd($this->getShiftMalam($nip));
             if($this->getShiftMalam($nip)){
                 $cek = $this->getShiftMalam($nip);
             }else{
@@ -583,11 +586,13 @@ class PresensiApiController extends Controller
     function getShiftMalam($nip){
         # ambil absen hari ini
         $data = DataPresensi::where('nip', $nip)->whereDate('created_at', $this->dateAbsen)->latest()->first();
+
         # cek apakah hari ini ada?
         if(is_null($data)){
             # jika tidak ada maka cari absen kemaren
-            $data = DataPresensi::where('nip', $nip)->whereDate('created_at', date('Y-m-d',strtotime("{$this->dateAbsen} -1 days")))->latest()->first();
 
+            $data = DataPresensi::where('nip', $nip)->whereDate('created_at', date('Y-m-d',strtotime("{$this->dateAbsen} -1 days")))->latest()->first();
+            // dd($data,date('Y-m-d',strtotime("{$this->dateAbsen} -1 days")));
             $jamDatang = date("H:i:s",strtotime($data?->tanggal_datang));
 
             if(hitungRangeJam($jamDatang,"23:59:59") >= 8){

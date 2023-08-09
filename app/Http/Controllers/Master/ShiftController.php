@@ -6,33 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Master\ShiftResource;
 use App\Http\Resources\Select\SelectResource;
 use App\Models\Master\Shift;
+use App\Repositories\Shift\ShiftRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class ShiftController extends Controller
 {
+    protected $shiftRepository;
+    function __construct(ShiftRepository $shiftRepository){
+        $this->shiftRepository = $shiftRepository;
+    }
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $shift = Shift::when($search, function ($qr, $search) {
-            $qr->where('nama', 'LIKE', "%$search%");
-        })
-            ->paginate($limit);
-
-        $shift->appends(request()->all());
-
-        $shift = ShiftResource::collection($shift);
-
-        // return inertia('Master/Shift/index', compact('shift'));
-
         return view('pages/masterdata/datapresensi/shift/index');
     }
 
     public function json()
     {
-        $shift = Shift::orderBy('nama')->get();
+        $kodeSkpd = request()->query('kode_skpd');
+        $shift = $this->shiftRepository->shiftWihSkpd($kodeSkpd)->get();
         SelectResource::withoutWrapping();
         $shift = SelectResource::collection($shift);
 
@@ -78,6 +70,7 @@ class ShiftController extends Controller
     public function store()
     {
         $rules = [
+            'kode_skpd' => 'required',
             'kode_shift' => 'required',
             'nama' => 'required',
             'jam_buka_datang' => 'required',
@@ -118,6 +111,9 @@ class ShiftController extends Controller
     {
         $model = Shift::query();
         return $dataTables->eloquent($model)
+            ->addColumn('divisi', function ($row) {
+                return $row->skpd?->nama ?? "-";
+            })
             ->addColumn('toleransi_istirahat', function ($row) {
                 return $row->toleransi_istirahat . " m";
             })

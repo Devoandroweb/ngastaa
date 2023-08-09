@@ -17,7 +17,9 @@
         background: #ffcccc !important;
         cursor: not-allowed !important;
     }
-    @if(getPermission('penjadwalanShift','U') || role('owner') || role('admin'))
+</style>
+@if(getPermission('penjadwalanShift','U') || role('owner') || role('admin'))
+<style>
     tbody tr .time{
         cursor: pointer;
     }
@@ -45,9 +47,8 @@
     tbody tr .time:hover .btn-ubah{
         display: block;
     }
-    @endif
 </style>
-
+@endif
 <div class="row justify-content-end">
     <div class="col">
         <div class="form-group">

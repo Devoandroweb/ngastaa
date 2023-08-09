@@ -72,3 +72,6 @@ ALTER TABLE `hari_jam_kerja` ADD PRIMARY KEY(`id`);
 ALTER TABLE `hari_jam_kerja` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE `aktifitas` CHANGE `jam_mulai` `jam_mulai` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE `aktifitas` ADD `jam_selesai` DATETIME NULL DEFAULT NULL AFTER `jam_mulai`;
+
+ALTER TABLE `shift` ADD `kode_skpd` VARCHAR(225) NOT NULL AFTER `id`;
+ALTER TABLE `aktifitas` CHANGE `jam_mulai` `jam_mulai` TIME NOT NULL DEFAULT CURRENT_TIMESTAMP, CHANGE `jam_selesai` `jam_selesai` TIME NULL DEFAULT NULL;

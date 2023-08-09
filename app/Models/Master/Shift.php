@@ -20,5 +20,9 @@ class Shift extends Model
     {
         return $this->hasMany(RiwayatShift::class, 'kode_shift', 'kode_shift');
     }
-    
+    public function skpd()
+    {
+        return $this->hasOne(Skpd::class, 'kode_skpd', 'kode_skpd');
+    }
+
 }

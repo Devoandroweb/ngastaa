@@ -4,7 +4,7 @@
     {{-- {{ Breadcrumbs::render('tambah-shift-libur') }} --}}
 @endsection
 @section('content')
-@if('$shift' == null)
+@if($shift == null)
 <div class="d-flex align-items-center header-form">
     <h4>Tambah Penjadwalan Shift</h4>
     <div class="line-text"></div>
@@ -19,29 +19,29 @@
 <form class="edit-post-form" action="" method="post">
     {{-- {{route('master.shift.store')}}?for={{$for}} --}}
     @csrf
-    @if('$shift' != null)
-        {{-- <input type="hidden" name="id"type="text" value="{{'$shift'->id}}"> --}}
+    @if($shift != null)
+        {{-- <input type="hidden" name="id"type="text" value="{{$shift->id}}"> --}}
     @endif
-        
+
     <div class="row">
         <div class="col-md-4">
             <div class="form-group has-validation">
                 <label class="form-label">Divisi Kerja </label>
-                <select class="form-control jabatanDivisi mb-3  @error('kode_divisi') is-invalid @enderror"  value="{{'$shift'->kode_divisi ?? null}}" name="kode_divisi" disabled>
+                <select class="form-control jabatanDivisi mb-3  @error('kode_divisi') is-invalid @enderror"  value="{{$shift->kode_divisi ?? null}}" name="kode_divisi" disabled>
                 </select>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group has-validation">
                 <label class="form-label">Tingkat Jabatan</label>
-                <select class="form-control mb-3 jabatanTingkat @error('kode_tingkat') is-invalid @enderror"  value="{{'$shift'->kode_tingkat ?? null}}" name="kode_tingkat" disabled>
+                <select class="form-control mb-3 jabatanTingkat @error('kode_tingkat') is-invalid @enderror"  value="{{$shift->kode_tingkat ?? null}}" name="kode_tingkat" disabled>
                 </select>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group has-validation">
                 <label class="form-label">Level Jabatan</label>
-                <select class="form-control mb-3  @error('kode_level') is-invalid @enderror"  value="{{'$shift'->kode_level ?? null}}" name="kode_level" disabled>
+                <select class="form-control mb-3  @error('kode_level') is-invalid @enderror"  value="{{$shift->kode_level ?? null}}" name="kode_level" disabled>
                 </select>
             </div>
         </div>
@@ -49,7 +49,7 @@
     <div class="row">
         <div class="form-group has-validation">
             <label class="form-label">Nama Shift<span class="text-danger">*</span></label>
-            <select class="form-control select2 mb-3 @error('nama') is-invalid @enderror"  value="{{'$shift'->kode_shift ?? null}}" placeholder="" name="kode_shift" >
+            <select class="form-control select2 mb-3 @error('nama') is-invalid @enderror"  value="{{$shift->kode_shift ?? null}}" placeholder="" name="kode_shift" >
             @foreach ($shift as $i)
                 <option value="{{$i->kode_shift}}">{{$i->nama}}</option>
             @endforeach
@@ -60,19 +60,19 @@
         <div class="col-md-4">
             <div class="form-group has-validation">
                 <label class="form-label">Jam Datang<span class="text-danger">*</span></label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_datang') is-invalid @enderror" type="text" value="{{'$shift'->jam_buka_datang ?? null}}" placeholder="" name="jam_buka_datang" disabled>
+                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_datang') is-invalid @enderror" type="text" value="{{$shift->jam_buka_datang ?? null}}" placeholder="" name="jam_buka_datang" disabled>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group has-validation">
                 <label class="form-label">Jam pulang<span class="text-danger">*</span></label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_pulang') is-invalid @enderror" type="text" value="{{'$shift'->jam_buka_pulang ?? null}}" placeholder="" name="jam_buka_pulang" disabled>
+                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_pulang') is-invalid @enderror" type="text" value="{{$shift->jam_buka_pulang ?? null}}" placeholder="" name="jam_buka_pulang" disabled>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group has-validation">
                 <label class="form-label">Jam Istirahat<span class="text-danger">*</span></label>
-                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_istirahat') is-invalid @enderror" type="text" value="{{'$shift'->jam_buka_istirahat ?? null}}" placeholder="" name="jam_buka_istirahat" disabled>
+                <input class="form-control mb-3 input-single-timepicker @error('jam_buka_istirahat') is-invalid @enderror" type="text" value="{{$shift->jam_buka_istirahat ?? null}}" placeholder="" name="jam_buka_istirahat" disabled>
             </div>
         </div>
     </div>
@@ -113,7 +113,7 @@
     });
     $(".bulan").text(convertMonthToIndo(m-1));
     $(".tahun").text(y);
-    
+
     function initDateRangePickerMaksMonth(){
         $(".daterangepicker-maks-month").daterangepicker({
             // singleDatePicker: true,
@@ -131,9 +131,9 @@
                 months: 1,
                 days: -1,
             }
-            
+
         },
-        function (start, end, label) {   
+        function (start, end, label) {
                 $(".bulan").text(convertMonthToIndo(parseInt(start.format("M"))-1));
                 $(".tahun").text(start.format("YYYY"));
                 var dateRange = getDatesRange(start.format("YYYY-MM-DD"),end.format("YYYY-MM-DD"))

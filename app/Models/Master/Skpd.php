@@ -47,4 +47,8 @@ class Skpd extends Model
     function kota() {
         return $this->hasOne(Kabupaten::class,'code','code_city');
     }
+    public function shift()
+    {
+        return $this->hasMany(Shift::class, 'kode_skpd', 'kode_skpd');
+    }
 }

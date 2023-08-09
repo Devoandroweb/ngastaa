@@ -10,6 +10,7 @@ use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
 use App\Imports\ImportTemplateProtection;
 use App\Models\Master\Eselon;
+use App\Models\Master\Lokasi;
 use App\Models\Master\Skpd;
 use App\Models\Master\Tingkat;
 use App\Models\Pegawai\Imei;
@@ -18,6 +19,7 @@ use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -34,9 +36,9 @@ class PegawaiController extends Controller
     }
     public function index()
     {
-
         $skpd = Skpd::all();
-        return view('pages/pegawai/pegawai/index',compact('skpd'));
+        $lokasiKerja = Lokasi::orderBy('nama','asc')->get();
+        return view('pages/pegawai/pegawai/index',compact('skpd','lokasiKerja'));
     }
 
     public function json()
@@ -285,10 +287,17 @@ class PegawaiController extends Controller
     {
 
         // dd($kodeSkpd);
-
         $kodeSkpd = request()->query('kode_skpd');
+        $kodeLokasi = request()->query('kode_lokasi');
+        $namaPegawai = request()->query('nama_pegawai');
+        Session::put('current_select_skpd',['pegawai'=>$kodeSkpd]);
+        Session::put('current_select_lokasi',['lokasi'=>$kodeLokasi]);
 
-        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd)->orderBy('users.created_at','desc')->get(['users.*','users.id as id_user']);
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
+        if($namaPegawai){
+            $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
+        }
+        $pegawai = $pegawai->orderBy('users.created_at','desc')->get(['users.*','users.id as id_user']);
         return $dataTables->of($pegawai)
             ->addColumn('images', function ($row) {
                 return '<div>

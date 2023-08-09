@@ -166,6 +166,9 @@ class User extends Authenticatable
         }
         return null;
     }
+    function getRiwayatLokasiKerja(){
+        // return $this->hasMany(Lokasi::class,'kode_lokasi','')
+    }
     public function getImagesAttribute()
     {
         return $this->image ? asset("storage/$this->image") : asset("no-image.png");

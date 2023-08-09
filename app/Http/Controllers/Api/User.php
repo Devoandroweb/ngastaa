@@ -112,22 +112,34 @@ class User extends Controller
             if($name == 'tanggal_lahir'){
                 $value = date("Y-m-d",strtotime($value));
             }
-            $user = MUser::where('nip', $nip)->first();
-            if($name == 'image'){
-                if(request()->hasFile('value')){
-                    @unlink($user->first()->image);
+            $user = MUser::where('nip', $nip);
+            if($user){
+                if($name == 'image'){
+                    if(request()->hasFile('value')){
+                        $imageDir = $user->first()?->image;
+                        @unlink($imageDir);
+                    }
+                    // dd(request()->file('value'));
+                    $dir = "data_pegawai/".$nip."/foto";
+                    $image =  uploadImage($dir,request()->file('value'));
+                    $value = $dir.'/'.$image;
                 }
-                // dd(request()->file('value'));
-                $dir = "data_pegawai/".$nip."/foto";
-                $image =  uploadImage($dir,request()->file('value'));
-                $value = $dir.'/'.$image;
+
+                // $user->{$name} = $value;
+                $user->update([$name => $value]);
+                return response()->json(buildResponseSukses([
+                    'message' => 'Update Profile Berhasil',
+                    'data' => $value
+                ]),200);
+            }else{
+                return response()->json(buildResponseSukses([
+                    'message' => 'User tidak di temukan',
+                    'data' => $value
+                ]),200);
             }
-            $user->{$name} = $value;
-            $user->update();
-            return response()->json(buildResponseSukses([
-                'message' => 'Update Profile Berhasil',
-                'data' => $value
-            ]),200);
+
+
+
         } catch (\Throwable $th) {
             return response()->json(buildResponseGagal([
                 'message' => $th->getMessage(),
