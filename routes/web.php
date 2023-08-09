@@ -4,6 +4,7 @@ use App\Http\Controllers\CAktifitas;
 use App\Http\Controllers\CCronjobs;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\ManageLokasiKerja;
 use App\Http\Controllers\Master\BidangController;
 use App\Http\Controllers\Master\CutiController;
 use App\Http\Controllers\Master\DiklatStrukturalController;
@@ -137,6 +138,16 @@ Route::middleware(['auth'])
                         Route::get('', 'index')->name('index');
                         Route::post('update', 'update')->name('update');
                         Route::get('export', 'export')->name('export');
+                        Route::get('datatable', 'datatable')->name('datatable');
+                    });
+        Route::prefix('manage_lokasi_kerja')
+                ->controller(ManageLokasiKerja::class)
+                    ->name("manage_lokasi_kerja.")
+                    ->group(function () {
+                        Route::get('', 'index')->name('index');
+                        Route::get('delete/{mapLokasiKerja}', 'delete')->name('delete');
+                        Route::get('detail/{kode_lokasi}', 'detail')->name('detail');
+                        Route::get('datatable_detail', 'datatable_detail')->name('datatable_detail');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
 

@@ -8,6 +8,8 @@ use App\Repositories\Izin\IzinRepository;
 use App\Repositories\Izin\IzinRepositoryImplement;
 use App\Repositories\JamKerja\JamKerjaRepository;
 use App\Repositories\JamKerja\JamKerjaRepositoryImplement;
+use App\Repositories\LokasiKerja\LokasiKerjaRepository;
+use App\Repositories\LokasiKerja\LokasiKerjaRepositoryImplement;
 use App\Repositories\Password\PasswordRepository;
 use App\Repositories\Password\PasswordRepositoryImplement;
 use App\Repositories\Payroll\PayrollRepository;
@@ -49,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(JamKerjaRepository::class,JamKerjaRepositoryImplement::class);
         $this->app->bind(PdfRepository::class,PdfRepositoryImplement::class);
         $this->app->bind(ShiftRepository::class,ShiftRepositoryImplement::class);
+        $this->app->bind(LokasiKerjaRepository::class,LokasiKerjaRepositoryImplement::class);
     }
 
     /**
