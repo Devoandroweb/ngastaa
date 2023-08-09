@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            
+
                 <div class="form-group has-validation">
                     <label class="form-label">Kode</label>
                     <input class="form-control @error('kode_lokasi') is-invalid @enderror" value="{{$lokasi->kode_lokasi}}"  placeholder="Masukkan Kode" name="values[kode_lokasi]">
@@ -22,6 +22,7 @@
                     <label class="form-label">Nama</label>
                     <input class="form-control"  placeholder="Masukkan Nama Lokasi" value="{{$lokasi->nama}}" name="values[nama]">
                 </div>
+                
                 <div class="form-group">
                     <label class="form-label">Shift</label>
                     <select class="form-control select2" name="values[kode_shift]" required>
@@ -50,7 +51,7 @@
                 </div>
                 <div class="element-keterangan"></div>
                 {{-- maps --}}
-                
+
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
@@ -78,7 +79,7 @@
                 {{-- end maps --}}
                 <button type="submit" class="btn btn-save btn-primary">Simpan</button>
                 <a href="{{route('master.lokasi.index')}}" class="btn btn-light">Kembali</a>
-                
+
         </div>
     </div>
 </form>
@@ -89,19 +90,19 @@
 	// $(".select2").select2("destroy").select2();
     var keterangan = "{{$lokasi->keterangan}}";
     var ltlgOld = ("{{$lokasi->kordinat}}").split(",");
-    
-    
+
+
     buildKeteranganParent(keterangan)
     // console.log(keterangan);
     // return;
-    $("#values-keterangan").change(function (e) { 
+    $("#values-keterangan").change(function (e) {
         e.preventDefault();
         const val = $(this).val();
         buildKeteranganParent(val)
-        
+
     });
-	
-    
+
+
     function buildKeteranganParent(val){
         var placeholder = '';
         var idEl = null;
@@ -112,14 +113,14 @@
         @else
             htmlSelectPegawai = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-pegawai')!!}";
         @endif
-        
+
         @if($lokasi->keterangan == 3)
             htmlSelectDivisi = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-divisi-edit',$lokasiDetail)!!}";
         @else
             htmlSelectDivisi = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-divisi')!!}";
         @endif
 
-        
+
         if(val == 1){
             $(".element-keterangan").html(htmlSelectPegawai);
             idEl = "#input_tags_pegawai";

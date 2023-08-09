@@ -30,6 +30,7 @@ class LokasiKerjaRepositoryImplement extends Eloquent implements LokasiKerjaRepo
             array_push($manageLokasiKerja,['nip'=>$nip,'kode_lokasi']);
         }
         $this->mapLokasiKerja->insert($manageLokasiKerja);
+
     }
     function getPegawai($kode_lokasi){
         return $this->mapLokasiKerja->where('kode_lokasi',$kode_lokasi);

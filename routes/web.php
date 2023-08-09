@@ -145,6 +145,7 @@ Route::middleware(['auth'])
                     ->name("manage_lokasi_kerja.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
+                        Route::post('store', 'store')->name('store');
                         Route::get('delete/{mapLokasiKerja}', 'delete')->name('delete');
                         Route::get('detail/{kode_lokasi}', 'detail')->name('detail');
                         Route::get('datatable_detail', 'datatable_detail')->name('datatable_detail');

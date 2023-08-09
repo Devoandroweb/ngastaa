@@ -4,9 +4,9 @@
     {{ Breadcrumbs::render('manage-lokasi-kerja') }}
 @endsection
 @section('header_action')
-@if(getPermission('masterDataShift','C') || role('admin') || role('owner'))
-<a href="{{route("-")}}" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
-@endif
+<a href="#" class="btn btn-primary">{!!icons('c-plush')!!} {{__('Tambah')}}</a>
+{{-- @if(getPermission('masterDataShift','C') || role('admin') || role('owner'))
+@endif --}}
 @endsection
 @section('content')
 @if(role('owner') || role('admin') || role('finance'))
@@ -23,12 +23,6 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-5 ps-0">
-        <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
-    </div>
-    <div class="col-md-1 ps-0">
-        <button type="button" class="btn btn-warning w-100 h-100 text-center btn-cari"><i class="fas fa-search"></i> Cari</button>
-    </div>
 </div>
 @endif
 <div class="invoice-body">
@@ -38,8 +32,10 @@
                 <thead>
                     <tr className="fw-bolder text-muted">
                         <th>{{__('No')}}</th>
+                        <th>{{__('Nama Divisi')}}</th>
                         <th>{{__('Kode Lokasi')}}</th>
                         <th>{{__('Nama Lokasi')}}</th>
+                        <th>{{__('Total Pegawai')}}</th>
                         <th>{{__('Opsi')}}</th>
                     </tr>
                 </thead>
@@ -56,7 +52,7 @@
     <script >
 
         var _TABLE = null;
-        var _URL_DATATABLE = '{{url("-")}}';
+        var _URL_DATATABLE = '{{route("manage_lokasi_kerja.datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
         // SESUAIKAN FIELD EDIT MODAL
         setDataTable();
@@ -80,16 +76,22 @@
                         orderable: false,
                         searchable: false,
                     },{
-                        data: 'opsi',
-                        name: 'opsi',
-                        orderable: false,
-                        searchable: false
+                        data: 'divisi',
+                        name: 'divisi',
                     },{
                         data: 'kode_lokasi',
                         name: 'kode_lokasi',
                     },{
                         data: 'nama',
                         name: 'nama',
+                    },{
+                        data: 'total_pegawai',
+                        name: 'total_pegawai',
+                    },{
+                        data: 'opsi',
+                        name: 'opsi',
+                        orderable: false,
+                        searchable: false
                     }],
 
             });

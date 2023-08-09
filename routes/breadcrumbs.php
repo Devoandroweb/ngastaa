@@ -15,6 +15,11 @@ Breadcrumbs::for('penjadwalan-shift', function (BreadcrumbTrail $trail) {
     $trail->push('Penjadwalan Shift', route('penjadwalanshift.index'));
 });
 
+Breadcrumbs::for('manage-lokasi-kerja', function (BreadcrumbTrail $trail) {
+    $trail->push('Manage Lokasi Kerja', "#");
+    $trail->push('Manage Lokasi Kerja', route('manage_lokasi_kerja.index'));
+});
+
 // Profil Pegawai
 Breadcrumbs::for('profile-pegawai', function (BreadcrumbTrail $trail) {
     $trail->push('Data Pegawai', route('pegawai.pegawai.index'));

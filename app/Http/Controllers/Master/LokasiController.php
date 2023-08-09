@@ -52,6 +52,7 @@ class LokasiController extends Controller
         $parent = SelectTingkatResource::collection($parent);
         // dd($parent);
         $shift = Shift::orderBy('nama')->get();
+        $skpd = Skpd::get();
         $keterangan = [
             ["value" => '1', "keterangan" => '1', "label" => 'Pilih Pegawai'],
             ["value" => '2', "keterangan" => '2', "label" => 'Berdasarkan Jabatan'],
@@ -60,7 +61,7 @@ class LokasiController extends Controller
         // dd($shift);
         // return inertia('Master/Lokasi/Add', compact('lokasi', 'parent'));
         // return inertia('Master/Lokasi/Add', compact('lokasi', 'parent'));
-        return view('pages/masterdata/datapresensi/lokasikerja/add', compact('shift', 'keterangan'));
+        return view('pages/masterdata/datapresensi/lokasikerja/add', compact('shift', 'keterangan','skpd'));
     }
 
     public function edit(Lokasi $lokasi)
@@ -84,13 +85,14 @@ class LokasiController extends Controller
         SelectTingkatResource::withoutWrapping();
         $parent = SelectTingkatResource::collection($parent);
         $shift = Shift::orderBy('nama')->get();
+        $skpd = Skpd::get();
         $keterangan = [
             ["value" => '1', "keterangan" => '1', "label" => 'Pilih Pegawai'],
             ["value" => '2', "keterangan" => '2', "label" => 'Berdasarkan Jabatan'],
             ["value" => '3', "keterangan" => '3', "label" => 'Berdasarkan Divisi'],
         ];
         // return inertia('Master/Lokasi/Add', );
-        return view('pages/masterdata/datapresensi/lokasikerja/edit', compact('lokasi', 'parent', 'lokasiDetail', 'shift', 'keterangan'));
+        return view('pages/masterdata/datapresensi/lokasikerja/edit', compact('lokasi', 'parent', 'lokasiDetail', 'shift', 'keterangan','skpd'));
     }
 
     public function delete(Lokasi $lokasi)
@@ -196,6 +198,7 @@ class LokasiController extends Controller
     {
         $model = Lokasi::query();
         return $dataTables->eloquent($model)
+            
             ->addColumn('opsi', function ($row) {
                 $html = "-";
                 if(role('admin') || role('owner')){

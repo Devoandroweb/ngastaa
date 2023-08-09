@@ -8,7 +8,7 @@
     @csrf
     <div class="row">
         <div class="col-md-12">
-            
+
                 <div class="form-group has-validation">
                     <label class="form-label">Kode</label>
                     <input class="form-control @error('kode_lokasi') is-invalid @enderror"  placeholder="Masukkan Kode" name="values[kode_lokasi]">
@@ -67,7 +67,7 @@
                 {{-- end maps --}}
                 <button type="submit" class="btn btn-save btn-primary">Simpan</button>
                 <a href="{{route('master.lokasi.index')}}" class="btn btn-light">Kembali</a>
-                
+
         </div>
     </div>
 </form>
@@ -78,7 +78,7 @@
     var ltlgOld = ("-8.1277966,112.7509655").split(",");
     var htmlSelectPegawai = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-pegawai')!!}";
     var htmlSelectDivisi = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-divisi')!!}";
-    $("#values-keterangan").change(function (e) { 
+    $("#values-keterangan").change(function (e) {
         e.preventDefault();
         const val = $(this).val();
         var placeholder = '';
@@ -111,11 +111,11 @@
             });
         }
         enableButtonSave();
-        
+
     });
-	
-    
-    
+
+
+
 </script>
 <script src="{{asset('/')}}maps.js"></script>
 @endpush
