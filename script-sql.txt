@@ -78,3 +78,4 @@ ALTER TABLE `aktifitas` CHANGE `jam_mulai` `jam_mulai` TIME NOT NULL DEFAULT CUR
 CREATE TABLE `manage_lokasi_kerja` (`id` INT NOT NULL AUTO_INCREMENT , `kode_lokasi` VARCHAR(225) NOT NULL , `nip` VARCHAR(225) NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `lokasi` ADD `kode_skpd` VARCHAR(225) NULL DEFAULT NULL AFTER `id`;
 ALTER TABLE `manage_lokasi_kerja` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;
+ALTER TABLE `lokasi` CHANGE `kode_skpd` `kode_skpd` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;

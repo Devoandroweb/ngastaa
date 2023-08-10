@@ -25,13 +25,17 @@
                 
                 <div class="form-group">
                     <label class="form-label">Shift</label>
-                    <select class="form-control select2" name="values[kode_shift]" required>
-                        <option selected disabled>Select Shift</option>
+                    <select id="select-shift" class="form-control select2 select2-multiple" name="values[kode_shift][]" multiple="multiple" data-placeholder="Select Shift" required>
+                        {{-- <option selected disabled>Select Shift</option> --}}
+                        @php
+                            $arrayShift = json_decode($lokasi->kode_shift);
+                            
+                        @endphp
                         @foreach($shift as $s)
-                            @if($lokasi->kode_shift == $s->kode_shift)
-                                <option selected value="{{$s->kode_shift}}">{{$s->nama}}</option>
+                            @if (in_array($s->kode_shift,$arrayShift))
+                            <option value="{{$s->kode_shift}}" @selected(true)>{{$s->nama}}</option>
                             @else
-                                <option value="{{$s->kode_shift}}">{{$s->nama}}</option>
+                            <option value="{{$s->kode_shift}}">{{$s->nama}}</option>
                             @endif
                         @endforeach
                     </select>
@@ -91,10 +95,9 @@
     var keterangan = "{{$lokasi->keterangan}}";
     var ltlgOld = ("{{$lokasi->kordinat}}").split(",");
 
-
+    
     buildKeteranganParent(keterangan)
-    // console.log(keterangan);
-    // return;
+    // console.log();
     $("#values-keterangan").change(function (e) {
         e.preventDefault();
         const val = $(this).val();
