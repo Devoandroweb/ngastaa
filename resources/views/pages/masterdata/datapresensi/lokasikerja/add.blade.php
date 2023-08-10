@@ -22,8 +22,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Shift</label>
-                    <select class="form-control select2" name="values[kode_shift]" required>
-                        <option selected disabled>Select Shift</option>
+                    <select class="form-control select2 select2-multiple" name="values[kode_shift][]" multiple="multiple" data-placeholder="Select Shift" required>
+                        {{-- <option selected disabled>Select Shift</option> --}}
                         @foreach($shift as $s)
                             <option value="{{$s->kode_shift}}">{{$s->nama}}</option>
                         @endforeach
