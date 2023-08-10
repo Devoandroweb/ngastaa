@@ -37,7 +37,7 @@
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modalAddPegawai">Perpanjang Kontrak</h5>
+				<h5 class="modal-title" id="modalAddPegawai">Tambahkan Pegawai</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -45,14 +45,7 @@
 			<div class="modal-body">
                 <form id="form-modal" action="#">
                     <input type="hidden" name="kode_lokasi" value="{{$kode_lokasi}}">
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="" class="form-label">Divisi</label>
-                            <select class="form-control form-control-lg" name="divisi" id="select-divisi">
-
-                            </select>
-                        </div>
-                    </div>
+                    <input type="hidden" name="kode_skpd" value="{{$kode_skpd}}">
                     <div class="form-group">
                         <div class="mb-3">
                             <label for="" class="form-label">Pegawai</label>
@@ -77,6 +70,8 @@
 @push('js')
     <script >
         const modalAddPegawai = new bootstrap.Modal(document.getElementById("modalAddPegawai"),{backdrop:'static',keyboard:true});
+        const btnLoading = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`;
+        
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("manage_lokasi_kerja.datatable_detail")}}?kode_lokasi={{$kode_lokasi}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -124,7 +119,6 @@
             $("#sp").prop('checked',true)
             $("#pegawai-tertentu").hide();
             $("#modalAddPegawai").find("#select-pegawai").attr('disabled');
-            initDevisi()
         });
         $(".btn-simpan").click(function (e) {
             e.preventDefault();
@@ -136,33 +130,7 @@
             addPegawai(data.id,data.text)
             $(this).val(null).trigger('change')
         })
-        function initDevisi(){
-            let getDivisi = (url) => {
-                var element = $('#select-divisi');
-                let loading = loadingProccesText(element)
-                $.ajax({url: url, success: function(data){
-                    element.empty()
-                    clearInterval(loading)
-                    var data = $.map(data, function (item) {
-                        return {
-                            text: item['label'],
-                            id: item['kode_skpd'],
-                        }
-                    })
-                    var value_divisi = data[0].id;
-
-                    element.removeAttr("disabled")
-                    element.select2({
-                        placeholder:"Pilih Divisi atau ketik disini",
-                        data : data,
-                        dropdownParent: $('#modalAddPegawai')
-                    }).val(value_divisi).change(function(){
-                        initPegawai("{{route('pegawai.pegawai.json')}}?kode_skpd="+$(this).val())
-                    }).trigger('change');
-                }});
-            }
-            getDivisi("{{route('master.skpd.json')}}")
-        }
+        initPegawai("{{route('pegawai.pegawai.json')}}?kode_skpd="+$("[name=kode_skpd]").val())
         function initPegawai(url,value_pegawai = null){
             let getPegawai = (url) => {
                 var element = $('#select-pegawai');
@@ -203,12 +171,13 @@
                 return
             }
             listPegawai.push({nip:nip,nama:nama})
-
+            
             lp = "";
             var btnClose = `<button type="button" class="btn-close btn-close-lp text-danger position-absolute h-100" style="right: 1rem;top:0;z-index:9999"><span aria-hidden="true">×</span></button>`
             listPegawai.forEach(element => {
                 lp += `<div class="col-md-4 cp border border-light position-relative p-2 mb-2 shadow"><input type="hidden" name="list-pegawai[]" class="nip" value="${element.nip}">${element.nama} ${btnClose}</div>`;
             });
+            console.log(listPegawai,lp);
 
             $('#list-pegawai').find('.row').html(lp);
         }
@@ -219,10 +188,10 @@
         }
         function checkListPegawai(){
             if(listPegawai.length == 0){
-                $('#list-pegawai').html('<div class="text-center text-light">Tidak ada Pegawai</div>');
+                $('#list-pegawai').html('<div class="row m-auto"><div class="text-center text-light">Tidak ada Pegawai</div></div>');
             }
         }
-        function saveShift(elBtn){
+        function savePegawai(elBtn){
             var btn = elBtn.html();
             elBtn.attr('disabled');
             elBtn.html(btnLoading);
@@ -235,7 +204,7 @@
                     modalAddPegawai.hide()
                     clearModal()
                     Swal.fire(
-                      'Sukses Update',
+                      'Sukses',
                       response.message,
                       'success'
                     )

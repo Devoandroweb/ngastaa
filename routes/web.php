@@ -147,7 +147,7 @@ Route::middleware(['auth'])
                         Route::get('', 'index')->name('index');
                         Route::post('store', 'store')->name('store');
                         Route::get('delete/{mapLokasiKerja}', 'delete')->name('delete');
-                        Route::get('detail/{kode_lokasi}', 'detail')->name('detail');
+                        Route::get('detail/{kode_lokasi}/{kode_skpd}', 'detail')->name('detail');
                         Route::get('datatable_detail', 'datatable_detail')->name('datatable_detail');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });

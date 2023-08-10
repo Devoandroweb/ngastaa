@@ -3,6 +3,7 @@
 namespace App\Repositories\LokasiKerja;
 
 use App\Models\MapLokasiKerja;
+use Illuminate\Support\Facades\DB;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Master\Lokasi;
 
@@ -25,11 +26,15 @@ class LokasiKerjaRepositoryImplement extends Eloquent implements LokasiKerjaRepo
         $this->mapLokasiKerja = $mapLokasiKerja;
     }
     function saveManageLokasiKerja($kode_lokasi,$nips = []){
-        $manageLokasiKerja = [];
-        foreach ($nips as $nip) {
-            array_push($manageLokasiKerja,['nip'=>$nip,'kode_lokasi']);
-        }
-        $this->mapLokasiKerja->insert($manageLokasiKerja);
+        DB::transaction(function()use($kode_lokasi,$nips){
+            // $this->mapLokasiKerja->where('kode_lokasi',$kode_lokasi)->delete();
+            $manageLokasiKerja = [];
+            foreach ($nips as $nip) {
+                // array_push($manageLokasiKerja,['nip'=>$nip,'kode_lokasi'=>$kode_lokasi]);
+                $this->mapLokasiKerja->updateOrCreate(['nip'=>$nip,'kode_lokasi'=>$kode_lokasi],['nip'=>$nip,'kode_lokasi'=>$kode_lokasi]);
+            }
+        });
+        DB::commit();
 
     }
     function getPegawai($kode_lokasi){

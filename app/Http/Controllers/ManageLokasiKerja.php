@@ -31,10 +31,16 @@ class ManageLokasiKerja extends Controller
     }
     function store() {
         $kodeLokasi = request('kode_lokasi');
-        $nips = request('nips');
-        $this->lokasiKerjaRepository->saveManageLokasiKerja($kodeLokasi,$nips);
+        $nips = request('list-pegawai');
+        try {
+            $this->lokasiKerjaRepository->saveManageLokasiKerja($kodeLokasi,$nips);
+            return response()->json(["status"=>true,"msg"=>"Berhasil, menambahkan pegawai!"]);
+        } catch (\Throwable $th) {
+            return response()->json(["status"=>false,"msg"=>$th->getMessage()]);
+            //throw $th;
+        }
     }
-    function detail($kode_lokasi){
+    function detail($kode_lokasi,$kode_skpd){
         return view('pages.manage_lokasi_kerja.detail',compact('kode_lokasi','kode_skpd'));
     }
     function delete(MapLokasiKerja $mapLokasiKerja){
@@ -67,7 +73,13 @@ class ManageLokasiKerja extends Controller
             return '<span class="badge badge-info">'.$row->mapLokasiKerja->count().'</span>';
         })
         ->addColumn('opsi',function ($row) {
-            return "<a class='me-2 edit' tooltip='Manage Pegawai ke Lokasi Kerja' href='" . route('manage_lokasi_kerja.detail', $row->id) . "'>" . icons('cogs') . "</a>";
+            $lokasiDetail = LokasiDetail::where([
+                'kode_lokasi' => $row->kode_lokasi,
+                'keterangan_tipe'=>3,
+            ])->first();
+            $kodeSkpd = $lokasiDetail?->keterangan_id;
+            $skpd = Skpd::where('kode_skpd',$kodeSkpd)->first();
+            return $skpd ? "<a class='me-2 edit' tooltip='Manage Pegawai ke Lokasi Kerja' href='" . route('manage_lokasi_kerja.detail', ['kode_lokasi' => $row->kode_lokasi,'kode_skpd'=>$kodeSkpd]) . "'>" . icons('cogs') . "</a>" : "-";
         })
         ->addIndexColumn()
         ->rawColumns(['opsi','total_pegawai'])
