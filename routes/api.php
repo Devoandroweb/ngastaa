@@ -143,6 +143,9 @@ Route::middleware('auth:sanctum')->group(function(){
                 Route::get('lists-opd', 'listsOpd');
                 Route::post('store', 'store');
                 Route::get('detail',  'detail');
+                Route::get('list-master-shift/{nip}', 'listMasterShift');
+                Route::post('ubah-shift', 'storeUbahShift');
+
             });
     });
 

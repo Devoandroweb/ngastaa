@@ -134,4 +134,38 @@ class ShiftApiController extends Controller
             return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak ditemukan!']),200);
         }
     }
+    function listMasterShift($nip){
+        $user = $this->pegawaiRepository->getFirstPegawai($nip);
+        $shift = Shift::where('kode_skpd',$user->getDivisi()->kode_skpd)->get();
+        return response()->json(buildResponseSukses([
+            'data' => $shift,
+        ]),200);
+    }
+    function storeUbahShift(){
+        try {
+            $nip = request('nip');
+            $kodeShift = request('kode_shift');
+            $kodeShiftAktif = request('kode_shift_aktif');
+            $tanggal = date("Y-m-d");
+            $data = ['nip'=>$nip,'kode_shift'=>$kodeShift,'tanggal_surat'=>$tanggal,'is_akhir'=>1,'status'=>1];
+
+            $shiftAktif = Shift::where('kode_shift',$kodeShiftAktif)->first();
+            if($shiftAktif){
+                if(strtotime($shiftAktif->jam_tepat_datang) > strtotime(date("H:i:s"))){
+                    RiwayatShift::where(['nip'=>$nip])->update(['is_akhir'=>0]);
+                    RiwayatShift::updateOrCreate($data);
+                }else{
+                    return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Anda Sudah dalam jam Shift']),200);
+                }
+            }else{
+                return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Anda tidak punya shift']),200);
+            }
+
+            return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Berhasil ubah Shift']),200);
+        } catch (\Throwable $th) {
+            return response()->json(buildResponseGagal(['status' => FALSE, 'messages' => $th->getMessage()]),400);
+            //throw $th;
+        }
+
+    }
 }
