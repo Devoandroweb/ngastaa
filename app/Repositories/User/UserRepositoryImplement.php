@@ -46,14 +46,17 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
             $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
         }
 
-        // $jadwalShift = $this->mJadwalShift->where('hari',date(''))
+        $jadwalShift = $this->mJadwalShift->where(['tanggal'=>date('Y-m-d'),'nip'=>$nip])->first();
         $RjamKerja = $this->mRiwayatKerja::with('jamKerja')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
         $shift = $this->mRiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
 
         $namaShift = "-";
         $jamShift = "-";
 
-        if($RjamKerja != null){
+        if($jadwalShift){
+            $namaShift = (is_null($jadwalShift)) ? "-" : $jadwalShift->shift?->nama;
+            $jamShift = (is_null($jadwalShift)) ? "-" : date("H:i",strtotime($jadwalShift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja->shift?->jam_tepat_pulang));
+        }elseif($RjamKerja != null){
             if($RjamKerja->jamKerja != null){
                 $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
                 $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_pulang));
