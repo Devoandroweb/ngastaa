@@ -54,8 +54,8 @@ class LokasiController extends Controller
         $shift = Shift::orderBy('nama')->get();
         $skpd = Skpd::get();
         $keterangan = [
-            ["value" => '1', "keterangan" => '1', "label" => 'Pilih Pegawai'],
-            ["value" => '2', "keterangan" => '2', "label" => 'Berdasarkan Jabatan'],
+            // ["value" => '1', "keterangan" => '1', "label" => 'Pilih Pegawai'],
+            // ["value" => '2', "keterangan" => '2', "label" => 'Berdasarkan Jabatan'],
             ["value" => '3', "keterangan" => '3', "label" => 'Berdasarkan Divisi'],
         ];
         // dd($shift);
@@ -87,8 +87,8 @@ class LokasiController extends Controller
         $shift = Shift::orderBy('nama')->get();
         $skpd = Skpd::get();
         $keterangan = [
-            ["value" => '1', "keterangan" => '1', "label" => 'Pilih Pegawai'],
-            ["value" => '2', "keterangan" => '2', "label" => 'Berdasarkan Jabatan'],
+            // ["value" => '1', "keterangan" => '1', "label" => 'Pilih Pegawai'],
+            // ["value" => '2', "keterangan" => '2', "label" => 'Berdasarkan Jabatan'],
             ["value" => '3', "keterangan" => '3', "label" => 'Berdasarkan Divisi'],
         ];
         // return inertia('Master/Lokasi/Add', );
@@ -152,7 +152,7 @@ class LokasiController extends Controller
                 'messages' => "Data Wajib diisi!"
             ]);
         }
-        
+
 
         $cr = Lokasi::updateOrCreate(['id' => request('values.id')], $data);
 
@@ -202,7 +202,7 @@ class LokasiController extends Controller
     {
         $model = Lokasi::query();
         return $dataTables->eloquent($model)
-            
+
             ->addColumn('opsi', function ($row) {
                 $html = "-";
                 if(role('admin') || role('owner')){

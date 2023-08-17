@@ -8,4 +8,5 @@ interface ShiftRepository extends Repository{
 
     // Write something awesome :)
     function shiftWihSkpd($kode_skpd);
+    function updatePenjadwalanShiftWithRangeDate($nip,$kodeShift,$forDate = "");
 }

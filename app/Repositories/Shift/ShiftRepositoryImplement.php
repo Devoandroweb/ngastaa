@@ -4,6 +4,7 @@ namespace App\Repositories\Shift;
 
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Master\Shift;
+use App\Models\MJadwalShift;
 
 class ShiftRepositoryImplement extends Eloquent implements ShiftRepository{
 
@@ -27,5 +28,22 @@ class ShiftRepositoryImplement extends Eloquent implements ShiftRepository{
         }
         return $result->orderBy('nama');
     }
-    // Write something awesome :)
+    function updatePenjadwalanShiftWithRangeDate($nip,$kodeShift,$forDate = ""){
+        $forDate = explode(",",$forDate);
+        if(count($forDate) > 1){
+            $startDate = $forDate[0];
+            $endDate = $forDate[1];
+            $rangeDate = arrayTanggal($startDate,$endDate);
+            foreach ($rangeDate as $date) {
+                MJadwalShift::updateOrCreate([
+                    'nip'=>$nip,
+                    'kode_shift'=>$kodeShift,
+                    'tanggal'=>$date
+                ]);
+            }
+        }else{
+            $startDate = $forDate[0];
+        }
+
+    }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 
+<!--
 Jampack
 Author: Hencework
 Contact: contact@hencework.com
@@ -13,11 +13,11 @@ Contact: contact@hencework.com
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{config('app.name')}}</title>
     <meta name="description" content=""/>
-    
+
 	<!-- Favicon -->
     <link rel="shortcut icon" href="{{asset('/')}}dist/img/logo-dsm.ico">
     <link rel="icon" href="{{asset('/')}}dist/img/logo-dsm.ico" type="image/x-icon">
-	
+
 	<!-- Daterangepicker CSS -->
     <link href="{{asset('/')}}vendors/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
 
@@ -37,4 +37,5 @@ Contact: contact@hencework.com
     <link href="{{asset('/')}}clock.css" rel="stylesheet" type="text/css">
     <link href="{{asset('/')}}vendors/izitoast/css/iziToast.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" integrity="sha512-gc3xjCmIy673V6MyOAZhIW93xhM9ei1I+gLbmFjUHIjocENRsLX/QUE1htk5q1XV2D/iie/VQ8DXI6Vu8bexvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>const _URL_MAIN = "{{url('/')}}"</script>
 </head>

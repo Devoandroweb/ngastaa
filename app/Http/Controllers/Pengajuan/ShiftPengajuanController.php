@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\RiwayatShiftResource;
 use App\Jobs\ProcessWaNotif;
 use App\Models\Pegawai\RiwayatShift;
+use App\Repositories\Shift\ShiftRepository;
 use Yajra\DataTables\DataTables;
 
 class ShiftPengajuanController extends Controller
 {
+    protected $shiftRepository;
+    function __construct(ShiftRepository $shiftRepository){
+        $this->shiftRepository = $shiftRepository;
+    }
     public function index()
     {
         $search = request('s');
@@ -118,6 +123,8 @@ class ShiftPengajuanController extends Controller
         tambah_log($shift->nip, "App\Pegawai\RiwayatShift", $id, 'terima');
 
         $up = $shift->update($pengajuan);
+        # Penjadwalan SHift
+        $this->shiftRepository->updatePenjadwalanShiftWithRangeDate($shift->nip,$shift->kode_shift,$shift->untuk_tanggal);
 
         if ($up) {
             $no_hp = $shift?->user?->no_hp;

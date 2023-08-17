@@ -34,6 +34,8 @@ class ShiftApiController extends Controller
         $nip = request('nip');
         $kode_shift = request('kode_shift');
         $keterangan = request('keterangan');
+        $untukTanggal = date("Y-m-d",strtotime(request('untuk_tanggal')));
+        $sampaiTanggal = date("Y-m-d",strtotime(request('sampai_tanggal')));
 
        if (request()->file('file')) {
             $file =  request()->file('file');
@@ -49,6 +51,7 @@ class ShiftApiController extends Controller
                     'kode_shift' => $kode_shift,
                     'keterangan' => $keterangan,
                     'file' => "shift/$nip/".$namaFile,
+                    'untuk_tanggal'=>"$untukTanggal,$sampaiTanggal"
                 ];
 
                 $cek = RiwayatShift::where('nip', $nip)->where('status', 0)->count();
@@ -147,6 +150,7 @@ class ShiftApiController extends Controller
             $kodeShift = request('kode_shift');
             $kodeShiftAktif = request('kode_shift_aktif');
             $tanggal = date("Y-m-d");
+
             $data = ['nip'=>$nip,'kode_shift'=>$kodeShift,'tanggal_surat'=>$tanggal,'is_akhir'=>1,'status'=>1];
 
             $shiftAktif = Shift::where('kode_shift',$kodeShiftAktif)->first();

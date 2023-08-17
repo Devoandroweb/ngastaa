@@ -79,3 +79,5 @@ CREATE TABLE `manage_lokasi_kerja` (`id` INT NOT NULL AUTO_INCREMENT , `kode_lok
 ALTER TABLE `lokasi` ADD `kode_skpd` VARCHAR(225) NULL DEFAULT NULL AFTER `id`;
 ALTER TABLE `manage_lokasi_kerja` CHANGE `updated_at` `updated_at` DATETIME NULL DEFAULT NULL;
 ALTER TABLE `lokasi` CHANGE `kode_skpd` `kode_skpd` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `riwayat_shift` ADD `untuk_tanggal` DATE NULL DEFAULT NULL AFTER `nip`;
+ALTER TABLE `riwayat_shift` CHANGE `untuk_tanggal` `untuk_tanggal` VARCHAR(30) NULL DEFAULT NULL;

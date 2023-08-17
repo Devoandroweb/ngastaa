@@ -21,7 +21,7 @@
                     <input class="form-control"  placeholder="Masukkan Nama Lokasi" name="values[nama]">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Shift</label>
+                    <label class="form-label">Tentukan Shiftnya</label>
                     <select class="form-control select2 select2-multiple" name="values[kode_shift][]" multiple="multiple" data-placeholder="Select Shift" required>
                         {{-- <option selected disabled>Select Shift</option> --}}
                         @foreach($shift as $s)
@@ -29,7 +29,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group d-none">
                     <label class="form-label">Keterangan</label>
                     <select class="form-control select2" name="values[keterangan]" id="values-keterangan" required>
                         <option selected disabled>Select Keterangan</option>
@@ -78,41 +78,49 @@
     var ltlgOld = ("-8.1277966,112.7509655").split(",");
     var htmlSelectPegawai = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-pegawai')!!}";
     var htmlSelectDivisi = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-divisi')!!}";
-    $("#values-keterangan").change(function (e) {
-        e.preventDefault();
-        const val = $(this).val();
-        var placeholder = '';
-        var idEl = null;
-        if(val == 1){
-            $(".element-keterangan").html(htmlSelectPegawai);
-            idEl = "#input_tags_pegawai";
-            placeholder = "Pilih Pegawai";
-            // $(idEl).select2("destroy")
-            $(idEl).select2({
-                tags: true,
-                tokenSeparators: [',', ' '],
-                placeholder: placeholder,
-                allowClear: true
-            });
-        }else if(val == 2){
-            $(".element-keterangan").html(`<div class="alert alert-danger">Pilihan ini dalam perbaikan !!</div>`);
-            disableButtonSave();
-            return;
-            // idEl = "#input_tags_pegawai";
-            // placeholder = "Pilih Pegawai";
-        }else if(val == 3){
-            $(".element-keterangan").html(htmlSelectDivisi);
-            idEl = "#input_tags_divisi";
-            placeholder = "Pilih Divisi";
-            // $(idEl).select2("destroy")
-            $(idEl).select2({
-                placeholder: placeholder,
-                allowClear: true
-            });
-        }
-        enableButtonSave();
-
+    const val = 3;
+    $(".element-keterangan").html(htmlSelectDivisi);
+    idEl = "#input_tags_divisi";
+    placeholder = "Pilih Divisi";
+    // $(idEl).select2("destroy")
+    $(idEl).select2({
+        placeholder: placeholder,
+        allowClear: true
     });
+    // $("#values-keterangan").change(function (e) {
+    //     e.preventDefault();
+    //     // const val = $(this).val();
+    //     var placeholder = '';
+    //     var idEl = null;
+    //     if(val == 1){
+    //         $(".element-keterangan").html(htmlSelectPegawai);
+    //         idEl = "#input_tags_pegawai";
+    //         placeholder = "Pilih Pegawai";
+    //         // $(idEl).select2("destroy")
+    //         $(idEl).select2({
+    //             tags: true,
+    //             tokenSeparators: [',', ' '],
+    //             placeholder: placeholder,
+    //             allowClear: true
+    //         });
+    //     }else if(val == 2){
+    //         $(".element-keterangan").html(`<div class="alert alert-danger">Pilihan ini dalam perbaikan !!</div>`);
+    //         disableButtonSave();
+    //         return;
+    //         // idEl = "#input_tags_pegawai";
+    //         // placeholder = "Pilih Pegawai";
+    //     }else if(val == 3){
+    //         $(".element-keterangan").html(htmlSelectDivisi);
+    //         idEl = "#input_tags_divisi";
+    //         placeholder = "Pilih Divisi";
+    //         // $(idEl).select2("destroy")
+    //         $(idEl).select2({
+    //             placeholder: placeholder,
+    //             allowClear: true
+    //         });
+    //     }
+    //     enableButtonSave();
+    // });
 
 
 

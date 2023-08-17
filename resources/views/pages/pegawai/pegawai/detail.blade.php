@@ -402,9 +402,10 @@ $(document).ready(function () {
             case 30:
 
                 if(data != null){
-                    initShift(data.kode_shift);
+                    initShift($(".Shift"),$('[name=kode_skpd]').val(),null,data.kode_shift);
                 }else{
-                    initShift();
+                    initShift($(".Shift"),$('[name=kode_skpd]').val());
+                    // initShift(el,forModal = null,value = null,kodeSkpd = null)
                 }
                 setNumeric()
                 break;

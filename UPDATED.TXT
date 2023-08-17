@@ -1,0 +1,12 @@
+#17/8/2023#
++ Pengajuan Shift
+    - memperbaiki shift berdasarkan divisi
+    - memperbaiki shift ketika di approv masukkan ke penjadwalan shift
+    - menambahkan range tanggal untuk penjadwalan shift
++ Aktifitas
+    - tambah kolom keterangan
++ Presensi
+    - Fixing bug Presensi
++ Lokasi Kerja
+    - tambah fitur untuk sebagai divisi siapa
+    - tambah menu Manage Lokasi Kerja

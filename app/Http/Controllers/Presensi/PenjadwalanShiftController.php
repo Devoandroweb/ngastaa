@@ -129,7 +129,7 @@ class PenjadwalanShiftController extends Controller
         }else{
             // dd($mUsers->get());
 
-            $dt = DataTables::of($mUsers);
+            $dt = DataTables::of($mUsers->select('nip','name'));
 
             foreach ($tanggal_awal_akhir as $i => $tanggal ) {
 
@@ -163,6 +163,9 @@ class PenjadwalanShiftController extends Controller
         });
         $dt->addColumn("jabatan", function($row){
             return $row->getNamaJabatan();
+        });
+        $dt->addColumn("kode_skpd", function($row){
+            return $row->getDivisi()?->kode_skpd;
         });
         $dt->rawColumns($rawColumn);
         $dt->addIndexColumn();

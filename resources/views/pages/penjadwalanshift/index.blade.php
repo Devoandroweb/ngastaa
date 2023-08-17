@@ -112,6 +112,7 @@
 @endsection
 @push('js')
     <script>
+        // console.log(_URL_MAIN);
         initDateRangePickerMaksMonth();
         // "use strict";
         var date=new Date();
@@ -178,13 +179,10 @@
         $(document).on('click',".show-edit", function () {
             modalEditShift.show()
             var data = _DATATABLE.row($(this).closest('tr')).data()
+            // console.log($(this).data('kodeshift'));
             var html = buildNamaPegawai(data.name)+buildTanggal($(this))+buildShift()+buildNip(data.nip);
             $('#modalEditShift').find("form").html(html);
-            $("[name='kode_shift']").select2({
-                dropdownParent:$('#modalEditShift'),
-                placeholder:"Pilih Shift",
-                allowClear: true
-            }).val($(this).data('kodeshift')).change();
+            initShift($("[name=kode_shift]"),data.kode_skpd,$("#modalEditShift"),$(this).data('kodeshift'));
         });
         @endif
         $(".btn-simpan").click(function (e) {
@@ -324,9 +322,6 @@
             var slctShift = `<div class="form-group">
                                 <label class="form-label">Shift</label>`;
             slctShift += "<select class='form-control' name='kode_shift'>";
-            shift.forEach(element => {
-                slctShift += `<option value="${element.kode_shift}">${element.nama}</option>`;
-            });
             slctShift += "</select></div>";
             return slctShift;
         }
