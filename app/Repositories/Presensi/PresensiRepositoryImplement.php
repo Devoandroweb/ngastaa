@@ -59,7 +59,7 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
         # cek apakah hari ini ada?
         if(is_null($data)){
             # jika tidak ada maka cari absen kemaren
-            $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at', date('Y-m-d',strtotime("-1 days")))->latest()->first();
+            $data = $this->mDataPresensi->where('nip', $nip)->whereDate('created_at','=', date('Y-m-d',strtotime("-1 days")))->first();
             // dd($data);
             $jamDatang = date("H:i:s",strtotime($data?->tanggal_datang));
             # cari shift nya

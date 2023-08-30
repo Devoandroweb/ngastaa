@@ -10,3 +10,5 @@
 + Lokasi Kerja
     - tambah fitur untuk sebagai divisi siapa
     - tambah menu Manage Lokasi Kerja
++ API
+    - tambah api untuk ganti shift di pada halaman home

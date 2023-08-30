@@ -171,7 +171,7 @@ class ExportTemplateImportPegawai implements FromCollection, WithHeadings, WithE
                 }
                 $sheet->getStyle('G2:G4000')
                     ->getNumberFormat()
-                    ->setFormatCode(NumberFormat::FORMAT_NUMBER);
+                    ->setFormatCode("dd/mm/yyyy");
                 $sheet->getStyle('M2:M4000')
                     ->getNumberFormat()
                     ->setFormatCode(NumberFormat::FORMAT_TEXT);

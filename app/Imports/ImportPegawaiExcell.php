@@ -95,7 +95,10 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
                     'periode_bulan' =>  date("Y-m")
                 ]);
                 $no++;
-                RiwayatJabatan::where('nip', $nip)->update(['is_akhir' => 0]);
+                $riwayatJabatan = RiwayatJabatan::where('nip', $nip);
+                if($riwayatJabatan->first()){
+                    $riwayatJabatan->update(['is_akhir' => 0]);
+                }
                 if(role('admin') || role('owner')){
                     # Save to Riwayat Divisi
 

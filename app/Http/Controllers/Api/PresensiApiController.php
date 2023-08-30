@@ -205,9 +205,10 @@ class PresensiApiController extends Controller
         $numberDay = date('N');
         // dd($numberDay);
         $date = request("date");
-        $toler1Min = strtotime("-5 minutes");
-        // $toler1Min = strtotime('2023-08-09 07:40:00');
+        // $toler1Min = strtotime("-5 minutes");
+        $toler1Min = strtotime('2023-08-29 18:36:00');
         $dateSend = strtotime($date);
+        $dateSend = strtotime("2023-08-29 18:36:00");
 
         $timeZone = request('timezone') ?? 'WITA';
 
