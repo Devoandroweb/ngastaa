@@ -119,7 +119,7 @@ class LokasiController extends Controller
             'values.kode_lokasi' => 'required',
             'values.nama' => 'required',
             // 'values.kode_shift' => 'required',
-            'values.keterangan' => 'required',
+            'keterangan' => 'required',
             'kordinat.kordinat' => 'nullable',
             'kordinat.latitude' => 'nullable',
             'kordinat.longitude' => 'nullable',
@@ -143,7 +143,7 @@ class LokasiController extends Controller
         $data['polygon'] = request('polygon');
         $detail = request('keterangan');
         // dd($data);
-        // $data['kode_shift'] = json_encode($data['kode_shift']);
+        $data['kode_shift'] = json_encode($data['kode_shift']);
 
         // dd($data);
         if ($detail == "") {
