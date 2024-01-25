@@ -29,7 +29,7 @@
                         @endforeach
                     </select>
                 </div> -->
-                <div class="form-group d-none">
+                <!-- <div class="form-group d-none">
                     <label class="form-label">Keterangan</label>
                     <select class="form-control select2" name="values[keterangan]" id="values-keterangan" required>
                         <option selected disabled>Select Keterangan</option>
@@ -37,7 +37,7 @@
                             <option value="{{$s['value']}}">{{$s['label']}}</option>
                         @endforeach
                     </select>
-                </div>
+                </div> -->
                 <div class="element-keterangan"></div>
                 {{-- maps --}}
                 <div id="map" class="mb-4" style="height: 500px"></div>
