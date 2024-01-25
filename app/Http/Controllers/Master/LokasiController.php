@@ -143,7 +143,7 @@ class LokasiController extends Controller
         $data['polygon'] = request('polygon');
         $detail = request('keterangan');
         // dd($data);
-        $data['kode_shift'] = json_encode($data['kode_shift']);
+        // $data['kode_shift'] = json_encode($data['kode_shift']);
 
         // dd($data);
         if ($detail == "") {
