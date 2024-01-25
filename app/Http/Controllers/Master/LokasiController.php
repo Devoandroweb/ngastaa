@@ -145,7 +145,7 @@ class LokasiController extends Controller
         // dd($data);
         // $data['kode_shift'] = json_encode($data['kode_shift']);
 
-        // dd($data);
+        dd($data,$detail);
         if ($detail == "") {
             return redirect(route('master.lokasi.index'))->with([
                 'type' => 'error',
@@ -161,29 +161,31 @@ class LokasiController extends Controller
         }
         // dd($data)['keterangan'];
         // dd($detail);
-        if ($data['keterangan'] == 1) {
-            foreach ($detail as $d) {
-                // dd(json_decode($d)->nip);
+        if(isset($data['keterangan'])){
+            if ($data['keterangan'] == 1) {
+                foreach ($detail as $d) {
+                    // dd(json_decode($d)->nip);
+                    LokasiDetail::create([
+                        'kode_lokasi' => $data['kode_lokasi'],
+                        'keterangan_tipe' => $data['keterangan'],
+                        'keterangan_id' => json_decode($d)->nip
+                    ]);
+                }
+            } elseif ($data['keterangan'] == 2) {
                 LokasiDetail::create([
                     'kode_lokasi' => $data['kode_lokasi'],
                     'keterangan_tipe' => $data['keterangan'],
-                    'keterangan_id' => json_decode($d)->nip
+                    'keterangan_id' => $detail['kode_tingkat']
+                ]);
+            } elseif ($data['keterangan'] == 3) {
+                // dd($detail);
+                LokasiDetail::create([
+                    'kode_lokasi' => $data['kode_lokasi'],
+                    'keterangan_tipe' => $data['keterangan'],
+                    // 'keterangan_id' => $detail['kode_skpd']
+                    'keterangan_id' => $detail
                 ]);
             }
-        } elseif ($data['keterangan'] == 2) {
-            LokasiDetail::create([
-                'kode_lokasi' => $data['kode_lokasi'],
-                'keterangan_tipe' => $data['keterangan'],
-                'keterangan_id' => $detail['kode_tingkat']
-            ]);
-        } elseif ($data['keterangan'] == 3) {
-            // dd($detail);
-            LokasiDetail::create([
-                'kode_lokasi' => $data['kode_lokasi'],
-                'keterangan_tipe' => $data['keterangan'],
-                // 'keterangan_id' => $detail['kode_skpd']
-                'keterangan_id' => $detail
-            ]);
         }
 
         if ($cr) {
