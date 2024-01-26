@@ -185,7 +185,6 @@ class PresensiApiController extends Controller
                             ->value('kode_shift');
             }
 
-
             $shift = Shift::where('kode_shift', $kodeShift)->first();
             $shift->kode_tingkat = $kode_tingkat;
             $data = ShiftApiResource::make($shift);

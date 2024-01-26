@@ -15,4 +15,7 @@ class RiwayatJamKerja extends Model
     function jamKerja(){
         return $this->hasOne(MJamKerja::class,'kode','kode_jam_kerja');
     }
+    function jamKerjaDay(){
+        return $this->hasMany(HariJamKerja::class,'kode','kode_jam_kerja');
+    }
 }
