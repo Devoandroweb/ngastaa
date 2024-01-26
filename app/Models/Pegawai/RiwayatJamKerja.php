@@ -3,6 +3,7 @@
 namespace App\Models\Pegawai;
 
 use App\Models\MJamKerja;
+use App\Models\HariJamKerja;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
