@@ -204,10 +204,10 @@ class PresensiApiController extends Controller
         $numberDay = date('N');
         // dd($numberDay);
         $date = request("date");
-        // $toler1Min = strtotime("-5 minutes");
-        $toler1Min = strtotime('2023-08-29 18:36:00');
+        $toler1Min = strtotime("-5 minutes");
+        // $toler1Min = strtotime('2023-08-29 18:36:00');
         $dateSend = strtotime($date);
-        $dateSend = strtotime("2023-08-29 18:36:00");
+        // $dateSend = strtotime("2023-08-29 18:36:00");
 
         $timeZone = request('timezone') ?? 'WITA';
 
@@ -279,14 +279,9 @@ class PresensiApiController extends Controller
         }
 
         # Cek Shift Malam
+        // dd($bukaPagiTime);
 
-
-        dd(
-            date('Y-m-d H:i:s',$dateSend),
-            date("Y-m-d H:i:s",$tutupPagiTime), 
-            $dateSend >= $bukaPagiTime,
-            $dateSend <= $tutupPagiTime,
-            "$kode_shift | $kode_jam_kerja");
+        // dd(date('Y-m-d H:i:s',$dateSend),date("Y-m-d H:i:s",$tutupPagiTime), $dateSend >= $bukaPagiTime,$dateSend <= $tutupPagiTime,"$kode_shift | $kode_jam_kerja");
 
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
         // if (true) { # PAGI
