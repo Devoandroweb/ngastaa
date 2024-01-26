@@ -23,7 +23,7 @@
                     <input class="form-control"  placeholder="Masukkan Nama Lokasi" value="{{$lokasi->nama}}" name="values[nama]">
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="form-label">Tentukan Shiftnya</label>
                     <select id="select-shift" class="form-control select2 select2-multiple" name="values[kode_shift][]" multiple="multiple" data-placeholder="Select Shift" required>
                         {{-- <option selected disabled>Select Shift</option> --}}
@@ -39,7 +39,7 @@
                             @endif
                         @endforeach
                     </select>
-                </div>
+                </div> -->
                 <div class="form-group d-none">
                     <label class="form-label">Keterangan</label>
                     <select class="form-control select2" name="values[keterangan]" id="values-keterangan" required>

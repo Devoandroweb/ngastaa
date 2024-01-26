@@ -281,7 +281,12 @@ class PresensiApiController extends Controller
         # Cek Shift Malam
 
 
-        // dd(date('Y-m-d H:i:s',$dateSend),date("Y-m-d H:i:s",$tutupPagiTime), $dateSend >= $bukaPagiTime,$dateSend <= $tutupPagiTime,"$kode_shift | $kode_jam_kerja");
+        dd(
+            date('Y-m-d H:i:s',$dateSend),
+            date("Y-m-d H:i:s",$tutupPagiTime), 
+            $dateSend >= $bukaPagiTime,
+            $dateSend <= $tutupPagiTime,
+            "$kode_shift | $kode_jam_kerja");
 
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
         // if (true) { # PAGI

@@ -5,6 +5,7 @@ namespace App\Repositories\User;
 use App\Models\MJadwalShift;
 use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Pegawai\RiwayatShift;
+use App\Repositories\JamKerja\JamKerjaRepository;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\User;
 
@@ -19,18 +20,21 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
     protected $mRiwayatKerja;
     protected $mRiwayatShift;
     protected $mJadwalShift;
+    protected $jamKerjaRepository;
 
     public function __construct(
         User $mUser,
         RiwayatJamKerja $mRiwayatKerja,
         RiwayatShift $mRiwayatShift,
         MJadwalShift $mJadwalShift,
+        JamKerjaRepository $jamKerjaRepository,
     )
     {
         $this->mUser = $mUser;
         $this->mRiwayatKerja = $mRiwayatKerja;
         $this->mRiwayatShift = $mRiwayatShift;
         $this->mJadwalShift = $mJadwalShift;
+        $this->jamKerjaRepository = $jamKerjaRepository;
     }
     function getUserWithIndentity($nip){
         $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->has('jabatan_akhir')->first();
@@ -59,8 +63,9 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
         }elseif($RjamKerja != null){
             if($RjamKerja->jamKerja != null){
                 $today = date("N");
+                $RjamKerja = $this->jamKerjaRepository->searchHariJamKerja($RjamKerja->kode_jam_kerja,$today);
                 $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
-                $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja->jamKerja?->jam_tepat_pulang));
+                $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja?->jam_tepat_pulang));
             }
         }elseif($shift != null){
             if($shift->shift != null){
