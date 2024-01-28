@@ -37,7 +37,7 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
         $this->jamKerjaRepository = $jamKerjaRepository;
     }
     function getUserWithIndentity($nip){
-        $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->has('jabatan_akhir')->first();
+        $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->first();
         //code...
         $kode_tingkat = "-";
         $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
@@ -49,7 +49,7 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
 
             $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
         }
-        
+
         $jadwalShift = $this->mJadwalShift->where(['tanggal'=>date('Y-m-d'),'nip'=>$nip])->first();
         $RjamKerja = $this->mRiwayatKerja::with('jamKerja','jamKerjaDay')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
         $shift = $this->mRiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
