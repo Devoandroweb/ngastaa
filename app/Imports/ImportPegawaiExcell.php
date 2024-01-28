@@ -95,29 +95,29 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
                     'periode_bulan' =>  date("Y-m")
                 ]);
                 $no++;
-                $riwayatJabatan = RiwayatJabatan::where('nip', $nip);
-                if($riwayatJabatan->first()){
-                    $riwayatJabatan->update(['is_akhir' => 0]);
-                }
-                if(role('admin') || role('owner')){
-                    # Save to Riwayat Divisi
+                // $riwayatJabatan = RiwayatJabatan::where('nip', $nip);
+                // if($riwayatJabatan->first()){
+                //     $riwayatJabatan->update(['is_akhir' => 0]);
+                // }
+                // if(role('admin') || role('owner')){
+                //     # Save to Riwayat Divisi
 
-                    RiwayatJabatan::create([
-                        'nip' => $nip,
-                        'kode_skpd' => $this->kodeSkpd,
-                        'kode_tingkat' => $this->kodeTingkat,
-                        'jenis_jabatan' => 1,
-                        'is_akhir' => 1
-                    ]);
-                }else{
-                    RiwayatJabatan::create([
-                        'nip' => $nip,
-                        'kode_skpd' => $this->kodeSkpd,
-                        'kode_tingkat' => $this->checkExistingJabatanPegawai($this->kodeSkpd),
-                        'jenis_jabatan' => 1,
-                        'is_akhir' => 1
-                    ]);
-                }
+                //     RiwayatJabatan::create([
+                //         'nip' => $nip,
+                //         'kode_skpd' => $this->kodeSkpd,
+                //         'kode_tingkat' => $this->kodeTingkat,
+                //         'jenis_jabatan' => 1,
+                //         'is_akhir' => 1
+                //     ]);
+                // }else{
+                //     RiwayatJabatan::create([
+                //         'nip' => $nip,
+                //         'kode_skpd' => $this->kodeSkpd,
+                //         'kode_tingkat' => $this->checkExistingJabatanPegawai($this->kodeSkpd),
+                //         'jenis_jabatan' => 1,
+                //         'is_akhir' => 1
+                //     ]);
+                // }
 
             }
             # Insert Into Total Presensi
@@ -181,6 +181,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
     function checkTanggal($row,$i){
         try {
             $tanggal = $this->transformDate($row);
+            // dd($tanggal);
             if($tanggal == "1970-01-01"){
                 return throw new Exception($this->errorTanggal($i));
             }
