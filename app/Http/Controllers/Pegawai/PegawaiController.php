@@ -45,6 +45,7 @@ class PegawaiController extends Controller
     {
         $q = request('q');
         $kodeSkpd = request()->query('kode_skpd');
+        // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd)->get();
         SelectResource::withoutWrapping();
         $pegawai = SelectResource::collection($pegawai);
@@ -292,7 +293,7 @@ class PegawaiController extends Controller
         $namaPegawai = request()->query('nama_pegawai');
         Session::put('current_select_skpd',['pegawai'=>$kodeSkpd]);
         Session::put('current_select_lokasi',['lokasi'=>$kodeLokasi]);
-
+        // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
         if($namaPegawai){
             $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
@@ -358,18 +359,18 @@ class PegawaiController extends Controller
         $rules = [
             'file' => 'required|mimes:xlsx',
         ];
-        if(role('admin') || role('owner')){
-            $rules['kode_skpd'] = 'required';
-            $rules['kode_tingkat'] = 'required';
-        }
+        // if(role('admin') || role('owner')){
+        //     $rules['kode_skpd'] = 'required';
+        //     $rules['kode_tingkat'] = 'required';
+        // }
         $data = request()->validate($rules);
-        if(role('admin') || role('owner')){
-            $kodeSkpd = $data['kode_skpd'];
-            $kodeTingkat = $data['kode_tingkat'];
-        }else{
-            $kodeSkpd = getKodeSkpdUser();
-            $kodeTingkat = null;
-        }
+        // if(role('admin') || role('owner')){
+        //     $kodeSkpd = $data['kode_skpd'];
+        //     $kodeTingkat = $data['kode_tingkat'];
+        // }else{
+        // }
+        $kodeSkpd = getKodeSkpdUser();
+        $kodeTingkat = null;
 
         # Validasi Template ----------------------------------------
         try {
