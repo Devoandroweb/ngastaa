@@ -90,6 +90,7 @@ use App\Models\Payroll\GeneratePayroll;
 use App\Models\Payroll\PayrollKurang;
 use App\Models\Payroll\PayrollTambah;
 use App\Models\Pegawai\RiwayatJabatan;
+use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -127,6 +128,19 @@ Route::get('/reset', function () {
     RiwayatJabatan::truncate();
     TotalPresensi::truncate();
     dd("Reset done");
+});
+
+Route::get('/jam-kerja-attach', function () {
+    $user = User::whereNot('owner',1)->get();
+    foreach($user as $u){
+        RiwayatJamKerja::create([
+            'nip'=>$u->nip,
+            'kode_jam_kerja'=>'JK BAPAS',
+            'status'=>1,
+            'is_akhir'=>1
+        ]);
+    }
+    dd("done");
 });
 
 Route::middleware(['auth'])
