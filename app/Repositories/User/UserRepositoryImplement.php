@@ -64,8 +64,8 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
             if($RjamKerja->jamKerja != null){
                 $today = date("N");
                 $RjamKerja = $this->jamKerjaRepository->searchHariJamKerja($RjamKerja->kode_jam_kerja,$today);
-                $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
-                dd($RjamKerja->jamKerja?->nama);
+                $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->nama;
+                // dd($RjamKerja->jamKerja?->nama);
                 $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja?->jam_tepat_pulang));
             }
         }elseif($shift != null){
