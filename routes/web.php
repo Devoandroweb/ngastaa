@@ -1,4 +1,4 @@
- <?php
+<?php
 
 use App\Http\Controllers\CAktifitas;
 use App\Http\Controllers\CCronjobs;
@@ -89,6 +89,9 @@ use App\Models\Payroll\DataPayroll;
 use App\Models\Payroll\GeneratePayroll;
 use App\Models\Payroll\PayrollKurang;
 use App\Models\Payroll\PayrollTambah;
+use App\Models\Pegawai\RiwayatJabatan;
+use App\Models\Presensi\TotalPresensi;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 
@@ -119,6 +122,13 @@ Route::get('/maintenance', function () {
     return inertia("Maintenance");
 })->name('maintenance');
 
+Route::get('/reset', function () {
+    User::whereNot('owner',1)->forceDelete();
+    RiwayatJabatan::truncate();
+    TotalPresensi::truncate();
+    dd("Reset done");
+});
+
 Route::middleware(['auth'])
     ->group(function () {
 
@@ -146,7 +156,7 @@ Route::middleware(['auth'])
                     ->group(function () {
                         Route::get('', 'index')->name('index');
                         Route::post('store', 'store')->name('store');
-                        Route::get('delete/{mapLokasiKerja}', 'delete')->name('delete');
+                        Route::get('delete/{nip}', 'delete')->name('delete');
                         Route::get('detail/{kode_lokasi}/{kode_skpd}', 'detail')->name('detail');
                         Route::get('datatable_detail', 'datatable_detail')->name('datatable_detail');
                         Route::get('datatable', 'datatable')->name('datatable');
