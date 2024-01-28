@@ -22,7 +22,7 @@ class JamKerjaRepositoryImplement extends Eloquent implements JamKerjaRepository
     )
     {
         $this->mJamKerja = $mJamKerja;
-        $this->hariJamKerja = $hariJamKerja->get();
+        $this->hariJamKerja = $hariJamKerja->with('jamKerja')->get();
     }
     function getJamKerjaWhere($where = []){
         return $this->mJamKerja->where($where);
