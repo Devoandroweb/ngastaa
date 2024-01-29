@@ -85,6 +85,7 @@ use App\Http\Controllers\Users\DireksiController;
 use App\Http\Controllers\Users\FinanceController;
 use App\Http\Controllers\Users\HrdController;
 use App\Http\Controllers\Users\ManagerController;
+use App\Models\MapLokasiKerja;
 use App\Models\Payroll\DataPayroll;
 use App\Models\Payroll\GeneratePayroll;
 use App\Models\Payroll\PayrollKurang;
@@ -127,6 +128,7 @@ Route::get('/reset', function () {
     User::whereNot('owner',1)->forceDelete();
     RiwayatJabatan::truncate();
     TotalPresensi::truncate();
+    MapLokasiKerja::truncate();
     dd("Reset done");
 });
 
@@ -261,6 +263,7 @@ Route::middleware(['auth'])
                         Route::get('akses-akun/{pegawai}', 'aksesAkun')->name('akses_akun');
                         Route::get('reset-device/{nip}', 'resetDevice')->name('reset_device');
                         Route::get('reset-password/{nip}', 'resetPassword')->name('reset_password');
+                        Route::post('update-kepegawaian', 'updateKepegawaian')->name('update-kepegawaian');
 
                     });
 

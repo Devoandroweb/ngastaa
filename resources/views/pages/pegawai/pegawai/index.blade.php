@@ -35,6 +35,7 @@
     }
 </style>
 @if(role('owner') || role('admin') || role('finance'))
+<h4>Filter</h4>
 <div class="row mb-4 m-auto">
     <div class="col-md-3 ps-0">
         <select name="kode_skpd" class="form-control divisi px-2" id="">
@@ -60,13 +61,16 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-5 ps-0">
+    <div class="col-md-3 ps-0">
         <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
     </div>
-    <div class="col-md-1 ps-0">
-        <button type="button" class="btn btn-warning w-100 h-100 text-center btn-cari"><i class="fas fa-search"></i> Cari</button>
+    <div class="col-md-3 ps-0 d-flex align-items-center">
+        <button type="button" class="btn btn-warning w-100 me-2 text-center text-nowrap btn-cari"><i class="fas fa-search"></i> Cari</button>
+        <button id="btn-change-pegawai" type="button" class="btn btn-info w-100 text-center text-nowrap "><i class="fas fa-user-edit"></i> Ubah</button>
     </div>
 </div>
+<hr>
+@include('pages.pegawai.pegawai.change-pegawai')
 @endif
 @if(session('messages'))
 <div class="alert alert-inv alert-inv-@if(session('type') == 'error'){{'danger'}}@else{{'success'}}@endif alert-wth-icon alert-dismissible fade show" role="alert">
@@ -78,6 +82,7 @@
 <table id="data" class="table hover mt-2 w-100 nowrap mb-5 table-responsive table-bordered">
     <thead>
         <tr className="fw-bolder text-muted">
+            <th><input type="checkbox" id="check-all" class="form-check-input"></th>
             <th>No</th>
             <th>Opsi</th>
             <th>Foto</th>
@@ -170,10 +175,11 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                responsive:true,
+                responsive:false,
                 scrollX: true,
                 processing: true,
                 serverSide: true,
+                stateSave:true,
                 bFilter:false,
                 searchDelay: 0, // Menetapkan penundaan pencarian menjadi 0
                 search: {
@@ -189,7 +195,13 @@
                     searchPlaceholder: "Ketik Lalu Enter",
                     search: ""
                 },
-                columns: [{
+                columns: [
+                    {
+                        "data": 'checkbox',
+                        orderable: false,
+                        searchable: false,
+                        visible:false
+                    },{
                         "data": 'DT_RowIndex',
                         orderable: false,
                         searchable: false,
@@ -216,10 +228,12 @@
                     },{
                         data: 'no_hp',
                         name: 'no_hp',
-                    }],
+                    }
+                ]
 
             });
         }
+
         /* END DATATABLE */
         $('#data_filter input').unbind().bind('keyup', function(e) {
             if (e.keyCode == 13) {
@@ -269,6 +283,27 @@
             addPegawai(data.id,data.text)
             $(this).val(null).trigger('change')
         })
+
+        /* CHANGE PEGAWAI SHOW/HIDE */
+        var changeShow = false;
+        $("#btn-change-pegawai").click(function (e) {
+
+            console.log(changeShow);
+            if(changeShow){
+                _TABLE.column(0).visible(false)
+                $(this).html(`<i class="fas fa-user-edit"></i> Ubah`)
+                changeShow = false;
+                $(this).toggleClass("bg-danger")
+                $("#change-pegawai").fadeOut()
+            }else{
+                _TABLE.column(0).visible(true)
+                changeShow = true;
+                $(this).toggleClass("bg-danger")
+                $(this).html(`<i class="fas fa-times"></i> Tutup`)
+                $("#change-pegawai").fadeIn()
+            }
+        });
+        /* END */
         $(document).on("click",".btn-close-lp",function(e){
             // alert('sadas')
             $(this).closest('.cp').remove()
@@ -276,6 +311,7 @@
             checkListPegawai()
             console.log(listPegawai);
         })
+
         function initDevisi(){
             let getDivisi = (url) => {
                 var element = $('#select-divisi');
@@ -401,6 +437,7 @@
         function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai){
             _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}`).load()
         }
+
         @endif
     </script>
     <script src="{{asset('/')}}delete.js"></script>

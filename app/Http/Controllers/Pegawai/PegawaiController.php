@@ -9,15 +9,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Select\SelectResource;
 use App\Imports\ImportPegawaiExcell;
 use App\Imports\ImportTemplateProtection;
+use App\Models\MapLokasiKerja;
 use App\Models\Master\Eselon;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Skpd;
 use App\Models\Master\Tingkat;
 use App\Models\Pegawai\Imei;
 use App\Models\Pegawai\RiwayatJabatan;
+use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -300,6 +303,9 @@ class PegawaiController extends Controller
         }
         $pegawai = $pegawai->orderBy('users.created_at','desc')->get(['users.*','users.id as id_user']);
         return $dataTables->of($pegawai)
+            ->addColumn('checkbox', function ($row) {
+                return '<input type="checkbox" name="nip[]" value="'.$row->nip.'" class="form-check-input checkbox-nip">';
+            })
             ->addColumn('images', function ($row) {
                 return '<div>
                         <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
@@ -345,7 +351,7 @@ class PegawaiController extends Controller
                 }
                 return $html;
             })
-            ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'no_hp', 'level','cuti'])
+            ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'no_hp', 'level','cuti','checkbox'])
             ->addIndexColumn()
             ->toJson();
     }
@@ -449,6 +455,69 @@ class PegawaiController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['status' => FALSE, 'message'=>"Error Server"]);
             //throw $th;
+        }
+    }
+    function updateKepegawaian(){
+        // dd(request()->all());
+        try {
+
+            $nip = request('nip');
+            $nip = explode(",",$nip);
+            $kodeSkpd = request('kode_skpd');
+            $kodeTingkat = request('kode_tingkat');
+            $kodeLokasi = request('kode_lokasi');
+            $statusPegawai = request('status_pegawai');
+            $kodeJamKerja = request('kode_jam_kerja');
+            DB::transaction(function()use($nip,$kodeTingkat,$kodeSkpd,$kodeLokasi,$kodeJamKerja,$statusPegawai){
+                /* UPDATE */
+                RiwayatJabatan::whereIn("nip",$nip)->update(["is_akhir"=>0]);
+                RiwayatJamKerja::whereIn("nip",$nip)->update(["is_akhir"=>0]);
+                User::whereIn("nip",$nip)->update(["kode_status"=>$statusPegawai]);
+
+                /* INSERT */
+                $arrayRiwayatJabatan = [];
+                foreach($nip as $n){
+                    $arrayRiwayatJabatan[] = [
+                        "nip"=>$n,
+                        "jenis_jabatan"=>1,
+                        "kode_skpd"=>$kodeSkpd,
+                        "kode_tingkat"=>$kodeTingkat,
+                        "is_akhir"=>1,
+                    ];
+                }
+
+                $arrayRiwayatJamKerja = [];
+                foreach($nip as $n){
+                    $arrayRiwayatJamKerja[] = [
+                        "nip"=>$n,
+                        "kode_jam_kerja"=>$kodeJamKerja,
+                        "status"=>1,
+                        "is_akhir"=>1,
+                    ];
+                }
+
+                $arrayManageLokasiKerja = [];
+                foreach($nip as $n){
+                    $arrayManageLokasiKerja[] = [
+                        "nip"=>$n,
+                        "kode_lokasi"=>$kodeLokasi,
+                    ];
+                }
+
+                RiwayatJabatan::insert($arrayRiwayatJabatan);
+                RiwayatJamKerja::insert($arrayRiwayatJamKerja);
+                MapLokasiKerja::insert($arrayManageLokasiKerja);
+
+            });
+            DB::commit();
+            return response()->json(['status' => TRUE, 'message'=>'Berhasil mengubah Kepegawaian']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            if(config('app.debug')){
+                return response()->json(['status' => FALSE, 'message'=>$th->getMessage()],500);
+            }
+            return response()->json(['status' => FALSE, 'message'=>"Error Server"],500);
         }
     }
 }
