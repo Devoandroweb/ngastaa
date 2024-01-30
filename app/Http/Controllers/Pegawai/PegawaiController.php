@@ -339,7 +339,7 @@ class PegawaiController extends Controller
             //     return '<p class="text-success">' . $row->no_hp . '</p><i>' . $row->email . '</i>';
             // })
             ->addColumn('kode_status', function ($row) {
-                return buildBadge("info",$row->kode_status);
+                return buildBadge("info",$row->statusPegawai?->kode_status);
             })
             ->addColumn('cuti', function ($row) {
                 return "<span class='badge badge-danger'>{$row->maks_cuti}</span>";
