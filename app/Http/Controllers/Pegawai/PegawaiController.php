@@ -13,6 +13,7 @@ use App\Models\MapLokasiKerja;
 use App\Models\Master\Eselon;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Skpd;
+use App\Models\Master\StatusPegawai;
 use App\Models\Master\Tingkat;
 use App\Models\Pegawai\Imei;
 use App\Models\Pegawai\RiwayatJabatan;
@@ -41,7 +42,8 @@ class PegawaiController extends Controller
     {
         $skpd = Skpd::all();
         $lokasiKerja = Lokasi::orderBy('nama','asc')->get();
-        return view('pages/pegawai/pegawai/index',compact('skpd','lokasiKerja'));
+        $statusPegawai = StatusPegawai::orderBy('nama','asc')->get();
+        return view('pages/pegawai/pegawai/index',compact('skpd','lokasiKerja','statusPegawai'));
     }
 
     public function json()
@@ -294,12 +296,18 @@ class PegawaiController extends Controller
         $kodeSkpd = request()->query('kode_skpd');
         $kodeLokasi = request()->query('kode_lokasi');
         $namaPegawai = request()->query('nama_pegawai');
+        $statusPegawai = request()->query('status_pegawai');
         Session::put('current_select_skpd',['pegawai'=>$kodeSkpd]);
         Session::put('current_select_lokasi',['lokasi'=>$kodeLokasi]);
+        Session::put('current_select_status_pegawai',['status_pegawai'=>$statusPegawai]);
         // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
         if($namaPegawai){
             $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
+        }
+        // dd($statusPegawai);
+        if($statusPegawai != 0){
+            $pegawai = $pegawai->where('kode_status',$statusPegawai);
         }
         $pegawai = $pegawai->orderBy('users.created_at','desc')->get(['users.*','users.id as id_user']);
         return $dataTables->of($pegawai)
@@ -327,8 +335,11 @@ class PegawaiController extends Controller
                 }
                 return "-";
             })
-            ->addColumn('no_hp', function ($row) {
-                return '<p class="text-success">' . $row->no_hp . '</p><i>' . $row->email . '</i>';
+            // ->addColumn('no_hp', function ($row) {
+            //     return '<p class="text-success">' . $row->no_hp . '</p><i>' . $row->email . '</i>';
+            // })
+            ->addColumn('kode_status', function ($row) {
+                return buildBadge("info",$row->kode_status);
             })
             ->addColumn('cuti', function ($row) {
                 return "<span class='badge badge-danger'>{$row->maks_cuti}</span>";
@@ -351,7 +362,7 @@ class PegawaiController extends Controller
                 }
                 return $html;
             })
-            ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'no_hp', 'level','cuti','checkbox'])
+            ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'kode_status', 'level','cuti','checkbox'])
             ->addIndexColumn()
             ->toJson();
     }

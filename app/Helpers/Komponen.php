@@ -234,4 +234,7 @@ function checkBoxDay($days = [],$col = 1){
     $html .= "</div>";
     return $html;
 }
-
+function buildBadge($tipe,$text,$class="")
+    {
+        return '<span class="badge badge-'.$tipe.' ms-3 '.$class.' d-md-inline-block text-capitalize d-none">'.$text.'</span>';
+    }

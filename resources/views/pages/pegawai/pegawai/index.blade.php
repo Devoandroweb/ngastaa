@@ -61,10 +61,22 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-3 ps-0">
+    <div class="col-md-2 ps-0">
+        <select name="status_pegawai" class="form-control divisi px-2" id="">
+            <option selected value="0">Semua Status</option>
+            @foreach ($statusPegawai as $s)
+                @if((Session::get('current_select_status_pegawai')['status_pegawai'] ?? "") == $s->kode_status)
+                <option value="{{$s->kode_status}}" @selected(true)>{{$s->nama}}</option>
+                @else
+                <option value="{{$s->kode_status}}">{{$s->nama}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2 ps-0">
         <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
     </div>
-    <div class="col-md-3 ps-0 d-flex align-items-center">
+    <div class="col-md-2 ps-0 d-flex align-items-center">
         <button type="button" class="btn btn-warning w-100 me-2 text-center text-nowrap btn-cari"><i class="fas fa-search"></i> Cari</button>
         <button id="btn-change-pegawai" type="button" class="btn btn-info w-100 text-center text-nowrap "><i class="fas fa-user-edit"></i> Ubah</button>
     </div>
@@ -226,8 +238,8 @@
                         data: 'cuti',
                         name: 'maks_cuti',
                     },{
-                        data: 'no_hp',
-                        name: 'no_hp',
+                        data: 'kode_status',
+                        name: 'kode_status',
                     }
                 ]
 
@@ -275,7 +287,7 @@
             }
         })
         $(".btn-cari").click(function(e){
-            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val())
+            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val())
         })
         $('#select-pegawai').on('select2:select',function(e){
             var data = e.params.data;
@@ -434,8 +446,8 @@
             $("#alert-pegawai").empty()
             checkListPegawai()
         }
-        function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai){
-            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}`).load()
+        function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai,status_pegawai){
+            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}&status_pegawai=${status_pegawai}`).load()
         }
 
         @endif

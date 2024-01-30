@@ -105,6 +105,7 @@ function kehadiran($nip, $bulan, $tahun)
                 $shift = get_jam_kerja($hadir->kode_jam_kerja);
                 $shift_id = $hadir->kode_jam_kerja;
 
+            }
         }
 
         $tanggal = date("Y-m-d", strtotime("$hadir->created_at"));
@@ -174,104 +175,104 @@ function kehadiran($nip, $bulan, $tahun)
     ];
 }
 
-function kehadiran_pegawai($tanggal, $nip)
-{
-    $data = DataPresensi::whereDate('created_at', $tanggal)->where('nip', $nip)->first();
-    return $data;
-}
-
-function get_shift($kode_shift)
-{
-    return Shift::where('kode_shift', $kode_shift)->first();
-}
-function get_jam_kerja($kode_jam_kerja)
-{
-    return MJamKerja::where('kode_jam_kerja', $kode_jam_kerja)->first();
-}
-
-
-function perhitungan_persen_telat($menit, $keterangan = 1)
-{
-    return Absensi::select('pengali', 'kode_tunjangan')->where('menit', '<=', $menit)->where('keterangan', $keterangan)->first();
-}
-function badgeApproval($text)
-{
-    $color = '';
-    switch (strtolower($text)) {
-        case 'tolak':
-            # code...
-            $color = 'danger';
-            break;
-        case 'terima':
-            # code...
-            $color = 'success';
-            break;
-        case 'diajukan':
-            # code...
-            $color = 'info';
-            break;
-        case 'dihapus':
-            # code...
-            $color = 'warning';
-            break;
-        case 'ditambahkan':
-            # code...
-            $color = 'primary';
-            break;
-        default:
-            $color = 'dark';
-            break;
+    function kehadiran_pegawai($tanggal, $nip)
+    {
+        $data = DataPresensi::whereDate('created_at', $tanggal)->where('nip', $nip)->first();
+        return $data;
     }
-    return '<span class="badge badge-'.$color.' ms-3 d-md-inline-block text-capitalize d-none">'.$text.'</span>';
-}
-}
 
-function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
-    // dd($jamDatang, $jamTepatDatang);
-
-    $jamTepatDatang = strtotime($jamTepatDatang." +".$toleransi." Minutes");
-    $jamDatang = strtotime($jamDatang);
-    $result = 0;
-    if($jamDatang > $jamTepatDatang){
-        $selisihDetik = abs($jamTepatDatang - $jamDatang);
-        $selisihMenit = floor($selisihDetik / 60);
-
-        return $selisihMenit;
+    function get_shift($kode_shift)
+    {
+        return Shift::where('kode_shift', $kode_shift)->first();
     }
-    return $result;
-}
-function hitungCepatPulang($jamTepatPulang,$jamPulang){
-    if($jamPulang){
-        // dd($jamPulang, $jamTepatPulang, $jamPulang < $jamTepatPulang);
-        $jamTepatPulang = strtotime($jamTepatPulang);
-        $jamPulang = strtotime($jamPulang);
+    function get_jam_kerja($kode_jam_kerja)
+    {
+        return MJamKerja::where('kode_jam_kerja', $kode_jam_kerja)->first();
+    }
+
+
+    function perhitungan_persen_telat($menit, $keterangan = 1)
+    {
+        return Absensi::select('pengali', 'kode_tunjangan')->where('menit', '<=', $menit)->where('keterangan', $keterangan)->first();
+    }
+    function badgeApproval($text)
+    {
+        $color = '';
+        switch (strtolower($text)) {
+            case 'tolak':
+                # code...
+                $color = 'danger';
+                break;
+            case 'terima':
+                # code...
+                $color = 'success';
+                break;
+            case 'diajukan':
+                # code...
+                $color = 'info';
+                break;
+            case 'dihapus':
+                # code...
+                $color = 'warning';
+                break;
+            case 'ditambahkan':
+                # code...
+                $color = 'primary';
+                break;
+            default:
+                $color = 'dark';
+                break;
+        }
+        return '<span class="badge badge-'.$color.' ms-3 d-md-inline-block text-capitalize d-none">'.$text.'</span>';
+    }
+
+
+    function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
+        // dd($jamDatang, $jamTepatDatang);
+
+        $jamTepatDatang = strtotime($jamTepatDatang." +".$toleransi." Minutes");
+        $jamDatang = strtotime($jamDatang);
         $result = 0;
-
-        if($jamPulang < $jamTepatPulang){
-            $selisihDetik = abs($jamTepatPulang - $jamPulang);
+        if($jamDatang > $jamTepatDatang){
+            $selisihDetik = abs($jamTepatDatang - $jamDatang);
             $selisihMenit = floor($selisihDetik / 60);
 
             return $selisihMenit;
         }
         return $result;
-    }else{
-        return 0;
     }
-}
-function shiftMalam($jamAwal, $jamAkhir) {
-    $waktuAwal = strtotime($jamAwal);
-    $waktuAkhir = strtotime($jamAkhir);
+    function hitungCepatPulang($jamTepatPulang,$jamPulang){
+        if($jamPulang){
+            // dd($jamPulang, $jamTepatPulang, $jamPulang < $jamTepatPulang);
+            $jamTepatPulang = strtotime($jamTepatPulang);
+            $jamPulang = strtotime($jamPulang);
+            $result = 0;
 
-    if ($waktuAwal === false || $waktuAkhir === false) {
-        return false; // Format waktu tidak valid
+            if($jamPulang < $jamTepatPulang){
+                $selisihDetik = abs($jamTepatPulang - $jamPulang);
+                $selisihMenit = floor($selisihDetik / 60);
+
+                return $selisihMenit;
+            }
+            return $result;
+        }else{
+            return 0;
+        }
     }
+    function shiftMalam($jamAwal, $jamAkhir) {
+        $waktuAwal = strtotime($jamAwal);
+        $waktuAkhir = strtotime($jamAkhir);
 
-    $jamAwalTengahMalam = strtotime("00:00:00");
-    $jamAkhirTengahMalam = strtotime("23:59:59");
+        if ($waktuAwal === false || $waktuAkhir === false) {
+            return false; // Format waktu tidak valid
+        }
 
-    if (($waktuAwal < $jamAwalTengahMalam && $waktuAkhir > $jamAkhirTengahMalam) || ($waktuAwal > $waktuAkhir)) {
-        return true; // Melewati tengah malam
+        $jamAwalTengahMalam = strtotime("00:00:00");
+        $jamAkhirTengahMalam = strtotime("23:59:59");
+
+        if (($waktuAwal < $jamAwalTengahMalam && $waktuAkhir > $jamAkhirTengahMalam) || ($waktuAwal > $waktuAkhir)) {
+            return true; // Melewati tengah malam
+        }
+
+        return false; // Tidak melewati tengah malam
     }
-
-    return false; // Tidak melewati tengah malam
-}
