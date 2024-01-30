@@ -37,7 +37,7 @@
 @if(role('owner') || role('admin') || role('finance'))
 <h4>Filter</h4>
 <div class="row mb-4 m-auto">
-    <div class="col-md-3 ps-0">
+    <div class="col-md-4 ps-0">
         <select name="kode_skpd" class="form-control divisi px-2" id="">
             <option selected value="0">Semua Divisi</option>
             @foreach ($skpd as $s)
@@ -49,7 +49,7 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-3 ps-0">
+    <div class="col-md-4 ps-0">
         <select name="kode_lokasi" class="form-control divisi px-2" id="">
             <option selected value="0">Semua Lokasi Kerja</option>
             @foreach ($lokasiKerja as $s)
@@ -61,7 +61,7 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-2 ps-0">
+    <div class="col-md-4 ps-0">
         <select name="status_pegawai" class="form-control divisi px-2" id="">
             <option selected value="0">Semua Status</option>
             @foreach ($statusPegawai as $s)
@@ -73,7 +73,12 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-2 ps-0">
+</div>
+<div class="row mx-auto">
+    <div class="col-md-5 ps-0">
+        <input type="text" name="nip_pegawai" placeholder="Ketik NIP Pegawai" class="form-control h-100">
+    </div>
+    <div class="col-md-5 ps-0">
         <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
     </div>
     <div class="col-md-2 ps-0 d-flex align-items-center">
@@ -287,7 +292,7 @@
             }
         })
         $(".btn-cari").click(function(e){
-            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val())
+            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val(),$('[name=nip_pegawai]').val())
         })
         $('#select-pegawai').on('select2:select',function(e){
             var data = e.params.data;
@@ -446,8 +451,8 @@
             $("#alert-pegawai").empty()
             checkListPegawai()
         }
-        function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai,status_pegawai){
-            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}&status_pegawai=${status_pegawai}`).load()
+        function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai,status_pegawai,nip_pegawai){
+            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}&status_pegawai=${status_pegawai}&nip_pegawai=${nip_pegawai}`).load()
         }
 
         @endif

@@ -297,14 +297,18 @@ class PegawaiController extends Controller
         $kodeLokasi = request()->query('kode_lokasi');
         $namaPegawai = request()->query('nama_pegawai');
         $statusPegawai = request()->query('status_pegawai');
+        $nip = request()->query('nip_pegawai');
         Session::put('current_select_skpd',['pegawai'=>$kodeSkpd]);
         Session::put('current_select_lokasi',['lokasi'=>$kodeLokasi]);
         Session::put('current_select_status_pegawai',['status_pegawai'=>$statusPegawai]);
         // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
-      
+
         if($namaPegawai){
-            $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%')->orWhere('nip',$namaPegawai);
+            $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
+        }
+        if($nip){
+            $pegawai = $pegawai->where('nip',$nip);
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){
