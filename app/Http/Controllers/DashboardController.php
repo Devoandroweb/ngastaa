@@ -49,7 +49,7 @@ class DashboardController extends Controller
 
         foreach ($status_pegawai as $key => $value) {
             $pegawai = $this->pegawaiRepository->allPegawaiWithRole();
-            $total_status = $pegawai->where('kode_status',$value->nama)->count();
+            $total_status = $pegawai->where('kode_status',$value->kode_status)->count();
 
             $nama = $value->nama;
 
