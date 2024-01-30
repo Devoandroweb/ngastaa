@@ -303,7 +303,7 @@ class PegawaiController extends Controller
         // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
         if($namaPegawai){
-            $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
+            $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%')->orWhere('nip','like','%'.$namaPegawai.'%');
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){
