@@ -302,8 +302,9 @@ class PegawaiController extends Controller
         Session::put('current_select_status_pegawai',['status_pegawai'=>$statusPegawai]);
         // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
+      
         if($namaPegawai){
-            $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%')->orWhere('nip','like','%'.$namaPegawai.'%');
+            $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%')->orWhere('nip',$namaPegawai);
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){
