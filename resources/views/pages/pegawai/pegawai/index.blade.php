@@ -102,7 +102,7 @@
             <th>Jabatan & Divisi</th>
             <th>Level</th>
             <th>Kuota Cuti</th>
-            <th>No Hp & Email</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>

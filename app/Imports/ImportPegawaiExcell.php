@@ -49,84 +49,84 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
     }
     public function collection(Collection $collection)
     {
-        $no = 0;
-        DB::beginTransaction();
+
         try {
-            //code...
-            $i = 2;
-            $insertIntoTotalPresensi = [];
+            DB::beginTransaction();
+            DB::transaction(function()use($collection){
+                $no = 0;
+                $i = 2;
+                $insertIntoTotalPresensi = [];
 
-            foreach ($collection as $iter => $row ) {
-                echo $row[0];
-                if($row[0] == null){
-                    continue;
-                };
+                foreach ($collection as $iter => $row ) {
+                    echo $row[0];
+                    if($row[0] == null){
+                        continue;
+                    };
 
-                // dd(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[6]));
-                // array_push($data,$row);
+                    // dd(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[6]));
+                    // array_push($data,$row);
 
-                $this->nipExisting($row[1]);
-                // dd($iter,$row[4]);
-                $nip = $this->checkNip($row[1],$i);
-                $item = new User();
-                $item->nip = $nip;
-                $item->password = Hash::make($nip);
-                $item->gelar_depan = $row[2];
-                $item->gelar_belakang = $row[3];
-                $item->name = $row[4];
-                $item->tempat_lahir = $row[5];
-                $item->tanggal_lahir = $this->checkTanggal($row[6],$i);
-                $item->jenis_kelamin = $row[7];
-                $item->kode_agama = $row[8];
-                $item->kode_kawin = $row[9];
-                $item->golongan_darah = $row[10];
-                $item->nik = $row[11];
-                $item->no_hp = $row[12];
-                $item->email = $row[13];
-                $item->alamat = $row[14];
-                $item->alamat_ktp = $row[15];
-                $item->kode_status = $row[16]; // harus sesuai kode pada table status_pegawai
-                $item->save();
-                $item->assignRole('pegawai');
-                $i++;
+                    $this->nipExisting($row[1]);
+                    // dd($iter,$row[4]);
+                    $nip = $this->checkNip($row[1],$i);
+                    $item = new User();
+                    $item->nip = $nip;
+                    $item->password = Hash::make($nip);
+                    $item->gelar_depan = $row[2];
+                    $item->gelar_belakang = $row[3];
+                    $item->name = $row[4];
+                    $item->tempat_lahir = $row[5];
+                    $item->tanggal_lahir = $this->checkTanggal($row[6],$i);
+                    $item->jenis_kelamin = $row[7];
+                    $item->kode_agama = $row[8];
+                    $item->kode_kawin = $row[9];
+                    $item->golongan_darah = $row[10];
+                    $item->nik = $row[11];
+                    $item->no_hp = $row[12];
+                    $item->email = $row[13];
+                    $item->alamat = $row[14];
+                    $item->alamat_ktp = $row[15];
+                    $item->kode_status = $this->checkStatusPegawai($row[16],$i); // harus sesuai kode pada table status_pegawai
+                    $item->save();
+                    $item->assignRole('pegawai');
+                    $i++;
 
-                array_push($insertIntoTotalPresensi,[
-                    'nip' => $nip,
-                    'periode_bulan' =>  date("Y-m")
-                ]);
-                $no++;
-                // $riwayatJabatan = RiwayatJabatan::where('nip', $nip);
-                // if($riwayatJabatan->first()){
-                //     $riwayatJabatan->update(['is_akhir' => 0]);
-                // }
-                // if(role('admin') || role('owner')){
-                //     # Save to Riwayat Divisi
+                    array_push($insertIntoTotalPresensi,[
+                        'nip' => $nip,
+                        'periode_bulan' =>  date("Y-m")
+                    ]);
+                    $no++;
+                    // $riwayatJabatan = RiwayatJabatan::where('nip', $nip);
+                    // if($riwayatJabatan->first()){
+                    //     $riwayatJabatan->update(['is_akhir' => 0]);
+                    // }
+                    // if(role('admin') || role('owner')){
+                    //     # Save to Riwayat Divisi
 
-                //     RiwayatJabatan::create([
-                //         'nip' => $nip,
-                //         'kode_skpd' => $this->kodeSkpd,
-                //         'kode_tingkat' => $this->kodeTingkat,
-                //         'jenis_jabatan' => 1,
-                //         'is_akhir' => 1
-                //     ]);
-                // }else{
-                //     RiwayatJabatan::create([
-                //         'nip' => $nip,
-                //         'kode_skpd' => $this->kodeSkpd,
-                //         'kode_tingkat' => $this->checkExistingJabatanPegawai($this->kodeSkpd),
-                //         'jenis_jabatan' => 1,
-                //         'is_akhir' => 1
-                //     ]);
-                // }
+                    //     RiwayatJabatan::create([
+                    //         'nip' => $nip,
+                    //         'kode_skpd' => $this->kodeSkpd,
+                    //         'kode_tingkat' => $this->kodeTingkat,
+                    //         'jenis_jabatan' => 1,
+                    //         'is_akhir' => 1
+                    //     ]);
+                    // }else{
+                    //     RiwayatJabatan::create([
+                    //         'nip' => $nip,
+                    //         'kode_skpd' => $this->kodeSkpd,
+                    //         'kode_tingkat' => $this->checkExistingJabatanPegawai($this->kodeSkpd),
+                    //         'jenis_jabatan' => 1,
+                    //         'is_akhir' => 1
+                    //     ]);
+                    // }
 
-            }
-            # Insert Into Total Presensi
-            TotalPresensi::insert($insertIntoTotalPresensi);
+                }
+                # Insert Into Total Presensi
+                TotalPresensi::insert($insertIntoTotalPresensi);
+            });
             DB::commit();
         } catch (\Throwable $th) {
-
             DB::rollBack();
-
             $this->statusError = true;
             $this->errorMessage = $th->getMessage();
 
@@ -174,6 +174,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
             }
             return $row;
         } catch (\Throwable $th) {
+            DB::rollBack();
             $this->statusError = true;
             $this->errorMessage = $this->errorGolonganDarah($row,$i);
         }
@@ -187,9 +188,9 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
             }
             return $tanggal;
         } catch (\Throwable $th) {
+            DB::rollBack();
             $this->statusError = true;
             $this->errorMessage = $this->errorTanggal($i);
-
             // $this->errorMessage = $th->getMessage();
         }
 
@@ -202,22 +203,28 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
             }
             return $row;
         } catch (\Throwable $th) {
+            DB::rollBack();
             $this->statusError = true;
             $this->errorMessage = $this->errorKawin($i);
-
             // $this->errorMessage = $th->getMessage();
         }
 
     }
     function checkStatusPegawai($row,$i){
         try {
-            if(is_null($this->searchData($this->statusPegawai,'nama_status',$row))){
-                return throw new Exception($this->errorStatusPegawai($i));
+
+            $statusPegawai = $this->searchData($this->statusPegawai,'nama',$row);
+
+            if($i==111){
             }
-            return null;
+            if(is_null($statusPegawai)){
+                return throw new Exception($this->errorStatusPegawai($i,$row));
+            }
+            return $statusPegawai;
         } catch (\Throwable $th) {
+            DB::rollBack();
             $this->statusError = true;
-            $this->errorMessage = $this->errorStatusPegawai($i);
+            $this->errorMessage = $this->errorStatusPegawai($i,$row);
 
             // $this->errorMessage = $th->getMessage();
         }
@@ -244,9 +251,9 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
                 return $result;
             }
         }catch (\Throwable $th) {
+            DB::rollBack();
             $this->statusError = true;
             $this->errorMessage = $this->errorDivisiAndJabatan($i);
-
             // $this->errorMessage = $th->getMessage();
         }
     }
@@ -294,8 +301,8 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
         $message = "Kode Menikah salah, gunakan kata 'Menikah' atau 'Belum Menikah', Kesalahan pada baris Excel ke $i";
         return $message;
     }
-    private function errorStatusPegawai($i){
-        $message = "Kode Status Pegawai salah, Kesalahan pada baris Excel ke $i";
+    private function errorStatusPegawai($i,$row){
+        $message = "Status Pegawai salah ($row), Kesalahan pada baris Excel ke ".$i-1;
         return $message;
     }
     private function errorDivisiAndJabatan($i){
@@ -314,12 +321,14 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
         }
     }
     function searchData($data,$column,$comparison){
-
-        foreach($data->get() as $value){
+        // dd($data->get(),"asdasd");
+        // dd("asdasd",);
+        foreach($data::get() as $value){
             if(strtolower($value->{$column}) == strtolower($comparison)){
                 return $value->{$column};
             }
         }
         return null;
     }
+
 }
