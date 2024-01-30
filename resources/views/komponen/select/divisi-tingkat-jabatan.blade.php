@@ -44,7 +44,7 @@
                     allowClear: true,
                     data : data
                 }).val("").change()
-                
+
                 element.change(function(){
                     getTingkat("{{url('master/tingkat/json')}}/"+$(this).val(),value_tingkat);
                     _DIVISI = data[$(this).prop('selectedIndex')].text;
@@ -81,7 +81,8 @@
         element.select2({
             placeholder:"Pilih Jabatan atau ketik disini",
             data : data
-        }).val(value_tingkat).trigger("change");
+        }).val("").change()
+        // .val(value_tingkat).trigger("change");
     }
 
 </script>

@@ -332,22 +332,28 @@ class PegawaiController extends Controller
             ->addColumn('nama_jabatan', function ($row) {
                 return '<p>'.$row->getNamaDivisi().'</p><p>'.$row->getNamaJabatan().'</p>';
             })
-            ->addColumn('level', function ($row) {
-                $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
-                // dd($jabatan->tingkat?->eselon?->nama);
-                if($jabatan){
-                    return '<p>' . $jabatan?->tingkat?->eselon?->nama ?? "-". '</p>';
-                }
-                return "-";
-            })
+            // ->addColumn('level', function ($row) {
+            //     $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
+            //     // dd($jabatan->tingkat?->eselon?->nama);
+            //     if($jabatan){
+            //         return '<p>' . $jabatan?->tingkat?->eselon?->nama ?? "-". '</p>';
+            //     }
+            //     return "-";
+            // })
             // ->addColumn('no_hp', function ($row) {
             //     return '<p class="text-success">' . $row->no_hp . '</p><i>' . $row->email . '</i>';
             // })
             ->addColumn('kode_status', function ($row) {
                 return buildBadge("info",$row->statusPegawai?->nama);
             })
-            ->addColumn('cuti', function ($row) {
-                return "<span class='badge badge-danger'>{$row->maks_cuti}</span>";
+            // ->addColumn('cuti', function ($row) {
+            //     return "<span class='badge badge-danger'>{$row->maks_cuti}</span>";
+            // })
+            ->addColumn('lokasi_kerja', function ($row) {
+                return $row->lokasiKerja?->lokasiKerja?->nama ?? "-";
+            })
+            ->addColumn('jam_kerja', function ($row) {
+                return $row->jamKerja->where('is_akhir',1)->first()?->jamKerja?->nama ?? "-";
             })
             ->addColumn('detail', function ($row) {
                 return route('pegawai.pegawai.detail', $row->nip);
@@ -486,43 +492,76 @@ class PegawaiController extends Controller
             $kodeJamKerja = request('kode_jam_kerja');
             DB::transaction(function()use($nip,$kodeTingkat,$kodeSkpd,$kodeLokasi,$kodeJamKerja,$statusPegawai){
                 /* UPDATE */
-                RiwayatJabatan::whereIn("nip",$nip)->update(["is_akhir"=>0]);
-                RiwayatJamKerja::whereIn("nip",$nip)->update(["is_akhir"=>0]);
-                User::whereIn("nip",$nip)->update(["kode_status"=>$statusPegawai]);
+                // RiwayatJabatan::whereIn("nip",$nip)->update(["is_akhir"=>0]);
+                // RiwayatJamKerja::whereIn("nip",$nip)->update(["is_akhir"=>0]);
+                if($statusPegawai){
+                    User::whereIn("nip",$nip)->update(["kode_status"=>$statusPegawai]);
+                }
 
                 /* INSERT */
-                $arrayRiwayatJabatan = [];
+
                 foreach($nip as $n){
-                    $arrayRiwayatJabatan[] = [
-                        "nip"=>$n,
-                        "jenis_jabatan"=>1,
-                        "kode_skpd"=>$kodeSkpd,
-                        "kode_tingkat"=>$kodeTingkat,
-                        "is_akhir"=>1,
-                    ];
+                    if($kodeSkpd){
+                        $arrayRiwayatJabatan = [
+                            "nip"=>$n,
+                            "jenis_jabatan"=>1,
+                            "kode_skpd"=>$kodeSkpd,
+                            "is_akhir"=>1,
+                        ];
+                        RiwayatJabatan::updateOrCreate([
+                            "nip"=>$n,
+                            "is_akhir"=>1,
+                        ],$arrayRiwayatJabatan);
+                    }
+                    if($kodeTingkat){
+                        $arrayRiwayatJabatan = [
+                            "nip"=>$n,
+                            "jenis_jabatan"=>1,
+                            "kode_tingkat"=>$kodeTingkat,
+                            "is_akhir"=>1,
+                        ];
+                        RiwayatJabatan::updateOrCreate([
+                            "nip"=>$n,
+                            "is_akhir"=>1,
+                        ],$arrayRiwayatJabatan);
+                        RiwayatJabatan::where([
+                            "nip"=>$n,
+                            "is_akhir"=>0,
+                        ])->forceDelete();
+                    }
+                    if($kodeJamKerja){
+                        $arrayRiwayatJamKerja = [
+                            "nip"=>$n,
+                            "kode_jam_kerja"=>$kodeJamKerja,
+                            "status"=>1,
+                            "is_akhir"=>1,
+                        ];
+                        RiwayatJamKerja::updateOrCreate([
+                            "nip"=>$n,
+                            "is_akhir"=>1,
+                        ],$arrayRiwayatJamKerja);
+                        RiwayatJamKerja::where([
+                            "nip"=>$n,
+                            "is_akhir"=>0,
+                        ])->forceDelete();
+                    }
+                    if($kodeLokasi){
+                        MapLokasiKerja::where([
+                            "nip"=>$n,
+                        ])->forceDelete();
+                        $arrayManageLokasiKerja = [
+                            "nip"=>$n,
+                            "kode_lokasi"=>$kodeLokasi,
+                        ];
+                        MapLokasiKerja::updateOrCreate([
+                            "nip"=>$n
+                        ],$arrayManageLokasiKerja);
+
+                    }
                 }
 
-                $arrayRiwayatJamKerja = [];
-                foreach($nip as $n){
-                    $arrayRiwayatJamKerja[] = [
-                        "nip"=>$n,
-                        "kode_jam_kerja"=>$kodeJamKerja,
-                        "status"=>1,
-                        "is_akhir"=>1,
-                    ];
-                }
 
-                $arrayManageLokasiKerja = [];
-                foreach($nip as $n){
-                    $arrayManageLokasiKerja[] = [
-                        "nip"=>$n,
-                        "kode_lokasi"=>$kodeLokasi,
-                    ];
-                }
 
-                RiwayatJabatan::insert($arrayRiwayatJabatan);
-                RiwayatJamKerja::insert($arrayRiwayatJamKerja);
-                MapLokasiKerja::insert($arrayManageLokasiKerja);
 
             });
             DB::commit();

@@ -105,8 +105,8 @@
             <th>Foto</th>
             <th>No Pegawai & Nama Lengkap</th>
             <th>Jabatan & Divisi</th>
-            <th>Level</th>
-            <th>Kuota Cuti</th>
+            <th>Lokasi Kerja</th>
+            <th>Jam Kerja</th>
             <th>Status</th>
         </tr>
     </thead>
@@ -237,11 +237,11 @@
                         data: 'nama_jabatan',
                         name: 'nama_jabatan',
                     },{
-                        data: 'level',
-                        name: 'level',
+                        data: 'lokasi_kerja',
+                        name: 'lokasi_kerja',
                     },{
-                        data: 'cuti',
-                        name: 'maks_cuti',
+                        data: 'jam_kerja',
+                        name: 'jam_kerja',
                     },{
                         data: 'kode_status',
                         name: 'kode_status',

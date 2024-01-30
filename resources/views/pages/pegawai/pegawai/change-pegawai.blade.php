@@ -22,7 +22,18 @@
 </div>
 @push('js')
     <script>
-
+        $(".lokasiKerja").select2({
+            placeholder:"Pilih Lokasi Kerja",
+            allowClear: true,
+        }).val("").change()
+        $(".jamKerja").select2({
+            placeholder:"Pilih Jam Kerja",
+            allowClear: true,
+        }).val("").change()
+        $(".statusPegawai").select2({
+            placeholder:"Pilih Status Pegawai",
+            allowClear: true,
+        }).val("").change()
         /* CHECKBOX NIP */
         $("#check-all").click(function (e) {
             // e.preventDefault();
@@ -53,14 +64,14 @@
             e.preventDefault();
             // console.log($("[name=kode_tingkat]").val());
             // return;
-            if($("[name=kode_tingkat]").val() == null){
-                iziToast.error({
-                    title: 'Error',
-                    message: "Divisi Kerja harus di pilih",
-                    position: 'bottomRight'
-                });
-                return;
-            }
+            // if($("[name=kode_tingkat]").val() == null){
+            //     iziToast.error({
+            //         title: 'Error',
+            //         message: "Divisi Kerja harus di pilih",
+            //         position: 'bottomRight'
+            //     });
+            //     return;
+            // }
             var btn = $(this);
             var rollbackBtn = btn.html();
             btn.html(`<div class="spinner-border spinner-border-sm" role="status">
@@ -86,7 +97,7 @@
                     });
                     btn.html(rollbackBtn)
                     _TABLE.ajax.reload()
-                    
+
                 },
                 error : function (response){
                     // console.log(response.responseJSON.message);

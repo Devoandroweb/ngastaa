@@ -214,5 +214,8 @@ class User extends Authenticatable
         return url("$foto");
         // return $foto;
     }
+    function lokasiKerja(){
+        return $this->hasOne(MapLokasiKerja::class,'nip','nip');
+    }
 
 }
