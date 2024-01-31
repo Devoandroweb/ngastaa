@@ -16,25 +16,19 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ExportMasterDivisiAndJabatan implements FromArray, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents
+class ExportMasterDivisi implements FromArray, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
     protected $sizeColumns = 4;
     protected $sizeRows;
-    protected $jabatan;
-
-    function __construct($jabatan){
-        $this->jabatan = $jabatan;
+    protected $divisi;
+    function __construct($divisi){
+        $this->divisi = $divisi;
     }
     public function headings(): array
     {
         return [
             "KODE DIVISI",
             "NAMA DIVISI",
-            "KODE JABATAN",
-            "NAMA JABATAN",
         ];
     }
     public function styles(Worksheet $sheet)
@@ -48,37 +42,21 @@ class ExportMasterDivisiAndJabatan implements FromArray, WithTitle, WithHeadings
     {
 
         $result = [];
-        $kodeSkpd = '';
-        $namaSkpd = '';
 
-        $this->sizeRows = $this->jabatan->count();
+        $this->sizeRows = $this->divisi->count();
         // dd($data);
-        foreach ($this->jabatan as $value) {
-            if($kodeSkpd != $value->skpd?->kode_skpd){
-                $kodeSkpd = $value->skpd?->kode_skpd;
-                $namaSkpd = $value->skpd?->nama;
-                $result[] = [
-                    $kodeSkpd ?? "-",
-                    $namaSkpd ?? "-",
-                    $value->kode_tingkat,
-                    $value->nama_tingkat,
-                ];
-            }else{
-                $result[] = [
-                    "",
-                    "",
-                    $value->kode_tingkat,
-                    $value->nama_tingkat,
-                ];
-            }
-
+        foreach ($this->divisi as $value) {
+            $result[] = [
+                $value->kode_skpd,
+                $value->nama
+            ];
         }
 
         return $result;
     }
     public function title(): string
     {
-        return 'Jabatan';
+        return 'Divisi';
     }
     public function registerEvents(): array
     {
@@ -94,7 +72,7 @@ class ExportMasterDivisiAndJabatan implements FromArray, WithTitle, WithHeadings
                     $event->sheet->getDelegate()->getStyle($value)->getAlignment()->setIndent(1);
                 }
 
-                $abjadCols = ['A','B','C','D'];
+                $abjadCols = ['A','B'];
                 for ($i=1; $i < $this->sizeRows + 2; $i++) {
                     # code...
                     foreach ($abjadCols as $value) {
@@ -117,5 +95,4 @@ class ExportMasterDivisiAndJabatan implements FromArray, WithTitle, WithHeadings
             },
         ];
     }
-
 }

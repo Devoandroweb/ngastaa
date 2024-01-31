@@ -246,11 +246,14 @@
                         data: 'kode_status',
                         name: 'kode_status',
                     }
-                ]
+                ],
+                drawCallback:function(){
+                    $("#check-all").prop('checked',false)
+                }
 
             });
         }
-
+        _TABLE.column(0).visible(false)
         /* END DATATABLE */
         $('#data_filter input').unbind().bind('keyup', function(e) {
             if (e.keyCode == 13) {

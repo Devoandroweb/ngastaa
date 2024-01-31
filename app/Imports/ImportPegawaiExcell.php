@@ -28,23 +28,28 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
     protected $kodeSkpd = 0;
     protected $kodeTingkat = 0;
     protected $statusPegawai;
+    protected $tingkat;
     protected $skpd;
+    protected $sheet;
     protected $i = 0;
     function __construct(
         $kodeSkpd,
         $kodeTingkat,
+        $sheet,
     ) {
         $this->kodeSkpd = $kodeSkpd;
         if(role('admin') || role('owner')){
             $this->kodeTingkat = $kodeTingkat;
         }
-        $this->statusPegawai = StatusPegawai::class;
-        $this->skpd = Skpd::with('tingkatMany');
+        $this->statusPegawai = StatusPegawai::all();
+        $this->tingkat = Tingkat::all();
+        $this->skpd = Skpd::with('tingkatMany')->get();
+        $this->sheet = $sheet;
     }
     public function sheets() : array
     {
         return [
-            0 => $this
+            $this->sheet => $this
         ];
     }
     public function collection(Collection $collection)
@@ -56,7 +61,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
                 $no = 0;
                 $i = 2;
                 $insertIntoTotalPresensi = [];
-
+                // dd($this->sheet);
                 foreach ($collection as $iter => $row ) {
                     echo $row[0];
                     if($row[0] == null){
@@ -100,17 +105,27 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
                     // if($riwayatJabatan->first()){
                     //     $riwayatJabatan->update(['is_akhir' => 0]);
                     // }
-                    // if(role('admin') || role('owner')){
-                    //     # Save to Riwayat Divisi
-
-                    //     RiwayatJabatan::create([
-                    //         'nip' => $nip,
-                    //         'kode_skpd' => $this->kodeSkpd,
-                    //         'kode_tingkat' => $this->kodeTingkat,
-                    //         'jenis_jabatan' => 1,
-                    //         'is_akhir' => 1
-                    //     ]);
-                    // }else{
+                    if(role('admin') || role('owner')){
+                        # Save to Riwayat Divisi
+                        if($this->kodeSkpd){
+                            RiwayatJabatan::create([
+                                'nip' => $nip,
+                                'kode_skpd' => $this->kodeSkpd,
+                                'kode_tingkat' => $this->searchData2($this->tingkat,"nama",$row[17],"kode_tingkat"),
+                                'jenis_jabatan' => 1,
+                                'is_akhir' => 1
+                            ]);
+                        }else{
+                            RiwayatJabatan::create([
+                                'nip' => $nip,
+                                'kode_skpd' => $this->searchData2($this->skpd,"nama",$row[17],"kode_skpd"),
+                                'kode_tingkat' => $this->searchData2($this->tingkat,"nama",$row[18],"kode_tingkat"),
+                                'jenis_jabatan' => 1,
+                                'is_akhir' => 1
+                            ]);
+                        }
+                    }
+                    // else{
                     //     RiwayatJabatan::create([
                     //         'nip' => $nip,
                     //         'kode_skpd' => $this->kodeSkpd,
@@ -128,7 +143,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
         } catch (\Throwable $th) {
             DB::rollBack();
             $this->statusError = true;
-            $this->errorMessage = $th->getMessage();
+            $this->errorMessage = $th->getMessage()."|".$th->getLine()."|".$th->getFile();
 
             //throw $th;
         }
@@ -238,7 +253,7 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
             $resultStatus = false;
             foreach ($this->skpd as $skpd) {
                 if(strtolower($divisi) == strtolower($skpd->nama)){
-                    foreach ($this->skpd->tingkatMany as $tingkat) {
+                    foreach ($skpd->tingkatMany as $tingkat) {
                         if(strtolower($jabatan) == $tingkat->nama){
                             $result['kode_skpd'] = $skpd->kode_skpd;
                             $result['kode_tingkat'] = $tingkat->kode_tingkat;
@@ -323,9 +338,19 @@ class ImportPegawaiExcell implements ToCollection, WithStartRow,WithMultipleShee
     function searchData($data,$column,$comparison){
         // dd($data->get(),"asdasd");
         // dd("asdasd",);
-        foreach($data::get() as $value){
+        foreach($data as $value){
             if(strtolower($value->{$column}) == strtolower($comparison)){
                 return $value->{$column};
+            }
+        }
+        return null;
+    }
+    function searchData2($data,$column,$comparison,$columnResult){
+        // dd($data->get(),"asdasd");
+        // dd("asdasd",);
+        foreach($data as $value){
+            if(strtolower($value->{$column}) == strtolower($comparison)){
+                return $value->{$columnResult};
             }
         }
         return null;

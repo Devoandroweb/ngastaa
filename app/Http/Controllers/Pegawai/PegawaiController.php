@@ -397,13 +397,16 @@ class PegawaiController extends Controller
         //     $kodeTingkat = $data['kode_tingkat'];
         // }else{
         // }
+
         $kodeSkpd = getKodeSkpdUser();
         $kodeTingkat = null;
-
+        if(request('kode_skpd')){
+            $kodeSkpd = request('kode_skpd');
+        }
         # Validasi Template ----------------------------------------
         try {
             //code...
-            $importTemplate = new ImportTemplateProtection();
+            $importTemplate = new ImportTemplateProtection($kodeSkpd);
             Excel::import($importTemplate, request()->file('file')->store('file'));
             // dd($importTemplate->errorStatus());
             if($importTemplate->errorStatus()){
@@ -420,7 +423,7 @@ class PegawaiController extends Controller
         }
         # -----------------------------------------------------------
 
-        $import = new ImportPegawaiExcell($kodeSkpd,$kodeTingkat);
+        $import = new ImportPegawaiExcell($kodeSkpd,$kodeTingkat,$importTemplate->getNumberSheet());
         Excel::import($import, request()->file('file')->store('file'));
         // dd($import->errorMessage(),$import->errorStatus());
         if($import->errorStatus()){
@@ -442,8 +445,15 @@ class PegawaiController extends Controller
     }
     function donwloadTemplate(){
         // dd("sadasd");
-        $filename = "template-import-pegawai-new.xlsx";
-        $response = Excel::download(new ExportSampleImportPegawai, $filename);
+        $kodeSkpd = request()->query('kode_skpd');
+        $namaSkpd = request()->query('nama_skpd');
+        if($kodeSkpd){
+            $filename = "import-data-pegawai-".str()->slug($namaSkpd).".xlsx";
+            $response = Excel::download(new ExportSampleImportPegawai($kodeSkpd), $filename);
+        }else{
+            $filename = "import-data-pegawai-tanpa-divisi.xlsx";
+            $response = Excel::download(new ExportSampleImportPegawai(null), $filename);
+        }
         ob_end_clean();
         return $response;
         // $response = Response::download(public_path($filename), $response, [

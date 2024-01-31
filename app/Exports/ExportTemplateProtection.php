@@ -14,11 +14,17 @@ class ExportTemplateProtection implements FromCollection, WithEvents,WithTitle
     /**
     * @return \Illuminate\Support\Collection
     */
+    protected $kodeSkpd;
+    function __construct($kodeSkpd){
+        // dd($kodeSkpd);
+        $this->kodeSkpd = $kodeSkpd;
+        // dd($this->kodeSkpd ?? 0);
+    }
     public function collection()
     {
-        return collect([[
-            AppStatusFunction::whereName('excel_template_pegawai_version')->first()?->value
-        ]]);
+        return collect([
+            [AppStatusFunction::whereName('excel_template_pegawai_version')->first()?->value,$this->kodeSkpd ?? "0"]
+        ]);
     }
     function registerEvents() : array {
         return [
@@ -28,7 +34,7 @@ class ExportTemplateProtection implements FromCollection, WithEvents,WithTitle
         ];
     }
     function title(): String {
-        return 'Template Code';
+        return 'Security';
     }
 
 }
