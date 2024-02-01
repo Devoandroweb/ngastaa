@@ -43,10 +43,11 @@ class ImportTemplateProtection implements ToCollection, WithMultipleSheets
                 $this->errorStatus = true;
                 $this->message = "Divisi tidak sesuai, pilih Divisi pada dropdown di atas";
             }else{
+                // dd($collection[0][1]);
                 if($collection[0][1] == "0"){
                     $this->numberSheet = 2;
                 }else{
-                    $this->numberSheet = 3;
+                    $this->numberSheet = 1;
                 }
             }
         } catch (\Throwable $th) {

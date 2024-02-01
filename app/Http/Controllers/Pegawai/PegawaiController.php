@@ -308,7 +308,7 @@ class PegawaiController extends Controller
             $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
         }
         if($nip){
-            $pegawai = $pegawai->where('nip',$nip);
+            $pegawai = $pegawai->where('users.nip',$nip);
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){
@@ -422,7 +422,7 @@ class PegawaiController extends Controller
             ]);
         }
         # -----------------------------------------------------------
-
+        // dd($importTemplate->getNumberSheet());
         $import = new ImportPegawaiExcell($kodeSkpd,$kodeTingkat,$importTemplate->getNumberSheet());
         Excel::import($import, request()->file('file')->store('file'));
         // dd($import->errorMessage(),$import->errorStatus());

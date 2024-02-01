@@ -125,7 +125,7 @@ Route::get('/maintenance', function () {
 })->name('maintenance');
 
 Route::get('/reset', function () {
-    User::whereNot('owner',1)->forceDelete();
+    User::whereNot('owner',1)->whereNotIn('nip',[1000,549,337,265])->forceDelete();
     RiwayatJabatan::truncate();
     TotalPresensi::truncate();
     MapLokasiKerja::truncate();
