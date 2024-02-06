@@ -298,6 +298,7 @@ class PegawaiController extends Controller
         $namaPegawai = request()->query('nama_pegawai');
         $statusPegawai = request()->query('status_pegawai');
         $nip = request()->query('nip_pegawai');
+        $nip = explode(",",$nip);
         Session::put('current_select_skpd',['pegawai'=>$kodeSkpd]);
         Session::put('current_select_lokasi',['lokasi'=>$kodeLokasi]);
         Session::put('current_select_status_pegawai',['status_pegawai'=>$statusPegawai]);
@@ -307,8 +308,9 @@ class PegawaiController extends Controller
         if($namaPegawai){
             $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
         }
-        if($nip){
-            $pegawai = $pegawai->where('users.nip',$nip);
+
+        if(count($nip) > 0){
+            $pegawai = $pegawai->whereIn('users.nip',$nip);
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){

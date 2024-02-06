@@ -76,7 +76,10 @@
 </div>
 <div class="row mx-auto">
     <div class="col-md-5 ps-0">
-        <input type="text" name="nip_pegawai" placeholder="Ketik NIP Pegawai" class="form-control h-100">
+        {{-- <input type="text" name="nip_pegawai" placeholder="Ketik NIP Pegawai" class="form-control h-100"> --}}
+        <select class="form-control form-control-lg" name="nip_pegawai[]" id="select-pegawai-nip" multiple>
+
+        </select>
     </div>
     <div class="col-md-5 ps-0">
         <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
@@ -295,7 +298,7 @@
             }
         })
         $(".btn-cari").click(function(e){
-            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val(),$('[name=nip_pegawai]').val())
+            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val(),$('select[name="nip_pegawai[]"]').val())
         })
         $('#select-pegawai').on('select2:select',function(e){
             var data = e.params.data;
@@ -359,6 +362,7 @@
             }
             getDivisi("{{route('master.skpd.json')}}")
         }
+        initPegawaiNip("{{route('pegawai.pegawai.json')}}?kode_skpd=0")
         function initPegawai(url,value_pegawai = null){
             let getPegawai = (url) => {
                 var element = $('#select-pegawai');
@@ -378,6 +382,38 @@
                         placeholder:"Ketik Nama Pegawai",
                         data : data,
                         dropdownParent: $('#modalKontrak'),
+                        escapeMarkup: function(markup) {
+                            return markup;
+                        },
+                        templateResult: function(data) {
+                            return data.text;
+                        },
+                        templateSelection: function(data) {
+                            return data.text;
+                        }
+                    }).val(null).change()
+                }});
+            }
+            getPegawai(url);
+        }
+        function initPegawaiNip(url,value_pegawai = null){
+            let getPegawai = (url) => {
+                var element = $('#select-pegawai-nip');
+                let loading = loadingProccesText(element)
+                $.ajax({url: url, success: function(data){
+                    element.empty()
+                    clearInterval(loading)
+                    var data = $.map(data, function (item) {
+                        return {
+                            text: `<b>${item['nip']}</b>`,
+                            id: item['nip'],
+                        }
+                    })
+
+                    element.removeAttr("disabled")
+                    element.select2({
+                        placeholder:"Ketik beberapa NIP Pegawai",
+                        data : data,
                         escapeMarkup: function(markup) {
                             return markup;
                         },
