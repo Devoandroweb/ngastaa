@@ -1,10 +1,11 @@
+{{-- @dd($lokasi) --}}
 @extends('app')
 @section('breadcrumps')
     <h2 class="pg-title">Lokasi Kerja</h2>
     {{ Breadcrumbs::render('edit-lokasi-kerja') }}
 @endsection
 @section('content')
-<form class="edit-post-form" action="{{route('master.lokasi.store')}}" method="post" enctype="multipart/form-data">
+<form class="edit-post-form" action="{{route('master.lokasi.store')}}?redirect={{request()->query('redirect')}}" method="post" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="values[id]" value="{{$lokasi->id}}">
 
@@ -23,10 +24,10 @@
                     <input class="form-control"  placeholder="Masukkan Nama Lokasi" value="{{$lokasi->nama}}" name="values[nama]">
                 </div>
 
-                <!-- <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="form-label">Tentukan Shiftnya</label>
                     <select id="select-shift" class="form-control select2 select2-multiple" name="values[kode_shift][]" multiple="multiple" data-placeholder="Select Shift" required>
-                        {{-- <option selected disabled>Select Shift</option> --}}
+                        <option selected disabled>Select Shift</option>
                         @php
                             $arrayShift = json_decode($lokasi->kode_shift);
 
@@ -39,8 +40,9 @@
                             @endif
                         @endforeach
                     </select>
-                </div> -->
-                <div class="form-group d-none">
+                </div> --}}
+
+                {{-- <div class="form-group d-none">
                     <label class="form-label">Keterangan</label>
                     <select class="form-control select2" name="values[keterangan]" id="values-keterangan" required>
                         <option selected disabled>Select Keterangan</option>
@@ -52,7 +54,8 @@
                             @endif
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
+                <input type="hidden" name="values[keterangan]" value="3">
                 <div class="element-keterangan"></div>
                 {{-- maps --}}
 
@@ -92,7 +95,7 @@
 @push('js')
 <script>
 	// $(".select2").select2("destroy").select2();
-    var keterangan = "1";
+    var keterangan = "3";
     var ltlgOld = ("{{$lokasi->kordinat}}").split(",");
 
 
@@ -118,7 +121,7 @@
         @endif
 
         @if($lokasi->keterangan == 3)
-            htmlSelectDivisi = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-divisi-edit',$lokasiDetail)!!}";
+            htmlSelectDivisi = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-divisi-edit',$lokasi)!!}";
         @else
             htmlSelectDivisi = "{!!includeAsJsString('pages/masterdata/datapresensi/lokasikerja/select-divisi')!!}";
         @endif

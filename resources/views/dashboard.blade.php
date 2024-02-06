@@ -450,10 +450,10 @@ am4core.ready(function() {
 
 	// Set map definition
 	chart2.geodata = am4geodata_worldLow;
-	chart2.homeZoomLevel = 7;
+	chart2.homeZoomLevel = 50;
     chart2.homeGeoPoint = {
-        latitude: -2.0421272,
-        longitude: 120.2801101
+        latitude: -7.1120127,
+        longitude: 110.2487008
     };
 
 	// Set projection
@@ -487,11 +487,11 @@ am4core.ready(function() {
 	imageSeries.mapImages.template.propertyFields.url = "url";
 
 	var circle = imageSeries.mapImages.template.createChild(am4core.Circle);
-	circle.radius = 0.5;
+	circle.radius = 0.05;
 	circle.propertyFields.fill = "color";
 
 	var circle2 = imageSeries.mapImages.template.createChild(am4core.Circle);
-	circle2.radius = 0.5;
+	circle2.radius = 0.05;
 	circle2.propertyFields.fill = "color";
 
 
@@ -502,7 +502,7 @@ am4core.ready(function() {
 
 
 	function animateBullet(circle) {
-		var animation = circle.animate([{ property: "scale", from: 1, to: 5 }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
+		var animation = circle.animate([{ property: "scale", from: 1, to: 2 }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
 		animation.events.on("animationended", function(event){
 		  animateBullet(event.target.object);
 		})

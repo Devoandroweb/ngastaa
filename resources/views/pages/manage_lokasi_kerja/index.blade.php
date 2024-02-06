@@ -28,6 +28,12 @@
 <div class="invoice-body">
     <div data-simplebar class="nicescroll-bar">
         <div class="invoice-list-view">
+            @if(session('messages'))
+            <div class="alert alert-inv alert-inv-@if(session('type') == 'error'){{'danger'}}@else{{'success'}}@endif alert-wth-icon alert-dismissible fade show" role="alert">
+                <span class="alert-icon-wrap"><i class="zmdi @if(session('type') == 'error') {{'zmdi-bug'}}  @else {{'zmdi-check-circle'}} @endif "></i></span> {{session('messages')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
             <table id="data" class="table mt-2 nowrap w-100 mb-5 table-responsive table-bordered">
                 <thead>
                     <tr className="fw-bolder text-muted">

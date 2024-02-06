@@ -17,4 +17,7 @@ class Lokasi extends Model
     function mapLokasiKerja(){
         return $this->hasMany(MapLokasiKerja::class,'kode_lokasi','kode_lokasi');
     }
+    function skpd(){
+        return $this->hasOne(Skpd::class,'kode_skpd','kode_skpd');
+    }
 }

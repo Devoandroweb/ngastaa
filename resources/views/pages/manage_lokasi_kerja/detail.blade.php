@@ -130,6 +130,13 @@
             addPegawai(data.id,data.text)
             $(this).val(null).trigger('change')
         })
+        $(document).on("click",".btn-close-lp",function(e){
+            // alert('sadas')
+            $(this).closest('.cp').remove()
+            removeInObject(listPegawai,"nip",$(this).closest('.cp').find('.nip').val())
+            checkListPegawai()
+            console.log(listPegawai);
+        })
         initPegawai("{{route('pegawai.pegawai.json')}}?kode_skpd="+$("[name=kode_skpd]").val())
         function initPegawai(url,value_pegawai = null){
             let getPegawai = (url) => {

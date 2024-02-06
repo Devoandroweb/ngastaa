@@ -119,7 +119,8 @@ class LokasiController extends Controller
             'values.kode_lokasi' => 'required',
             'values.nama' => 'required',
             // 'values.kode_shift' => 'required',
-            'keterangan' => 'required',
+            'values.keterangan' => 'required',
+            'values.kode_skpd' => 'required',
             'kordinat.kordinat' => 'nullable',
             'kordinat.latitude' => 'nullable',
             'kordinat.longitude' => 'nullable',
@@ -139,19 +140,19 @@ class LokasiController extends Controller
 
         $data = request()->validate($rules);
         $data = $data['values'];
+        // dd($data,request()->all());
         $data = array_merge($data, request('kordinat'));
         $data['polygon'] = request('polygon');
         $detail = request('keterangan');
         // dd($data);
         // $data['kode_shift'] = json_encode($data['kode_shift']);
 
-        dd($data,$detail);
-        if ($detail == "") {
-            return redirect(route('master.lokasi.index'))->with([
-                'type' => 'error',
-                'messages' => "Data Wajib diisi!"
-            ]);
-        }
+        // if ($detail == "") {
+        //     return redirect(route('master.lokasi.index'))->with([
+        //         'type' => 'error',
+        //         'messages' => "Data Wajib diisi!"
+        //     ]);
+        // }
 
 
         $cr = Lokasi::updateOrCreate(['id' => request('values.id')], $data);
@@ -159,9 +160,9 @@ class LokasiController extends Controller
         if (request('values.id')) {
             LokasiDetail::where('kode_lokasi', $data['kode_lokasi'])->delete();
         }
-        // dd($data)['keterangan'];
+        // dd($data);
         // dd($detail);
-        if(isset($data['keterangan'])){
+        if(false){
             if ($data['keterangan'] == 1) {
                 foreach ($detail as $d) {
                     // dd(json_decode($d)->nip);
@@ -189,6 +190,13 @@ class LokasiController extends Controller
         }
 
         if ($cr) {
+            
+            if(request()->query('redirect') == "manage_location"){
+                return redirect(route('manage_lokasi_kerja.index'))->with([
+                    'type' => 'success',
+                    'messages' => "Berhasil! memperbaiki ".$cr->nama
+                ]);
+            }
             return redirect(route('master.lokasi.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil!"

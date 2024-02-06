@@ -60,12 +60,7 @@ class ManageLokasiKerja extends Controller
         }
         return $dataTables->of($lokasiKerja->get())
         ->addColumn('divisi', function ($row) {
-            $lokasiDetail = LokasiDetail::where([
-                'kode_lokasi' => $row->kode_lokasi,
-                'keterangan_tipe'=>3,
-            ])->first();
-            $kodeSkpd = $lokasiDetail?->keterangan_id;
-            return Skpd::where('kode_skpd',$kodeSkpd)->first()?->nama ?? "-";
+            return $row->skpd?->nama ?? "-";
 
         })
         ->addColumn('total_pegawai',function ($row) {
@@ -73,13 +68,16 @@ class ManageLokasiKerja extends Controller
             return '<span class="badge badge-info">'.$row->mapLokasiKerja->count().'</span>';
         })
         ->addColumn('opsi',function ($row) {
-            $lokasiDetail = LokasiDetail::where([
-                'kode_lokasi' => $row->kode_lokasi,
-                'keterangan_tipe'=>3,
-            ])->first();
-            $kodeSkpd = $lokasiDetail?->keterangan_id;
-            $skpd = Skpd::where('kode_skpd',$kodeSkpd)->first();
-            return $skpd ? "<a class='me-2 edit' tooltip='Manage Pegawai ke Lokasi Kerja' href='" . route('manage_lokasi_kerja.detail', ['kode_lokasi' => $row->kode_lokasi,'kode_skpd'=>$kodeSkpd]) . "'>" . icons('cogs') . "</a>" : "-";
+            // $lokasiDetail = LokasiDetail::where([
+            //     'kode_lokasi' => $row->kode_lokasi,
+            //     'keterangan_tipe'=>3,
+            // ])->first();
+            // $kodeSkpd = $lokasiDetail?->keterangan_id;
+            // $skpd = Skpd::where('kode_skpd',$kodeSkpd)->first();
+            // dd($row);
+            return $row->kode_skpd ? 
+            "<a class='me-2 edit' tooltip='Manage Pegawai ke Lokasi Kerja' href='" . route('manage_lokasi_kerja.detail', ['kode_lokasi' => $row->kode_lokasi,'kode_skpd'=>$row->kode_skpd]) . "'>" . icons('cogs') . "</a>" : 
+            "<label class='text-danger'>Divisi tidak di temukan</label><br><a href='".route('master.lokasi.edit', $row->id)."?redirect=manage_location' class='btn btn-danger btn-sm text-white'>".icons('obeng')." Perbaiki</a>";
         })
         ->addIndexColumn()
         ->rawColumns(['opsi','total_pegawai'])

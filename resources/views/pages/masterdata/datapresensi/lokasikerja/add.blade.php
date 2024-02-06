@@ -20,15 +20,15 @@
                     <label class="form-label">Nama</label>
                     <input class="form-control"  placeholder="Masukkan Nama Lokasi" name="values[nama]">
                 </div>
-                <!-- <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="form-label">Tentukan Shiftnya</label>
                     <select class="form-control select2 select2-multiple" name="values[kode_shift][]" multiple="multiple" data-placeholder="Select Shift" required>
-                        {{-- <option selected disabled>Select Shift</option> --}}
+                        {{-- <option selected disabled>Select Shift</option>
                         @foreach($shift as $s)
                             <option value="{{$s->kode_shift}}">{{$s->nama}}</option>
                         @endforeach
                     </select>
-                </div> -->
+                </div>
                 <div class="form-group d-none">
                     <label class="form-label">Keterangan</label>
                     <select class="form-control select2" name="values[keterangan]" id="values-keterangan" required>
@@ -37,7 +37,8 @@
                             <option value="{{$s['value']}}">{{$s['label']}}</option>
                         @endforeach
                     </select>
-                </div>
+                </div>--}}
+                <input type="hidden" name="values[keterangan]" value="3">
                 <div class="element-keterangan"></div>
                 {{-- maps --}}
                 <div id="map" class="mb-4" style="height: 500px"></div>

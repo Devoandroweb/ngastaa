@@ -303,6 +303,7 @@ class DataPresensiController extends Controller
                 'messages' => 'Data Laporan tidak di temukan'
             ]);
         }
+        
         $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja);
         $pdfLocation = 'show-pdf/presensi-pegawai.pdf';
         $pdf->save(public_path($pdfLocation));
