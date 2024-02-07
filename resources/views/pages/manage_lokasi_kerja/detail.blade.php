@@ -71,7 +71,7 @@
     <script >
         const modalAddPegawai = new bootstrap.Modal(document.getElementById("modalAddPegawai"),{backdrop:'static',keyboard:true});
         const btnLoading = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`;
-        
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("manage_lokasi_kerja.datatable_detail")}}?kode_lokasi={{$kode_lokasi}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -130,6 +130,9 @@
             addPegawai(data.id,data.text)
             $(this).val(null).trigger('change')
         })
+        $('#select-pegawai').on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
         $(document).on("click",".btn-close-lp",function(e){
             // alert('sadas')
             $(this).closest('.cp').remove()
@@ -178,7 +181,7 @@
                 return
             }
             listPegawai.push({nip:nip,nama:nama})
-            
+
             lp = "";
             var btnClose = `<button type="button" class="btn-close btn-close-lp text-danger position-absolute h-100" style="right: 1rem;top:0;z-index:9999"><span aria-hidden="true">×</span></button>`
             listPegawai.forEach(element => {
