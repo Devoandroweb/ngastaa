@@ -1,4 +1,4 @@
-<div id="change-pegawai" class="mb-4" @style("display:none")>
+<div id="change-pegawai" class="pb-4 sticky-top bg-white" @style("display:none")>
     <form id="form-update">
         <h4>Ubah Pegawai</h4>
         <div class="row mb-2">
@@ -110,5 +110,19 @@
                 }
             });
         });
+        window.addEventListener('scroll', function() {
+            var changePegawai = document.getElementById('change-pegawai');
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > 320) {
+                $("#change-pegawai").css({paddingTop:"6rem"})
+                $("#change-pegawai").addClass("shadow")
+                $("#change-pegawai").addClass("px-4")
+            } else {
+                $("#change-pegawai").css({paddingTop:"0rem"})
+                $("#change-pegawai").removeClass("shadow")
+                $("#change-pegawai").removeClass("px-4")
+            }
+            })
     </script>
 @endpush

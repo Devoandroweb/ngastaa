@@ -213,7 +213,7 @@
                         <span style="font-family: arial; color: #000000;"><strong>Divisi</strong></span>
                     </td>
                     <td style="width: 15%;">
-                        <span style="font-family: arial; color: #000000;"><strong>TMT Jabatan</strong></span>
+                        <span style="font-family: arial; color: #000000;"><strong>Tamat Jabatan</strong></span>
                     </td>
                     <td style="width: 15%;">
                         <span style="font-family: arial; color: #000000;"><strong>SK Jabatan</strong></span>

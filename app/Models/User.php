@@ -165,7 +165,9 @@ class User extends Authenticatable
             return $skpd;
         }
         return null;
+
     }
+
     function getRiwayatLokasiKerja(){
         // return $this->hasMany(Lokasi::class,'kode_lokasi','')
     }

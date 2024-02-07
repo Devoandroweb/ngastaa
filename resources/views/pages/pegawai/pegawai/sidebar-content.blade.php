@@ -22,12 +22,12 @@
 								<span class="nav-link-text">Posisi dan Jabatan</span>
 							</a>
 						</li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
 							<a class="nav-link item-sidebar-content tab-utama" href="#data_koor" id="tab-koor" data-ajax="{{route('pegawai.kordinat.index',$pegawai->nip)}}">
 								<span class="nav-icon-wrap">{!!icons('c-arror-right')!!}</span>
 								<span class="nav-link-text">Data Koordinat</span>
 							</a>
-						</li>
+						</li> --}}
 					</ul>
 				</div>
 				<div class="menu-gap"></div>

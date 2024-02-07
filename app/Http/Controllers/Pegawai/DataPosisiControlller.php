@@ -20,10 +20,10 @@ class DataPosisiControlller extends Controller
 
         if( $jabatan != null){
             $skpd = $jabatan?->skpd?->nama;
-            $jenis_jabatan = jenis_jabatan($jabatan->jenis_jabatan);
-            $tmt_jabatan = tanggal_indo($jabatan->tanggal_tmt);
-            $masa_kerja = get_masa_kerja($jabatan->tanggal_sk);
-            $jabatan = ((is_null($jabatan->tingkat?->nama)) ? "-" : $jabatan->tingkat?->nama);
+            $jenis_jabatan = $jabatan->jenis_jabatan ? jenis_jabatan($jabatan->jenis_jabatan) : "-";
+            $tmt_jabatan = $jabatan->tanggal_tmt ? tanggal_indo($jabatan->tanggal_tmt) : "-";
+            $masa_kerja = $jabatan->tanggal_sk ? get_masa_kerja($jabatan->tanggal_sk) : "-";
+            $jabatan = $jabatan->tingkat?->nama ? $jabatan->tingkat?->nama : "-";
         }else{
             $skpd = "-";
             $jabatan = "-";

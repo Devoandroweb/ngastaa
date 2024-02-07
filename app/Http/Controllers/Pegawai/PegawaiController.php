@@ -309,8 +309,9 @@ class PegawaiController extends Controller
             $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
         }
 
-        if(count($nip) > 0){
+        if(count($nip) > 0 && $nip[0] != ""){
             $pegawai = $pegawai->whereIn('users.nip',$nip);
+
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){
@@ -332,7 +333,8 @@ class PegawaiController extends Controller
 
             })
             ->addColumn('nama_jabatan', function ($row) {
-                return '<p>'.$row->getNamaDivisi().'</p><p>'.$row->getNamaJabatan().'</p>';
+                $jabatan = $row->jabatan_akhir()->first();
+                return '<p>'.$jabatan?->skpd?->nama.'</p><p>'.$jabatan?->tingkat?->nama.'</p>';
             })
             // ->addColumn('level', function ($row) {
             //     $jabatan = array_key_exists('0', $row->jabatan_akhir->toArray()) ? $row->jabatan_akhir[0] : null;
@@ -585,6 +587,13 @@ class PegawaiController extends Controller
                 return response()->json(['status' => FALSE, 'message'=>$th->getMessage()],500);
             }
             return response()->json(['status' => FALSE, 'message'=>"Error Server"],500);
+        }
+    }
+    function updateDivisiJabatan(){
+        $user = User::where('owner',0)->get();
+        foreach($user as $u){
+            $jabatan = $u->jabatan_akhir()->fisrt();
+            $kodeSkpd = $jabatan->kode_skpd;
         }
     }
 }

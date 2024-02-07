@@ -31,7 +31,7 @@
 
         <i class="fas fa-user-clock text-red fa-2x mb-2"></i>
         <div class="text-dark">
-            <p>TMT Jabatan</p>
+            <p>Tamat Jabatan</p>
             <b>{{$tmt_jabatan}}</b>
         </div>
     </div>
