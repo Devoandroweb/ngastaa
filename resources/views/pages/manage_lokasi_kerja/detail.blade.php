@@ -140,7 +140,7 @@
             checkListPegawai()
             console.log(listPegawai);
         })
-        initPegawai("{{route('pegawai.pegawai.json')}}?kode_skpd="+$("[name=kode_skpd]").val())
+        initPegawai("{{route('pegawai.pegawai.json')}}?kode_skpd=0")
         function initPegawai(url,value_pegawai = null){
             let getPegawai = (url) => {
                 var element = $('#select-pegawai');
