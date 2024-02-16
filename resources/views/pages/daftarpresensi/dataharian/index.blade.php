@@ -37,7 +37,7 @@
         <tr className="fw-bolder text-muted">
             <th>{{__('No')}}</th>
             <th>{{__('No. Pegawai Nama')}}</th>
-            <th>{{__('Shift')}}</th>
+            <th>{{__('Shift/Jam Kerja')}}</th>
             <th>{{__('Jabatan')}}</th>
             <th>{{__('Tanggal')}}</th>
             <th>{{__('Jam Datang')}}</th>
@@ -46,7 +46,7 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 <div class="modal fade" id="located-panel" tabindex="-1" role="dialog" aria-labelledby="located-panel" aria-hidden="true">
@@ -72,10 +72,10 @@
                             <td class="jabatan"></td>
                             <td class="fw-bold">Jam Datang</td>
                             <td class="jam_datang"></td>
-                            
+
                         </tr>
                         <tr>
-                            <td class="fw-bold">Shift</td>
+                            <td class="fw-bold">Shift/Jam Kerja</td>
                             <td class="shift"></td>
                             <td class="fw-bold">Jam Istirahat</td>
                             <td class="jam_istirahat"></td>
@@ -87,7 +87,7 @@
                             <td class="jam_pulang"></td>
                         </tr>
                     </table>
-                </div> 
+                </div>
                 <div class="d-block d-md-none">
                     <table class="table table-bordered w-100">
                         <tr>
@@ -152,7 +152,7 @@
     {{-- <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script> --}}
 
     <script >
-        
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("pengajuan/presensi/datatable")}}';
         $(".divisi").select2();
@@ -166,7 +166,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -216,6 +216,7 @@
             if(data.kordinat_datang != null){
                 ltlg = (data.kordinat_datang).split(",");
             }
+            console.log(ltlg);
             shootToModal(data);
             var myModal = new bootstrap.Modal($("#located-panel"))
             myModal.show();
@@ -239,7 +240,7 @@
             }
         }
         let lokasi = @json($dataLokasi);
-        
+
         function checkLokasi(location_target){
             var namaLokasi = "-";
             var location_target = (location_target).split(",");
@@ -262,14 +263,14 @@
                     parseFloat(location_target[1].split(" ").join("")),
                     parseFloat(location_target[0].split(" ").join(""))
                 ];
-        
+
                 var point = turf.point(turfKoor);
                 var isInside = turf.booleanPointInPolygon(point, polygon);
                 console.log(isInside);
                 if((e.polygon).length != 0){
                     L.polygon(JSON.parse(e.polygonAsli), { color: "red" }).addTo(drawnItems);
                 }
-                
+
                 if(isInside){
                     namaLokasi = e.nama
                 }
@@ -277,5 +278,5 @@
             return namaLokasi;
         }
     </script>
-    
+
 @endpush

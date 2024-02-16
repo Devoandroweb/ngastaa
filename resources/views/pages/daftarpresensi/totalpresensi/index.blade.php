@@ -8,12 +8,13 @@
     <span class="input-affix-wrapper">
         <div class="row w-300p">
             <div class="col-sm-11 ps-0">
+                {{-- @dd($periodeBulan) --}}
                 <select name="skpd" class="form-control periode_bulan px-2" id="">
                     @foreach ($periodeBulan as $s)
-                    @php
-                        $periode = explode("-",$s);
-                    @endphp
-                        <option value="{{$s}}">{{bulan($periode[1])." ".$periode[0]}}</option>
+                        @php
+                            $periode = explode("-",$s);
+                        @endphp
+                        <option value="{{$s}}" {{ ($loop->last) ? "selected" : "" }}>{{bulan($periode[1])." ".$periode[0]}}</option>
                     @endforeach
                 </select>
             </div>

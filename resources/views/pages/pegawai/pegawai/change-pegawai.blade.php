@@ -2,11 +2,7 @@
     <form id="form-update">
         <h4>Ubah Pegawai</h4>
         <div class="row mb-2">
-            <div class="col">
-                @include('komponen.select.divisi-tingkat-jabatan')
-            </div>
-        </div>
-        <div class="row mb-2">
+            @include('komponen.select.divisi-tingkat-jabatan')
             <div class="col">
                 @include('komponen.select.lokasi-kerja')
             </div>
@@ -116,6 +112,7 @@
 
             if (scrollTop > 320) {
                 $("#change-pegawai").css({paddingTop:"6rem"})
+                $("#change-pegawai").css({scale:"1"})
                 $("#change-pegawai").addClass("shadow")
                 $("#change-pegawai").addClass("px-4")
             } else {

@@ -1,5 +1,5 @@
-<div class="row">
-    <div class="col-md">
+
+    <div class="col">
         <label class="form-label">Pilih Divisi Kerja</label>
         <div class="form-group has-validation">
             <select class="form-control jabatanDivisi" id=""  name="kode_skpd" required disabled>
@@ -7,14 +7,14 @@
             </select>
         </div>
     </div>
-    <div class="col-md">
+    <div class="col">
         <label class="form-label">Jabatan</label>
         <div class="form-group">
             <select class="form-control jabatanTingkat" id="" name="kode_tingkat" required disabled>
             </select>
         </div>
     </div>
-</div>
+
 @push('js')
 <script>
     // initDevisi("{{old('kode_skpd')}}","{{old('kode_tingkat')}}");

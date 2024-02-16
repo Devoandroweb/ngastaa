@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CApiAktifitas;
 use App\Http\Controllers\Api\CutiApiController;
 use App\Http\Controllers\Api\DataAbsensi;
 use App\Http\Controllers\Api\HomeUser;
+use App\Http\Controllers\Api\Keluarga\SemuaKeluargaController;
 use App\Http\Controllers\Api\LemburApiController;
 use App\Http\Controllers\Api\PayrollApiController;
 use App\Http\Controllers\Api\PengumumanApiController;
@@ -148,5 +149,16 @@ Route::middleware('auth:sanctum')->group(function(){
 
             });
     });
+
+    Route::prefix('keluarga')
+        ->name('keluarga.')
+        ->group(function(){
+            Route::prefix('semua')
+                ->name('semua.')
+                ->controller(SemuaKeluargaController::class)
+                ->group(function(){
+                    Route::get('list', 'list');
+                });
+        });
 
 });

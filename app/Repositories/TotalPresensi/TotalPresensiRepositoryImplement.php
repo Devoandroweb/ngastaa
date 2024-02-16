@@ -72,8 +72,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         // $this->dataPresensi2 =  DataPresensi::whereDate('created_at', '=', $this->date)->where('hitung',0);
 
         $this->dataTotalPresensi = $mdTotalPresensi->where('periode_bulan',$this->periodeBulan)->get(['nip','masuk','telat','alfa'])->toArray();
+        // dd($this->getLastMonthNow());
+        $this->dataTotalPresensiDetail = $mdTotalPresensiDetail
+                ->whereBetween("tanggal",[$this->getLastMonthNow()]);
 
-        $this->dataTotalPresensiDetail = $mdTotalPresensiDetail->get();
 
 
         $this->dataTotalIzin = $mdTotalIzin->where('periode_bulan',$this->periodeBulan)->get(['nip','kode_cuti','total','periode_bulan'])->toArray();
@@ -83,7 +85,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     }
     public function manualCaculate()
     {
-        if($this->dataTotalPresensiDetail->count() != 0){
+        // dd($this->dataTotalPresensiDetail->get()->count());
+        if($this->dataTotalPresensiDetail->get()->count() != 0){
             $this->maxDate = $this->dataTotalPresensiDetail->max('tanggal');
             $this->maxDate = date("Y-m-d",strtotime($this->maxDate."+1 days"));
         }else{
@@ -98,13 +101,14 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         # $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
         $dateStart = $this->maxDate;
         $dateEnd = date("Y-m-d",strtotime("-1 days"));
-        // dd($dateStart,$dateEnd);
         # Check apakah tanggal nya sama, jika sama jangan hitung
         if($dateStart == $dateEnd){
             return 2; # Tanggal Masih Sama
         }
+        // dd($dateStart,$dateEnd);
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
+        // dd($tanggalBulan);
         foreach ($tanggalBulan as $date) {
             // dd($tanggalBulan);
             $this->date = $date;
@@ -139,6 +143,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
                 #Cek pegawai di data_presensi
                 $presensi = $this->existingPresensi($pegawai->nip);
+                // dd($presensi);
                 $status = [];
                 // if($presensi!=null){
                 //     dd($presensi,$pegawai->nip);
@@ -305,11 +310,14 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     }
     function existingTotalDetail($tanggal,$status)
     {
-        foreach ($this->dataTotalPresensiDetail as $presensiDetail) {
-            if($tanggal == $presensiDetail->tanggal && $status == $presensiDetail->status){
-                return true;
+        // dd($tanggal);
+        $this->dataTotalPresensiDetail->chunk(100,function($data)use($tanggal,$status){
+            foreach ($data as $presensiDetail) {
+                if($tanggal == $presensiDetail->tanggal && $status == $presensiDetail->status){
+                    return true;
+                }
             }
-        }
+        });
         return false;
     }
     function checkHariLibur(){
@@ -379,5 +387,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         }
         return false;
     }
+    function getLastMonthNow():array{
+        $lastMonth = date("Y-m-01", strtotime("-1 month"));
+        $currentMonth = date("Y-m-d");
 
+        return ["$lastMonth","$currentMonth"];
+    }
 }
