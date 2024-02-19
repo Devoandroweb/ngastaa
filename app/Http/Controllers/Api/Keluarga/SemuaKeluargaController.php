@@ -11,25 +11,27 @@ use Illuminate\Http\Request;
 class SemuaKeluargaController extends Controller
 {
     private $keluargaRepository;
+    private $nip;
     function __construct(KeluargaRepository $keluargaRepository) {
         $this->keluargaRepository = $keluargaRepository;
     }
     function list(){
         try {
-            $nip = request('nip');
+            // $nip = request()->user()->nip;
             $status = request('status');
+
             switch ($status) {
                 case 'orang-tua':
-                    $data = $this->keluargaRepository->orangTuaList($nip);
+                    $data = $this->keluargaRepository->orangTuaList();
                     break;
                 case 'pasangan':
-                    $data = $this->keluargaRepository->pasanganList($nip);
+                    $data = $this->keluargaRepository->pasanganList();
                     break;
                 case 'anak':
-                    $data = $this->keluargaRepository->anakList($nip);
+                    $data = $this->keluargaRepository->anakList();
                     break;
                 default:
-                    $data = $this->keluargaRepository->semuaKeluargaList($nip);
+                    $data = $this->keluargaRepository->semuaKeluargaList();
                     break;
             }
 
@@ -48,10 +50,13 @@ class SemuaKeluargaController extends Controller
         }
     }
     function store(User $pegawai){
+        if($this->keluargaRepository->checkKeluarga(request('nip'),request('status'))){
+            return response()->json(buildResponseGagal(['status' => 'Failed', 'messages' => 'Status Keluarga sudah ada!']),200);
+        };
         $cr = $this->keluargaRepository->store($pegawai);
         if ($cr) {
-            return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Kunjungan!', 'keterangan' => 'pagi']),200);
-        } else {
+            return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Menambahkan !']),200);
+        }else{
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),200);
         }
     }

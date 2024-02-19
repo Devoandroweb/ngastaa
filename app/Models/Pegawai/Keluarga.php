@@ -12,4 +12,9 @@ class Keluarga extends Model
 
     protected $table = 'keluarga';
     protected $guarded = [];
+
+    public static function keluargaPegawai()
+    {
+        return static::where('nip', auth()->user()->nip);
+    }
 }

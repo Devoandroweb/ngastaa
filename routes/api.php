@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\HomeUser;
 use App\Http\Controllers\Api\Keluarga\SemuaKeluargaController;
 use App\Http\Controllers\Api\LemburApiController;
 use App\Http\Controllers\Api\PayrollApiController;
+use App\Http\Controllers\Api\PendidikanController;
 use App\Http\Controllers\Api\PengumumanApiController;
 use App\Http\Controllers\Api\PerusahaanApiController;
 use App\Http\Controllers\Api\Presensi;
@@ -158,7 +159,17 @@ Route::middleware('auth:sanctum')->group(function(){
                 ->controller(SemuaKeluargaController::class)
                 ->group(function(){
                     Route::get('list', 'list');
+                    Route::post('store', 'store');
                 });
+        });
+    Route::prefix('pendidikan')
+        ->name('pendidikan.')
+        ->controller(PendidikanController::class)
+        ->group(function(){
+            Route::get('list', 'list');
+            Route::get('list-tingkat-pendidikan', 'listTingkatPendidikan');
+            Route::get('list-jurusan/{id_pendidikan}', 'listJurusanPendidikan');
+            Route::post('store', 'store');
         });
 
 });
