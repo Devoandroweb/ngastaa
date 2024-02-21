@@ -22,7 +22,7 @@ class PendidikanController extends Controller
     }
     function list(){
         try{
-            $data = RiwayatPendidikan::all();
+            $data = request()->user()->riwayat_pendidikan;
             $data = RiwayatPendidikanResource::collection($data);
             return response()->json([
                 'status' => TRUE,
