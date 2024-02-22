@@ -8,13 +8,16 @@ use App\Models\Payroll\DataPayroll;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPengajuanLembur;
 use App\Models\Pegawai\Keluarga;
+use App\Models\Pegawai\RiwayatBahasa;
 use App\Models\Pegawai\RiwayatGolongan;
 use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Pegawai\RiwayatKgb;
 use App\Models\Pegawai\RiwayatKursus;
+use App\Models\Pegawai\RiwayatOrganisasi;
 use App\Models\Pegawai\RiwayatPendidikan;
 use App\Models\Pegawai\RiwayatPenghargaan;
+use App\Models\Pegawai\RiwayatPmk;
 use App\Models\Pegawai\RiwayatShift;
 use App\Models\Pegawai\RiwayatStatus;
 use App\Models\Presensi\TotalCutiDetail;
@@ -67,21 +70,32 @@ class User extends Authenticatable
     {
         return $this->hasMany(RiwayatPendidikan::class, 'nip', 'nip')->orderByDesc('kode_pendidikan');
 
-    }public function riwayat_shift()
+    }
+
+    public function riwayat_shift()
     {
         return $this->hasMany(RiwayatShift::class, 'nip', 'nip')->orderByDesc('kode_shift');
     }
-
+    public function riwayat_pmk()
+    {
+        return $this->hasMany(RiwayatPmk::class, 'nip', 'nip');
+    }
     public function riwayat_kursus()
     {
         return $this->hasMany(RiwayatKursus::class, 'nip', 'nip');
     }
-
+    public function riwayat_organisasi()
+    {
+        return $this->hasMany(RiwayatOrganisasi::class, 'nip', 'nip');
+    }
     public function riwayat_penghargaan()
     {
         return $this->hasMany(RiwayatPenghargaan::class, 'nip', 'nip');
     }
-
+    public function riwayat_bahasa()
+    {
+        return $this->hasMany(RiwayatBahasa::class, 'nip', 'nip');
+    }
     public function keluarga()
     {
         return $this->hasMany(Keluarga::class, 'nip', 'nip');
@@ -181,9 +195,9 @@ class User extends Authenticatable
     function totalPresensiDetail(){
         return $this->hasMany(TotalPresensiDetail::class,'nip','nip');
     }
-    function totalIzinDetail(){
-        return $this->hasMany(TotalCutiDetail::class,'nip','nip');
-    }
+    // function totalIzinDetail(){
+    //     return $this->hasMany(TotalCutiDetail::class,'nip','nip');
+    // }
     function statusPegawai(){
         return $this->hasOne(StatusPegawai::class,'kode_status','kode_status');
     }

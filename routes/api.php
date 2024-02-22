@@ -9,8 +9,11 @@ use App\Http\Controllers\Api\HomeUser;
 use App\Http\Controllers\Api\Keluarga\SemuaKeluargaController;
 use App\Http\Controllers\Api\KursusKontroller;
 use App\Http\Controllers\Api\LemburApiController;
+use App\Http\Controllers\Api\OrganisasiController;
 use App\Http\Controllers\Api\PayrollApiController;
 use App\Http\Controllers\Api\PendidikanController;
+use App\Http\Controllers\Api\PengalamanKerjaController;
+use App\Http\Controllers\Api\PenguasaanBahasaController;
 use App\Http\Controllers\Api\PengumumanApiController;
 use App\Http\Controllers\Api\PerusahaanApiController;
 use App\Http\Controllers\Api\Presensi;
@@ -161,6 +164,7 @@ Route::middleware('auth:sanctum')->group(function(){
                 ->group(function(){
                     Route::get('list', 'list');
                     Route::post('store', 'store');
+                    Route::get('delete/{keluarga}', 'delete');
                 });
         });
     Route::prefix('pendidikan')
@@ -171,6 +175,7 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('list-master-pendidikan', 'listTingkatPendidikan');
             Route::get('list-jurusan/{id_pendidikan}', 'listJurusanPendidikan');
             Route::post('store', 'store');
+            Route::get('delete/{riwayatPendidikan}', 'delete');
         });
     Route::prefix('kursus')
         ->name('kursus.')
@@ -179,5 +184,31 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('list', 'list');
             Route::get('list-master-kursus', 'listMasterKursus');
             Route::post('store', 'store');
+            Route::get('delete/{riwayatKursus}', 'delete');
+
+        });
+    Route::prefix('organisasi')
+        ->name('organisasi.')
+        ->controller(OrganisasiController::class)
+        ->group(function(){
+            Route::get('list', 'list');
+            Route::post('store', 'store');
+            Route::get('delete/{riwayatOrganisasi}', 'delete');
+        });
+    Route::prefix('pengusaan-bahasa')
+        ->name('pengusaan-bahasa.')
+        ->controller(PenguasaanBahasaController::class)
+        ->group(function(){
+            Route::get('list', 'list');
+            Route::post('store', 'store');
+            Route::get('delete/{riwayatBahasa}', 'delete');
+        });
+    Route::prefix('pengalaman-kerja')
+        ->name('pengalaman-kerja.')
+        ->controller(PengalamanKerjaController::class)
+        ->group(function(){
+            Route::get('list', 'list');
+            Route::post('store', 'store');
+            Route::get('delete/{riwayatPmk}', 'delete');
         });
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\RiwayatKursusResource;
+use App\Models\Pegawai\RiwayatKursus;
 use App\Repositories\Kursus\KursusRepository;
 use Illuminate\Http\Request;
 
@@ -51,18 +52,19 @@ class KursusKontroller extends Controller
     }
     function store(){
         $cr = $this->kursusRepository->store();
-        if(request()->query("for") == 0){
-            if ($cr) {
-                return response()->json(["status"=>true,"msg"=>"Berhasil, ditambahkan!"]);
-            } else {
-                return response()->json(["status"=>false,"msg"=>"Gagal, ditambahkan!"]);
-            }
-        }else{
-            if ($cr) {
-                return response()->json(["status"=>true,"msg"=>"Berhasil, diperbarui!"]);
-            } else {
-                return response()->json(["status"=>false,"msg"=>"Gagal, diperbarui!"]);
-            }
+        $message = $this->kursusRepository->getMessage();
+        if ($cr) {
+            return response()->json(["status"=>true,"msg"=>"Berhasil, $message!"]);
+        } else {
+            return response()->json(["status"=>false,"msg"=>"Gagal, $message!"]);
+        }
+    }
+    function delete(RiwayatKursus $riwayatKursus){
+        $cr = $this->kursusRepository->delete($riwayatKursus);
+        if ($cr) {
+            return response()->json(["status"=>true,"msg"=>"Berhasil, di Hapus!"]);
+        } else {
+            return response()->json(["status"=>false,"msg"=>"Gagal, di Hapus!"]);
         }
     }
 }

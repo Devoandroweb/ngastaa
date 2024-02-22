@@ -11,5 +11,7 @@ interface KeluargaRepository extends Repository{
     function anakList();
     function pasanganList();
     function store();
+    function delete($keluarga);
     function checkKeluarga($status);
+    function getMessage();
 }

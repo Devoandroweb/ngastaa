@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Keluarga;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\KeluargaResource;
+use App\Models\Pegawai\Keluarga;
 use App\Models\User;
 use App\Repositories\Keluarga\KeluargaRepository;
 use Illuminate\Http\Request;
@@ -49,15 +50,24 @@ class SemuaKeluargaController extends Controller
             ], 404);
         }
     }
-    function store(User $pegawai){
-        if($this->keluargaRepository->checkKeluarga(request('nip'),request('status'))){
+    function store(){
+        if($this->keluargaRepository->checkKeluarga(request('status'))){
             return response()->json(buildResponseGagal(['status' => 'Failed', 'messages' => 'Status Keluarga sudah ada!']),200);
         };
-        $cr = $this->keluargaRepository->store($pegawai);
+        $cr = $this->keluargaRepository->store();
+        $message = $this->keluargaRepository->getMessage();
         if ($cr) {
-            return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Menambahkan !']),200);
+            return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => "Berhasil $message !"]),200);
         }else{
-            return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),200);
+            return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => "Gagal $message!"]),200);
+        }
+    }
+    function delete(Keluarga $keluarga){
+        $cr = $this->keluargaRepository->delete($keluarga);
+        if ($cr) {
+            return response()->json(["status"=>true,"msg"=>"Berhasil, di Hapus!"]);
+        } else {
+            return response()->json(["status"=>false,"msg"=>"Gagal, di Hapus!"]);
         }
     }
 }

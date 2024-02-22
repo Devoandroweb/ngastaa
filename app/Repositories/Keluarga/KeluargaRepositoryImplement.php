@@ -2,11 +2,14 @@
 
 namespace App\Repositories\Keluarga;
 
+use App\Traits\MessageStore;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Pegawai\Keluarga as PegawaiKeluarga;
 use App\Models\User;
+use App\Traits\Delete;
 
 class KeluargaRepositoryImplement extends Eloquent implements KeluargaRepository{
+    use MessageStore,Delete;
     protected $pegawaiKeluarga;
     public function __construct(PegawaiKeluarga $pegawaiKeluarga)
     {

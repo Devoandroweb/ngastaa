@@ -13,4 +13,5 @@ class RiwayatPmk extends Model
     protected $table = "riwayat_pmk";
 
     protected $guarded = [];
+    
 }

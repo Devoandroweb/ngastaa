@@ -22,8 +22,7 @@ class PendidikanController extends Controller
     }
     function list(){
         try{
-            $data = request()->user()->riwayat_pendidikan;
-            $data = RiwayatPendidikanResource::collection($data);
+            $data = $this->pendidikanRepository->list();
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
@@ -39,8 +38,7 @@ class PendidikanController extends Controller
     }
     function listTingkatPendidikan() : JsonResponse {
         try{
-            $data = Pendidikan::orderBy('kode_pendidikan','desc')->get();
-            $data = PendidikanResource::collection($data);
+            $data = $this->pendidikanRepository->listTingkatPendidikan();
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
@@ -56,8 +54,7 @@ class PendidikanController extends Controller
     }
     function listJurusanPendidikan($kode_pendidikan) : JsonResponse {
         try{
-            $data = Jurusan::where('kode_pendidikan',$kode_pendidikan)->orderBy('nama','asc')->get();
-            $data = JurusanResource::collection($data);
+            $data = $this->pendidikanRepository->listJurusanPendidikan($kode_pendidikan);
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
@@ -73,18 +70,19 @@ class PendidikanController extends Controller
     }
     function store(){
         $cr = $this->pendidikanRepository->store();
-        if(request()->query("for") == 0){
-            if ($cr) {
-                return response()->json(["status"=>true,"msg"=>"Berhasil, ditambahkan!"]);
-            } else {
-                return response()->json(["status"=>false,"msg"=>"Gagal, ditambahkan!"]);
-            }
-        }else{
-            if ($cr) {
-                return response()->json(["status"=>true,"msg"=>"Berhasil, diperbarui!"]);
-            } else {
-                return response()->json(["status"=>false,"msg"=>"Gagal, diperbarui!"]);
-            }
+        $message = $this->pendidikanRepository->getMessage();
+        if ($cr) {
+            return response()->json(["status"=>true,"msg"=>"Berhasil, $message!"]);
+        } else {
+            return response()->json(["status"=>false,"msg"=>"Gagal, $message!"]);
+        }
+    }
+    function delete(RiwayatPendidikan $riwayatPendidikan){
+        $cr = $this->pendidikanRepository->delete($riwayatPendidikan);
+        if ($cr) {
+            return response()->json(["status"=>true,"msg"=>"Berhasil, di Hapus!"]);
+        } else {
+            return response()->json(["status"=>false,"msg"=>"Gagal, di Hapus!"]);
         }
     }
 }

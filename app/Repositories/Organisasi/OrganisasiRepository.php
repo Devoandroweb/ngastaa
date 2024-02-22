@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Repositories\Kursus;
+namespace App\Repositories\Organisasi;
 
 use LaravelEasyRepository\Repository;
 
-interface KursusRepository extends Repository{
+interface OrganisasiRepository extends Repository{
 
     // Write something awesome :)
     function list();
     function store();
-    function delete($riwayatKursus);
-    function listMasterKursus();
+    function delete($riwayatOrganisasi);
     function getMessage();
 }

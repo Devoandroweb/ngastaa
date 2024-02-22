@@ -2,22 +2,37 @@
 
 namespace App\Repositories\Pendidikan;
 
+use App\Http\Resources\Master\JurusanResource;
+use App\Http\Resources\Master\PendidikanResource;
+use App\Http\Resources\Pegawai\RiwayatPendidikanResource;
+use App\Models\Master\Jurusan;
 use App\Models\Master\Pendidikan;
 use App\Models\Pegawai\RiwayatPendidikan;
+use App\Traits\Delete;
+use App\Traits\MessageStore;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class PendidikanRepositoryImplement extends Eloquent implements PendidikanRepository{
 
-    /**
-    * Model class to be used in this repository for the common methods inside Eloquent
-    * Don't remove or change $this->model variable name
-    * @property Model|mixed $model;
-    */
-    protected $model;
+    use MessageStore,Delete;
 
-    public function __construct(Pendidikan $model)
+    protected $riwayatPendidikan;
+
+    public function __construct(RiwayatPendidikan $riwayatPendidikan)
     {
-        $this->model = $model;
+        $this->riwayatPendidikan = $riwayatPendidikan;
+    }
+    function list(){
+        $data = request()->user()->riwayat_pendidikan;
+        return RiwayatPendidikanResource::collection($data);
+    }
+    function listTingkatPendidikan(){
+        $data = Pendidikan::orderBy('kode_pendidikan','desc')->get();
+        return PendidikanResource::collection($data);
+    }
+    function listJurusanPendidikan($kode_pendidikan){
+        $data = Jurusan::where('kode_pendidikan',$kode_pendidikan)->orderBy('nama','asc')->get();
+        return JurusanResource::collection($data);
     }
     public function store()
     {
@@ -41,13 +56,13 @@ class PendidikanRepositoryImplement extends Eloquent implements PendidikanReposi
         $data['tanggal_lulus'] = normalDateSystem(request("tanggal_lulus"));
 
         if (request('is_akhir') == 1) {
-            RiwayatPendidikan::where('nip', $nip)->update(['is_akhir' => 0]);
+            $this->riwayatPendidikan->where('nip', $nip)->update(['is_akhir' => 0]);
         }
 
         $id = request('id');
         if ($id) {
             if (request()->file('file')) {
-                $file = RiwayatPendidikan::where('id', $id)->where('nip', $nip)->value('file');
+                $file = $this->riwayatPendidikan->where('id', $id)->where('nip', $nip)->value('file');
                 if ($file) {
                     @unlink($file);
                 }
@@ -56,7 +71,7 @@ class PendidikanRepositoryImplement extends Eloquent implements PendidikanReposi
 
         //upload file
         if (request()->file('file')) {
-            $file = RiwayatPendidikan::where('id', $id)->where('nip', $nip)->value('file');
+            $file = $this->riwayatPendidikan->where('id', $id)->where('nip', $nip)->value('file');
             $dir = 'data_pegawai/'.$nip.'/pendidikan';
             if ($file) {
                 @unlink($dir."/".$file);
@@ -64,7 +79,7 @@ class PendidikanRepositoryImplement extends Eloquent implements PendidikanReposi
             $data['file'] = $dir.'/'.uploadFile($dir,request()->file('file'));
         }
 
-        return RiwayatPendidikan::updateOrCreate(
+        return $this->riwayatPendidikan->updateOrCreate(
             [
                 'id' => $id,
                 'nip' => $nip,
@@ -72,7 +87,7 @@ class PendidikanRepositoryImplement extends Eloquent implements PendidikanReposi
             $data
         );
 
-        
+
     }
 
     // Write something awesome :)

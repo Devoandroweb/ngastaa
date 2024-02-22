@@ -7,9 +7,11 @@ use App\Http\Resources\Select\SelectResource;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Master\Kursus;
 use App\Models\Pegawai\RiwayatKursus;
+use App\Traits\Delete;
+use App\Traits\MessageStore;
 
 class KursusRepositoryImplement extends Eloquent implements KursusRepository{
-
+    use MessageStore,Delete;
     protected $riwayatKursus;
 
     public function __construct(RiwayatKursus $riwayatKursus)
