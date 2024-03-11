@@ -1310,7 +1310,7 @@ Route::get('/exec', function () {
     $users = User::whereIn("nip",$nip)->get();
     foreach($users as $user){
         $user->update([
-            "nip" => substr($user->nip,2)
+            "nip" => "00".$user->nip
         ]);
     }
 });
