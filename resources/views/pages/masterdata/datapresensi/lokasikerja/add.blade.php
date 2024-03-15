@@ -49,11 +49,11 @@
                             <input class="form-control" name="kordinat[kordinat]" id="koordinat" placeholder="Masukkan Koordinat">
                         </div>
                     </div>
-                    <div class="col d-none">
+                    <div class="col">
                         <div class="row">
                             <div class="mb-3 col">
                                 <label for="customRange1" class="form-label">Jarak Wilayah (m)</label>
-                                <input type="range" min="100" max="5000" value="100" name="kordinat[jarak]" class="form-range" id="radius">
+                                <input type="range" min="0" max="5000" value="100" name="kordinat[jarak]" class="form-range" id="radius">
                             </div>
                             <div class="form-group col-2">
                                 <label class="form-label"></label>
@@ -83,10 +83,13 @@
     $(".element-keterangan").html(htmlSelectDivisi);
     idEl = "#input_tags_divisi";
     placeholder = "Pilih Divisi";
-    // $(idEl).select2("destroy")
     $(idEl).select2({
         placeholder: placeholder,
         allowClear: true
+    });
+    $("#radius").change(function (e) {
+        e.preventDefault();
+        $("#radius_count").val($(this).val())
     });
     // $("#values-keterangan").change(function (e) {
     //     e.preventDefault();

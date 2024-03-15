@@ -21,6 +21,7 @@
             <th>{{__('No')}}</th>
             <th>{{__('Kode Lokasi')}}</th>
             <th>{{__('Nama Lokasi')}}</th>
+            <th>{{__('Jarak Lokasi')}}</th>
             <th>{{__('Opsi')}}</th>
         </tr>
     </thead>
@@ -63,6 +64,9 @@
                     },{
                         data: 'nama',
                         name: 'nama',
+                    },{
+                        data: 'jarak',
+                        name: 'jarak',
                     },{
                         data: 'opsi',
                         name: 'opsi',

@@ -19,18 +19,6 @@ class LokasiController extends Controller
 {
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $lokasi = Lokasi::when($search, function ($qr, $search) {
-            $qr->where('nama', 'LIKE', "%$search%");
-        })
-            ->paginate($limit);
-
-        $lokasi->appends(request()->all());
-
-        $lokasi = LokasiResource::collection($lokasi);
-
         // return inertia('Master/Lokasi/index', compact('lokasi'));
         return view('pages/masterdata/datapresensi/lokasikerja/index');
     }
@@ -190,7 +178,7 @@ class LokasiController extends Controller
         }
 
         if ($cr) {
-            
+
             if(request()->query('redirect') == "manage_location"){
                 return redirect(route('manage_lokasi_kerja.index'))->with([
                     'type' => 'success',
