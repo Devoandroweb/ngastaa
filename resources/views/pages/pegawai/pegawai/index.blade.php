@@ -66,9 +66,9 @@
             <option selected value="0">Semua Status</option>
             @foreach ($statusPegawai as $s)
                 @if((Session::get('current_select_status_pegawai')['status_pegawai'] ?? "") == $s->kode_status)
-                <option value="{{$s->kode_status}}" @selected(true)>{{$s->nama}}</option>
+                <option value="{{$s->nama}}" @selected(true)>{{$s->nama}}</option>
                 @else
-                <option value="{{$s->kode_status}}">{{$s->nama}}</option>
+                <option value="{{$s->nama}}">{{$s->nama}}</option>
                 @endif
             @endforeach
         </select>
@@ -267,7 +267,7 @@
         @if(getPermission('pegawai','U') || role('owner') || role('admin'))
             $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
                 var data = _TABLE.row(this).data();
-                window.location.href = data.detail;
+                window.open(data.detail,"_blank");
             });
         @endif
         // _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()

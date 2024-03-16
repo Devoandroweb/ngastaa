@@ -2,7 +2,7 @@
 <div class="form-group has-validation">
     <select class="form-control select2 statusPegawai" id=""  name="status_pegawai">
         @foreach (\App\Models\Master\StatusPegawai::all() as $statusPegawai)
-            <option value="{{$statusPegawai->kode_status}}">{{$statusPegawai->nama}}</option>
+            <option value="{{$statusPegawai->nama}}">{{$statusPegawai->nama}}</option>
         @endforeach
     </select>
 </div>

@@ -15,10 +15,35 @@ use App\Models\Master\Lokasi;
 use App\Models\Master\Skpd;
 use App\Models\Master\StatusPegawai;
 use App\Models\Master\Tingkat;
+use App\Models\MJadwalShift;
+use App\Models\Payroll\DataPayroll;
+use App\Models\Payroll\PayrollKurang;
+use App\Models\Payroll\PayrollTambah;
+use App\Models\Pegawai\DataPengajuanCuti;
+use App\Models\Pegawai\DataPengajuanLembur;
+use App\Models\Pegawai\DataPengajuanReimbursement;
+use App\Models\Pegawai\DataPresensi;
+use App\Models\Pegawai\DataVisit;
 use App\Models\Pegawai\Imei;
+use App\Models\Pegawai\Keluarga;
+use App\Models\Pegawai\RiwayatBahasa;
+use App\Models\Pegawai\RiwayatCuti;
 use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Pegawai\RiwayatJamKerja;
+use App\Models\Pegawai\RiwayatKgb;
+use App\Models\Pegawai\RiwayatKursus;
+use App\Models\Pegawai\RiwayatLainnya;
+use App\Models\Pegawai\RiwayatLhkpn;
+use App\Models\Pegawai\RiwayatOrganisasi;
+use App\Models\Pegawai\RiwayatPendidikan;
+use App\Models\Pegawai\RiwayatPmk;
+use App\Models\Pegawai\RiwayatPotongan;
+use App\Models\Pegawai\RiwayatShift;
+use App\Models\Pegawai\RiwayatSpt;
+use App\Models\Pegawai\RiwayatStatus;
+use App\Models\Pegawai\RiwayatTunjangan;
 use App\Models\Presensi\TotalPresensi;
+use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Facades\DB;
@@ -160,6 +185,7 @@ class PegawaiController extends Controller
             $image =  uploadImage($dir,request()->file('image'));
             $data['image'] = $dir.'/'.$image;
         }
+        // dd(!request('id'));
         if (!request('id')) {
             // dd($data);
             $data['password'] = Hash::make($nip);
@@ -206,16 +232,17 @@ class PegawaiController extends Controller
             ]);
             $cr->assignRole('pegawai');
         } else {
-            $user =  User::where('nip', $nip);
+            $user =  User::find(request('id'));
             if(request()->hasFile('image')){
                 @unlink($user->first()->image);
             }
-
+            $this->updateNip($user->nip,$nip);
             $cr = $user->update($data);
+            // dd($cr,$data);
+
             // $cr->assignRole('pegawai');
+
         }
-
-
 
         if ($cr) {
             return redirect(route('pegawai.pegawai.index'))->with([
@@ -348,7 +375,7 @@ class PegawaiController extends Controller
             //     return '<p class="text-success">' . $row->no_hp . '</p><i>' . $row->email . '</i>';
             // })
             ->addColumn('kode_status', function ($row) {
-                return buildBadge("info",$row->statusPegawai?->nama);
+                return buildBadge("info",$row->kode_status);
             })
             // ->addColumn('cuti', function ($row) {
             //     return "<span class='badge badge-danger'>{$row->maks_cuti}</span>";
@@ -596,4 +623,72 @@ class PegawaiController extends Controller
             $kodeSkpd = $jabatan->kode_skpd;
         }
     }
+
+    function updateNip($nipWhere,$nip){
+        try {
+
+            DB::transaction(function()use($nip){
+                $models = [
+                    DataPayroll::class,
+                    DataPengajuanCuti::class,
+                    DataPengajuanLembur::class,
+                    DataPengajuanReimbursement::class,
+                    DataPresensi::class,
+                    DataVisit::class,
+                    Imei::class,
+                    MJadwalShift::class,
+                    Keluarga::class,
+                    MapLokasiKerja::class,
+                    PayrollKurang::class,
+                    PayrollTambah::class,
+                    RiwayatKgb::class,
+                    RiwayatPmk::class,
+                    RiwayatSpt::class,
+                    RiwayatCuti::class,
+                    RiwayatLhkpn::class,
+                    RiwayatShift::class,
+                    RiwayatBahasa::class,
+                    // RiwayatDiklat::class,
+                    RiwayatKursus::class,
+                    RiwayatStatus::class,
+                    RiwayatLhkpn::class,
+                    RiwayatJabatan::class,
+                    RiwayatLainnya::class,
+                    // RiwayatGolongan::class,
+                    RiwayatJamKerja::class,
+                    RiwayatPotongan::class,
+                    RiwayatTunjangan::class,
+                    RiwayatOrganisasi::class,
+                    RiwayatPendidikan::class,
+                    TotalPresensiDetail::class,
+                    MapLokasiKerja::class,
+                ];
+                foreach($models as $model){
+                    foreach($model::where("nip",)->get() as $user){
+                        $user->update([
+                            "nip" => $nip
+                        ]);
+                    }
+                }
+            });
+            # Data Payroll
+            # data pengajuan cuti
+            # data pengajuan lembur
+            # data pengajuan reimvurs
+            # data presensi
+            # data visit
+            # imei
+            # jadwal shift
+            # keluarga
+            # manage lokasi kerja
+            # payroll kurang
+            # payroll tambah
+            # semua riwayat
+            # total presensi detail
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+    }
+    
 }

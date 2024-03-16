@@ -35,6 +35,7 @@ use App\Models\Pegawai\RiwayatSpt;
 use App\Models\Pegawai\RiwayatStatus;
 use App\Models\Pegawai\RiwayatTunjangan;
 use App\Models\Presensi\TotalPresensiDetail;
+use App\Models\User;
 use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Http\Request;
@@ -107,168 +108,45 @@ class CCronjobs extends Controller
         $this->payrollRepository->hitungPayroll();
     }
     function updateNip() {
-        $nip = [
-    '242',
-    '137',
-    '232',
-    '168',
-    '223',
-    '224',
-    '238',
-    '222',
-    '200',
-    '259',
-    '209',
-    '226',
-    '185',
-    '239',
-    '244',
-    '269',
-    '275',
-    '253',
-    '216',
-    '252',
-    '248',
-    '265',
-    '278',
-    '294',
-    '182',
-    '255',
-    '284',
-    '256',
-    '211',
-    '199',
-    '258',
-    '257',
-    '260',
-    '189',
-    '261',
-    '263',
-    '203',
-    '237',
-    '254',
-    '162',
-    '314',
-    '290',
-    '250',
-    '308',
-    '288',
-    '282',
-    '301',
-    '274',
-    '300',
-    '188',
-    '191',
-    '204',
-    '241',
-    '210',
-    '212',
-    '215',
-    '221',
-    '230',
-    '231',
-    '266',
-    '268',
-    '272',
-    '276',
-    '277',
-    '280',
-    '283',
-    '281',
-    '286',
-    '279',
-    '285',
-    '289',
-    '291',
-    '292',
-    '293',
-    '296',
-    '298',
-    '304',
-    '305',
-    '310',
-    '302',
-    '303',
-    '306',
-    '307',
-    '309',
-    '311',
-    '312',
-    '313',
-    '316',
-    '317',
-    '319',
-    '320',
-    '323',
-    '330',
-    '321',
-    '324',
-    '325',
-    '331',
-    '332',
-    '342',
-    '295',
-    '322',
-    '326',
-    '327',
-    '328',
-    '335',
-    '337',
-    '338',
-    '339',
-    '340',
-    '341',
-    '343'
-    ];
+        $data = [
+            ["Wahyu Widayat" ,'70001'],
+            ["Supriyanto",'70002'],
+            ["Mahfud Alfandi",'70003'],
+            ["Suyanto",'70004'],
+            ["M Agus Septiyadi",'70005'],
+            ["Benedictus Murdia suni",'70006'],
+            ["Subarkah Hendro Hernowo",'60001'],
+            ["Heri Suryono",'60002'],
+            ["Sugiarto",'60003'],
+            ["Nuranto Wahyu Widayanto",'60004'],
+            ["Prasetyo Widhi",'60005'],
+            ["Yanuar Rizky Albar",'60006'],
+            ["Alditra Iqdam Albani",'60007'],
+            ["Eko Hadi Saputro",'60008'],
+            ["Dwi Tomo Respati Putranto",'50001'],
+            ["Febrian Saputro",'50002'],
+            ["Supraptono",'50003'],
+            ["Imam Budi Baroroh",'50004'],
+            ["Sugiyanto",'50005'],
+            ["Surya Ariyanto",'50006'],
+            ["Nunung Fauzi",'50007'],
+            ["Sumiran",'50008'],
+            ["Tirto Hadi Prabowo",'50009'],
+            ["Sutikno",'50010'],
+            ["J. Suradi",'50011']
+        ];
     try {
-        // $users = User::whereIn("nip",$nip)->get();
-        // foreach($users as $user){
-        //     $user->update([
-        //         "nip" => "00".$user->nip
-        //     ]);
-        // }
-        DB::transaction(function()use($nip){
-            $models = [
-                DataPayroll::class,
-                DataPengajuanCuti::class,
-                DataPengajuanLembur::class,
-                DataPengajuanReimbursement::class,
-                DataPresensi::class,
-                DataVisit::class,
-                Imei::class,
-                MJadwalShift::class,
-                Keluarga::class,
-                MapLokasiKerja::class,
-                PayrollKurang::class,
-                PayrollTambah::class,
-                RiwayatKgb::class,
-                RiwayatPmk::class,
-                RiwayatSpt::class,
-                RiwayatCuti::class,
-                RiwayatLhkpn::class,
-                RiwayatShift::class,
-                RiwayatBahasa::class,
-                // RiwayatDiklat::class,
-                RiwayatKursus::class,
-                RiwayatStatus::class,
-                RiwayatLhkpn::class,
-                RiwayatJabatan::class,
-                RiwayatLainnya::class,
-                // RiwayatGolongan::class,
-                RiwayatJamKerja::class,
-                RiwayatPotongan::class,
-                RiwayatTunjangan::class,
-                RiwayatOrganisasi::class,
-                RiwayatPendidikan::class,
-                TotalPresensiDetail::class,
-            ];
-            foreach($models as $model){
-                foreach($model::get() as $user){
-                    $user->update([
-                        "nip" => "00".$user->nip
-                    ]);
+        DB::transaction(function()use($data){
+
+            foreach ($data as $v) {
+                $user = User::whereName($v[0])->first();
+                if($user){
+                    // dd($user);
+                    $user->update(["nip"=>$v[1]]);
+                    $this->updateNipInRwt($user->nip,$v[1]);
                 }
             }
+
         });
         # Data Payroll
         # data pengajuan cuti
@@ -289,7 +167,48 @@ class CCronjobs extends Controller
         DB::rollBack();
         dd($th->getMessage());
     }
-
-
+    }
+    function updateNipInRwt($nip,$newNip){
+        $models = [
+            DataPayroll::class,
+            DataPengajuanCuti::class,
+            DataPengajuanLembur::class,
+            DataPengajuanReimbursement::class,
+            DataPresensi::class,
+            DataVisit::class,
+            Imei::class,
+            MJadwalShift::class,
+            Keluarga::class,
+            MapLokasiKerja::class,
+            PayrollKurang::class,
+            PayrollTambah::class,
+            RiwayatKgb::class,
+            RiwayatPmk::class,
+            RiwayatSpt::class,
+            RiwayatCuti::class,
+            RiwayatLhkpn::class,
+            RiwayatShift::class,
+            RiwayatBahasa::class,
+            // RiwayatDiklat::class,
+            RiwayatKursus::class,
+            RiwayatStatus::class,
+            RiwayatLhkpn::class,
+            RiwayatJabatan::class,
+            RiwayatLainnya::class,
+            // RiwayatGolongan::class,
+            RiwayatJamKerja::class,
+            RiwayatPotongan::class,
+            RiwayatTunjangan::class,
+            RiwayatOrganisasi::class,
+            RiwayatPendidikan::class,
+            TotalPresensiDetail::class,
+        ];
+        foreach($models as $model){
+            foreach($model::whereNip($nip)->get() as $user){
+                $user->update([
+                    "nip" => $newNip
+                ]);
+            }
+        }
     }
 }
