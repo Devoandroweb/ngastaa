@@ -16,6 +16,10 @@
     background-color: #fff;
     padding-right: 1rem;
 }
-.header-form .line-text{
-
+.dataTables_wrapper {
+    position: relative;
+    min-height: 250px;
+}
+div.dataTables_processing{
+    margin-top: 10px !important;
 }

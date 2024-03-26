@@ -1,9 +1,10 @@
 @php
-    $GLOBALS['dataPresensi'] = \App\Models\Presensi\TotalPresensiDetail::whereNip($pegawai->nip)->whereBetween('tanggal',[$tahun."-".$bulan."-01",$tahun."-".$bulan."-".lastDayInThisMonth($bulan,$tahun)])->get();
+    $GLOBALS['dataPresensi'] = \App\Models\Presensi\TotalPresensiDetail::whereNip($pegawai->nip)->whereBetween('tanggal',[$tahun."-".addZero($bulan)."-01",$tahun."-".addZero($bulan)."-".lastDayInThisMonth($tahun,$bulan)])->get();
     // dd(lastDayInThisMonth("2023","06"));
-    // dd($jamKerja);
-    $RjamKerja = $this->mRiwayatKerja::with('jamKerja','jamKerjaDay')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
-    $RjamKerja = $this->jamKerjaRepository->searchHariJamKerja($RjamKerja->kode_jam_kerja,$today);
+    // // dd($jamKerja);
+    // dd($GLOBALS['dataPresensi'],$pegawai->nip,[$tahun."-".addZero($bulan)."-01",$tahun."-".addZero($bulan)."-".lastDayInThisMonth($tahun,$bulan)]);
+    // $RjamKerja = $this->mRiwayatKerja::with('jamKerja','jamKerjaDay')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
+    // $RjamKerja = $this->jamKerjaRepository->searchHariJamKerja($RjamKerja->kode_jam_kerja,$today);
 
     function searchDataPresensi($tanggal){
         foreach ($GLOBALS['dataPresensi'] as $key => $value) {
@@ -20,7 +21,8 @@
         $menit = $selisihMenit % 60;
         if($jam != 0){
             // return $jam ." Jam ".$menit." Menit";
-            return "$jamTepatDatang,$jamDatang,$toleransi";
+            return $jamDatang;
+            // return "$jamTepatDatang,$jamDatang,$toleransi";
         }
         if($menit != 0){
             return $menit." Menit";
@@ -39,6 +41,7 @@
         }
         return "-";
     }
+
 @endphp
 <html>
     <style>

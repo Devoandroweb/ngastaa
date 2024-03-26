@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('shift', 'shift');
             Route::get('lokasi', 'lokasi');
             Route::get('existing-presensi-day/{nip}', 'existingAbsenDay');
+            Route::post('statistik', 'statistikPresensi');
         });
 
     Route::controller(VisitApiController::class)

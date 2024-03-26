@@ -77,7 +77,7 @@
 <div class="row mx-auto">
     <div class="col-md-5 ps-0">
         {{-- <input type="text" name="nip_pegawai" placeholder="Ketik NIP Pegawai" class="form-control h-100"> --}}
-        <select class="form-control form-control-lg" name="nip_pegawai[]" id="select-pegawai-nip" multiple>
+        <select class="form-control form-control-lg" name="nip_pegawai[]" id="select-pegawai-nip" multiple size="1">
 
         </select>
     </div>

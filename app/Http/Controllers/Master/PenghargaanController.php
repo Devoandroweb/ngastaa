@@ -12,19 +12,6 @@ class PenghargaanController extends Controller
 {
     public function index()
     {
-        $search = request('s');
-        $limit = request('limit') ?? 10;
-
-        $penghargaan = Penghargaan::when($search, function ($qr, $search) {
-            $qr->where('nama', 'LIKE', "%$search%");
-        })
-            ->paginate($limit);
-
-        $penghargaan->appends(request()->all());
-
-        $penghargaan = PenghargaanResource::collection($penghargaan);
-
-        // return inertia('Master/Penghargaan/index', compact('penghargaan'));
         return view('pages/masterdata/datalainya/penghargaan/index');
     }
 

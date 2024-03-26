@@ -316,7 +316,7 @@ class PegawaiController extends Controller
 
 
     }
-    public function datatable(DataTables $dataTables)
+    public function datatable1(DataTables $dataTables)
     {
 
         // dd($kodeSkpd);
@@ -385,6 +385,85 @@ class PegawaiController extends Controller
             })
             ->addColumn('jam_kerja', function ($row) {
                 return $row->jamKerja->where('is_akhir',1)->first()?->jamKerja?->nama ?? "-";
+            })
+            ->addColumn('detail', function ($row) {
+                return route('pegawai.pegawai.detail', $row->nip);
+            })
+            ->addColumn('opsi', function ($row) {
+                $html = "-";
+                if(getPermission('pegawai','U') || role('admin') || role('owner')){
+
+                    $html = "<a class='me-2 edit' tooltip='Ubah' href='" . route('pegawai.pegawai.edit', $row->nip) . "'>" . icons('pencil') . "</a>";
+                }
+                if(getPermission('pegawai','D') || role('admin') || role('owner')){
+                    // $html = "<a tooltip='detail' class='me-2 text-info' href='" . route('pegawai.pegawai.detail', $row->nip) . "'>" . icons('arror-circle-right') . "</a>";
+                    $html .= "<a class='me-2 delete text-danger' tooltip='Hapus' href='" . route('pegawai.pegawai.delete', $row->nip) . "'>" . icons('trash') . "</a>";
+                }
+                if(getPermission('pegawai','US') || role('admin') || role('owner')){
+                    $html .= "<a class='me-2 shift text-warning' tooltip='Ubah Shift' href='" . route('pegawai.pegawai.shift', $row) . "'>" . icons('refresh') . "</a>";
+                }
+                return $html;
+            })
+            ->rawColumns(['opsi', 'images', 'nama', 'nama_jabatan', 'kode_status', 'level','cuti','checkbox'])
+            ->addIndexColumn()
+            ->toJson();
+    }
+    public function datatable(DataTables $dataTables)
+    {
+
+        // dd($kodeSkpd);
+        $kodeSkpd = request()->query('kode_skpd');
+        $kodeLokasi = request()->query('kode_lokasi');
+        $namaPegawai = request()->query('nama_pegawai');
+        $statusPegawai = request()->query('status_pegawai');
+        $nip = request()->query('nip_pegawai');
+        $nip = explode(",",$nip);
+        Session::put('current_select_skpd',['pegawai'=>$kodeSkpd]);
+        Session::put('current_select_lokasi',['lokasi'=>$kodeLokasi]);
+        Session::put('current_select_status_pegawai',['status_pegawai'=>$statusPegawai]);
+        // dd($kodeSkpd);
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
+
+        if($namaPegawai){
+            $pegawai = $pegawai->where('nama_pegawai','like','%'.$namaPegawai.'%');
+        }
+
+        if(count($nip) > 0 && $nip[0] != ""){
+            $pegawai = $pegawai->whereIn('nip',$nip);
+
+        }
+        // dd($statusPegawai);
+        if($statusPegawai != 0){
+            $pegawai = $pegawai->where('kode_status',$statusPegawai);
+        }
+        $pegawai = $pegawai->get();
+        return $dataTables->of($pegawai)
+            ->addColumn('checkbox', function ($row) {
+                return '<input type="checkbox" name="nip[]" value="'.$row->nip.'" class="form-check-input checkbox-nip">';
+            })
+            ->addColumn('images', function ($row) {
+                return '<div>
+                        <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
+                        <img src="' . $row->foto() . '" alt="user" class="avatar-img">
+                    </div>';
+            })
+            ->addColumn('nama', function ($row) {
+                return '<b class="text-primary">' . $row->nip . '</b><br>' .  ($row->gelar_depan ? $row->gelar_depan .". " : "") . $row->name . ($row->gelar_belakang ? ", " . $row->gelar_belakang : "");
+
+            })
+            ->addColumn('nama_jabatan', function ($row) {
+
+                return '<p>'.$row->nama_divisi.'</p><p>'.$row->nama_tingkat.'</p>';
+            })
+
+            ->addColumn('kode_status', function ($row) {
+                return buildBadge("info",$row->kode_status);
+            })
+            ->addColumn('lokasi_kerja', function ($row) {
+                return $row->nama_lokasi_kerja ?? "-";
+            })
+            ->addColumn('jam_kerja', function ($row) {
+                return $row->jam_kerja ?? "-";
             })
             ->addColumn('detail', function ($row) {
                 return route('pegawai.pegawai.detail', $row->nip);
@@ -690,5 +769,5 @@ class PegawaiController extends Controller
             DB::rollBack();
         }
     }
-    
+
 }

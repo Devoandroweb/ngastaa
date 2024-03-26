@@ -667,8 +667,12 @@ function arrayTanggal($start,$end){
 
 }
 function lastDayInThisMonth($tahun,$bulan){
-    $tanggalTerakhir = date('t', strtotime($tahun . '-' . $bulan . '-01'));
+    // dd($bulan);
+    $tanggalTerakhir = Carbon::create($tahun, $bulan, 1)->daysInMonth;
     return $tanggalTerakhir;
+}
+function addZero($bulan){
+    return (($bulan<10) ? "0$bulan" : $bulan);
 }
 function convertDateToNameDay($tanggal){
 
@@ -839,4 +843,18 @@ function hitungRangeJam($jamA, $jamB)
         // Format output range jam
         return (int)$rangeJam->format('%H');
     }
-    
+function hitungPersentase($nilai_sekarang, $nilai_total, $desimal = 2)
+{
+    // Pastikan nilai total tidak nol untuk menghindari pembagian dengan nol.
+    if ($nilai_total == 0) {
+        return 0;
+    }
+
+    // Hitung persentase
+    $persentase = ($nilai_sekarang / $nilai_total) * 100;
+
+    // Bulatkan ke jumlah desimal yang diinginkan
+    $persentase = round($persentase, $desimal);
+
+    return $persentase;
+}

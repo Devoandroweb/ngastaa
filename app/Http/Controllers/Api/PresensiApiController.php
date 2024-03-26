@@ -224,7 +224,7 @@ class PresensiApiController extends Controller
         $user = User::where('nip', $nip)->with('riwayat_shift','jamKerja')->first();
 
         # cek jarak
-        
+
         if ($dateSend < $toler1Min) {
             return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Harap memperbaiki jam Handphone Anda!']),400);
         }
@@ -613,5 +613,9 @@ class PresensiApiController extends Controller
         }
 
         return $foto;
+    }
+    function statistikPresensi(){
+        $data = $this->presensiRepository->getStatPresensi(request("nip"));
+        return response()->json(buildResponseSukses($data),200);
     }
 }

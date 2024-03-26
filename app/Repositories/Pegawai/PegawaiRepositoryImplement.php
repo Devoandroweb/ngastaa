@@ -8,6 +8,7 @@ use App\Models\Pegawai\RiwayatJabatan;
 use App\Models\Presensi\TotalPresensi;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\User;
+use App\Models\VPegawai;
 use Illuminate\Support\Facades\Auth;
 
 class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
@@ -26,12 +27,8 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
 
         $this->mUser = $mUser;
     }
-    function allPegawaiWithRole($kodeSkpd = null, $forApi = false){
-        // $pegawai = User::all();
-        // foreach ($pegawai as $value) {
-        //     $value->assignRole('pegawai');
-        // }
-        // dd(role('pegawai'));
+    function allPegawaiWithRole1($kodeSkpd = null, $forApi = false){
+
         if(role('pegawai')){
             $kodeSkpd = auth()->user()->jabatan_akhir->first()?->skpd?->kode_skpd;
         }
@@ -90,6 +87,24 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                 });
             }
 
+        }
+        return $pegawai;
+    }
+    function allPegawaiWithRole($kodeSkpd = null, $forApi = false){
+        if($forApi){
+            # FOR WEB_SERVICES
+            $role = false;
+            $user = request()->user();
+            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+        }else{
+            # FOR WEB
+            // $role = role('owner') || role('admin') || role("finance");
+            $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+            // dd($levelJabatanUser);
+        }
+        $pegawai = VPegawai::where("deleted_at",null);
+        if($kodeSkpd){
+            $pegawai->where("kode_skpd",$kodeSkpd);
         }
         return $pegawai;
     }

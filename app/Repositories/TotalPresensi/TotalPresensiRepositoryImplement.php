@@ -60,8 +60,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
         $this->mDataPresensi = $mDataPresensi;
         $this->mdTotalPresensi = $mdTotalPresensi;
-        $this->mdShifts = $mdShifts;
-        $this->mdJamKerja = $mdJamKerja;
+        $this->mdShifts = $mdShifts->all();
+        $this->mdJamKerja = $mdJamKerja->all();
         $this->mdPengajuanCuti = $mdPengajuanCuti;
         $this->mdTotalIzin = $mdTotalPresensi;
 
@@ -82,6 +82,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         $this->allPengajuanCuti = $mdPengajuanCuti->where('status',1)->get();
         $this->nipMasuk = [];
 
+
+
     }
     public function manualCaculate()
     {
@@ -89,6 +91,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         if($this->dataTotalPresensiDetail->get()->count() != 0){
             $this->maxDate = $this->dataTotalPresensiDetail->max('tanggal');
             $this->maxDate = date("Y-m-d",strtotime($this->maxDate."+1 days"));
+            // dd($this->maxDate);
         }else{
             $minDate = $this->mDataPresensi->where('periode_bulan','!=',null)->where('periode_bulan','!=',"")->get()->min('periode_bulan');
             // dd($minDate);
@@ -99,8 +102,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             }
         }
         # $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
-        $dateStart = $this->maxDate;
-        $dateEnd = date("Y-m-d",strtotime("-1 days"));
+        // $dateStart = $this->maxDate;
+        // $dateEnd = date("Y-m-d",strtotime("-1 days"));
+        $dateStart = "2024-02-21";
+        $dateEnd = "2024-02-22";
+        // dd($dateStart,$dateEnd);
         # Check apakah tanggal nya sama, jika sama jangan hitung
         if($dateStart == $dateEnd){
             return 2; # Tanggal Masih Sama
@@ -108,6 +114,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         // dd($dateStart,$dateEnd);
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
+        $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
+        $dataInsert = [];
         // dd($tanggalBulan);
         foreach ($tanggalBulan as $date) {
             // dd($tanggalBulan);
@@ -120,8 +128,15 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->dataPresensi2 =  DataPresensi::whereDate('created_at', $this->date)->where('hitung',0);
             // echo $this->date;
             // dd($this->dataPresensi2->get());
-            $this->calculatePresensi();
+            if(count($dataInsert) == 0){
+                $dataInsert = $this->calculatePresensi();
+            }else{
+                $dataInsert = collect($dataInsert)->concat($this->calculatePresensi());
+            }
         }
+        // dd($dataInsert);
+        TotalPresensiDetail::insert($dataInsert->toArray());
+
         return 1;
     }
     function calculatePresensi()
@@ -132,7 +147,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             // }
             $dataInsertTotalPresensiDetail = [];
             $dataInsertTotalIzinDetail = [];
-            $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
+
             // dd($this->allPegawai);
             foreach ($this->allPegawai as $pegawai) {
                 // $indexTotalPegawai = $this->searchIndex($this->dataTotalPresensi,'nip',$pegawai->nip);
@@ -243,12 +258,13 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
             }
             // dd($dataInsertTotalPresensiDetail);
-            TotalPresensiDetail::insert($dataInsertTotalPresensiDetail);
+
+            // TotalPresensiDetail::insert($dataInsertTotalPresensiDetail);
 
             # UPDATE APP STATUS FUNCTION
             // AppStatusFunction::where('name','calculate_presensi')->update(['value' => 1]);
             // $this->dataPresensi->update(['hitung',1]);
-
+            return $dataInsertTotalPresensiDetail;
 
     }
 
@@ -345,10 +361,9 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     function searchShift($kode_shift){
         $result = null;
 
-        // dd($this->mdJamKerja->all());
+
         # Jam Kerja
-        // dd($kode_shift);
-        foreach ($this->mdJamKerja->all() as $jamKerja) {
+        foreach ($this->mdJamKerja as $jamKerja) {
             if($kode_shift == $jamKerja->kode){
                 // dd($kode_shift);
                 return $jamKerja;
@@ -356,7 +371,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         }
 
         # Jam Shift
-        foreach ($this->mdShifts->all() as $shift) {
+        foreach ($this->mdShifts as $shift) {
             if($kode_shift == $shift->kode_shift){
                 return $shift;
             }

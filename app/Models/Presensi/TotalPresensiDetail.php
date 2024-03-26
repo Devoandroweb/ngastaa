@@ -22,4 +22,32 @@ class TotalPresensiDetail extends Model
     function izin(){
         return $this->hasOne(Cuti::class,'kode_cuti','kode_cuti');
     }
+
+    function scopeWithHadir($query){
+        return $query->where("status","like","%1%");
+    }
+    function scopeWithTelat($query){
+        return $query->where("status","like","%2%");
+    }
+    function scopeWithAlfa($query){
+        return $query->where("status","like","%3%");
+    }
+    function scopeWithIzin($query){
+        return $query->where("status","like","%4%");
+    }
+    function scopeWithTAP($query){
+        return $query->where("status","like","%5%");
+    }
+    function scopeWithPC($query){
+        return $query->where("status","like","%6%");
+    }
+    function scopeWithLibur($query){
+        return $query->where("status","like","%7%");
+    }
+    function scopeWithLembur($query){
+        return $query->where("status","like","%8%");
+    }
+    function scopeWithCuti($query){
+        return $query->where("status","like","%9%");
+    }
 }

@@ -17,14 +17,14 @@
         </tr>
     </thead>
     <tbody>
-        
+
     </tbody>
 </table>
 
 @endsection
 @push('js')
     <script >
-                
+
         var _TABLE = null;
         var _URL_DATATABLE = '{{url("master/penghargaan/datatable")}}';
         // SESUAIKAN COLUMN DATATABLE
@@ -32,7 +32,7 @@
         setDataTable();
         function setDataTable() {
             _TABLE = $('#data').DataTable({
-                
+                footer: true,
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -61,11 +61,11 @@
                         orderable: false,
                         searchable: false
                     }],
-                    
+
             });
         }
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
 
     </script>
-    
+
 @endpush
