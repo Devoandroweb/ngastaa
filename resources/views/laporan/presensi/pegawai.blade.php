@@ -1,7 +1,7 @@
 @php
     $GLOBALS['dataPresensi'] = \App\Models\Presensi\TotalPresensiDetail::whereNip($pegawai->nip)->whereBetween('tanggal',[$tahun."-".addZero($bulan)."-01",$tahun."-".addZero($bulan)."-".lastDayInThisMonth($tahun,$bulan)])->get();
     // dd(lastDayInThisMonth("2023","06"));
-    // // dd($jamKerja);
+    // dd($jamKerja);
     // dd($GLOBALS['dataPresensi'],$pegawai->nip,[$tahun."-".addZero($bulan)."-01",$tahun."-".addZero($bulan)."-".lastDayInThisMonth($tahun,$bulan)]);
     // $RjamKerja = $this->mRiwayatKerja::with('jamKerja','jamKerjaDay')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
     // $RjamKerja = $this->jamKerjaRepository->searchHariJamKerja($RjamKerja->kode_jam_kerja,$today);
@@ -15,12 +15,14 @@
         return null;
     }
     function hitungTelatText($jamTepatDatang,$jamDatang,$toleransi){
+        // echo $jamTepatDatang;
         $selisihMenit = hitungTelat($jamTepatDatang,$jamDatang,$toleransi);
 
         $jam = floor($selisihMenit / 60); // Menghitung jam
         $menit = $selisihMenit % 60;
+        // dd();
         if($jam != 0){
-            // return $jam ." Jam ".$menit." Menit";
+            // return date("H",$jam) ." Jam ".$menit." Menit";
             return $jamDatang;
             // return "$jamTepatDatang,$jamDatang,$toleransi";
         }
@@ -41,7 +43,26 @@
         }
         return "-";
     }
+    function getJamKerja($jamKerja,$item){
 
+        foreach ($jamKerja as $j) {
+            if($j->hari==date("N", strtotime($item))){
+                if($j->parent){
+                    return getJamKerjaWhereNumday($jamKerja,$j->parent);
+                }
+                return $j;
+            }
+        }
+        return null;
+    }
+    function getJamKerjaWhereNumday($jamKerja,$num){
+        foreach ($jamKerja as $j) {
+            if($j->hari==$num){
+                return $j;
+            }
+        }
+        return null;
+    }
 @endphp
 <html>
     <style>
@@ -84,7 +105,7 @@
             </tr>
             <tr>
                 <td>SHIFT/JAM KERJA</td>
-                <td>: {{$jamKerja->nama}}</td>
+                <td>: {{$mJamKerja->nama}}</td>
             </tr>
         </table>
         <br>
@@ -104,6 +125,9 @@
             @foreach (arrayTanggal("$tahun-$bulan-1","$tahun-$bulan-".lastDayInThisMonth($tahun,$bulan)) as $i => $item)
 
                 @php
+                    if(date("N", strtotime($item))==7){
+                        continue;
+                    }
                     $statusName = "-";
                     $presensi = searchDataPresensi($item);
                     $jamDatang = $presensi?->tanggal_datang ? date("H:i",strtotime($presensi?->tanggal_datang)) : "-" ;
@@ -124,6 +148,10 @@
                             }
                         }
                     }
+                    $hariJamKerja = getJamKerja($jamKerja,$item);
+                    // if(is_null($hariJamKerja)){
+                    //     dd($item,$hariJamKerja);
+                    // };
                 @endphp
                 <tr @if(!$presensi) style="background: yellow" @endif>
                     <td style="text-align: center">{{$i+1}}</td>
@@ -131,10 +159,10 @@
                     <td>{{convertDateToNameDay($item)}}</td>
                     <td>{{tanggal_indo($item)}}</td>
                     <td>{{$jamDatang}}</td>
-                    <td>{{hitungTelatText($item." ".$jamKerja->jam_tepat_datang,$presensi?->tanggal_datang,$jamKerja->toleransi_datang)}}</td>
+                    <td>{{hitungTelatText($item." ".$hariJamKerja->jam_tepat_datang,$presensi?->tanggal_datang,$hariJamKerja->toleransi_datang)}}</td>
                     <td>{{$jamIstirahat}}</td>
                     <td>{{$jamPulang}}</td>
-                    <td>{{hitungCepatPulangText($item." ".$jamKerja->jam_tepat_pulang,$presensi?->tanggal_pulang)}}</td>
+                    <td>{{hitungCepatPulangText($item." ".$hariJamKerja->jam_tepat_pulang,$presensi?->tanggal_pulang)}}</td>
                     <td></td>
                 </tr>
             @endforeach

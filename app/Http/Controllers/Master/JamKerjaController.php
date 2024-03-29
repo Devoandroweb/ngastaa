@@ -50,6 +50,7 @@ class JamKerjaController extends Controller
     {
         $for = 1;
         $jamKerja->load('hariJamKerja');
+        // dd($jamKerja);
         return view('pages.masterdata.datapresensi.jam_kerja.add', compact('jamKerja','for'));
     }
 
@@ -123,6 +124,7 @@ class JamKerjaController extends Controller
                         }
                     }
                     if(in_array($filler,[1,2])){
+                        // dd($dataHariJamKerja);
                         HariJamKerja::updateOrCreate(
                             [
                                 'kode_jam_kerja'=>$data['kode'],

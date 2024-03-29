@@ -228,11 +228,12 @@ function kehadiran($nip, $bulan, $tahun)
 
 
     function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
-        // dd($jamDatang, $jamTepatDatang);
+        // echo "$jamDatang, $jamTepatDatang";
 
-        $jamTepatDatang = strtotime($jamTepatDatang." +".$toleransi." Minutes");
+        $jamTepatDatang = strtotime("+".is_null($toleransi) ? "0 minutes" : $toleransi." minutes",strtotime($jamTepatDatang));
         $jamDatang = strtotime($jamDatang);
         $result = 0;
+        // dd(date("H:i:s", ($jamDatang-$jamTepatDatang)));
         if($jamDatang > $jamTepatDatang){
             $selisihDetik = abs($jamTepatDatang - $jamDatang);
             $selisihMenit = floor($selisihDetik / 60);

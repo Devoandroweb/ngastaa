@@ -18,9 +18,9 @@ class PdfRepositoryImplement extends Eloquent implements PdfRepository{
     {
 
     }
-    function generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja){
+    function generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja,$mJamKerja){
         // dd($jamKerja);
-        return PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai','jamKerja'))->setPaper('a4', 'landscape');
+        return PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai','jamKerja','jamKerja','mJamKerja'))->setPaper('a4', 'landscape');
     }
     // Write something awesome :)
 }
