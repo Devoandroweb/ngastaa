@@ -40,6 +40,7 @@ use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CCronjobs extends Controller
 {
@@ -210,5 +211,21 @@ class CCronjobs extends Controller
                 ]);
             }
         }
+    }
+    function resetPasswordAllUser(){
+        try {
+            foreach (User::where("owner",0)->get() as $user) {
+                $this->resetPassword($user);
+            }
+            return response()->json(['status' => TRUE, 'message'=>'Password berhasil di reset, gunakan password NIP']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => FALSE, 'message'=>"Error Server"]);
+            //throw $th;
+        }
+    }
+    function resetPassword($user){
+        $user->update([
+            "password" => Hash::make($user->nip)
+        ]);
     }
 }

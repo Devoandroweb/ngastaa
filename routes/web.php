@@ -115,6 +115,7 @@ Route::get('/getroute', function () {
 # CRONJOBS
 Route::controller(CCronjobs::class)
         ->group(function(){
+            Route::get('reset-pass-all-user','resetPasswordAllUser')->name('reset-pass-all-user');
             Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
             Route::get('calculate-payroll','calculatePayroll')->name('calculate-payroll');
             Route::get('reset-app-status-calculate-presensi','resetAppStatusCalculatePresensi')->name('reset-app-status-calculate-presensi');
