@@ -40,7 +40,7 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
         $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->first();
         //code...
         $kode_tingkat = "-";
-        $jabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
+        $jabatan = array_key_exists('0', $user?->jabatan_akhir->toArray()) ? $user?->jabatan_akhir[0] : null;
 
         if( $jabatan == null){
             $jabatan = "-";

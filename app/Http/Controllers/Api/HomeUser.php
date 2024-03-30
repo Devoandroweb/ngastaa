@@ -40,7 +40,7 @@ class HomeUser extends Controller
             return response()->json([
                 'status' => FALSE,
                 'message' => "Failed",
-                'data' => $th->getMessage()
+                'data' => $th->getMessage()." | ".$th->getFile()." | ".$th->getLine()
             ], 404);
         }
         // get shift
