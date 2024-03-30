@@ -118,7 +118,9 @@ class DataPresensiController extends Controller
         $xl = request('xl');
         // dd($nip);
         $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
-        $jamKerja = $pegawai->jamKerja->where('is_akhir',1)->first()?->jamKerja;
+        $mJamKerja = $pegawai->jamKerja->where('is_akhir',1)->first()?->jamKerja;
+        $jamKerja = $mJamKerja?->hariJamKerja;
+        // dd($jamKerja);
         if(!$jamKerja){
             $jamKerja = $pegawai->shift->where('is_akhir',1)->first()?->shift;
         }
@@ -141,7 +143,7 @@ class DataPresensiController extends Controller
                 return $response;
                 // return view('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'));
             } else {
-                $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai);
+                $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai, $jamKerja, $mJamKerja);
                 // $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'))->setPaper('a4', 'potrait');
                 // ob_end_clean();
                 return $pdf->stream();
