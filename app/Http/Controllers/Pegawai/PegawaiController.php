@@ -316,7 +316,7 @@ class PegawaiController extends Controller
 
 
     }
-    public function datatable1(DataTables $dataTables)
+    public function datatable(DataTables $dataTables)
     {
 
         // dd($kodeSkpd);
@@ -408,7 +408,7 @@ class PegawaiController extends Controller
             ->addIndexColumn()
             ->toJson();
     }
-    public function datatable(DataTables $dataTables)
+    public function datatable1(DataTables $dataTables)
     {
 
         // dd($kodeSkpd);
