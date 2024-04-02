@@ -91,22 +91,65 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         return $pegawai;
     }
     function allPegawaiWithRole($kodeSkpd = null, $forApi = false){
+        if(role('pegawai')){
+            $kodeSkpd = auth()->user()->jabatan_akhir->first()?->skpd?->kode_skpd;
+        }
+        // dd($kodeSkpd);
         if($forApi){
             # FOR WEB_SERVICES
             $role = false;
-            $user = request()->user();
+            $user = User::where('nip',request()->query('nip'))->first();
             $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
         }else{
             # FOR WEB
-            // $role = role('owner') || role('admin') || role("finance");
+            $role = role('owner') || role('admin') || role("finance");
             $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
             // dd($levelJabatanUser);
         }
-        $pegawai = VPegawai::where("deleted_at",null);
-        if($kodeSkpd){
-            $pegawai->where("kode_skpd",$kodeSkpd);
+
+        $pegawai = User::whereNot('users.nip',null)->with('riwayat_jabatan');
+
+        // dd(getLevelUser());
+
+        if(getLevelUser() == "5"){ # Pegawai
+            $pegawai->where('created_by',getIdUser());
         }
-        return $pegawai;
+        $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
+            // ambil level jabatan user
+            // dd($kodeSkpd);
+            // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
+            $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser, $kodeSkpd){
+                if($kodeSkpd != 0 || $kodeSkpd != null){
+                    $q->where('kode_skpd',$kodeSkpd);
+                }
+                $q->where('is_akhir',1);
+                $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
+                    $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
+                        $q->where('kode_eselon','>',(int)$levelJabatanUser);
+                    });
+                });
+            });
+        });
+        // dd($role,$kodeSkpd);
+        if($role){
+            // dd($kodeSkpd);
+            if($kodeSkpd != 0){
+                $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
+                    // dd($where);
+                    $qt->on('riwayat_jabatan.nip', 'users.nip');
+                    // dd($kodeSkpd != null,$kodeSkpd != 0,$kodeSkpd);
+                    if($kodeSkpd != null && $kodeSkpd != 0){
+                        $qt->where([
+                            "is_akhir" => 1,
+                            "kode_skpd" => $kodeSkpd
+                        ]);
+                    }
+                    $qt->where('riwayat_jabatan.deleted_at', null);
+                    // dd($kodeSkpd);
+                });
+            }
+
+        }
     }
     function getAllPegawai(){
          return User::where('owner',0)->get();

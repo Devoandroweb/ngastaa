@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <meta name="description" content="A modern CRM Dashboard Template with reusable and flexible components for your SaaS web applications by hencework. Based on Bootstrap."/>
-    
+
 	<!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="icon" href="{{asset('/')}}favicon.ico" type="image/x-icon">
-	
+
 	<!-- CSS -->
     <link href="{{asset('/')}}dist/css/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -30,7 +30,7 @@
 							<div class="auth-content flex-column pt-8 pb-md-8 pb-13">
 								<div class="text-center mb-7">
 									<a class="navbar-brand me-0" href="index.html">
-										<img class="brand-img d-inline-block w-50" src="{{asset('/')}}dist/img/logo-dsm-panjang.png" alt="brand">
+										<img class="brand-img d-inline-block w-50" src="{{asset('/')}}dist/img/logo-bapas-panjang.png" alt="brand">
 									</a>
 								</div>
 								<form class="w-100" action="{{route('auth-admin')}}" method="post">
@@ -42,7 +42,7 @@
 												<p>Silakan masuk ke akun Anda dengan menggunakan nama pengguna dan kata sandi yang sudah terdaftar</p>
 											</div>
 											<div class="row gx-3">
-												
+
 												@if ($errors->any())
 												<div class="alert alert-inv alert-inv-danger alert-wth-icon alert-dismissible fade show" role="alert">
 													<span class="alert-icon-wrap"><i class="zmdi zmdi-bug"></i></span> {{$errors->all()[0]}}
@@ -78,7 +78,7 @@
 												</div>
 											</div>
                                             <input type="submit" id="kt_sign_in_submit" class="btn btn-primary btn-uppercase btn-block" value="Login">
-											
+
 										</div>
 									</div>
 								</form>
@@ -132,7 +132,7 @@
 
 	<!-- Simplebar JS -->
 	<script src="{{asset('/')}}vendors/simplebar/dist/simplebar.min.js"></script>
-	
+
 	<!-- Init JS -->
 	<script src="{{asset('/')}}dist/js/init.js"></script>
 </body>
