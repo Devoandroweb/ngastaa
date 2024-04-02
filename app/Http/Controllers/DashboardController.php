@@ -37,7 +37,7 @@ class DashboardController extends Controller
         $periode_bulan = date("Y-m");
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole();
 
-        $jumlah_pegawai = $pegawai->count();
+        $jumlah_pegawai = $pegawai->get()->count();
 
         $status_pegawai = StatusPegawai::all();
         $status_pegawai_statistic = [];

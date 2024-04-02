@@ -130,7 +130,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                 });
             });
         });
-        // dd($role,$kodeSkpd);
+
         if($role){
             // dd($kodeSkpd);
             if($kodeSkpd != 0){
@@ -148,8 +148,8 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                     // dd($kodeSkpd);
                 });
             }
-
         }
+        return $pegawai;
     }
     function getAllPegawai(){
          return User::where('owner',0)->get();
