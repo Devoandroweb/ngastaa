@@ -210,6 +210,9 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         if($kodeSkpd){
             $pegawai->where("kode_skpd",$kodeSkpd);
         }
+        if(getLevelUser() == "5"){ # Pegawai
+            $pegawai->where('created_by',getIdUser());
+        }
         return $pegawai;
     }
 }
