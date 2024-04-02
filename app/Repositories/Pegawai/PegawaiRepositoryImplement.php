@@ -91,6 +91,9 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         return $pegawai;
     }
     function allPegawaiWithRole($kodeSkpd = null, $forApi = false){
+        if(config("app.hit_v_pegawai")){
+            return $this->getVPegawaiWithRole($kodeSkpd,$forApi);
+        }
         if(role('pegawai')){
             $kodeSkpd = auth()->user()->jabatan_akhir->first()?->skpd?->kode_skpd;
         }
@@ -184,5 +187,29 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
     function getPegawaiWhereDivisiKerja($kodeSkpd) {
         $riwayatJabatan = RiwayatJabatan::whereIn('kode_skpd',$kodeSkpd)->where('is_akhir',1)->get();
         return $riwayatJabatan;
+    }
+    function getVPegawaiWithRole($kodeSkpd = null, $forApi = false){
+        if(role('pegawai')){
+            $kodeSkpd = auth()->user()->jabatan_akhir->first()?->skpd?->kode_skpd;
+        }
+        // dd($kodeSkpd);
+        if($forApi){
+            # FOR WEB_SERVICES
+            $role = false;
+            $user = request()->user();
+
+            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+        }else{
+            # FOR WEB
+            // $role = role('owner') || role('admin') || role("finance");
+            $role = role('owner') || role('admin') || role("finance");
+            $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+            // dd($levelJabatanUser);
+        }
+        $pegawai = VPegawai::where("deleted_at",null);
+        if($kodeSkpd){
+            $pegawai->where("kode_skpd",$kodeSkpd);
+        }
+        return $pegawai;
     }
 }

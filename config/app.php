@@ -15,8 +15,8 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'DSM Absen'), 
-
+    'name' => env('APP_NAME', 'DSM Absen'),
+    'hit_v_pegawai' => true,
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -211,7 +211,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        
+
         // 'ExampleClass' => App\Example\ExampleClass::class,
         // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
