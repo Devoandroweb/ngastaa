@@ -99,7 +99,7 @@
 							<div class="auth-content flex-column text-center py-8">
 								<div class="row">
 									<div class="col-xxl-7 col-xl-8 col-lg-11 mx-auto">
-										<h2 class="mb-4">DSM Absen dan Payroll</h2>
+										<h2 class="mb-4">BAPAS 69 Absen dan Payroll</h2>
 										<p>Aplikasi absensi dan penggajian memberikan kemudahan bagi perusahaan untuk mengelola kehadiran dan gaji karyawan secara terintegrasi dalam satu platform, sehingga dapat mempercepat proses administrasi dan meningkatkan produktivitas bisnis secara keseluruhan</p>
 									</div>
 								</div>
