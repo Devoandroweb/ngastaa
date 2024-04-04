@@ -4,10 +4,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
-$fileError = fopen('count_redirect.txt','a');
-$url = $current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-fwrite($fileError, "---------".$url."--\n");
-fclose($fileError);
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance

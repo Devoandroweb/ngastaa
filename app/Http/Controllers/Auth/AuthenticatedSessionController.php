@@ -20,6 +20,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+        
         $perusahaan = Perusahaan::first();
         return view("login",compact('perusahaan'));
         // $captcha = captcha_img('flat');

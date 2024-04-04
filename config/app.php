@@ -15,8 +15,8 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'DSM Absen'),
-    'hit_v_pegawai' => true,
+    'name' => env('APP_NAME', 'HRM BAPAS 69'),
+    'hit_v_pegawai' => false,
     /*
     |--------------------------------------------------------------------------
     | Application Environment
