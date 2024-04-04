@@ -89,7 +89,7 @@
 								<footer class="container-xxl footer">
 									<div class="row">
 										<div class="col-xl-8 text-center">
-											<p class="footer-text pb-0"><span class="copy-text">DSM Absen © 2023 All rights reserved.</span> <a href="#" class="" target="_blank">Privacy Policy</a><span class="footer-link-sep">|</span><a href="#" class="" target="_blank">T&C</a><span class="footer-link-sep">|</span><a href="#" class="" target="_blank">System Status</a></p>
+											<p class="footer-text pb-0"><span class="copy-text">HRM Bapas 69 © 2024 All rights reserved.</span> <a href="#" class="" target="_blank">Privacy Policy</a><span class="footer-link-sep">|</span><a href="#" class="" target="_blank">T&C</a><span class="footer-link-sep">|</span><a href="#" class="" target="_blank">System Status</a></p>
 										</div>
 									</div>
 								</footer>
@@ -100,7 +100,7 @@
 							<div class="auth-content flex-column text-center py-8">
 								<div class="row">
 									<div class="col-xxl-7 col-xl-8 col-lg-11 mx-auto">
-										<h2 class="mb-4">BAPAS 69 Absen dan Payroll</h2>
+										<h2 class="mb-4">HRM BAPAS 69 Absen dan Payroll</h2>
 										<p>Aplikasi absensi dan penggajian memberikan kemudahan bagi perusahaan untuk mengelola kehadiran dan gaji karyawan secara terintegrasi dalam satu platform, sehingga dapat mempercepat proses administrasi dan meningkatkan produktivitas bisnis secara keseluruhan</p>
 									</div>
 								</div>
