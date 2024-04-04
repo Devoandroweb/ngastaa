@@ -89,7 +89,7 @@ class PengumumanController extends Controller
     {
         $pengumuman = Pengumuman::all();
         $pengumuman = PengumumanResource::collection($pengumuman);
-        dd($pengumuman[0]['judul']);
+        
         return $dataTables->of($pengumuman)
             ->addColumn('file', function ($row) {
                 // dd(file_exists(public_path($row->file)));

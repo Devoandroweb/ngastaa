@@ -34,7 +34,7 @@ class LaporanVisitController extends Controller
         $skpd = request()->query('skpd');
         $skpd = ($skpd == 0) ? null : $skpd;
         // $skpd = 1;
-        $model = DataVisit::with('pegawai')->when($skpd,function($q){
+        $model = DataVisit::whereHas('pegawai')->when($skpd,function($q){
                 $jabatan_akhir = $q->pegawai->jabatan_akhir;
                 $jabatan = array_key_exists('0', $jabatan_akhir->toArray()) ? $jabatan_akhir[0] : null;
                 $skpd = '';
@@ -52,7 +52,7 @@ class LaporanVisitController extends Controller
                 return $row->nama_shift;
             })
             ->addColumn('nama', function ($row) {
-                return "<span class='badge badge-success badge-pill badge-sm'>". $row->nip . "</span>  " . $row->pegawai->getFullName();
+                return "<span class='badge badge-success badge-pill badge-sm'>". $row->nip . "</span>  " . $row->pegawai?->getFullName();
             })
             ->addColumn('jabatan', function ($row) {
                 $jabatan_akhir = $row->pegawai->jabatan_akhir;
