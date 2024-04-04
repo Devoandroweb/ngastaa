@@ -42,13 +42,14 @@
 												<p>Silakan masuk ke akun Anda dengan menggunakan nama pengguna dan kata sandi yang sudah terdaftar</p>
 											</div>
 											<div class="row gx-3">
-
+                                                @isset($errors)
 												@if ($errors->any())
 												<div class="alert alert-inv alert-inv-danger alert-wth-icon alert-dismissible fade show" role="alert">
 													<span class="alert-icon-wrap"><i class="zmdi zmdi-bug"></i></span> {{$errors->all()[0]}}
 													<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 												</div>
 												@endif
+                                                @endisset
 												<div class="form-group col-lg-12">
 													<div class="form-label-group">
 														<label>Email</label>
