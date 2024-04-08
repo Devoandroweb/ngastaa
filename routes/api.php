@@ -123,6 +123,7 @@ Route::middleware('auth:sanctum')->group(function(){
                 Route::get('lists-opd', 'listsOpd');
                 Route::post('store', 'store');
                 Route::get('detail',  'detail');
+                Route::post('approval',  'approval');
             });
 
         Route::controller(LemburApiController::class)
