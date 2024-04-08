@@ -32,7 +32,7 @@ class HomeUser extends Controller
             $data['user'] = $this->userRepository->getUserWithIndentity($nip);
             $data['presensi_today'] = $this->presensiRepository->presensiDay($nip);
             $data['pengumuman'] =  $this->pengumumanRepository->getPengumuman();
-            $data['status_password'] = $this->passwordCheck($nip);
+            $data['user']['status_password'] = $this->passwordCheck($nip);
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
