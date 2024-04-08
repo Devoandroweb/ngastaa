@@ -158,6 +158,19 @@ class CutiApiController extends Controller
             return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'User tidak ditemukan!' ]),200);
         }
     }
+    function approval(){
+        $nip = request('nip');
+        $kodeCuti = request('kode_cuti');
+        $kodeApproval = request('kode_approval'); # 1 Setuju 2 Tolak
 
+        $pengCuti = DataPengajuanCuti::whereNip($nip)->whereKodeCuti($kodeCuti)->first();
+        $pengCuti->status = $kodeApproval;
+        $pengCuti->update();
+        if($kodeApproval==1){
+            return response()->json(buildResponseSukses(['status' => TRUE, 'messages' => 'Berhasil di Setujui!' ]),200);
+        }
+        return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Berhasil di Tolak!' ]),200);
+
+    }
 
 }
