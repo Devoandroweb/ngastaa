@@ -46,11 +46,10 @@ class DashboardController extends Controller
         $color_status_pegawai = [];
 
         # Data Kepegawaian Status Pegawai
-
+        // dd($status_pegawai);
         foreach ($status_pegawai as $key => $value) {
             $pegawai = $this->pegawaiRepository->allPegawaiWithRole();
-            $total_status = $pegawai->where('kode_status',$value->kode_status)->count();
-
+            $total_status = $pegawai->where('kode_status',$value->nama)->count();
             $nama = $value->nama;
 
             array_push($total_status_pegawai,$total_status);
@@ -58,6 +57,7 @@ class DashboardController extends Controller
             array_push($color_status_pegawai,getColor($key));
 
         }
+        // dd($total_status_pegawai);
         $status_pegawai_statistic = [
             'series' => $total_status_pegawai,
             'labels' => $nama_status_pegawai,
