@@ -58,7 +58,33 @@ function searchId($id,$data)
                     @if($perusahaan->logo != null)
                     <img id="logo" src="{{url('public/'.$perusahaan->logo)}}"  style="width: 200px; height:200px" class="shadow mb-4 img-fluid" alt="">
                     @else
-                    <img id="logo" src="{{asset('no-image.png')}}"  style="width: 200px; height:200px" class="shadow mb-4 img-fluid" alt="">
+                    <img id="logo" src="{{asset('no-image.png')}}"  style="width: 200px; height:200px" class="shadow mb-4 img-fluid p-3 rounded" alt="">
+                    @endif
+                </div>
+                <div class="text-danger mb-4"><small><i>File Tidak Boleh Lebih besar dari 1Mb</i></small></div>
+            </div>
+            <div class="form-group">
+                <label for="">Favicon</label>
+                <div class="image-live" data-target="favicon" data-ext="png,jpg,jpeg">
+                    <input type="file" class="d-none file-live" name="favicon">
+                    <input type="text" class="d-none" value="{{$perusahaan->favicon}}" name="favicon-old">
+                    @if($perusahaan->favicon != null)
+                    <img id="favicon" src="{{url('public/'.$perusahaan->favicon)}}"  style="width: 200px; height:200px" class="shadow mb-4 img-fluid" alt="">
+                    @else
+                    <img id="favicon" src="{{asset('no-image.png')}}"  style="width: 200px; height:200px" class="shadow mb-4 img-fluid p-3 rounded" alt="">
+                    @endif
+                </div>
+                <div class="text-danger mb-4"><small><i>File Tidak Boleh Lebih besar dari 1Mb</i></small></div>
+            </div>
+            <div class="form-group">
+                <label for="">No Image</label>
+                <div class="image-live" data-target="no_image" data-ext="png,jpg,jpeg">
+                    <input type="file" class="d-none file-live" name="no_image">
+                    <input type="text" class="d-none" value="{{$perusahaan->no_image}}" name="no_image-old">
+                    @if($perusahaan->no_image != null)
+                    <img id="no_image" src="{{url('public/'.$perusahaan->no_image)}}"  style="width: 200px; height:200px" class="shadow mb-4 img-fluid" alt="">
+                    @else
+                    <img id="no_image" src="{{asset('no-image.png')}}"  style="width: 200px; height:200px" class="shadow mb-4 img-fluid p-3 rounded" alt="">
                     @endif
                 </div>
                 <div class="text-danger mb-4"><small><i>File Tidak Boleh Lebih besar dari 1Mb</i></small></div>
@@ -66,8 +92,6 @@ function searchId($id,$data)
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Simpan</button>
-
-
 </form>
 @endsection
 @push('js')
