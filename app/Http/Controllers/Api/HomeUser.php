@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pegawai\DataPresensi;
-
+use App\Models\User;
 use App\Repositories\Pengumuman\PengumumanRepository;
 use App\Repositories\Presensi\PresensiRepository;
 use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\Hash;
 
 class HomeUser extends Controller
 {
@@ -51,5 +52,13 @@ class HomeUser extends Controller
     function absen(){
         $nip = request('nip');
         $presensiHarian = DataPresensi::where('nip',$nip)->where('created_at',);
+    }
+    function passwordCheck($nip){
+        $user = User::where('nip',$nip)->first();
+        if(!Hash::check($nip, $user->password)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
