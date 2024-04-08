@@ -12,11 +12,11 @@
                     @if(role('owner'))
                     <a class="dropdown-item" href="{{route('perusahaan.index')}}">Profil Perusahaan</a>
                     @endif
-                    <a class="dropdown-item" href="{{$perusahaan->website}}">Website</a>
+                    <a class="dropdown-item" href="#" onclick="window.open(`https://{{ $perusahaan->website }}`,`_blank`)">Website</a>
                 </div>
             </li>
         </ul>
-        <a href="{{$perusahaan->website}}" class="text-primary d-block d-md-none">{!! icons('globe') !!} <small>Company Site</small></a>
+        <a href="#" onclick="window.open(`https://{{ $perusahaan->website }}`,`_blank`)" class="text-primary d-block d-md-none">{!! icons('globe') !!} <small>Company Site</small></a>
     </div>
 
     <!-- /Start Nav -->
