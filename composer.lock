@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f51164d930785cfc8c163136dc47d907",
+    "content-hash": "c3c06ab4c4729511462f10ca62855821",
     "packages": [
         {
             "name": "azishapidin/indoregion",
@@ -2707,6 +2707,60 @@
                 }
             ],
             "time": "2024-01-28T23:22:08+00:00"
+        },
+        {
+            "name": "lordelph/icofileloader",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lordelph/icofileloader.git",
+                "reference": "3a31c97bff21984f50c4b4240f0a94b04a7f7881"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lordelph/icofileloader/zipball/3a31c97bff21984f50c4b4240f0a94b04a7f7881",
+                "reference": "3a31c97bff21984f50c4b4240f0a94b04a7f7881",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=8.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~9",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elphin\\IcoFileLoader\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Dixon",
+                    "email": "paul@elphin.com"
+                }
+            ],
+            "description": "High quality PHP package for reading and converting any .ico icon file, particularly website favicons",
+            "homepage": "http://icofileloader.dixo.net/",
+            "keywords": [
+                "convert",
+                "extract",
+                "favicon",
+                "ico",
+                "icon",
+                "load"
+            ],
+            "support": {
+                "issues": "https://github.com/lordelph/icofileloader/issues",
+                "source": "https://github.com/lordelph/icofileloader/tree/3.0.0"
+            },
+            "time": "2022-08-19T19:02:48+00:00"
         },
         {
             "name": "maatwebsite/excel",

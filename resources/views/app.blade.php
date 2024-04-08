@@ -1,3 +1,6 @@
+@php
+    $perusahaan = \App\Models\Perusahaan::first();
+@endphp
 @include('panels.header')
 <style>
 	.bottom-right{
@@ -31,9 +34,7 @@
 	}
 </style>
 <body>
-	@php
-		$perusahaan = \App\Models\Perusahaan::first();
-	@endphp
+
    	<!-- Wrapper -->
 	<div class="hk-wrapper" data-layout="vertical" data-layout-style="default" data-menu="light" data-footer="simple">
 		@include('panels.navbar')

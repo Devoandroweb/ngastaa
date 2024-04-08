@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Perusahaan;
+use App\Traits\Image;
 use Illuminate\Support\Facades\Storage;
+
 
 class PerusahaanController extends Controller
 {
+    use Image;
     public function index()
     {
         $perusahaan = Perusahaan::find(1);
@@ -41,6 +44,26 @@ class PerusahaanController extends Controller
             // dd($file);
             $data['logo'] = 'uploads/logo/'.$this->uploadImage(public_path('uploads/logo/'),$file);
         }
+        if (request()->file('favicon')) {
+            request()->validate([
+                'favicon' => 'max:2048|mimes:jpg,jpeg,png',
+            ]);
+            if ($cek && $cek->favicon != "") {
+                Storage::delete($cek->favicon);
+            }
+            $file =  request()->file('favicon');
+            $data['favicon'] = 'uploads/favicon/'.$this->uploadImage(public_path('uploads/favicon/'),$file);
+        }
+        if (request()->file('no_image')) {
+            request()->validate([
+                'no_image' => 'max:2048|mimes:jpg,jpeg,png',
+            ]);
+            if ($cek && $cek->no_image != "") {
+                Storage::delete($cek->no_image);
+            }
+            $file =  request()->file('no_image');
+            $data['no_image'] = 'uploads/no_image/'.$this->uploadImage(public_path('uploads/no_image/'),$file);
+        }
 
         if ($cek) {
             $id = $cek->id;
@@ -62,13 +85,6 @@ class PerusahaanController extends Controller
             ]);
         }
     }
-    public function uploadImage($dir, $file)
-    {
-        $result = null;
-        $namaFile = time() . "_" . $file->getClientOriginalName();
-        // $ext = $file->getClientOriginalExtension();
-        $filename = $file->move($dir, $namaFile);
-        $result = $filename->getFileName();
-        return $result;
-    }
+
+
 }
