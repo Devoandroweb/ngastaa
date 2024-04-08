@@ -1,3 +1,6 @@
+@php
+    $perusahaan = \App\Models\Perusahaan::first();
+@endphp
 <!DOCTYPE html>
 
 <html lang="en">
@@ -11,7 +14,7 @@
 
 	<!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="icon" href="{{asset('/')}}favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ url("public/$perusahaan->favicon") }}" type="image/x-icon">
 
 	<!-- CSS -->
     <link href="{{asset('/')}}dist/css/style.css" rel="stylesheet" type="text/css">
