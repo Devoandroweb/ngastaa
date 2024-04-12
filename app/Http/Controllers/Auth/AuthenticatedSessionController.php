@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Perusahaan;
+use App\Models\SLogin;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,11 +20,12 @@ class AuthenticatedSessionController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function create()
+    public function create() : View
     {
-        
+
         $perusahaan = Perusahaan::first();
-        return view("login",compact('perusahaan'));
+        $sLogin = SLogin::first();
+        return view("login",compact('perusahaan','sLogin'));
         // $captcha = captcha_img('flat');
         // return Inertia::render('Auth/Login', [
         //     'canResetPassword' => Route::has('password.request'),
