@@ -5,3 +5,5 @@
 Stack trace:
 #0 {main}
   thrown in /home/ngaq5629/public_html/testing.ngastaa.com/index.php on line 34
+[08-Apr-2024 20:34:50 Asia/Jakarta] PHP Deprecated:  Optional parameter $datePreviousInMonthStart declared before required parameter $dateForMonthNow is implicitly treated as a required parameter in /home/hrmpas69/public_html/app/Repositories/Payroll/PayrollRepositoryImplement.php on line 335
+[08-Apr-2024 20:34:50 Asia/Jakarta] PHP Deprecated:  Optional parameter $datePreviousInMonthEnd declared before required parameter $dateForMonthNow is implicitly treated as a required parameter in /home/hrmpas69/public_html/app/Repositories/Payroll/PayrollRepositoryImplement.php on line 335

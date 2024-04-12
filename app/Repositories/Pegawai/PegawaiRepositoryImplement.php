@@ -110,7 +110,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             // dd($levelJabatanUser);
         }
 
-        $pegawai = User::whereNot('users.nip',null)->with('riwayat_jabatan');
+        $pegawai = User::whereNot('users.owner',1)->with('riwayat_jabatan');
 
         // dd(getLevelUser());
 
