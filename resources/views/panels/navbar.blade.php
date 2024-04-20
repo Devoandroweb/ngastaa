@@ -220,6 +220,7 @@
                         </div>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{route('password.index')}}">Akun</a>
+                        <a class="dropdown-item" href="{{route('setting.setting.index')}}">Pengaturan</a>
                         <a class="dropdown-item" href="{{route('password.index')}}">Ubah Password</a>
                         <a class="dropdown-item" href="{{url('logout')}}"><span class="me-2">Sign Out</span></a>
 

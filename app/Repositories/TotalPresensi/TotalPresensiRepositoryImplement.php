@@ -104,8 +104,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         # $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
         // $dateStart = $this->maxDate;
         // $dateEnd = date("Y-m-d",strtotime("-1 days"));
-        $dateStart = "2024-02-21";
-        $dateEnd = "2024-02-22";
+        $dateStart = "2024-04-16";
+        $dateEnd = "2024-04-19";
         // dd($dateStart,$dateEnd);
         # Check apakah tanggal nya sama, jika sama jangan hitung
         if($dateStart == $dateEnd){
@@ -115,7 +115,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
         $this->allPegawai = $this->pegawaiRepository->getAllPegawai();
-        $dataInsert = [];
+        $dataInsert = collect([]);
         // dd($tanggalBulan);
         foreach ($tanggalBulan as $date) {
             // dd($tanggalBulan);
@@ -128,11 +128,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->dataPresensi2 =  DataPresensi::whereDate('created_at', $this->date)->where('hitung',0);
             // echo $this->date;
             // dd($this->dataPresensi2->get());
-            if(count($dataInsert) == 0){
-                $dataInsert = $this->calculatePresensi();
-            }else{
-                $dataInsert = collect($dataInsert)->concat($this->calculatePresensi());
-            }
+            $dataInsert = collect($dataInsert)->concat($this->calculatePresensi());
         }
         // dd($dataInsert);
         TotalPresensiDetail::insert($dataInsert->toArray());

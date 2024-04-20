@@ -557,3 +557,7 @@ Breadcrumbs::for('role-menu', function (BreadcrumbTrail $trail) {
     $trail->push('Role Menu Management', "#");
     $trail->push('Role Menu Management', route('setting.role-menu.index'));
 });
+Breadcrumbs::for('pengaturan', function (BreadcrumbTrail $trail) {
+    $trail->push('Apps', "#");
+    $trail->push('Rengaturan', route('setting.setting.index'));
+});

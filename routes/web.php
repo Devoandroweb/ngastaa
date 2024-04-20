@@ -80,6 +80,7 @@ use App\Http\Controllers\Presensi\PenjadwalanShiftController;
 use App\Http\Controllers\Presensi\RekapAbsensHarianController;
 use App\Http\Controllers\Presensi\TotalPresensiController;
 use App\Http\Controllers\RoleMenuController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UbahPassword;
 use App\Http\Controllers\Users\DireksiController;
 use App\Http\Controllers\Users\FinanceController;
@@ -1187,6 +1188,13 @@ Route::middleware(['auth'])
                     Route::get('manage/{tingkat}','manage')->name('manage');
                     Route::post('manage-save','manageSave')->name('manage-save');
                     Route::get('datatable','datatable')->name('datatable');
+                });
+                Route::prefix('setting')
+                ->name("setting.")
+                ->controller(SettingController::class)
+                ->group(function(){
+                    Route::get('index','index')->name('index');
+                    Route::post('updatePageLogin','updatePageLogin')->name('updatePageLogin');
                 });
             });
     });

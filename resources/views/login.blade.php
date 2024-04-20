@@ -33,7 +33,7 @@
 							<div class="auth-content flex-column pt-8 pb-md-8 pb-13">
 								<div class="text-center mb-7">
 									<a class="navbar-brand me-0" href="index.html">
-										<img class="brand-img d-inline-block w-50" src="{{asset('/')}}dist/img/logo-bapas-panjang.png" alt="brand">
+										<img class="brand-img d-inline-block w-50" src="{{url("public/".$sLogin->logo())}}" alt="brand">
 									</a>
 								</div>
 								<form class="w-100" action="{{route('auth-admin')}}" method="post">
@@ -103,11 +103,11 @@
 							<div class="auth-content flex-column text-center py-8">
 								<div class="row">
 									<div class="col-xxl-7 col-xl-8 col-lg-11 mx-auto">
-										<h2 class="mb-4">HRM BAPAS 69 Absen dan Payroll</h2>
-										<p>Aplikasi absensi dan penggajian memberikan kemudahan bagi perusahaan untuk mengelola kehadiran dan gaji karyawan secara terintegrasi dalam satu platform, sehingga dapat mempercepat proses administrasi dan meningkatkan produktivitas bisnis secara keseluruhan</p>
+										<h2 class="mb-4">{{ $sLogin->title }}</h2>
+										<p>{{ $sLogin->desk }}</p>
 									</div>
 								</div>
-								<img src="{{asset('/')}}dist/img/attedance.png"  class="img-fluid w-sm-50 mt-7" alt="login"/>
+								<img src="{{ url("public/$sLogin->cover") }}"  class="img-fluid w-sm-50 mt-7" alt="login"/>
 							</div>
 							{{-- <p class="p-xs credit-text opacity-55">All Future are powered by <a href="https://icons8.com/ouch/" target="_blank" class="text-light"><u>Icons8</u></a></p> --}}
 						</div>
