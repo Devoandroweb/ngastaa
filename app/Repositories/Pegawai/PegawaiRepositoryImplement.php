@@ -157,6 +157,9 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
     function getAllPegawai(){
          return User::where('owner',0)->get();
     }
+    function allPegawai(){
+        return User::where('owner',0);
+   }
     // Write something awesome :)
     function updatoOrCreatoToTotalPresensi(){
         foreach($this->getAllPegawai() as $pegawai){

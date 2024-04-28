@@ -10,6 +10,7 @@ interface PegawaiRepository extends Repository{
     function allPegawaiWithRole($kodeSkpd = null, $forApi = false);
     function getFirstPegawai($nip);
     function getAllPegawai();
+    function allPegawai();
     function getPegawaiWhereJabatan($kodeJabatan);
     function getPegawaiWhereLevelJabatan($kodeEselon);
     function getPegawaiWhereDivisiKerja($kodeSkpd);

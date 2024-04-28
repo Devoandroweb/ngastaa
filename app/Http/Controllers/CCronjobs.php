@@ -82,7 +82,7 @@ class CCronjobs extends Controller
 
             return response()->json([
                 'status' => FALSE,
-                'message' => 'Gagal Menghitung Presensi untuk hari ini dengan Error : '.$th->getMessage()
+            'message' => 'Gagal Menghitung Presensi untuk hari ini dengan Error : '.$th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now()
             ]);
         }
     }
