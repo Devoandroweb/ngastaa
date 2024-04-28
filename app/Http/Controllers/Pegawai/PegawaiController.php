@@ -706,7 +706,7 @@ class PegawaiController extends Controller
     function updateNip($nipWhere,$nip){
         try {
 
-            DB::transaction(function()use($nip){
+            DB::transaction(function()use($nipWhere,$nip){
                 $models = [
                     DataPayroll::class,
                     DataPengajuanCuti::class,
@@ -743,7 +743,7 @@ class PegawaiController extends Controller
                     MapLokasiKerja::class,
                 ];
                 foreach($models as $model){
-                    foreach($model::where("nip",)->get() as $user){
+                    foreach($model::where("nip",$nipWhere)->get() as $user){
                         $user->update([
                             "nip" => $nip
                         ]);

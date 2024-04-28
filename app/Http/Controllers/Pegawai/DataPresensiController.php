@@ -26,7 +26,7 @@ class DataPresensiController extends Controller
     protected $pdfRepository;
     function __construct(
         PegawaiRepository $pegawaiRepository,
-        PdfRepository $pdfRepository,
+        PdfRepository $pdfRepository
     ){
         $this->pdfRepository = $pdfRepository;
         $this->pegawaiRepository = $pegawaiRepository;
@@ -116,7 +116,7 @@ class DataPresensiController extends Controller
         $tahun = request('tahun') ?? date('Y');
         $nip = request('pegawai');
         $xl = request('xl');
-        // dd($nip);
+        dd($nip);
         $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
         $mJamKerja = $pegawai->jamKerja->where('is_akhir',1)->first()?->jamKerja;
         $jamKerja = $mJamKerja?->hariJamKerja;
@@ -145,7 +145,7 @@ class DataPresensiController extends Controller
             } else {
                 $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai, $jamKerja, $mJamKerja);
                 // $pdf = PDF::loadView('laporan.presensi.pegawai', compact('bulan', 'xl', 'tahun', 'pegawai'))->setPaper('a4', 'potrait');
-                // ob_end_clean();
+                ob_end_clean();
                 return $pdf->stream();
             }
         }
@@ -308,16 +308,25 @@ class DataPresensiController extends Controller
                 'messages' => 'Data Laporan tidak di temukan'
             ]);
         }
-
-        $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja,$mJamKerja);
-        $pdfLocation = 'show-pdf/presensi-pegawai.pdf';
-        $pdf->save(public_path($pdfLocation));
-
-        return response()->json([
-            'status' => true,
-            'messages' => 'Data Laporan di temukan',
-            'file' => public_path($pdfLocation)
-        ]);
+        try {
+            //code...
+            $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja,$mJamKerja);
+            $pdfLocation = 'show-pdf/presensi-pegawai.pdf';
+            $pdf->save(public_path($pdfLocation));
+            return response()->json([
+                'status' => true,
+                'messages' => 'Data Laporan di temukan',
+                'file' => public_path($pdfLocation)
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'status' => false,
+                'messages' => $th->getMessage()
+            ]);
+        }
+        
+        
     }
     function showPdf(){
         $path = request()->query('path');

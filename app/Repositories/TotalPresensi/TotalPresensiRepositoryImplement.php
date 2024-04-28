@@ -104,8 +104,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         # $this->pegawaiRepository->updatoOrCreatoToTotalPresensi();
         // $dateStart = $this->maxDate;
         // $dateEnd = date("Y-m-d",strtotime("-1 days"));
-        $dateStart = "2024-04-16";
-        $dateEnd = "2024-04-19";
+        $dateStart = "2024-04-26";
+        $dateEnd = "2024-04-27";
         // dd($dateStart,$dateEnd);
         # Check apakah tanggal nya sama, jika sama jangan hitung
         if($dateStart == $dateEnd){
