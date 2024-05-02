@@ -74,6 +74,7 @@ return [
         public_path('../data_pegawai') => storage_path('app/public/data_pegawai'),
         public_path('../visit_qr') => storage_path('app/public/visit_qr'),
         public_path('../uploads') => storage_path('app/public/uploads'),
+        public_path('show-pdf') => storage_path('app/public/show-pdf'),
     ],
 
 ];

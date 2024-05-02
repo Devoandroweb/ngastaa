@@ -26,7 +26,7 @@ class DataPresensiController extends Controller
     protected $pdfRepository;
     function __construct(
         PegawaiRepository $pegawaiRepository,
-        PdfRepository $pdfRepository
+        PdfRepository $pdfRepository,
     ){
         $this->pdfRepository = $pdfRepository;
         $this->pegawaiRepository = $pegawaiRepository;
@@ -116,7 +116,7 @@ class DataPresensiController extends Controller
         $tahun = request('tahun') ?? date('Y');
         $nip = request('pegawai');
         $xl = request('xl');
-        dd($nip);
+        // dd($nip);
         $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
         $mJamKerja = $pegawai->jamKerja->where('is_akhir',1)->first()?->jamKerja;
         $jamKerja = $mJamKerja?->hariJamKerja;
@@ -312,7 +312,8 @@ class DataPresensiController extends Controller
             //code...
             $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja,$mJamKerja);
             $pdfLocation = 'show-pdf/presensi-pegawai.pdf';
-            $pdf->save(public_path($pdfLocation));
+            $pdf->save(storage_path($pdfLocation));
+            
             return response()->json([
                 'status' => true,
                 'messages' => 'Data Laporan di temukan',
@@ -325,8 +326,6 @@ class DataPresensiController extends Controller
                 'messages' => $th->getMessage()
             ]);
         }
-        
-        
     }
     function showPdf(){
         $path = request()->query('path');
