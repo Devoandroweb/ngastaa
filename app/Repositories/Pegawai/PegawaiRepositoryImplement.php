@@ -98,17 +98,19 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
             $kodeSkpd = auth()->user()->jabatan_akhir->first()?->skpd?->kode_skpd;
         }
         // dd($kodeSkpd);
+        $user = User::where('nip',request()->query('nip'))->first();
         if($forApi){
             # FOR WEB_SERVICES
             $role = false;
-            $user = User::where('nip',request()->query('nip'))->first();
-            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
+            $tingkat = $user->jabatan_akhir->first()?->tingkat;
+            $levelJabatanUser = $tingkat?->eselon->kode_eselon;
+            $kodeSkpd = $tingkat?->kode_skpd;
         }else{
             # FOR WEB
             $role = role('owner') || role('admin') || role("finance");
             $levelJabatanUser = auth()->user()->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
-            // dd($levelJabatanUser);
         }
+        // dd($levelJabatanUser);
 
         $pegawai = User::whereNot('users.owner',1)->with('riwayat_jabatan');
 
@@ -119,7 +121,6 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         }
         $pegawai->when(!$role, function ($qr) use ($levelJabatanUser,$kodeSkpd){
             // ambil level jabatan user
-            // dd($kodeSkpd);
             // ambil jabatan yang di bawah level jabatan user misal jabatannya level 2 maka ambil pegawai where kode_level < level_jabatan_user
             $qr->whereHas('riwayat_jabatan',function($q)use ($levelJabatanUser, $kodeSkpd){
                 if($kodeSkpd != 0 || $kodeSkpd != null){
@@ -128,6 +129,7 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
                 $q->where('is_akhir',1);
                 $q->whereHas('tingkat',function($q) use ($levelJabatanUser){
                     $q->whereHas('eselon',function($q)  use ($levelJabatanUser){
+                        // dd($levelJabatanUser);
                         $q->where('kode_eselon','>',(int)$levelJabatanUser);
                     });
                 });
@@ -137,19 +139,15 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         if($role){
             // dd($kodeSkpd);
             if($kodeSkpd != 0){
-                $pegawai->join('riwayat_jabatan', function ($qt) use ($kodeSkpd) {
-                    // dd($where);
-                    $qt->on('riwayat_jabatan.nip', 'users.nip');
-                    // dd($kodeSkpd != null,$kodeSkpd != 0,$kodeSkpd);
-                    if($kodeSkpd != null && $kodeSkpd != 0){
-                        $qt->where([
+                $pegawai->with(['riwayat_jabatan' => function($query) use ($kodeSkpd) {
+                    if($kodeSkpd != null && $kodeSkpd != 0) {
+                        $query->where([
                             "is_akhir" => 1,
                             "kode_skpd" => $kodeSkpd
                         ]);
                     }
-                    $qt->where('riwayat_jabatan.deleted_at', null);
-                    // dd($kodeSkpd);
-                });
+                    $query->whereNull('deleted_at');
+                }]);
             }
         }
         return $pegawai;

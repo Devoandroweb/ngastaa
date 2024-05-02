@@ -3,14 +3,12 @@
 use App\Models\MRoleMenu;
 use App\Models\Perusahaan;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 function role($string)
 {
-
-    // auth()->user()->assignRole('pegawai');
-
     $arrayRole = auth()->user()->getRoleNames()->toArray();
 
     // dd($arrayRole);
@@ -857,4 +855,13 @@ function hitungPersentase($nilai_sekarang, $nilai_total, $desimal = 2)
     $persentase = round($persentase, $desimal);
 
     return $persentase;
+}
+function perusahaan($key = null){
+    $perusahaan = Cache::get('Perusahaan');
+    if (!$perusahaan) {
+        $perusahaan = Perusahaan::first();
+        Cache::put('Perusahaan', $perusahaan);
+    }
+    if ($key) return @$perusahaan->$key;
+    return $perusahaan;
 }

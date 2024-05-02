@@ -509,28 +509,21 @@ class PresensiApiController extends Controller
     public function lists()
     {
         try{
-            $periodeBulan = date('Y-m');
             $nip = request()->query('nip');
-            $kodeSkpd = request()->query('kode_skpd');
             $user = User::where('nip',$nip)->first();
-            $levelJabatanUser = $user->jabatan_akhir->first()?->tingkat?->eselon->kode_eselon;
             if(!$user){
                 return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
             }
-                // dd($opd);
-            // $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($levelJabatanUser, $kodeSkpd)->pluck('nip')->toArray();
-            $date = request('d') ? date('Y-m-d', strtotime(request('d'))) : date('Y-m-d', strtotime('-1 days'));
-            $end =  request('e') ? date('Y-m-d', strtotime(request('e')) + (60 * 60 * 24)) : date('Y-m-d');
             if($user){
-                // $data = DataPresensi::select('data_presensi.id', 'data_presensi.nip', 'users.name','tanggal_datang', 'tanggal_istirahat', 'tanggal_pulang', 'data_presensi.created_at')
-                //                     ->leftJoin('users', 'users.nip', 'data_presensi.nip')
-                //                     ->where('data_presensi.nip', $nip)
-                //                     ->where('data_presensi.periode_bulan', $periodeBulan)
-                //                     // ->whereBetween('data_presensi.created_at', [$date, $end])
-                //                     ->get();
+                $dateStart = request('start_date');
+                $dateEnd = request('end_date');
                 $data = DataPresensi::whereHas('user',function($q) use ($nip){
                     $q->where('nip',$nip);
-                })->where('periode_bulan',$periodeBulan)->get();
+                })
+                ->limitOffset()
+                ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
+                    $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
+                })->get();
                 $data = PresensiLaporanApiResource::collection($data);
                 if($data){
                     return response()->json(buildResponseSukses($data),200);
@@ -547,7 +540,8 @@ class PresensiApiController extends Controller
     public function listsOpd()
     {
         try{
-            $periodeBulan = date('Y-m');
+            $dateStart = request('start_date');
+            $dateEnd = request('end_date');
             $nip = request()->query('nip');
             $kodeSkpd = request()->query('kode_skpd');
             $user = User::where('nip',$nip)->first();
@@ -556,13 +550,17 @@ class PresensiApiController extends Controller
             }
                 // dd($opd);
             $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd, true)->pluck('users.nip')->toArray();
-            $date = request('d') ? date('Y-m-d', strtotime(request('d'))) : date('Y-m-d', strtotime('-1 days'));
-            $end =  request('e') ? date('Y-m-d', strtotime(request('e')) + (60 * 60 * 24)) : date('Y-m-d');
             if($user){
-                $data = DataPresensi::whereIn('nip',$arrayNip)->where('periode_bulan',$periodeBulan)->get();
+                $data = DataPresensi::whereIn('nip',$arrayNip)->limitOffset()
+                ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
+                    $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
+                })->get();
                 $data = PresensiListOpdApiResource::collection($data);
+
                 if($data){
-                    return response()->json(buildResponseSukses($data),200);
+                    $response = buildResponseSukses($data);
+                    $response['totalData'] = $data->count();
+                    return response()->json($response,200);
                 }else{
                     return response()->json(buildResponseSukses(['status' => FALSE, 'messages' => 'Anda tidak memiliki pengajuan!' ]),200);
                 }

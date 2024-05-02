@@ -55,6 +55,9 @@ class User extends Authenticatable
     {
         return 'nip';
     }
+    function fullname(){
+        return ($this->gelar_depan ? $this->gelar_depan .". " : "") . $this->name . ($this->gelar_belakang ? ", " . $this->gelar_belakang : "");
+    }
 
     public function riwayat_golongan()
     {

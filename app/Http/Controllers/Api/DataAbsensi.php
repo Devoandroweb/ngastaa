@@ -14,7 +14,11 @@ class DataAbsensi extends Controller
     {
 
         try {
-            $dataPresensi = DataPresensi::where("nip",$nip)->get();
+            $dataPresensi = DataPresensi::where("nip",$nip)->limitOffset();
+            if(request('start_date') && request('start_date')){
+                $dataPresensi = $dataPresensi->whereBetween('created_at',[request('start_date'),request('end_date')]);
+            }
+            $dataPresensi = $dataPresensi->get();
             $data = [];
             foreach ($dataPresensi as $p) {
                 $hari = date("w",strtotime($p->created_at));
@@ -34,7 +38,8 @@ class DataAbsensi extends Controller
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
-                'data' => $data
+                'totalData' => $dataPresensi->count(),
+                'data' => $data,
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

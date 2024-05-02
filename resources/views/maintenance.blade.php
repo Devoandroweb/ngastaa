@@ -1,6 +1,7 @@
 <html>
     <title>Maintance</title>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="shortcut icon" href="{{ url("public/".perusahaan('favicon')) }}">
+    <link rel="icon" href="{{ url("public/".perusahaan('favicon')) }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -9,7 +10,7 @@
         <br><br><br>
         <div class="row m-auto justify-content-center">
             <div class="col-12 col-md-6 text-center">
-                <h3 class="fw-bold">PT. Deta Sumber Makmur</h3>
+                <h3 class="fw-bold">{{ perusahaan('nama') }}</h3>
                 <img src="{{asset('dist/img/maintenance.jpg')}}" class="img-fluid" alt="" srcset="">
             </div>
         </div>

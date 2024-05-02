@@ -37,7 +37,7 @@
             <th>Nama Divisi</th>
             <th>Kode Tingkat</th>
             <th>Nama Tingkat</th>
-            <th>Nama Eselon</th>
+            <th>Nama Level Jabatan</th>
             <th>Opsi</th>
         </tr>
     </thead>

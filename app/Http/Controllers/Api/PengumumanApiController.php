@@ -20,7 +20,6 @@ class PengumumanApiController extends Controller
     public function index()
     {
         $data = $this->pengumumanRepository->getPengumuman();
-
         return response()->json(buildResponseSukses($data),200);
     }
 

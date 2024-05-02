@@ -36,7 +36,7 @@
 										<img class="brand-img d-inline-block w-50" src="{{url("public/".$sLogin->logo())}}" alt="brand">
 									</a>
 								</div>
-								<form class="w-100" action="{{route('auth-admin')}}" method="post">
+								<form id="form-login" class="w-100" action="{{route('auth-admin')}}" method="post">
                                     @csrf
 									<div class="row">
 										<div class="col-xl-7 col-sm-10 mx-auto">
@@ -81,7 +81,7 @@
 													<label class="form-check-label text-muted fs-7" for="logged_in">Keep me logged in</label>
 												</div>
 											</div>
-                                            <input type="submit" id="kt_sign_in_submit" class="btn btn-primary btn-uppercase btn-block" value="Login">
+                                            <button type="button" id="kt_sign_in_submit" class="btn btn-primary btn-uppercase btn-block btn-login">LOGIN</button>
 
 										</div>
 									</div>
@@ -128,16 +128,22 @@
     <!-- Bootstrap Core JS -->
 	<script src="{{asset('/')}}vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- FeatherIcons JS -->
-    <script src="{{asset('/')}}dist/js/feather.min.js"></script>
-
-    <!-- Fancy Dropdown JS -->
-    <script src="{{asset('/')}}dist/js/dropdown-bootstrap-extended.js"></script>
-
-	<!-- Simplebar JS -->
-	<script src="{{asset('/')}}vendors/simplebar/dist/simplebar.min.js"></script>
-
-	<!-- Init JS -->
-	<script src="{{asset('/')}}dist/js/init.js"></script>
+    <script>
+        $(window).keypress(function (e) {
+            if(event.which === 13){
+                submit()
+            }
+        });
+        $(".btn-login").click(function (e) {
+            e.preventDefault();
+            submit()
+        });
+        function submit(){
+            var loading = `<span class="spinner-grow spinner-grow-sm me-4" role="status" aria-hidden="true"></span>Wait for Moment...`;
+            $(".btn-login").html(loading)
+            $(".btn-login").attr("disabled",true)
+            $("#form-login").submit()
+        }
+    </script>
 </body>
 </html>

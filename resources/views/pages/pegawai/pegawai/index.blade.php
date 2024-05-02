@@ -41,7 +41,7 @@
         <select name="kode_skpd" class="form-control divisi px-2" id="">
             <option selected value="0">Semua Divisi</option>
             @foreach ($skpd as $s)
-                @if((Session::get('current_select_skpd')['pegawai'] ?? 0) == $s->kode_skpd)
+                @if((Session::get('current_select_skpd') ?? 0) == $s->kode_skpd)
                 <option value="{{$s->kode_skpd}}" @selected(true)>{{$s->nama}}</option>
                 @else
                 <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
@@ -53,7 +53,7 @@
         <select name="kode_lokasi" class="form-control divisi px-2" id="">
             <option selected value="0">Semua Lokasi Kerja</option>
             @foreach ($lokasiKerja as $s)
-                @if((Session::get('current_select_lokasi')['pegawai'] ?? 0) == $s->kode_lokasi)
+                @if((Session::get('current_select_lokasi')?? 0) == $s->kode_lokasi)
                 <option value="{{$s->kode_lokasi}}" @selected(true)>{{$s->nama}}</option>
                 @else
                 <option value="{{$s->kode_lokasi}}">{{$s->nama}}</option>
@@ -65,7 +65,7 @@
         <select name="status_pegawai" class="form-control divisi px-2" id="">
             <option selected value="0">Semua Status</option>
             @foreach ($statusPegawai as $s)
-                @if((Session::get('current_select_status_pegawai')['status_pegawai'] ?? "") == $s->kode_status)
+                @if((Session::get('current_select_status_pegawai') ?? "") == $s->kode_status)
                 <option value="{{$s->nama}}" @selected(true)>{{$s->nama}}</option>
                 @else
                 <option value="{{$s->nama}}">{{$s->nama}}</option>
@@ -74,17 +74,40 @@
         </select>
     </div>
 </div>
-<div class="row mx-auto">
-    <div class="col-md-5 ps-0">
-        {{-- <input type="text" name="nip_pegawai" placeholder="Ketik NIP Pegawai" class="form-control h-100"> --}}
-        <select class="form-control form-control-lg" name="nip_pegawai[]" id="select-pegawai-nip" multiple size="1">
-
+<div class="row mb-4 m-auto">
+    <div class="col-md-6 ps-0">
+        <select name="kode_eselon" class="form-control divisi px-2" id="">
+            <option selected value="0">Semua Level Jabatan</option>
+            @foreach ($levelJabatan as $l)
+                @if((Session::get('current_select_kode_eselon') ?? 0) == $l->kode_eselon)
+                <option value="{{$l->kode_eselon}}" @selected(true)>{{$l->nama}}</option>
+                @else
+                <option value="{{$l->kode_eselon}}">{{$l->nama}}</option>
+                @endif
+            @endforeach
         </select>
     </div>
+    <div class="col-md-6 ps-0">
+        <select name="kode_tingkat" class="form-control divisi px-2" id="">
+            <option selected value="0">Semua Tingkat Jabatan</option>
+            @foreach ($tingkatJabatan as $t)
+                @if((Session::get('current_select_kode_tingkat') ?? 0) == $t->kode_tingkat)
+                <option value="{{$t->kode_tingkat}}" @selected(true)>{{$t->nama}}</option>
+                @else
+                <option value="{{$t->kode_tingkat}}">{{$t->nama}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+</div>
+<div class="row mx-auto">
     <div class="col-md-5 ps-0">
+        <select class="form-control form-control-lg" name="nip_pegawai[]" id="select-pegawai-nip" multiple size="1"></select>
+    </div>
+    <div class="col-md-4 ps-0">
         <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
     </div>
-    <div class="col-md-2 ps-0 d-flex align-items-center">
+    <div class="col-md-3 ps-0 d-flex align-items-center">
         <button type="button" class="btn btn-warning w-100 me-2 text-center text-nowrap btn-cari"><i class="fas fa-search"></i> Cari</button>
         <button id="btn-change-pegawai" type="button" class="btn btn-info w-100 text-center text-nowrap "><i class="fas fa-user-edit"></i> Ubah</button>
     </div>
@@ -298,7 +321,7 @@
             }
         })
         $(".btn-cari").click(function(e){
-            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val(),$('select[name="nip_pegawai[]"]').val())
+            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val(),$('select[name="nip_pegawai[]"]').val(),$('select[name="kode_tingkat"]').val(),$('select[name="kode_eselon"]').val())
         })
         $('#select-pegawai').on('select2:select',function(e){
             var data = e.params.data;
@@ -354,6 +377,7 @@
                     element.select2({
                         placeholder:"Pilih Divisi atau ketik disini",
                         data : data,
+                        allowClear:true,
                         dropdownParent: $('#modalKontrak')
                     }).val(value_divisi).change(function(){
                         initPegawai("{{route('pegawai.pegawai.json')}}?kode_skpd="+$(this).val())
@@ -490,8 +514,8 @@
             $("#alert-pegawai").empty()
             checkListPegawai()
         }
-        function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai,status_pegawai,nip_pegawai){
-            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}&status_pegawai=${status_pegawai}&nip_pegawai=${nip_pegawai}`).load()
+        function filterPegawai(kode_skpd,kode_lokasi,nama_pegawai,status_pegawai,nip_pegawai,kode_tingkat,kode_eselon){
+            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}&status_pegawai=${status_pegawai}&nip_pegawai=${nip_pegawai}&kode_tingkat=${kode_tingkat}&kode_eselon=${kode_eselon}`).load()
         }
 
         @endif

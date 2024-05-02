@@ -11,6 +11,7 @@ use App\Imports\ImportPegawaiExcell;
 use App\Imports\ImportTemplateProtection;
 use App\Models\MapLokasiKerja;
 use App\Models\Master\Eselon;
+use App\Models\Master\Jabatan;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Skpd;
 use App\Models\Master\StatusPegawai;
@@ -68,7 +69,12 @@ class PegawaiController extends Controller
         $skpd = Skpd::all();
         $lokasiKerja = Lokasi::orderBy('nama','asc')->get();
         $statusPegawai = StatusPegawai::orderBy('nama','asc')->get();
-        return view('pages/pegawai/pegawai/index',compact('skpd','lokasiKerja','statusPegawai'));
+        $levelJabatan = Eselon::orderBy('nama')->get();
+        $tingkatJabatan = Tingkat::selectRaw("nama, GROUP_CONCAT(kode_tingkat SEPARATOR ',') AS kode_tingkat")
+        ->groupBy('nama')
+        ->get();
+
+        return view('pages/pegawai/pegawai/index',compact('skpd','lokasiKerja','statusPegawai','levelJabatan','tingkatJabatan'));
     }
 
     public function json()
@@ -324,11 +330,15 @@ class PegawaiController extends Controller
         $kodeLokasi = request()->query('kode_lokasi');
         $namaPegawai = request()->query('nama_pegawai');
         $statusPegawai = request()->query('status_pegawai');
+        $kodeEselon = request()->query('kode_eselon');
+        $kodeTingkat = request()->query('kode_tingkat');
         $nip = request()->query('nip_pegawai');
         $nip = explode(",",$nip);
-        Session::put('current_select_skpd',['pegawai'=>$kodeSkpd]);
-        Session::put('current_select_lokasi',['lokasi'=>$kodeLokasi]);
-        Session::put('current_select_status_pegawai',['status_pegawai'=>$statusPegawai]);
+        Session::put('current_select_kode_eselon',$kodeEselon);
+        Session::put('current_select_kode_tingkat',$kodeTingkat);
+        Session::put('current_select_skpd',$kodeSkpd);
+        Session::put('current_select_lokasi',$kodeLokasi);
+        Session::put('current_select_status_pegawai',$statusPegawai);
         // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
 
@@ -338,13 +348,28 @@ class PegawaiController extends Controller
 
         if(count($nip) > 0 && $nip[0] != ""){
             $pegawai = $pegawai->whereIn('users.nip',$nip);
-
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){
             $pegawai = $pegawai->where('kode_status',$statusPegawai);
         }
         $pegawai = $pegawai->orderBy('users.created_at','desc')->get(['users.*','users.id as id_user']);
+        if($kodeTingkat!=0){
+            $pegawai = $pegawai->filter(function($row)use($kodeTingkat){
+                $kodeTingkat = explode(",",$kodeTingkat);
+                if(in_array($row->jabatan_akhir()->first()->kode_tingkat,$kodeTingkat)){
+                    return $row;
+                }
+            });
+        }
+        if($kodeEselon!=0){
+            $pegawai = $pegawai->filter(function($row)use($kodeEselon){
+                if($row->jabatan_akhir()->first()?->tingkat?->kode_eselon==$kodeEselon){
+                    return $row;
+                }
+            });
+        }
+
         return $dataTables->of($pegawai)
             ->addColumn('checkbox', function ($row) {
                 return '<input type="checkbox" name="nip[]" value="'.$row->nip.'" class="form-check-input checkbox-nip">';
@@ -769,5 +794,4 @@ class PegawaiController extends Controller
             DB::rollBack();
         }
     }
-
 }

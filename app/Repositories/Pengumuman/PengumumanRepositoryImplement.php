@@ -23,8 +23,8 @@ class PengumumanRepositoryImplement extends Eloquent implements PengumumanReposi
         $this->mPengumuman = $mPengumuman;
     }
     function getPengumuman(){
-
-        return PengumumanResource::collection($this->mPengumuman->latest()->get());
+        $pengumuman = $this->mPengumuman->limitOffset()->get();
+        return PengumumanResource::collection($pengumuman);
     }
     // Write something awesome :)
 }
