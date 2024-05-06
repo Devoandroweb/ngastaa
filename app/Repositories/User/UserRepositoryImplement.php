@@ -38,11 +38,12 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
     }
     function getUserWithIndentity($nip){
         $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->first();
-        //code...
+        $jabatan = null;
         $kode_tingkat = "-";
-        $jabatan = array_key_exists('0', $user?->jabatan_akhir->toArray()) ? $user?->jabatan_akhir[0] : null;
-
-        if( $jabatan == null){
+        if($user){
+            $jabatan = array_key_exists('0', $user?->jabatan_akhir->toArray()) ? $user?->jabatan_akhir[0] : null;
+        }
+        if($jabatan == null){
             $jabatan = "-";
         }else{
             $kode_tingkat = $jabatan->tingkat?->kode_tingkat;

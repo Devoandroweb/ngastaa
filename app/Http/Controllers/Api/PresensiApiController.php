@@ -523,7 +523,7 @@ class PresensiApiController extends Controller
                 ->limitOffset()
                 ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
                     $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
-                })->get();
+                })->orderByDesc('created_at')->get();
                 $data = PresensiLaporanApiResource::collection($data);
                 if($data){
                     return response()->json(buildResponseSukses($data),200);

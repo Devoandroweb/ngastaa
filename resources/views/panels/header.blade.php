@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-Jampack
-Author: Hencework
-Contact: contact@hencework.com
--->
 <html lang="en">
 <head>
     <!-- Meta Tags -->

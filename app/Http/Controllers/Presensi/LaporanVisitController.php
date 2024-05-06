@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Presensi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Skpd;
+use App\Models\Master\Tingkat;
 use App\Models\Master\Visit;
 use App\Models\Pegawai\DataVisit;
 use Illuminate\Http\Request;
@@ -11,42 +13,28 @@ use Yajra\DataTables\DataTables;
 class LaporanVisitController extends Controller
 {
     function index(){
-        $lokasiKerja = Visit::select('nama','polygon')->get();
-        $dataLokasi = [];
-        foreach ($lokasiKerja as $lokasi) {
-            $dataPolygon = [];
-            $polygon = json_decode($lokasi->polygon);
-            // dd($polygon);
-            // die();
-            if($polygon != null){
-                // dd("ada");
-                foreach ($polygon[0] as $gon) {
-                    $dataPolygon[] = [$gon->lng,$gon->lat];
-                    // dd($gon);
-                }
-            }
-            $dataLokasi[] = ['nama'=>$lokasi->nama,'polygon'=>$dataPolygon,'polygonAsli'=>$lokasi->polygon];
-;        }
-        return view("pages.daftarpresensi.laporanvisit.index",compact('dataLokasi'));
+
+        $skpd = Skpd::orderBy("nama")->get();
+        $tingkatJabatan = Tingkat::selectRaw("nama, GROUP_CONCAT(kode_tingkat SEPARATOR ',') AS kode_tingkat")
+        ->groupBy('nama');
+        $tingkatJabatan = $tingkatJabatan->get();
+
+        return view("pages.daftarpresensi.laporanvisit.index",compact('skpd','tingkatJabatan'));
     }
     function datatable(DataTables $dataTables){
-        $nip = request('nip');
-        $skpd = request()->query('skpd');
+        $skpd = request()->query('kode_skpd');
+        $namaPegawai = request()->query('nama_pegawai');
         $skpd = ($skpd == 0) ? null : $skpd;
         // $skpd = 1;
-        $model = DataVisit::whereHas('pegawai')->when($skpd,function($q){
-                $jabatan_akhir = $q->pegawai->jabatan_akhir;
-                $jabatan = array_key_exists('0', $jabatan_akhir->toArray()) ? $jabatan_akhir[0] : null;
-                $skpd = '';
-                if ($jabatan) {
-                    $skpd = $jabatan->kode_skpd;
-                }
-                $q->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                    $qt->on('riwayat_jabatan.nip', 'users.nip')
-                        ->where('riwayat_jabatan.kode_skpd', $skpd)
-                        ->where('riwayat_jabatan.is_akhir', 1);
-                });
-        });
+        $model = DataVisit::whereHas('pegawai',function($q)use($namaPegawai,$skpd){
+            $q->where("name","like","%$namaPegawai%");
+            if($skpd){
+                $jabatan = $q->jabatan_akhir()->first()?->tingkat;
+            }
+        })->orderByDesc('created_at')->get();
+
+
+        // dd($model->toQuery()->toSql());
         return $dataTables->of($model)
             ->editColumn('shift', function ($row) {
                 return $row->nama_shift;
