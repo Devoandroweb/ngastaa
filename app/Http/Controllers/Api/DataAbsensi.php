@@ -18,7 +18,7 @@ class DataAbsensi extends Controller
             if(request('start_date') && request('start_date')){
                 $dataPresensi = $dataPresensi->whereBetween('created_at',[request('start_date'),request('end_date')]);
             }
-            $dataPresensi = $dataPresensi->get();
+            $dataPresensi = $dataPresensi->orderByDesc('created_at')->get();
             $data = [];
             foreach ($dataPresensi as $p) {
                 $hari = date("w",strtotime($p->created_at));
