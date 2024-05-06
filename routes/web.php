@@ -120,6 +120,7 @@ Route::controller(CCronjobs::class)
             Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
             Route::get('calculate-payroll','calculatePayroll')->name('calculate-payroll');
             Route::get('reset-app-status-calculate-presensi','resetAppStatusCalculatePresensi')->name('reset-app-status-calculate-presensi');
+            Route::get('coba-cronjob','cobaCronjob')->name('coba-cronjob');
         });
 
 Route::get('/maintenance', function () {
