@@ -15,9 +15,11 @@ class CutiPengajuanResource extends JsonResource
     public function toArray($request)
     {
         $file = fn() => (file_exists(public_path($this->file))) ? url("public/$this->file") : url("public/no-file.png");
-
+        $user = $this->user;
         return [
             'id' => $this->id,
+            'nip' => $user->nip,
+            'nama' => $user->fullname(),
             'cuti' => $this->cuti?->nama ?? "-",
             'tanggal_mulai' => hari(date("w",strtotime($this->tanggal_mulai))).", ".tanggal_indo($this->tanggal_mulai),
             'tanggal_selesai' => hari(date("w",strtotime($this->tanggal_selesai))).", ".tanggal_indo($this->tanggal_selesai),

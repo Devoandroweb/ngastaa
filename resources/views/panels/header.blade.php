@@ -15,8 +15,8 @@ Contact: contact@hencework.com
     <meta name="description" content=""/>
 
 	<!-- Favicon -->
-<link rel="shortcut icon" href="{{ url("public/$perusahaan->favicon") }}">
-    <link rel="icon" href="{{ url("public/$perusahaan->favicon") }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url("public/".perusahaan('favicon')) }}">
+    <link rel="icon" href="{{ url("public/".perusahaan('favicon')) }}" type="image/x-icon">
 
 	<!-- Daterangepicker CSS -->
     <link href="{{asset('/')}}vendors/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />

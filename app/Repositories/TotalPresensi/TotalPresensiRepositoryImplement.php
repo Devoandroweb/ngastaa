@@ -89,15 +89,15 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                 return 0; # Data Absen Kosong
             }
         }
-        $dateStart = "2024-04-25";
-        $dateEnd = "2024-04-26";
+        $dateStart = "2024-04-29";
+        $dateEnd = "2024-04-30";
         # Check apakah tanggal nya sama, jika sama jangan hitung
         if($dateStart == $dateEnd){
             return 2; # Tanggal Masih Sama
         }
         # hitung
-        // $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
-        $tanggalBulan = [date("Y-m-d",strtotime("-1 days"))];
+        $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
+        // $tanggalBulan = [date("Y-m-d",strtotime("-1 days"))];
         // dd($tanggalBulan);
         $this->allPegawai = $this->pegawaiRepository->allPegawai()->pluck('nip')->toArray();
         // dd($this->allPegawai);

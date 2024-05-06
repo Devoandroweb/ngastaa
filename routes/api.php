@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\KursusKontroller;
 use App\Http\Controllers\Api\LemburApiController;
 use App\Http\Controllers\Api\OrganisasiController;
 use App\Http\Controllers\Api\PayrollApiController;
+use App\Http\Controllers\Api\PegawaiController;
 use App\Http\Controllers\Api\PendidikanController;
 use App\Http\Controllers\Api\PengalamanKerjaController;
 use App\Http\Controllers\Api\PenguasaanBahasaController;
@@ -47,6 +48,13 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('absen/{nip}', [Presensi::class,'index']);
     Route::get('check-status-absen/{nip}', [Presensi::class,'checkStatusAbsen']);
     Route::get('list-lokasi-visit', [VisitApiController::class,'list_lokasi_visit']);
+
+    Route::controller(PegawaiController::class)
+        ->prefix('pegawai')
+        ->name('pegawai.')
+        ->group(function(){
+            Route::get('list-opd', 'listOpd');
+        });
 
     Route::controller(PerusahaanApiController::class)
         ->prefix('perusahaan')
