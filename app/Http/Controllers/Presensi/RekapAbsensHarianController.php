@@ -52,13 +52,13 @@ class RekapAbsensHarianController extends Controller
             $date_end = date("Y-m-d",strtotime(request()->query('date_end')));
             $periodeBulan = null;
         }
-        // dd($periodeBulan);
+
         $tanggal_awal_akhir = new DatePeriod(
             new DateTime($date_start),
             new DateInterval('P1D'),
             new DateTime($date_end."+1 Days")
         );
-        // dd($date_start,$date_end);
+
         // dd($tanggal_awal_akhir->format('Y-m-d'));
         // foreach ($tanggal_awal_akhir as $tanggal ) {
         //     echo $tanggal->format("Y-m-d");
@@ -67,8 +67,8 @@ class RekapAbsensHarianController extends Controller
         $rawColumn = [];
         // dd(User::where('name','like','%a%')->get());
         // dd($kodeSkpd);
-        $mUsers = User::role('pegawai')->where('owner',0)->when($search,function($q)use($search){
-                        // dd($search);
+
+        $mUsers = User::where('owner',0)->when($search,function($q)use($search){
                         return $q->where('users.name','like','%'.$search.'%');
                     })->when(($kodeSkpd  != 0),function($q)use($kodeSkpd){
                         return $q->whereHas('riwayat_jabatan',function ($q)use($kodeSkpd){
@@ -76,13 +76,14 @@ class RekapAbsensHarianController extends Controller
                                     $q->where('kode_skpd',$kodeSkpd);
                                 });
                     });
+        // dd($mUsers->get(),$kodeSkpd);
         if($periodeBulan != null){
             $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])
                         ->where('periode_bulan',$periodeBulan)->get();
         }else{
             $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])->get()  ;
         }
-        // dd($this->mTotalPresensiDetail);
+        // dd($this->mTotalPresensiDetail,$periodeBulan,$mUsers->get()->count());
         if($mUsers->get()->count() == 0){
             $mUsers = User::role('pegawai')->when($search,function($q)use($search){
                         return $q->where('users.name','like','%'.$search.'%');

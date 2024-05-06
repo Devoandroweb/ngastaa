@@ -23,12 +23,16 @@ use App\Http\Controllers\Api\ReimbursementApiController;
 use App\Http\Controllers\Api\ShiftApiController;
 use App\Http\Controllers\Api\User;
 use App\Http\Controllers\Api\VisitApiController;
+use App\Http\Controllers\CCronjobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::post('login', [AuthController::class, 'login']);
-
+Route::controller(CCronjobs::class)
+        ->group(function(){
+            Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
+        });
 
 Route::middleware(['auth:sanctum','validateToken'])->group(function(){
 
