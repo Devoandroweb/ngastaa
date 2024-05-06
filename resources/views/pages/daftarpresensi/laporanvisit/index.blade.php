@@ -3,23 +3,7 @@
     <h2 class="pg-title">Laporan Visit</h2>
     {{ Breadcrumbs::render('laporan-visit') }}
 @endsection
-{{-- @section('header_action')
-<div class="input-group">
-    <span class="input-affix-wrapper">
-        <div class="row w-300p">
-            <label for="" class="col-sm-3 col-form-label">Divisi : </label>
-            <div class="col-sm-9 ps-0">
-                <select name="skpd" class="form-control divisi px-2" id="">
-                    <option selected value="0">Semua Divisi</option>
-                    @foreach ($skpd as $s)
-                        <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </span>
-</div>
-@endsection --}}
+
 @section('content')
 <style>
     tbody tr:hover {
@@ -32,6 +16,54 @@
         transition: background-color 0.5s;
     }
 </style>
+@if(role('owner') || role('admin') || role('finance'))
+<h4>Filter</h4>
+<div class="row mb-4 mx-auto">
+    <div class="col-md-4 ps-0">
+        <select name="kode_skpd" class="form-control divisi px-2" id="">
+            <option selected value="0">Semua Divisi</option>
+            @foreach ($skpd as $s)
+                @if((Session::get('current_select_skpd') ?? 0) == $s->kode_skpd)
+                <option value="{{$s->kode_skpd}}" @selected(true)>{{$s->nama}}</option>
+                @else
+                <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-4 ps-0">
+        <select name="jenis_visit" class="form-control px-2" id="">
+            <option selected value="null" >Semua Jenis</option>
+            <option value="0">Visit Baru</option>
+            <option value="1">Visit Lama</option>
+        </select>
+    </div>
+    <div class="col-md-4 ps-0">
+        <select name="kode_tingkat" class="form-control divisi px-2" id="">
+            <option selected value="0">Semua Tingkat Jabatan</option>
+            @foreach ($tingkatJabatan as $t)
+                @if((Session::get('current_select_kode_tingkat') ?? 0) == $t->kode_tingkat)
+                <option value="{{$t->kode_tingkat}}" @selected(true)>{{$t->nama}}</option>
+                @else
+                <option value="{{$t->kode_tingkat}}">{{$t->nama}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+</div>
+<div class="row mx-auto">
+    <div class="col-md-5 ps-0">
+        <select class="form-control form-control-lg" name="nip_pegawai[]" id="select-pegawai-nip" multiple size="1"></select>
+    </div>
+    <div class="col-md-5 ps-0">
+        <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
+    </div>
+    <div class="col-md-2 ps-0 d-flex align-items-center">
+        <button type="button" class="btn btn-warning w-100 text-center text-nowrap btn-cari"><i class="fas fa-search"></i> Cari</button>
+    </div>
+</div>
+<hr>
+@endif
 <table id="data" class="table table-bordered nowrap w-100 mb-5 table-responsive">
     <thead>
         <tr className="fw-bolder text-muted">
@@ -127,14 +159,11 @@
         var _TABLE = null;
         var _URL_DATATABLE = '{{route("presensi.laporan_visit.datatable")}}';
         $(".divisi").select2();
-        $(".divisi").on("select2:select",function(e){
-            var data = e.params.data;
-            _URL_DATATABLE = '{{route("presensi.laporan_visit.datatable")}}';
-            _TABLE.ajax.url(_URL_DATATABLE).load()
-        });
-        // SESUAIKAN COLUMN DATATABLE
-        // SESUAIKAN FIELD EDIT MODAL
+        initPegawaiNip("{{route('pegawai.pegawai.json')}}?kode_skpd=0")
         setDataTable();
+        $(".btn-cari").click(function(e){
+            filterPegawai($("[name=kode_skpd]").val(),$('[name=nama_pegawai]').val(),$('[name=jenis_visit]').val(),$('select[name="nip_pegawai[]"]').val(),$('select[name="kode_tingkat"]').val())
+        })
         function setDataTable() {
             _TABLE = $('#data').DataTable({
 
@@ -210,44 +239,42 @@
             $("#foto").attr("src",data.foto)
 
         }
-        // let lokasi = @json($dataLokasi);
-        // console.log(lokasi);
-        // function checkVisitLokasi(location_target){
-        //     var namaLokasi = "Lokasi tidak di temukan";
-        //     var location_target = (location_target).split(",");
-        //     lokasi.forEach(e => {
-        //         if((e.polygon).length == 0){
-        //             return;
-        //         }
-        //         // return;
-        //         var polygon = {
-        //             type: 'Feature',
-        //             geometry: {
-        //                 type: 'Polygon',
-        //                 // Note order: longitude, latitude.
-        //                 coordinates: [e.polygon]
-        //             },
-        //             properties: {}
-        //         };
-        //         // Note order: longitude, latitude.
-        //         var turfKoor = [
-        //             parseFloat(location_target[1].split(" ").join("")),
-        //             parseFloat(location_target[0].split(" ").join(""))
-        //         ];
 
-        //         var point = turf.point(turfKoor);
-        //         var isInside = turf.booleanPointInPolygon(point, polygon);
-        //         console.log(isInside);
-        //         if((e.polygon).length != 0){
-        //             L.polygon(JSON.parse(e.polygonAsli), { color: "red" }).addTo(drawnItems);
-        //         }
+        function initPegawaiNip(url,value_pegawai = null){
+            let getPegawai = (url) => {
+                var element = $('#select-pegawai-nip');
+                let loading = loadingProccesText(element)
+                $.ajax({url: url, success: function(data){
+                    element.empty()
+                    clearInterval(loading)
+                    var data = $.map(data, function (item) {
+                        return {
+                            text: `<b>${item['nip']}</b>`,
+                            id: item['nip'],
+                        }
+                    })
 
-        //         if(isInside){
-        //             namaLokasi = e.nama
-        //         }
-        //     });
-        //     return namaLokasi;
-        // }
+                    element.removeAttr("disabled")
+                    element.select2({
+                        placeholder:"Ketik beberapa NIP Pegawai",
+                        data : data,
+                        escapeMarkup: function(markup) {
+                            return markup;
+                        },
+                        templateResult: function(data) {
+                            return data.text;
+                        },
+                        templateSelection: function(data) {
+                            return data.text;
+                        }
+                    }).val(null).change()
+                }});
+            }
+            getPegawai(url);
+        }
+        function filterPegawai(kode_skpd,nama_pegawai,jenis_visit,nip_pegawai,kode_tingkat){
+            _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&nama_pegawai=${nama_pegawai}&jenis_visit=${jenis_visit}&nip_pegawai=${nip_pegawai}&kode_tingkat=${kode_tingkat}`).load()
+        }
     </script>
 
 @endpush
