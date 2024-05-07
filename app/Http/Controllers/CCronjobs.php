@@ -59,13 +59,18 @@ class CCronjobs extends Controller
         try {
             DB::transaction(function(){
                 // $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
+                $startCacl = date("Y-m-d H:i:s");
                 $resultCalculate = $this->totalPresensiRepository->manualCaculate();
-                // dd($resultCalculate);
-                if ($resultCalculate == 0) {
-                    return response()->json([
-                        'status' => FALSE,
-                        'message' => 'Maaf Perhitungan Presensi untuk hari ini sebelumnya sudah di hitung'
-                    ]);
+
+                if ($resultCalculate != 0) {
+                    $endCacl = date("Y-m-d H:i:s");
+                    $fileSuccess = fopen('sukses_cronjob.txt','a');
+                    fwrite($fileSuccess, "Run calculate absensi in : Start = ".$startCacl."| End = ".$endCacl);
+                    fclose($fileSuccess);
+                    // return response()->json([
+                    //     'status' => FALSE,
+                    //     'message' => 'Maaf Perhitungan Presensi untuk hari ini sebelumnya sudah di hitung'
+                    // ]);
                 }
             });
             DB::commit();

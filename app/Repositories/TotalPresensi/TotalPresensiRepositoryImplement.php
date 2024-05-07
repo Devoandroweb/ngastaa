@@ -12,6 +12,7 @@ use App\Models\Presensi\TotalIzin;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
+use App\Models\StatusCalculate;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,6 +79,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     }
     public function manualCaculate()
     {
+
         if($this->dataTotalPresensiDetail->get()->count() != 0){
             $this->maxDate = $this->dataTotalPresensiDetail->max('tanggal');
             $this->maxDate = date("Y-m-d",strtotime($this->maxDate."+1 days"));
@@ -89,26 +91,43 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                 return 0; # Data Absen Kosong
             }
         }
-        $dateStart = request('date_start');
-        $dateEnd = request('date_end');
-        $limit = request('limit');
-        $offset = request('offset');
+        // dd($this->maxDate);
+        $statusCacl = StatusCalculate::first();
+        $dateStart = date("Y-m-d",strtotime("-1 days"));
+        $dateEnd = date("Y-m-d",strtotime("-1 days"));
+        // $dateStart = "2024-05-02";
+        // $dateEnd = "2024-05-03";
+        $limit = $statusCacl->limits;
+        $offset = $statusCacl->offset;
+        $nip = request('nip');
+        $nip = $nip != "" ? explode(",",$nip) : [];
+
         # Check apakah tanggal nya sama, jika sama jangan hitung
-        if($dateStart == $dateEnd){
-            return 2; # Tanggal Masih Sama
-        }
+        // if($dateStart == $dateEnd){
+        //     return 2; # Tanggal Masih Sama
+        // }
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
+        // dd($tanggalBulan);
         // $tanggalBulan = [date("Y-m-d",strtotime("-1 days"))];
+
         $this->allPegawai = $this->pegawaiRepository->allPegawai();
+        if($nip){
+            $this->allPegawai = $this->allPegawai->whereIn("nip",$nip);
+        }
         if($limit){
-            $this->allPegawai = $this->allPegawai->limitOffset();
-            // dd($this->allPegawai->toSql());
+            $this->allPegawai = $this->allPegawai->limit($limit)->offset($offset);
         }
         $this->allPegawai = $this->allPegawai->pluck('nip')->toArray();
-        // dd($this->allPegawai,$limit);
+        $nipNotCalc = $this->dataTotalPresensiDetail->whereIn('tanggal',$tanggalBulan)->pluck("nip")->toArray();
+        $this->allPegawai = array_diff($this->allPegawai,$nipNotCalc);
+        // dd($this->allPegawai,$tanggalBulan,$nipNotCalc);
         $dataInsert = collect([]);
+
         foreach ($tanggalBulan as $date) {
+
+            # check pegawai yg belum di hitung
+
             $this->date = $date;
             $this->dateNow = $date;
             $this->periodeBulan = date("Y-m",strtotime($date));
@@ -118,7 +137,19 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         }
         // dd($dataInsert);
         TotalPresensiDetail::insert($dataInsert->toArray());
-
+        if($dateStart && $dateEnd){
+            $updateOffset = $statusCacl->offset+$statusCacl->limits;
+            if($updateOffset>$this->pegawaiRepository->allPegawai()->count()){
+                $updateOffset = 0;
+            }
+            $statusCacl->update([
+                "limits"=>50,
+                "offset"=>$updateOffset,
+                "date_start"=>$dateStart,
+                "date_end"=>$dateEnd,
+                "time"=>date("Y-m-d H:i:s"),
+            ]);
+        }
         return 1;
     }
     function calculatePresensi()
@@ -139,8 +170,6 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                     $izin = $this->existingIzin($pegawai);
                     if($izin != null){
                         #Izin
-
-
                         if(!$this->existingTotalDetail($this->dateNow,4)){
                             array_push($status,"4");
                         }
@@ -155,7 +184,6 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                         TotalIzinDetail::insert($dataInsertTotalIzinDetail);
                     }else{
                         #Alfa
-
                         if(!$this->existingTotalDetail($this->dateNow,3)){
                             array_push($status,"3");
                         }
