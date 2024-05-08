@@ -20,10 +20,10 @@ class LogApiErrors
         $response = $next($request);
         // Tangkap kesalahan jika responsenya bukan 2xx (sukses)
         if ($response->getStatusCode() >= 400 && $response->getStatusCode() <= 599) {
-
+            $content = json_decode($response->getContent());
             $fileError = fopen('api.log','a');
             $time = now();
-            fwrite($fileError, "[$time] | ".$response->getStatusCode() ." | response : ".$response->getContent()."\n\n--------------------------------------------------------------\n\n");
+            fwrite($fileError, "[$time] | URL : ". $request->url() ." | ".$response->getStatusCode() ." | response : ".$content->message."| file :".$content->file."\n\n--------------------------------------------------------------\n\n");
             fclose($fileError);
         }
 
