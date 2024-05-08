@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => env('LOG_CHANNEL', 'monolog'),
 
     /*
     |--------------------------------------------------------------------------
@@ -109,14 +109,23 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
-        'null' => [
-            'driver' => 'monolog',
-            'handler' => NullHandler::class,
-        ],
+        // 'null' => [
+        //     'driver' => 'monolog',
+        //     'handler' => NullHandler::class,
+        // ],
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'monolog' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'formatter' => env('LOG_FORMATTER', \Monolog\Formatter\LineFormatter::class),
+            'path' => storage_path('logs/api.log'),
+            'level' => 'debug',
+        ],
+
     ],
 
 ];

@@ -1,3 +1,4 @@
 ALTER TABLE `total_izin_detail` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `total_izin_detail` CHANGE `kode_cuti` `kode_cuti` VARCHAR(20) NOT NULL;
 ALTER TABLE `total_izin_detail` CHANGE `nip` `nip` VARCHAR(20) NOT NULL;
+ALTER TABLE `users` ADD `otp` VARCHAR(6) NULL DEFAULT NULL AFTER `maks_cuti`;

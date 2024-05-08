@@ -53,6 +53,15 @@ Route::middleware(['auth:sanctum','validateToken'])->group(function(){
     Route::get('check-status-absen/{nip}', [Presensi::class,'checkStatusAbsen']);
     Route::get('list-lokasi-visit', [VisitApiController::class,'list_lokasi_visit']);
 
+    Route::controller(AuthController::class)
+        ->prefix('whatsapp')
+        ->name('whatsapp.')
+        ->group(function(){
+            Route::get('check-no-wa', 'checkWAVerif');
+            Route::post('send-otp', 'sendWAOtp');
+            Route::post('save-otp', 'saveOtp');
+        });
+
     Route::controller(PegawaiController::class)
         ->prefix('pegawai')
         ->name('pegawai.')

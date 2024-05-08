@@ -1,0 +1,3956 @@
+[2024-05-08 21:06:03] | 500 | response : {"error":"token invalid"}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:06:03] | 500 | response : {"error":"token invalid"}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:07:39] | 500 | response : {"error":"token invalid"}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:07:39] | 500 | response : {"error":"token invalid"}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:07:53] | 500 | response : {"error":"token invalid"}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:07:53] | 500 | response : {"error":"token invalid"}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:10:01] | 500 | response : {
+    "message": "Call to a member function toJson() on string",
+    "exception": "Error",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+    "line": 139,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:10:02] | 500 | response : {
+    "message": "Call to a member function toJson() on string",
+    "exception": "Error",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+    "line": 139,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:15:23] | 500 | response : {
+    "message": "Attempt to read property \"id\" on null",
+    "exception": "ErrorException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+    "line": 28,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php",
+            "line": 270,
+            "function": "handleError",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+            "line": 28,
+            "function": "Illuminate\\Foundation\\Bootstrap\\{closure}",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 421,
+            "function": "App\\Traits\\{closure}",
+            "class": "App\\Models\\User",
+            "type": "::"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 249,
+            "function": "Illuminate\\Events\\{closure}",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 222,
+            "function": "dispatch",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Concerns\\HasEvents.php",
+            "line": 189,
+            "function": "until",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1197,
+            "function": "fireModelEvent",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 146,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:15:23] | 500 | response : {
+    "message": "Attempt to read property \"id\" on null",
+    "exception": "ErrorException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+    "line": 28,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php",
+            "line": 270,
+            "function": "handleError",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+            "line": 28,
+            "function": "Illuminate\\Foundation\\Bootstrap\\{closure}",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 421,
+            "function": "App\\Traits\\{closure}",
+            "class": "App\\Models\\User",
+            "type": "::"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 249,
+            "function": "Illuminate\\Events\\{closure}",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 222,
+            "function": "dispatch",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Concerns\\HasEvents.php",
+            "line": 189,
+            "function": "until",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1197,
+            "function": "fireModelEvent",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 146,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:16:03] | 500 | response : {
+    "message": "Attempt to read property \"id\" on null",
+    "exception": "ErrorException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+    "line": 28,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php",
+            "line": 270,
+            "function": "handleError",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+            "line": 28,
+            "function": "Illuminate\\Foundation\\Bootstrap\\{closure}",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 421,
+            "function": "App\\Traits\\{closure}",
+            "class": "App\\Models\\User",
+            "type": "::"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 249,
+            "function": "Illuminate\\Events\\{closure}",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 222,
+            "function": "dispatch",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Concerns\\HasEvents.php",
+            "line": 189,
+            "function": "until",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1197,
+            "function": "fireModelEvent",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 147,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:16:03] | 500 | response : {
+    "message": "Attempt to read property \"id\" on null",
+    "exception": "ErrorException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+    "line": 28,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php",
+            "line": 270,
+            "function": "handleError",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Traits\\CreatedUpdatedBy.php",
+            "line": 28,
+            "function": "Illuminate\\Foundation\\Bootstrap\\{closure}",
+            "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 421,
+            "function": "App\\Traits\\{closure}",
+            "class": "App\\Models\\User",
+            "type": "::"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 249,
+            "function": "Illuminate\\Events\\{closure}",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Events\\Dispatcher.php",
+            "line": 222,
+            "function": "dispatch",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Concerns\\HasEvents.php",
+            "line": 189,
+            "function": "until",
+            "class": "Illuminate\\Events\\Dispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1197,
+            "function": "fireModelEvent",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 147,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:19:36] | 500 | response : {
+    "message": "SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'updated_by' cannot be null (SQL: update `users` set `updated_by` = ?, `otp` = 745061, `users`.`updated_at` = 2024-05-08 21:19:36 where `id` = 1442)",
+    "exception": "Illuminate\\Database\\QueryException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+    "line": 760,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 720,
+            "function": "runQueryCallback",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 577,
+            "function": "run",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 510,
+            "function": "affectingStatement",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php",
+            "line": 3357,
+            "function": "update",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php",
+            "line": 1011,
+            "function": "update",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1214,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 147,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:19:36] | 500 | response : {
+    "message": "SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'updated_by' cannot be null (SQL: update `users` set `updated_by` = ?, `otp` = 745061, `users`.`updated_at` = 2024-05-08 21:19:36 where `id` = 1442)",
+    "exception": "Illuminate\\Database\\QueryException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+    "line": 760,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 720,
+            "function": "runQueryCallback",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 577,
+            "function": "run",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 510,
+            "function": "affectingStatement",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php",
+            "line": 3357,
+            "function": "update",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php",
+            "line": 1011,
+            "function": "update",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1214,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 147,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:19:58] | 500 | response : {
+    "message": "SQLSTATE[01000]: Warning: 1265 Data truncated for column 'updated_by' at row 1 (SQL: update `users` set `updated_by` = 2024-05-08 21:19:58, `otp` = 151128, `users`.`updated_at` = 2024-05-08 21:19:58 where `id` = 1442)",
+    "exception": "Illuminate\\Database\\QueryException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+    "line": 760,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 720,
+            "function": "runQueryCallback",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 577,
+            "function": "run",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 510,
+            "function": "affectingStatement",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php",
+            "line": 3357,
+            "function": "update",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php",
+            "line": 1011,
+            "function": "update",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1214,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 147,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+
+[2024-05-08 21:19:58] | 500 | response : {
+    "message": "SQLSTATE[01000]: Warning: 1265 Data truncated for column 'updated_by' at row 1 (SQL: update `users` set `updated_by` = 2024-05-08 21:19:58, `otp` = 151128, `users`.`updated_at` = 2024-05-08 21:19:58 where `id` = 1442)",
+    "exception": "Illuminate\\Database\\QueryException",
+    "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+    "line": 760,
+    "trace": [
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 720,
+            "function": "runQueryCallback",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 577,
+            "function": "run",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php",
+            "line": 510,
+            "function": "affectingStatement",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php",
+            "line": 3357,
+            "function": "update",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php",
+            "line": 1011,
+            "function": "update",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1214,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 1131,
+            "function": "performUpdate",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php",
+            "line": 991,
+            "function": "save",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\AuthController.php",
+            "line": 147,
+            "function": "update",
+            "class": "Illuminate\\Database\\Eloquent\\Model",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+            "line": 54,
+            "function": "sendWAOtp",
+            "class": "App\\Http\\Controllers\\Api\\AuthController",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 260,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 798,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Routing\\{closure}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\ValidateToken.php",
+            "line": 30,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ValidateToken",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+            "line": 50,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 126,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 102,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 54,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php",
+            "line": 44,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Auth\\Middleware\\Authenticate",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 799,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 776,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 740,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 729,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 190,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 141,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php",
+            "line": 66,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Barryvdh\\Debugbar\\Middleware\\InjectDebugbar",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Middleware\\LogApiErrors.php",
+            "line": 20,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\LogApiErrors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 86,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 180,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 116,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 165,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 134,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "E:\\xampp\\htdocs\\hr-attedance\\index.php",
+            "line": 53,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        }
+    ]
+}
+
+--------------------------------------------------------------
+

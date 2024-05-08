@@ -106,7 +106,6 @@ class RekapAbsensHarianController extends Controller
 
             foreach ($tanggal_awal_akhir as $i => $tanggal ) {
 
-
                 $rawColumn[] = "day_{$tanggal->format('d')}";
                 // $this->hadir = 0;
                 $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal,$i){
@@ -177,4 +176,5 @@ class RekapAbsensHarianController extends Controller
         }
         return $result;
     }
+
 }
