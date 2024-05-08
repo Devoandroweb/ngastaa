@@ -143,6 +143,8 @@ class AuthController extends Controller
         $otp = mt_rand(100000, 999999);
         $user = request()->user();
         // dd($user);
+        $noWa = convertToInternationalFormat($noWa);
+        $user->no_hp = $noWa;
         $user->otp = $otp;
         $user->update();
         $this->sendMessage($noWa,"*HRM-BAPAS-69*\nHi! Ini adalah kode OTP Anda: *$otp*. Gunakan kode ini untuk verifikasi akun Anda. Jangan berikan kode ini kepada siapapun untuk menjaga keamanan akun Anda.");
@@ -154,8 +156,24 @@ class AuthController extends Controller
         if($user->otp!=$otp){
             return response()->json(["status"=>false,"message"=>"Kode OTP tidak sesuai, silahkan masukkan dengan benar."],200);
         }
+        $user->otp = null;
         $user->no_wa_verif = 1;
         $user->update();
         return response()->json(["status"=>true,"message"=>"OTP sukses ter-verifikasi"],200);
+    }
+    function checkWaSimilar(){
+        $user = request()->user();
+        $noWa = request('no_wa');
+        if($user->no_hp==convertToInternationalFormat($noWa)){
+            return $this->sendWAOtp();
+        }
+        return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak sesuai, silahkan masukkan dengan benar."],200);
+    }
+    function changeNewPassword(){
+        $newPassword = request('new-password');
+        $user = request()->user();
+        $user->password = Hash::make($newPassword);
+        $user->update();
+        return response()->json(["status"=>true,"message"=>"Password berhasil di ubah."],200);
     }
 }
