@@ -60,6 +60,8 @@ Route::middleware(['auth:sanctum','validateToken'])->group(function(){
             Route::get('check-no-wa', 'checkWAVerif');
             Route::post('send-otp', 'sendWAOtp');
             Route::post('save-otp', 'saveOtp');
+            Route::post('similar-no-wa', 'checkWaSimilar');
+            Route::post('new-password', 'changeNewPassword');
         });
 
     Route::controller(PegawaiController::class)

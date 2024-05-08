@@ -865,3 +865,11 @@ function perusahaan($key = null){
     if ($key) return @$perusahaan->$key;
     return $perusahaan;
 }
+function convertToInternationalFormat($phoneNumber) {
+    // Periksa apakah nomor diawali dengan "08"
+    if (substr($phoneNumber, 0, 2) === '08') {
+        // Ubah format nomor menjadi "628..."
+        $phoneNumber = '62' . substr($phoneNumber, 1);
+    }
+    return $phoneNumber;
+}
