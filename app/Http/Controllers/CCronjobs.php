@@ -40,6 +40,7 @@ use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class CCronjobs extends Controller
@@ -107,6 +108,9 @@ class CCronjobs extends Controller
     }
     function calculatePayroll(){
         $this->payrollRepository->hitungPayroll();
+    }
+    function cobaCronjob(){
+        File::put("run_cronjob.txt", "run cronjob \n".date("Y-m-d H:i:s"));
     }
     function updateNip() {
         $data = [
