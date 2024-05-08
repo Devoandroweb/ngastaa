@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Models\Pegawai\Imei;
 use App\Models\User;
+use App\Traits\Whatsapp;
 use Illuminate\Http\Request;
 use App\Models\Pegawai\RiwayatShift;
 use App\Repositories\Password\PasswordRepository;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    use Whatsapp;
     private $passwordRepository;
     function __construct(PasswordRepository $passwordRepository)
     {
@@ -21,9 +23,8 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
-        // return response()->json([
-        //     'data' => $request->all()
-        // ], 200);
+
+
         $request->validate([
             'email' => 'required',
             'password' => 'required'
@@ -63,7 +64,7 @@ class AuthController extends Controller
         // $data->(['status_password'=>)]);
         // dd($data);
         $riwayatShift = RiwayatShift::where("nip",$user->nip)->where("is_akhir",1)->orderByDesc('kode_shift')->get();
-        // $data['status_password'] = $this->passwordCheck($data['nip']);
+
         if(count($riwayatShift) != 0){
             $data['shift'] = $riwayatShift[0]->kode_shift;
         }else{
@@ -125,5 +126,36 @@ class AuthController extends Controller
         $user = User::where('nip', $nip)->first();
 
         return response()->json(buildResponseSukses($user),200);
+    }
+    function checkWAVerif(){
+        $user = request()->user();
+        if($user->no_wa_verif){
+            return response()->json(["status"=>true,"message"=>"Nomor Whatsapp ter-verifikasi"],200);
+        }
+        return response()->json(["status"=>false,"message"=>"Nomor Whatsapp belum ter-verifikasi"],200);
+    }
+    function sendWAOtp(){
+        $noWa = request('no_wa');
+        $notRegister = json_decode($this->verif($noWa))->not_registered;
+        if($notRegister){
+            return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak terdaftar"],200);
+        }
+        $otp = mt_rand(100000, 999999);
+        $user = request()->user();
+        // dd($user);
+        $user->otp = $otp;
+        $user->update();
+        $this->sendMessage($noWa,"*HRM-BAPAS-69*\nHi! Ini adalah kode OTP Anda: *$otp*. Gunakan kode ini untuk verifikasi akun Anda. Jangan berikan kode ini kepada siapapun untuk menjaga keamanan akun Anda.");
+        return response()->json(["status"=>true,"message"=>"OTP Whatsapp sukses terkirim"],200);
+    }
+    function saveOtp(){
+        $user = request()->user();
+        $otp = request('otp');
+        if($user->otp!=$otp){
+            return response()->json(["status"=>false,"message"=>"Kode OTP tidak sesuai, silahkan masukkan dengan benar."],200);
+        }
+        $user->no_wa_verif = 1;
+        $user->update();
+        return response()->json(["status"=>true,"message"=>"OTP sukses ter-verifikasi"],200);
     }
 }

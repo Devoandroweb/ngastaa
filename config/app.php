@@ -17,6 +17,7 @@ return [
 
     'name' => env('APP_NAME', 'HRM BAPAS 69'),
     'hit_v_pegawai' => false,
+    'wa_token' => env('WA_TOKEN',null),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
