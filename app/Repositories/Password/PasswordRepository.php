@@ -9,4 +9,5 @@ interface PasswordRepository extends Repository{
     // Write something awesome :)
     function changePassword($auth);
     function changePasswordMobile();
+
 }
