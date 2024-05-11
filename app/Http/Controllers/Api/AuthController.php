@@ -59,7 +59,7 @@ class AuthController extends Controller
         //         'kode' => $imei,
         //     ]);
         // }
-        $user->status_password = $this->passwordCheck($user->nip);
+        // $user->status_password = $this->passwordCheck($user->nip);
 
         $data = PegawaiResource::make($user);
         // $data->(['status_password'=>)]);
