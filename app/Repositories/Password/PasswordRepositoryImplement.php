@@ -59,4 +59,5 @@ class PasswordRepositoryImplement extends Eloquent implements PasswordRepository
             return 2;
         }
     }
+    
 }

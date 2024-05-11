@@ -41,6 +41,7 @@ class AuthController extends Controller
                 ], 200);
             }
         }
+
         // $imei = $request->imei;
 
         // $cek_imei = Imei::where('kode', $imei)->first();
@@ -81,12 +82,14 @@ class AuthController extends Controller
             'access_token' => $authToken,
         ], 200);
     }
-    function passwordCheck($nip){
+    public function passwordCheck(){
+        $nip = request('nip');
+        // dd($nip);
         $user = User::where('nip',$nip)->first();
         if(!Hash::check($nip, $user->password)){
-            return true;
+            return response()->json(["status"=>true,"message"=>"Password sudah di ganti"],200);
         }else{
-            return false;
+            return response()->json(["status"=>false,"message"=>"Password belum di ganti"],200);
         }
     }
     function changePassword(){
