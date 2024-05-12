@@ -59,7 +59,7 @@ class AuthController extends Controller
         //         'kode' => $imei,
         //     ]);
         // }
-        // $user->status_password = $this->passwordCheck($user->nip);
+        $user->status_password = $this->passwordCheckAuth($user->nip);
 
         $data = PegawaiResource::make($user);
         // $data->(['status_password'=>)]);
@@ -82,17 +82,26 @@ class AuthController extends Controller
             'access_token' => $authToken,
         ], 200);
     }
-    public function passwordCheck(){
-        $nip = request('nip');
+    public function passwordCheckAuth($nip){
+        // $nip = request('nip');
         // dd($nip);
         $user = User::where('nip',$nip)->first();
         if(!Hash::check($nip, $user->password)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function passwordCheck($nip){
+
+        $user = User::where('nip',$nip)->first();
+        if(!Hash::check($nip, $user->password)){
             return response()->json(buildResponseSukses([
-                'password_status'=>true
+                'status_password'=>true
             ]),200);
         }else{
             return response()->json(buildResponseSukses([
-                'password_status'=>false
+                'status_password'=>false
             ]),200);
         }
     }
