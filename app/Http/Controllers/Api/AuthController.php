@@ -87,29 +87,27 @@ class AuthController extends Controller
         // dd($nip);
         $user = User::where('nip',$nip)->first();
         if(!Hash::check($nip, $user->password)){
-            return response()->json(["status"=>true,"message"=>"Password sudah di ganti"],200);
+            return response()->json(buildResponseSukses([
+                'password_status'=>true
+            ]),200);
         }else{
-            return response()->json(["status"=>false,"message"=>"Password belum di ganti"],200);
+            return response()->json(buildResponseSukses([
+                'password_status'=>false
+            ]),200);
         }
     }
     function changePassword(){
         try {
             if($this->passwordRepository->changePasswordMobile() == 1){
-                return response()->json(buildResponseSukses([
-                    'message'=>'Password Berhasil di ubah',
-                    'status'=>1
-                ]),200);
+                return response()->json(buildResponseSukses(true),200);
             }elseif($this->passwordRepository->changePasswordMobile() == 2){
-                return response()->json(buildResponseSukses([
+                return response()->json(buildResponseGagal([
                     'message'=>'Password lama tidak sesuai',
-                    'status'=>0
                 ]),200);
             }else{
-                return response()->json(buildResponseSukses([
+                return response()->json(buildResponseGagal([
                     'message'=>'Password lama dan baru tidak boleh sama',
-                    'status'=>0
                 ]),200);
-
             }
         } catch (\Throwable $th) {
             return response()->json(buildResponseGagal(['message'=>$th->getMessage()]),500);
