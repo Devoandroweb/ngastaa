@@ -24,3 +24,75 @@
 #21 /Applications/XAMPP/xamppfiles/htdocs/ngastaa/index.php(53): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #22 {main}
 "} 
+[2024-05-14 14:19:14] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 14:19:57] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 14:19:57] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 14:20:42] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 14:20:55] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 14:20:57] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 14:20:57] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 14:21:06] local.ERROR: Unable to detect application namespace. {"exception":"[object] (RuntimeException(code: 0): Unable to detect application namespace. at E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:1425)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(289): Illuminate\\Foundation\\Application->getNamespace()
+#1 E:\\xampp\\htdocs\\hr-attedance\\app\\Console\\Kernel.php(28): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(389): App\\Console\\Kernel->commands()
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
