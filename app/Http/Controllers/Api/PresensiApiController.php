@@ -199,6 +199,7 @@ class PresensiApiController extends Controller
     {
         $nip = request('nip');
         $kordinat = request('kordinat');
+        $location = request('location');
         $kode_shift = request('kode_shift');
         $kode_tingkat = request('kode_tingkat');
         $numberDay = date('N');

@@ -17,10 +17,14 @@ class LogApiErrors
      */
     public function handle(Request $request, Closure $next)
     {
+        $start = microtime(true);
         $response = $next($request);
+        $end = microtime(true);
+        $duration = $end - $start;
+        $duration = number_format($duration, 2);
         $fileError = fopen('api.log','a');
         $time = now();
-        fwrite($fileError, "[$time] | URL : ". $request->url() ." | ".$response->getStatusCode()."\n");
+        fwrite($fileError, "[$time] | URL : ". $request->url() ." | ".$response->getStatusCode()." | Duration : ".$duration."ms \n");
         fclose($fileError);
 
         return $response;

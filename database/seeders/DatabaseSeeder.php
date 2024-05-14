@@ -15,27 +15,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\Pegawai\Keluarga::factory(1)->create();
+        \App\Models\Pegawai\RiwayatKursus::factory(1)->create();
+        \App\Models\Pegawai\RiwayatOrganisasi::factory(1)->create();
+        \App\Models\Pegawai\RiwayatPendidikan::factory(1)->create();
+        \App\Models\Pegawai\RiwayatPmk::factory(1)->create();
 
         // \App\Models\User::create([
         //     'name' => 'admin',
         //     'email' => 'admin@mail.com',
         //     'password' => Hash::make('admin'),
         // ]);
-        $user = \App\Models\User::create([
-            'name' => 'owner',
-            'email' => 'owner@gmail.com',
-            'password' => Hash::make('owner'),
-            'owner' => 1
-        ]);
-        $user->assignRole('owner');
+        // $user = \App\Models\User::create([
+        //     'name' => 'owner',
+        //     'email' => 'owner@gmail.com',
+        //     'password' => Hash::make('owner'),
+        //     'owner' => 1
+        // ]);
+        // $user->assignRole('owner');
 
-        $user = \App\Models\User::create([
-            'name' => 'SUPER ADMIN',
-            'email' => 'superadmin@gmail.com',
-            'password' => Hash::make('admin'),
-            'owner' => 1
-        ]);
-        $user->assignRole('admin');
+        // $user = \App\Models\User::create([
+        //     'name' => 'SUPER ADMIN',
+        //     'email' => 'superadmin@gmail.com',
+        //     'password' => Hash::make('admin'),
+        //     'owner' => 1
+        // ]);
+        // $user->assignRole('admin');
     }
 }
