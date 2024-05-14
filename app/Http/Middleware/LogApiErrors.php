@@ -18,14 +18,10 @@ class LogApiErrors
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        // Tangkap kesalahan jika responsenya bukan 2xx (sukses)
-        if ($response->getStatusCode() >= 400 && $response->getStatusCode() <= 599) {
-            $content = $response->getContent();
-            $fileError = fopen('api.log','a');
-            $time = now();
-            fwrite($fileError, "[$time] | URL : ". $request->url() ." | ".$response->getStatusCode() ." | response : ".$content."\n\n--------------------------------------------------------------\n\n");
-            fclose($fileError);
-        }
+        $fileError = fopen('api.log','a');
+        $time = now();
+        fwrite($fileError, "[$time] | URL : ". $request->url() ." | ".$response->getStatusCode()."\n");
+        fclose($fileError);
 
         return $response;
     }

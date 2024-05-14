@@ -59,7 +59,7 @@ class AuthController extends Controller
         //         'kode' => $imei,
         //     ]);
         // }
-        $user->status_password = $this->passwordCheck($user->nip);
+        $user->status_password = $this->passwordCheckAuth($user->nip);
 
         $data = PegawaiResource::make($user);
         // $data->(['status_password'=>)]);
@@ -82,14 +82,27 @@ class AuthController extends Controller
             'access_token' => $authToken,
         ], 200);
     }
-    public function passwordCheck(){
-        $nip = request('nip');
+    public function passwordCheckAuth($nip){
+        // $nip = request('nip');
         // dd($nip);
         $user = User::where('nip',$nip)->first();
         if(!Hash::check($nip, $user->password)){
-            return response()->json(["status"=>true,"message"=>"Password sudah di ganti"],200);
+            return true;
         }else{
-            return response()->json(["status"=>false,"message"=>"Password belum di ganti"],200);
+            return false;
+        }
+    }
+    public function passwordCheck($nip){
+
+        $user = User::where('nip',$nip)->first();
+        if(!Hash::check($nip, $user->password)){
+            return response()->json(buildResponseSukses([
+                'status_password'=>true
+            ]),200);
+        }else{
+            return response()->json(buildResponseSukses([
+                'status_password'=>false
+            ]),200);
         }
     }
     function changePassword(){
@@ -100,12 +113,13 @@ class AuthController extends Controller
                     'status'=>1
                 ]),200);
             }elseif($this->passwordRepository->changePasswordMobile() == 2){
-                return response()->json(buildResponseSukses([
+                
+                return response()->json(buildResponseGagal([
                     'message'=>'Password lama tidak sesuai',
                     'status'=>0
                 ]),200);
             }else{
-                return response()->json(buildResponseSukses([
+                return response()->json(buildResponseGagal([
                     'message'=>'Password lama dan baru tidak boleh sama',
                     'status'=>0
                 ]),200);

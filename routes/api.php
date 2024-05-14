@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum','validateToken'])->group(function(){
     Route::post('check-face-recognition', [User::class, 'checkFaceRecognition']);
     Route::post('ubah-password', [AuthController::class,'changePassword']);
     Route::post('ubah-alamat', [User::class,'changeAddress']);
-    Route::post('password-check', [AuthController::class,'passwordCheck']);
+    Route::get('password-check/{nip}', [AuthController::class,'passwordCheck']);
     Route::post('home-user', [HomeUser::class,'index']);
     Route::get('riwayat-presensi/{nip}', [DataAbsensi::class,'index']);
     Route::get('total-presensi/{nip}', [DataAbsensi::class,'totalAbasensi']);
@@ -59,7 +59,7 @@ Route::middleware(['auth:sanctum','validateToken'])->group(function(){
         ->group(function(){
             Route::get('check-no-wa', 'checkWAVerif');
             Route::post('send-otp', 'sendWAOtp');
-            Route::post('save-otp', 'saveOtp');
+            Route::post('verify-otp', 'saveOtp');
             Route::post('similar-no-wa', 'checkWaSimilar');
             Route::post('new-password', 'changeNewPassword');
         });
