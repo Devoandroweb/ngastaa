@@ -46,5 +46,4 @@ class JamKerjaRepositoryImplement extends Eloquent implements JamKerjaRepository
         // }
         return null;
     }
-    // Write something awesome :)
 }
