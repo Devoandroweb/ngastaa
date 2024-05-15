@@ -17,7 +17,7 @@ class DataPresensi extends Model
     protected $guarded = [];
 
     function user(){
-        return $this->hasOne(User::class,'nip','nip');
+        return $this->belongsTo(User::class,'nip','nip');
     }
 
 }

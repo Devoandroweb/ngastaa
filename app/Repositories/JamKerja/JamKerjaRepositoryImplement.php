@@ -28,14 +28,22 @@ class JamKerjaRepositoryImplement extends Eloquent implements JamKerjaRepository
         return $this->mJamKerja->where($where);
     }
     function searchHariJamKerja($kodeJamKerja,$hari){
-        foreach ($this->hariJamKerja as $hariJamKerja) {
-            if($hariJamKerja->kode_jam_kerja == $kodeJamKerja && $hariJamKerja->hari == $hari){
-                if($hariJamKerja->tipe == 1){
-                    $hariJamKerja = $this->searchHariJamKerja($kodeJamKerja,$hariJamKerja->parent);
-                }
-                return $hariJamKerja;
+        $jk = $this->hariJamKerja->where('kode_jam_kerja',$kodeJamKerja)->first();
+        if($jk){
+            if($jk->tipe==1){
+                return $this->hariJamKerja->where('kode_jam_kerja',$kodeJamKerja)->where('hari',$jk->parent)->first();
+            }else{
+                return $jk;
             }
         }
+        // foreach ($this->hariJamKerja as $hariJamKerja) {
+        //     if($hariJamKerja->kode_jam_kerja == $kodeJamKerja && $hariJamKerja->hari == $hari){
+        //         if($hariJamKerja->tipe == 1){
+        //             $hariJamKerja = $this->searchHariJamKerja($kodeJamKerja,$hariJamKerja->parent);
+        //         }
+        //         return $hariJamKerja;
+        //     }
+        // }
         return null;
     }
     // Write something awesome :)

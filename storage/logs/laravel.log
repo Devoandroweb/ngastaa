@@ -96,3 +96,38 @@
 #4 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #5 {main}
 "} 
+[2024-05-14 15:22:10] local.ERROR: Can't use nullsafe operator in write context {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Can't use nullsafe operator in write context at E:\\xampp\\htdocs\\hr-attedance\\app\\Http\\Controllers\\Api\\PresensiApiController.php:189)
+[stacktrace]
+#0 {main}
+"} 
+[2024-05-14 18:40:19] local.ERROR: Command "route:list--path=api" is not defined.
+
+Did you mean one of these?
+    route:cache
+    route:clear
+    route:list {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"route:list--path=api\" is not defined.
+
+Did you mean one of these?
+    route:cache
+    route:clear
+    route:list at E:\\xampp\\htdocs\\hr-attedance\\vendor\\symfony\\console\\Application.php:737)
+[stacktrace]
+#0 E:\\xampp\\htdocs\\hr-attedance\\vendor\\symfony\\console\\Application.php(266): Symfony\\Component\\Console\\Application->find('route:list--pat...')
+#1 E:\\xampp\\htdocs\\hr-attedance\\vendor\\symfony\\console\\Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 E:\\xampp\\htdocs\\hr-attedance\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 E:\\xampp\\htdocs\\hr-attedance\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2024-05-14 20:32:19] local.ERROR: syntax error, unexpected token "}", expecting identifier or variable or "{" or "$" {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): syntax error, unexpected token \"}\", expecting identifier or variable or \"{\" or \"$\" at E:\\xampp\\htdocs\\hr-attedance\\app\\Models\\User.php:242)
+[stacktrace]
+#0 {main}
+"} 
+[2024-05-14 20:32:25] local.ERROR: syntax error, unexpected token "}", expecting ";" {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): syntax error, unexpected token \"}\", expecting \";\" at E:\\xampp\\htdocs\\hr-attedance\\app\\Models\\User.php:242)
+[stacktrace]
+#0 {main}
+"} 
+[2024-05-14 20:32:31] local.ERROR: syntax error, unexpected token "}", expecting ";" {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): syntax error, unexpected token \"}\", expecting \";\" at E:\\xampp\\htdocs\\hr-attedance\\app\\Models\\User.php:242)
+[stacktrace]
+#0 {main}
+"} 

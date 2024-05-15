@@ -7,6 +7,7 @@ use App\Models\Master\Suku;
 use App\Models\Payroll\DataPayroll;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPengajuanLembur;
+use App\Models\Pegawai\DataPresensi;
 use App\Models\Pegawai\Keluarga;
 use App\Models\Pegawai\RiwayatBahasa;
 use App\Models\Pegawai\RiwayatGolongan;
@@ -236,6 +237,9 @@ class User extends Authenticatable
     }
     function lokasiKerja(){
         return $this->hasOne(MapLokasiKerja::class,'nip','nip');
+    }
+    function dataPresensi(){
+        return $this->hasMany(DataPresensi::class,"nip","nip");
     }
 
 }

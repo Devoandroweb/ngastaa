@@ -14,12 +14,14 @@ class PresensiLaporanApiResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user = $this->user;
+        $jabatan = $user->jabatan_akhir?->where('is_akhir',1)->first();
         return [
             'id' => $this->id,
-            'nip' => $this->user->nip,
-            'name' => $this->user->name,
-            'divisi' => $this->user->jabatan_akhir?->where('is_akhir',1)->first()?->skpd?->nama,
-            'jabatan' => $this->user->jabatan_akhir?->where('is_akhir',1)->first()?->tingkat?->nama,
+            'nip' => $user->nip,
+            'name' => $user->name,
+            'divisi' => $jabatan?->skpd?->nama,
+            'jabatan' => $jabatan?->tingkat?->nama,
             'jam_pagi' => $this->tanggal_datang ? date('H:i', strtotime($this->tanggal_datang)) : '-',
             'jam_siang' => $this->tanggal_istirahat ? date('H:i', strtotime($this->tanggal_istirahat)) : '-',
             'jam_sore' => $this->tanggal_pulang ? date('H:i', strtotime($this->tanggal_pulang)) : '-',

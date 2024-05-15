@@ -41,8 +41,8 @@ class PresensiApiController extends Controller
     public function lokasi()
     {
         try{
-            $nip = request('nip');
-            $user = User::where('nip', $nip)->first();
+            $user = request()->user();
+            // $user = User::where('nip', $nip)->first();
 
             if ($user && $user->kordinat != "" && $user->longitude != "" && $user->latitude != "" && $user->jarak > 0) {
                 return response()->json([
@@ -54,7 +54,7 @@ class PresensiApiController extends Controller
                 ]);
             }
 
-            $rwJabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
+            $rwJabatan = $user->jabatan_akhir()->first();
             $tingkat = $rwJabatan?->tingkat;
             $kode_tingkat = $tingkat?->kode_tingkat ?? 0;
             $level = $tingkat?->eselon;
@@ -99,7 +99,7 @@ class PresensiApiController extends Controller
             // Lokasi Pegawai
             $lokasiPegawai = Lokasi::select('*')
                 ->leftJoin('lokasi_detail', 'lokasi_detail.kode_lokasi', 'lokasi.kode_lokasi')
-                ->whereRaw("(lokasi.keterangan = 1 AND lokasi_detail.keterangan_id = '$nip')")
+                ->whereRaw("(lokasi.keterangan = 1 AND lokasi_detail.keterangan_id = '$user->nip')")
                 ->whereNull('lokasi_detail.deleted_at')
                 ->first();
             if ($lokasiPegawai && $lokasiPegawai->kordinat != "" && $lokasiPegawai->longitude != "" && $lokasiPegawai->latitude != "" && $lokasiPegawai->jarak > 0) {
@@ -186,10 +186,12 @@ class PresensiApiController extends Controller
             }
 
             $shift = Shift::where('kode_shift', $kodeShift)->first();
-            $shift->kode_tingkat = $kode_tingkat;
-            $data = ShiftApiResource::make($shift);
+            if($shift){
+                $shift->kode_tingkat = $kode_tingkat;
+                $shift = ShiftApiResource::make($shift);
+            }
 
-            return response()->json(buildResponseSukses($data), 200);
+            return response()->json(buildResponseSukses($shift), 200);
         } catch (\Throwable $th) {
             return response()->json(buildResponseGagal($th->getMessage()), 404);
         }
@@ -510,21 +512,25 @@ class PresensiApiController extends Controller
     public function lists()
     {
         try{
-            $nip = request()->query('nip');
-            $user = User::where('nip',$nip)->first();
+            // $nip = request()->query('nip');
+            $user = request()->user();
             if(!$user){
                 return response()->json(buildResponseSukses(['status'=>false,'messages'=>'NIP tidak di temukan']),200);
             }
             if($user){
                 $dateStart = request('start_date');
                 $dateEnd = request('end_date');
-                $data = DataPresensi::whereHas('user',function($q) use ($nip){
-                    $q->where('nip',$nip);
-                })
-                ->limitOffset()
+                $data = $user->dataPresensi()
+                // ->with('user')
                 ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
-                    $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
-                })->orderByDesc('created_at')->get();
+                    return $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
+                })
+                ->orderByDesc('created_at')
+                // ->limitOffset()
+                ->limit(request('limit'))
+                // ->get();
+                ->get(["id","nip","tanggal_datang","tanggal_istirahat","tanggal_pulang","created_at"]);
+                // dd($data);
                 $data = PresensiLaporanApiResource::collection($data);
                 if($data){
                     return response()->json(buildResponseSukses($data),200);
@@ -555,7 +561,11 @@ class PresensiApiController extends Controller
                 $data = DataPresensi::whereIn('nip',$arrayNip)->limitOffset()
                 ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
                     $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
-                })->orderByDesc('created_at')->get();
+                })
+                ->limit(request('limit')??10)
+                ->orderByDesc('created_at')
+                // ->get();
+                ->get(["id","nip","tanggal_datang","tanggal_istirahat","tanggal_pulang","created_at"]);
                 $data = PresensiListOpdApiResource::collection($data);
 
                 if($data){
