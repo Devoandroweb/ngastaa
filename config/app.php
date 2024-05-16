@@ -197,8 +197,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-        Yajra\DataTables\DataTablesServiceProvider::class
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        // Supliu\LaravelQueryMonitor\ServiceProvider::class,
     ],
 
     /*
@@ -216,6 +218,7 @@ return [
 
         // 'ExampleClass' => App\Example\ExampleClass::class,
         // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        // 'QueryMonitor' => Supliu\LaravelQueryMonitor\Facades\QueryMonitor::class,
     ])->toArray(),
 
 ];
