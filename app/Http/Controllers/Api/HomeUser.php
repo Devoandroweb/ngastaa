@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Constants\System;
 use App\Http\Controllers\Controller;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\User;
 use App\Repositories\Pengumuman\PengumumanRepository;
 use App\Repositories\Presensi\PresensiRepository;
 use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class HomeUser extends Controller
@@ -28,11 +30,12 @@ class HomeUser extends Controller
     function index()
     {
         try {
-            $nip = request('nip');
-            $data['user'] = $this->userRepository->getUserWithIndentity($nip);
-            $data['presensi_today'] = $this->presensiRepository->presensiDay($nip);
-            // $data['pengumuman'] =  $this->pengumumanRepository->getPengumuman();
-            $data['user']['status_password'] = $this->passwordCheck($nip);
+            $user = request()->user();
+            $data = Cache::remember("home-user-$user->nip",now()->addMinutes(System::CACHE_DURATION),function()use($user){
+                $data['user'] = $this->userRepository->getUserWithIndentity($user);
+                $data['presensi_today'] = $this->presensiRepository->presensiDay($data['user']['nip']);
+                return $data;
+            });
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
@@ -52,13 +55,5 @@ class HomeUser extends Controller
     function absen(){
         $nip = request('nip');
         $presensiHarian = DataPresensi::where('nip',$nip)->where('created_at',);
-    }
-    function passwordCheck($nip){
-        $user = User::where('nip',$nip)->first();
-        if(!Hash::check($nip, $user->password)){
-            return true;
-        }else{
-            return false;
-        }
     }
 }

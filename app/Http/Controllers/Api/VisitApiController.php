@@ -152,9 +152,6 @@ class VisitApiController extends Controller
 
             $data = Visit::where('kode_visit', $kode)->first();
             if($data){
-                // $exp = explode(',', $data->kordinat);
-                // $data->latitude = (string) trim($exp[0]);
-                // $data->longitude = (string) trim($exp[1]);
                 return response()->json(buildResponseSukses($data),200);
             }
             return response()->json(buildResponseSukses(null),200);

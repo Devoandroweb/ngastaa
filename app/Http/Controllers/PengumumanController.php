@@ -62,6 +62,7 @@ class PengumumanController extends Controller
         }
 
         if ($up) {
+            clearPengumuman();
             return redirect(route('pengumuman.index'))->with([
                 'type' => 'success',
                 'messages' => 'Berhasil!'
@@ -80,6 +81,7 @@ class PengumumanController extends Controller
             Storage::delete($pengumuman->file);
         }
         $pengumuman->delete();
+        clearPengumuman();
         return redirect(route('pengumuman.index'))->with([
             'type' => 'success',
             'messages' => 'Berhasil!'
@@ -89,7 +91,7 @@ class PengumumanController extends Controller
     {
         $pengumuman = Pengumuman::all();
         $pengumuman = PengumumanResource::collection($pengumuman);
-        
+
         return $dataTables->of($pengumuman)
             ->addColumn('file', function ($row) {
                 // dd(file_exists(public_path($row->file)));

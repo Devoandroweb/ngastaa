@@ -8,6 +8,7 @@ use App\Models\Pegawai\RiwayatShift;
 use App\Repositories\JamKerja\JamKerjaRepository;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepositoryImplement extends Eloquent implements UserRepository{
 
@@ -36,8 +37,8 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
         $this->mJadwalShift = $mJadwalShift;
         $this->jamKerjaRepository = $jamKerjaRepository;
     }
-    function getUserWithIndentity($nip){
-        $user = User::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','jamKerja')->first();
+    function getUserWithIndentity($user){
+        $nip = $user->nip;
         $jabatan = null;
         $kode_tingkat = "-";
         if($user){
@@ -52,8 +53,6 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
         }
 
         $jadwalShift = $this->mJadwalShift->where(['tanggal'=>date('Y-m-d'),'nip'=>$nip])->first();
-        $RjamKerja = $this->mRiwayatKerja::with('jamKerja','jamKerjaDay')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
-        $shift = $this->mRiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->orderBy('created_at','desc')->first();
 
         $namaShift = "-";
         $jamShift = "-";
@@ -61,18 +60,22 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
         if($jadwalShift){
             $namaShift = (is_null($jadwalShift)) ? "-" : $jadwalShift->shift?->nama;
             $jamShift = (is_null($jadwalShift)) ? "-" : date("H:i",strtotime($jadwalShift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($jadwalShift->shift?->jam_tepat_pulang));
-        }elseif($RjamKerja != null){
-            if($RjamKerja->jamKerja != null){
-                $today = date("N");
-                $RjamKerja = $this->jamKerjaRepository->searchHariJamKerja($RjamKerja->kode_jam_kerja,$today);
-                $namaShift = (is_null($RjamKerja)) ? "-" : $RjamKerja->jamKerja?->nama;
-                // dd($RjamKerja,$RjamKerja->jamKerja);
-                $jamShift = (is_null($RjamKerja)) ? "-" : date("H:i",strtotime($RjamKerja?->jam_tepat_datang))." - ".date("H:i",strtotime($RjamKerja?->jam_tepat_pulang));
-            }
-        }elseif($shift != null){
-            if($shift->shift != null){
-                $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
-                $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+        }else{
+            $RjamKerja = $this->mRiwayatKerja::where('is_akhir',1)->where('nip',$nip)->first(["kode_jam_kerja"]);
+            if($RjamKerja != null){
+                $jamKerja = $RjamKerja->jamKerja;
+                if($jamKerja != null){
+                    $jamKerjaHariIni = $this->jamKerjaRepository->searchHariJamKerja($RjamKerja->kode_jam_kerja,date("N"));
+                    $namaShift = (is_null($jamKerjaHariIni)) ? "-" : $jamKerja?->nama;
+
+                    $jamShift = (is_null($jamKerjaHariIni)) ? "-" : date("H:i",strtotime($jamKerjaHariIni?->jam_tepat_datang))." - ".date("H:i",strtotime($jamKerjaHariIni?->jam_tepat_pulang));
+                }
+            }else{
+                $shift = $this->mRiwayatShift::with('shift')->where('is_akhir',1)->where('nip',$nip)->first();
+                if($shift->shift != null){
+                    $namaShift = (is_null($shift)) ? "-" : $shift->shift?->nama;
+                    $jamShift = (is_null($shift)) ? "-" : date("H:i",strtotime($shift->shift?->jam_tepat_datang))." - ".date("H:i",strtotime($shift->shift?->jam_tepat_pulang));
+                }
             }
         }
         if(file_exists(public_path($user->image))){
@@ -81,13 +84,15 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
             $image = asset("/dist/img/logo_lets_work_greyscale.png");
         }
         $data = [
+            'nip' => $user->nip,
             'nama' => $user->getFullName(),
             'foto' => $image,
             'jabatan' => $jabatan,
             'kode_tingkat' => $kode_tingkat,
             'nama_shift' => $namaShift,
             'jam_shift' => $jamShift,
-            'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d"))
+            'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d")),
+            'status_password'=>!Hash::check($nip, $user->password)
         ];
         return $data;
     }

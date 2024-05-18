@@ -7,5 +7,5 @@ use LaravelEasyRepository\Repository;
 interface UserRepository extends Repository{
 
     // Write something awesome :)
-    function getUserWithIndentity($nip);
+    function getUserWithIndentity($user);
 }

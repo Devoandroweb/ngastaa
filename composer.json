@@ -20,6 +20,7 @@
         "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.2",
         "monolog/monolog": "^2.9",
+        "predis/predis": "^2.2",
         "psr/simple-cache": "^2.0",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-permission": "^5.5",
@@ -52,7 +53,8 @@
             "app/Helpers/Kepegawaian.php",
             "app/Helpers/Notifikasi.php",
             "app/Helpers/Presensi.php",
-            "app/Helpers/Payroll.php"
+            "app/Helpers/Payroll.php",
+            "app/Helpers/Cache.php"
         ]
     },
     "autoload-dev": {

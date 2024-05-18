@@ -19,7 +19,7 @@ class ValidateToken
     {
         $user = $request->user();
         $nip = $request->nip;
-        
+
         if($nip){
             if($user->nip!=$nip){
                 throw new HttpResponseException(response()->json([
