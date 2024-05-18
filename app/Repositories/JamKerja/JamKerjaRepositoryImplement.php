@@ -5,6 +5,7 @@ namespace App\Repositories\JamKerja;
 use App\Models\HariJamKerja;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\MJamKerja;
+use Illuminate\Support\Facades\Cache;
 
 class JamKerjaRepositoryImplement extends Eloquent implements JamKerjaRepository{
 
@@ -18,32 +19,25 @@ class JamKerjaRepositoryImplement extends Eloquent implements JamKerjaRepository
 
     public function __construct(
         MJamKerja $mJamKerja,
-        HariJamKerja $hariJamKerja,
     )
     {
         $this->mJamKerja = $mJamKerja;
-        $this->hariJamKerja = $hariJamKerja->with('jamKerja')->get();
+        $this->hariJamKerja = collect(Cache::get('master-jam-kerja'));
+
     }
     function getJamKerjaWhere($where = []){
         return $this->mJamKerja->where($where);
     }
     function searchHariJamKerja($kodeJamKerja,$hari){
-        $jk = $this->hariJamKerja->where('kode_jam_kerja',$kodeJamKerja)->first();
+        $jk = (object) $this->hariJamKerja->where("kode_jam_kerja",$kodeJamKerja)->first();
+        // dd($jk);
         if($jk){
             if($jk->tipe==1){
-                return $this->hariJamKerja->where('kode_jam_kerja',$kodeJamKerja)->where('hari',$jk->parent)->first();
+                return (object) $this->hariJamKerja->where('kode_jam_kerja',$kodeJamKerja)->where('hari',$jk->parent)->first();
             }else{
                 return $jk;
             }
         }
-        // foreach ($this->hariJamKerja as $hariJamKerja) {
-        //     if($hariJamKerja->kode_jam_kerja == $kodeJamKerja && $hariJamKerja->hari == $hari){
-        //         if($hariJamKerja->tipe == 1){
-        //             $hariJamKerja = $this->searchHariJamKerja($kodeJamKerja,$hariJamKerja->parent);
-        //         }
-        //         return $hariJamKerja;
-        //     }
-        // }
         return null;
     }
 }

@@ -21,7 +21,6 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\LogApiErrors::class,
     ];
 
     /**
@@ -70,6 +69,5 @@ class Kernel extends HttpKernel
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'maintenance' => \App\Http\Middleware\MaintenanceMode::class,
         'validateToken' => \App\Http\Middleware\ValidateToken::class,
-        'logApiError' => \App\Http\Middleware\LogApiErrors::class,
     ];
 }

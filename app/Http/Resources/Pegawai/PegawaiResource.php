@@ -14,15 +14,16 @@ class PegawaiResource extends JsonResource
      */
     public function toArray($request)
     {
-        $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
-        $shift = array_key_exists('0', $this->shift_akhir->toArray()) ? $this->shift_akhir[0] : null;
+        $jabatan = $this->jabatan_akhir->load('tingkat','skpd')->first();
+        $shift = $this->shift_akhir->first();
         $shift = $shift?->kode_shift;
 
         // dd($jabatan);
-        $tingkat = $jabatan?->tingkat;
+        $tingkat = $jabatan?->tingkat->load('eselon');
         $nama_jabatan =  $tingkat?->nama;
-        $eselon =  $tingkat?->eselon?->nama;
-        $kode_eselon =  $tingkat?->eselon?->kode_eselon;
+        $eselon =  $tingkat?->eselon;
+        $nama_eselan = $eselon?->nama;
+        $kode_eselon =  $eselon?->kode_eselon;
         $skpd = $jabatan?->skpd?->nama;
 
         $data = [
@@ -31,7 +32,7 @@ class PegawaiResource extends JsonResource
             'email' => $this->email ?? "-",
             'name' => ($this->gelar_depan ? $this->gelar_depan ." " : "") . $this->name . ($this->gelar_belakang ? ", " . $this->gelar_belakang : ""),
             'nama_jabatan' => $nama_jabatan ?? "-",
-            'eselon' => $eselon ?? "-",
+            'eselon' => $nama_eselan ?? "-",
             'kode_eselon' => $kode_eselon ?? "0",
             'skpd' => $skpd ?? "-",
             'images' => $this->images,

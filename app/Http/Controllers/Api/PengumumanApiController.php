@@ -7,6 +7,7 @@ use App\Http\Resources\PengumumanResource;
 use App\Models\Pengumuman;
 use App\Repositories\Pengumuman\PengumumanRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PengumumanApiController extends Controller
 {
@@ -19,7 +20,9 @@ class PengumumanApiController extends Controller
     }
     public function index()
     {
-        $data = $this->pengumumanRepository->getPengumuman();
+        $data = Cache::remember("pengumuman",now()->addMinutes(10),function () {
+            return $this->pengumumanRepository->getPengumuman();
+        });
         return response()->json(buildResponseSukses($data),200);
     }
 
