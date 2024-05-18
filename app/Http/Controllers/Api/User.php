@@ -11,39 +11,15 @@ use App\Models\Pegawai\RiwayatPmk;
 use Illuminate\Http\Request;
 use App\Models\User as MUser;
 use App\Models\UserFace;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Controller
 {
     function index($nip){
             try{
-            $user = MUser::role('pegawai')->where('nip', $nip)->with('jabatan_akhir','statusPegawai')->first();
-            $dataJabatan = array_key_exists('0', $user->jabatan_akhir->toArray()) ? $user->jabatan_akhir[0] : null;
-            $jabatan = "-";
-            $divisi = "-";
-            $status_pegawai = "-";
-            $kode_tingkat = "-";
-            if($dataJabatan != null){
-                $jabatan = $dataJabatan->tingkat?->nama;
-                $kode_tingkat = $dataJabatan->tingkat?->kode_tingkat;
-                $divisi = $dataJabatan?->skpd?->nama;
-            }
-            if($user->statusPegawai != null){
-                $status_pegawai = $user->statusPegawai->nama;
-            }
-            // dd(public_path("../{$user->image}"));
-            if(file_exists(public_path("../{$user->image}")) && $user->image != ""){
-                $foto = url($user->image);
-            }else{
-                $foto = asset("/dist/img/logo_lets_work_greyscale.png");
-            }
-            $data = [
-                'nama' => $user->getFullName(),
-                'foto' => $foto,
-                'jabatan' => $jabatan,
-                'status_pegawai' => $status_pegawai,
-                'kode_tingkat' => $kode_tingkat,
-                'divisi' => $divisi,
-            ];
+            $data = Cache::get("data-user-$nip",function(){
+                return request()->user();
+            });
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
@@ -106,17 +82,18 @@ class User extends Controller
     }
     function updateProfile(){
         try {
-            $nip = request('nip');
+            $user = request()->user();
+            $nip = $user->nip;
             $name = request('name'); // nama colom
             $value = request('value'); // isi colom
             if($name == 'tanggal_lahir'){
                 $value = date("Y-m-d",strtotime($value));
             }
-            $user = MUser::where('nip', $nip);
+
             if($user){
                 if($name == 'image'){
                     if(request()->hasFile('value')){
-                        $imageDir = $user->first()?->image;
+                        $imageDir = $user->image;
                         @unlink($imageDir);
                     }
                     // dd(request()->file('value'));
@@ -124,9 +101,8 @@ class User extends Controller
                     $image =  uploadImage($dir,request()->file('value'));
                     $value = $dir.'/'.$image;
                 }
-
-                // $user->{$name} = $value;
                 $user->update([$name => $value]);
+                Cache::forever("data-user-$nip",$user);
                 return response()->json(buildResponseSukses([
                     'message' => 'Update Profile Berhasil',
                     'data' => $value
