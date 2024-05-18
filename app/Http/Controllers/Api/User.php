@@ -17,7 +17,9 @@ class User extends Controller
 {
     function index($nip){
             try{
-            $data = Cache::get("data-user-$nip");
+            $data = Cache::get("data-user-$nip",function(){
+                return request()->user();
+            });
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",
