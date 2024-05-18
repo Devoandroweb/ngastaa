@@ -6,6 +6,7 @@ use App\Http\Resources\PengumumanResource;
 use App\Models\Pengumuman;
 use App\Repositories\Pengumuman\PengumumanRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
@@ -63,6 +64,9 @@ class PengumumanController extends Controller
 
         if ($up) {
             clearPengumuman();
+            Cache::forever("pengumuman",function () {
+                return $this->pengumumanRepository->getPengumuman();
+            });
             return redirect(route('pengumuman.index'))->with([
                 'type' => 'success',
                 'messages' => 'Berhasil!'
@@ -82,6 +86,9 @@ class PengumumanController extends Controller
         }
         $pengumuman->delete();
         clearPengumuman();
+        Cache::forever("pengumuman",function () {
+            return $this->pengumumanRepository->getPengumuman();
+        });
         return redirect(route('pengumuman.index'))->with([
             'type' => 'success',
             'messages' => 'Berhasil!'

@@ -33,8 +33,10 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
         // $this->date = "2023-08-04";
     }
     function presensiDay($nip){
-        $dataDatang = (object)$this->getPresensiDatang($nip);
-        $dataPulang = (object)$this->getPresensiPulang($nip);
+        $dataDatang = $this->getPresensiDatang($nip);
+        $dataPulang = $this->getPresensiPulang($nip);
+        $dataDatang = $dataDatang ? (object)$dataDatang : null;
+        $dataPulang = $dataPulang ? (object)$dataPulang : null;
         // dd($data);
         # cari shift nya
         # ambil jam pulang
