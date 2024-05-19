@@ -64,7 +64,7 @@ class PengumumanController extends Controller
 
         if ($up) {
             clearPengumuman();
-            Cache::forever("pengumuman",function () {
+            Cache::rememberForever("pengumuman",function () {
                 return $this->pengumumanRepository->getPengumuman();
             });
             return redirect(route('pengumuman.index'))->with([
@@ -86,7 +86,7 @@ class PengumumanController extends Controller
         }
         $pengumuman->delete();
         clearPengumuman();
-        Cache::forever("pengumuman",function () {
+        Cache::rememberForever("pengumuman",function () {
             return $this->pengumumanRepository->getPengumuman();
         });
         return redirect(route('pengumuman.index'))->with([
