@@ -42,6 +42,7 @@ class InsertAbsensi implements ShouldQueue
         foreach ($datasPd as $key => $data) {
             $datas[] = collect($data)->merge($datasPp[$key])->unique()->toArray();
         }
+        
         DataPresensi::insert($datas);
         $now = now();
         $path = storage_path('app/public/cronjob.txt'); // Path file di direktori storage

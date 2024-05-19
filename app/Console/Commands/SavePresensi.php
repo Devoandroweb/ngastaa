@@ -34,6 +34,9 @@ class SavePresensi extends Command
     public function handle()
     {
         $users = User::whereOwner(0)->pluck('nip')->toArray();
+        foreach($users as $nip){
+            Cache::forget("home-user-$nip");
+        }
         $dPresensiExist = DataPresensi::whereIn('nip',$users)->whereDate('tanggal_datang', date("Y-m-d"))->pluck('nip')->toArray();
         $dPresensiNotExist = array_diff($users,$dPresensiExist);
 
