@@ -25,3 +25,6 @@ custom-sql.txt
 /hr-attedance.zip
 /api.log
 /storage/logs/laravel.log
+storage/logs/laravel.log
+rr
+.rr.yaml

@@ -7,26 +7,28 @@
     "require": {
         "php": "^8.1.2",
         "azishapidin/indoregion": "^3.0",
-        "barryvdh/laravel-dompdf": "^1.0",
-        "diglactic/laravel-breadcrumbs": "^8.0",
+        "barryvdh/laravel-dompdf": "^2.2",
+        "diglactic/laravel-breadcrumbs": "^9.0",
         "guzzlehttp/guzzle": "^7.2",
-        "inertiajs/inertia-laravel": "^0.5.4",
         "intervention/image": "^2.7",
-        "laravel/framework": "^9.11",
-        "laravel/sanctum": "^2.8",
+        "laravel/framework": "^10.0",
+        "laravel/octane": "^2.3",
+        "laravel/sanctum": "^3.2",
         "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.7",
         "lordelph/icofileloader": "^3.0",
         "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.2",
-        "monolog/monolog": "^2.9",
+        "monolog/monolog": "^3.0",
         "predis/predis": "^2.2",
         "psr/simple-cache": "^2.0",
         "simplesoftwareio/simple-qrcode": "~4",
+        "spatie/laravel-html": "^3.5",
         "spatie/laravel-permission": "^5.5",
+        "spiral/roadrunner": "^2024.1",
         "tightenco/ziggy": "^1.0",
         "yajra/laravel-datatables": "9.0",
-        "yaza/laravel-repository-service": "^3.2"
+        "yaza/laravel-repository-service": "4.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
@@ -34,9 +36,9 @@
         "laravel/breeze": "^1.9",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
