@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 
 class SavePresensi extends Command
 {
@@ -42,5 +43,12 @@ class SavePresensi extends Command
 
         Cache::forever("presensi-datang-exist",$dPresensiExist);
         Cache::forever("presensi-datang-not-exist",$dPresensiNotExist);
+
+        $now = now();
+        $path = public_path('cronjob.txt'); // Path file di direktori storage
+        $content = "$now | Save Cache Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
+
+        // Menulis ke file
+        File::put($path, $content);
     }
 }
