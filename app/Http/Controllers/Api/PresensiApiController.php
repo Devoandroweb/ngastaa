@@ -340,11 +340,11 @@ class PresensiApiController extends Controller
                 $data = [
                     'nip' => $nip,
                     'periode_bulan' => date("Y-m"),
-                    'kordinat_pulang' => $kordinat,
-                    'foto_pulang' => $foto,
                     'kode_tingkat' => $kode_tingkat,
                     'kode_shift' => $kode_shift,
                     'kode_jam_kerja' => $kode_jam_kerja,
+                    'foto_pulang' => $foto,
+                    'kordinat_pulang' => $kordinat,
                     'tanggal_pulang' => $tanggalIn
                 ];
                 $presensiPulang[$nip] = $data;
