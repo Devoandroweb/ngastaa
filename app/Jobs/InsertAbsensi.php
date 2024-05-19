@@ -42,6 +42,8 @@ class InsertAbsensi implements ShouldQueue
         foreach ($datasPd as $key => $data) {
             if(isset($datasPp[$key])){
                 $datas[] = collect($data)->merge($datasPp[$key])->unique()->toArray();
+            }else{
+                $datas[] = $data;
             }
         }
 
