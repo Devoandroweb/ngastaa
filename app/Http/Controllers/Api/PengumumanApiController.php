@@ -20,7 +20,7 @@ class PengumumanApiController extends Controller
     }
     public function index()
     {
-        $data = Cache::forever("pengumuman",function () {
+        $data = Cache::rememberForever("pengumuman",function () {
             return $this->pengumumanRepository->getPengumuman();
         });
         return response()->json(buildResponseSukses($data),200);

@@ -51,7 +51,7 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
         ];
 
         $data['visit'] = $dataVisit;
-        $data['aktifitas'] = $dataAktifitas;
+        $data['istirahat'] = $dataAktifitas;
         return $data;
     }
 
