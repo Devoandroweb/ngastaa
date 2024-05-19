@@ -209,7 +209,9 @@ class DataPresensiController extends Controller
         $skpd = request()->query('skpd');
         $skpd = ($skpd == 0) ? null : $skpd;
         $role = role('opd');
-
+        DataPresensi::whereDate("created_at",date("Y-m-d"))->delete();
+        $datas = getPresensi();
+        DataPresensi::insert($datas);
         // $skpd = 1;
         $model = DataPresensi::selectRaw("data_presensi.id as id, users.name as nama, users.nip as nip, data_presensi.tanggal_datang, data_presensi.tanggal_istirahat, data_presensi.tanggal_pulang, data_presensi.created_at, tingkat.nama as jabatan, data_presensi.kordinat_datang, data_presensi.foto_datang, shift.nama as nama_shift, m_jam_kerja.nama as nama_jam_kerja")
             ->leftJoin('users', 'users.nip', 'data_presensi.nip')
@@ -217,9 +219,7 @@ class DataPresensiController extends Controller
             ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift')
             ->leftJoin('m_jam_kerja', 'm_jam_kerja.kode', 'data_presensi.kode_jam_kerja')
             ->whereDate('data_presensi.created_at',date("Y-m-d"));
-        // dd($model->get());
         if($skpd){
-            // dd($skpd);
             $model->whereHas('user',function($q)use($skpd){
                 $q->whereHas('riwayat_jabatan',function ($q)use($skpd){
                     $q->where('kode_skpd',$skpd);
@@ -240,7 +240,7 @@ class DataPresensiController extends Controller
                     ->where('riwayat_jabatan.is_akhir', 1);
             });
         });
-        // dd($model->get()[0]);
+
         return $dataTables->of($model)
             ->editColumn('shift', function ($row) {
                 return ($row->nama_shift ?? $row->nama_jam_kerja) ?? "-";
@@ -258,7 +258,6 @@ class DataPresensiController extends Controller
                     $jabatan = $jabatan_akhir->where('is_akhir',1)->first();
                 }
 
-                // dd($jabatan);
                 $nama_jabatan = '-';
                 if ($jabatan) {
                     $tingkat = $jabatan?->tingkat;
@@ -313,7 +312,7 @@ class DataPresensiController extends Controller
             $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja,$mJamKerja);
             $pdfLocation = 'show-pdf/presensi-pegawai.pdf';
             $pdf->save(storage_path($pdfLocation));
-            
+
             return response()->json([
                 'status' => true,
                 'messages' => 'Data Laporan di temukan',

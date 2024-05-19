@@ -7,7 +7,28 @@ use App\Models\MJamKerja;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
+use Illuminate\Support\Facades\Cache;
 
+function getPresensi(){
+    $pd = Cache::get("presensi-datang");
+    $pp = Cache::get("presensi-pulang");
+
+    $datasPd = collect($pd);
+    $datasPp = collect($pp);
+    $datas = [];
+    foreach ($datasPd as $key => $data) {
+        if(isset($datasPp[$key])){
+            $datas[] = collect($data)->merge($datasPp[$key])->unique()->toArray();
+        }else{
+            $datas[] = collect($data)->merge([
+                'foto_pulang' => null,
+                'kordinat_pulang' => null,
+                'tanggal_pulang' => null
+            ])->unique()->toArray();
+        }
+    }
+    return $datas;
+}
 function check_libur($tanggal)
 {
     $libur = HariLibur::where('tanggal_mulai', '<=', $tanggal)->where('tanggal_selesai', '>=', $tanggal)->count();
