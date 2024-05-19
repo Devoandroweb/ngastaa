@@ -254,7 +254,7 @@ class PresensiApiController extends Controller
         $presensiDatang = Cache::get("presensi-datang");
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
         // if (true) { # PAGI
-            $presensiNotExist = Cache::get("presensi-datang-not-exist");
+            $presensiNotExist = Cache::get("presensi-datang-not-exist") ?? [];
             if (!in_array($nip,$presensiNotExist) || isset($presensiDatang[$nip])) {
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pagi ini!']),200);
             } else {
