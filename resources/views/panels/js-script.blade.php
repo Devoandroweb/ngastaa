@@ -52,26 +52,17 @@
 	<script src="{{asset('/')}}vendors/sweetalert2/dist/sweetalert2.min.js"></script>
 	<script src="{{asset('/')}}vendors/leaflet/leaflet.js"></script>
 	<script src="{{asset('/')}}vendors/izitoast/js/iziToast.min.js"></script>
-	{{-- <script src="{{asset('/')}}vendors/moment/min/moment.min.js"></script> --}}
-	{{-- <script src="{{asset('/')}}vendors/daterangepicker/daterangepicker.js"></script> --}}
-	{{-- <script src="{{asset('/')}}dist/js/radial-chart-init.js"></script> --}}
-	<!-- Apex JS -->
-	{{-- <script src="{{asset('/')}}vendors/apexcharts/dist/apexcharts.min.js"></script> --}}
-
+	
 	<script src="{{asset('/')}}vendors/fullcalendar/main.min.js"></script>
-	<!-- Fullcalendar JS -->
-	{{-- <script src="{{asset('/')}}dist/js/fullcalendar-init.js"></script> --}}
 
 	<!-- Init JS -->
 	<script src="{{asset('/')}}dist/js/init.js"></script>
-	{{-- <script src="{{asset('/')}}dist/js/chips-init.js"></script> --}}
-	{{-- <script src="{{asset('/')}}dist/js/toast-data.js"></script> --}}
+
 	<script src="{{asset('/')}}autoNumeric.js"></script>
 	<script src="{{asset('/')}}custom.js"></script>
 	<script src="{{asset('/')}}component.js"></script>
 	<script src="{{asset('/')}}clock.js"></script>
 
-	<script type="module" src="{{url('/')}}/public/firebaseConfig.js"></script>
 
 	<script src="{{asset('/')}}vendors/select2/dist/js/select2.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js" integrity="sha512-ozq8xQKq6urvuU6jNgkfqAmT7jKN2XumbrX1JiB3TnF7tI48DPI4Gy1GXKD/V3EExgAs1V+pRO7vwtS1LHg0Gw==" crossorigin="anonymous" referrerpolicy="no-referrer" ></script>;
