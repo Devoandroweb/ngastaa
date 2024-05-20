@@ -30,22 +30,17 @@ class Presensi extends Command
      *
      * @return int
      */
+    protected $totalPresensiRepository;
+    function __construct(TotalPresensiRepository $totalPresensiRepository){
+        $this->totalPresensiRepository = $totalPresensiRepository;
+    }
 
     public function handle()
     {
         try {
-            // $pegawai = User::all();
-            // foreach ($pegawai as $value) {
-            //     RiwayatJamKerja::create([
-            //         'nip' => $value->nip,
-            //         'kode_jam_kerja' => 'JM-01HODSM',
-            //         'is_akhir' => 1,
-            //         'status' => 1
-            //     ]);
-            // }
 
             DB::transaction(function(){
-                
+                $this->totalPresensiRepository->calculatePresensi();
             });
             DB::commit();
             $file = fopen('cronjob.txt','a');

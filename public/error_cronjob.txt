@@ -1,0 +1,1 @@
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'hr-attedance.status_calculate' doesn't exist (Connection: mysql, SQL: select * from `status_calculate` limit 1) | file : E:\xampp\htdocs\hr-attedance\vendor\laravel\framework\src\Illuminate\Database\Connection.php | line : 829 | 2024-05-20 16:04:29

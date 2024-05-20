@@ -30,6 +30,7 @@ class MasterHariJamkerja extends Command
      */
     public function handle()
     {
+        Cache::forget("master-jam-kerja");
         $hariJamKerja = HariJamKerja::get($this->column)->toArray();
         Cache::forever("master-jam-kerja",$hariJamKerja);
     }

@@ -71,15 +71,31 @@ class AuthController extends Controller
     }
     function changePassword(){
         try {
+            // if($this->passwordRepository->changePasswordMobile() == 1){
+            //     return response()->json(buildResponseSukses(true),200);
+            // }elseif($this->passwordRepository->changePasswordMobile() == 2){
+            //     return response()->json(buildResponseGagal([
+            //         'message'=>'Password lama tidak sesuai',
+            //     ]),200);
+            // }else{
+            //     return response()->json(buildResponseGagal([
+            //         'message'=>'Password lama dan baru tidak boleh sama',
+            //     ]),200);
+            // }
             if($this->passwordRepository->changePasswordMobile() == 1){
-                return response()->json(buildResponseSukses(true),200);
+                return response()->json(buildResponseSukses([
+                    'message'=>'Password Berhasil di ubah',
+                    'status'=>1
+                ]),200);
             }elseif($this->passwordRepository->changePasswordMobile() == 2){
                 return response()->json(buildResponseGagal([
                     'message'=>'Password lama tidak sesuai',
+                    'status'=>0
                 ]),200);
             }else{
                 return response()->json(buildResponseGagal([
                     'message'=>'Password lama dan baru tidak boleh sama',
+                    'status'=>0
                 ]),200);
             }
         } catch (\Throwable $th) {

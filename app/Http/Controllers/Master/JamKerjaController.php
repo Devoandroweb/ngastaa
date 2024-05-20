@@ -10,6 +10,7 @@ use App\Models\HariJamKerja;
 use App\Models\MJamKerja;
 use App\Repositories\JamKerja\JamKerjaRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -50,7 +51,6 @@ class JamKerjaController extends Controller
     {
         $for = 1;
         $jamKerja->load('hariJamKerja');
-        // dd($jamKerja);
         return view('pages.masterdata.datapresensi.jam_kerja.add', compact('jamKerja','for'));
     }
 
@@ -59,6 +59,7 @@ class JamKerjaController extends Controller
         HariJamKerja::where('kode_jam_kerja',$jamKerja->kode)->delete();
         $cr = $jamKerja->delete();
         if ($cr) {
+            Artisan::call("init:master-jam-kerja");
             return redirect(route('master.jam_kerja.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil, dihapus!"
@@ -138,13 +139,13 @@ class JamKerjaController extends Controller
                 MJamKerja::updateOrCreate(['id' => request('id')],['kode'=>$data['kode'],'nama'=>$data['nama']]);
             });
             DB::commit();
+            Artisan::call("init:master-jam-kerja");
             return redirect(route('master.jam_kerja.index'))->with([
                 'type' => 'success',
                 'messages' => "Berhasil!"
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
-            // dd($th->getMessage());
             return redirect(route('master.jam_kerja.index'))->with([
                 'type' => 'error',
                 'messages' => $th->getMessage()
