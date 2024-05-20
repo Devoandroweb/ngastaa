@@ -48,7 +48,6 @@ class AuthController extends Controller
         $data = PegawaiResource::make($user);
 
         $authToken = $user->createToken('auth-token')->plainTextToken;
-    
         return response()->json([
             'status' => TRUE,
             'message' => "Auth Success !!",
