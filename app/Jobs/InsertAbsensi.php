@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
@@ -38,6 +39,7 @@ class InsertAbsensi implements ShouldQueue
             $datas = getPresensi();
             $insert = DataPresensi::insert($datas);
             Cache::forever("presensi-insert-status",$insert);
+            Artisan::call("command:clear-presensi");
             $now = now();
             $path = storage_path('app/public/cronjob.txt'); // Path file di direktori storage
             $content = "$now | Insert Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
