@@ -24,7 +24,6 @@ custom-sql.txt
 /tunasinti.com
 /hr-attedance.zip
 /api.log
-/storage/logs/laravel.log
 storage/logs/laravel.log
 rr
 .rr.yaml
