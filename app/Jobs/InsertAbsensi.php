@@ -33,7 +33,7 @@ class InsertAbsensi implements ShouldQueue
      */
     public function handle()
     {
-        DataPresensi::whereDate("created_at",date("Y-m-d"))->delete();
+        DataPresensi::whereDate("created_at",date("Y-m-d"))->forceDelete();
         $datas = getPresensi();
         DataPresensi::insert($datas);
         $now = now();
