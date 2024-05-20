@@ -108,7 +108,6 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         // }
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
-        // dd($tanggalBulan);
         // $tanggalBulan = [date("Y-m-d",strtotime("-1 days"))];
 
         $this->allPegawai = $this->pegawaiRepository->allPegawai();

@@ -144,7 +144,7 @@
                 ];
 
             _TABLE = $('#data').DataTable({
-                responsive:true,
+                responsive:false,
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -171,13 +171,19 @@
             var tipe = $(this).data('tipe');
 
             var data = _TABLE.row($(this).closest('tr')).data()
+            console.log(data);
             var kodeJamKerja = data.kode
             var namaJamKerja = data.nama
             var hariJamKerja = null;
             if(tipe == 1){
-                hariJamKerja = JSON.parse(data[parent+"_json"])
+                // hariJamKerja = JSON.parse(data[parent+"_json"])
+                var parentJson = data[parent+"_json"];
+                hariJamKerja = parentJson
+
             }else{
-                hariJamKerja = JSON.parse(data[hari+"_json"])
+                var hariJson = data[hari+"_json"];
+                console.log(hari,hariJson);
+                hariJamKerja = hariJson
             }
             var htmlCol = "";
 
@@ -204,7 +210,7 @@
             jsonData.forEach(element => {
                 var colAttach = "";
                 colAttach += col.replace("#LABEL#",element.label);
-                colAttach = colAttach.replace("#VALUE#",hariJamKerja[element.key]);
+                colAttach = colAttach.replace("#VALUE#",hariJamKerja[element.key] ?? "-");
                 htmlCol += colAttach;
             });
             html = row.replace("#COL#",htmlCol)
