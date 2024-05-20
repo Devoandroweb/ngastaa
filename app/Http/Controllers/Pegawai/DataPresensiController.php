@@ -15,6 +15,7 @@ use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
 use App\Repositories\Pdf\PdfRepository;
 use App\Repositories\Pegawai\PegawaiRepository;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
@@ -209,9 +210,12 @@ class DataPresensiController extends Controller
         $skpd = request()->query('skpd');
         $skpd = ($skpd == 0) ? null : $skpd;
         $role = role('opd');
-        DataPresensi::whereDate("created_at",date("Y-m-d"))->forceDelete();
-        $datas = getPresensi();
-        DataPresensi::insert($datas);
+
+        if(!Cache::get("presensi-insert-status")){
+            DataPresensi::whereDate("created_at",date("Y-m-d"))->forceDelete();
+            $datas = getPresensi();
+            DataPresensi::insert($datas);
+        }
         // $skpd = 1;
         $model = DataPresensi::selectRaw("data_presensi.id as id, users.name as nama, users.nip as nip, data_presensi.tanggal_datang, data_presensi.tanggal_istirahat, data_presensi.tanggal_pulang, data_presensi.created_at, tingkat.nama as jabatan, data_presensi.kordinat_datang, data_presensi.foto_datang, shift.nama as nama_shift, m_jam_kerja.nama as nama_jam_kerja")
             ->leftJoin('users', 'users.nip', 'data_presensi.nip')
