@@ -12,21 +12,26 @@ use Illuminate\Support\Facades\Cache;
 function getPresensi(){
     $pd = Cache::get("presensi-datang");
     $pp = Cache::get("presensi-pulang");
-
+    // dd($pp["00306"]);
     $datasPd = collect($pd);
     $datasPp = collect($pp);
     $datas = [];
     foreach ($datasPd as $key => $data) {
-        if(isset($datasPp[$key])){
-            $datas[] = collect($data)->merge($datasPp[$key])->unique()->toArray();
+        $dataMerge = $datasPp->get($key);
+        unset($dataMerge['kode_shift']);
+        unset($data['kode_shift']);
+        if($dataMerge){
+            $datas[] = collect($data)->merge($dataMerge)->toArray();
         }else{
             $datas[] = collect($data)->merge([
                 'foto_pulang' => null,
                 'kordinat_pulang' => null,
                 'tanggal_pulang' => null
-            ])->unique()->toArray();
+            ])->toArray();
+            // dd($dataMerge,$datas,$data);
         }
     }
+    // dd($datas);
     return $datas;
 }
 function check_libur($tanggal)

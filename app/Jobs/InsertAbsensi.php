@@ -33,14 +33,16 @@ class InsertAbsensi implements ShouldQueue
      */
     public function handle()
     {
-        DataPresensi::whereDate("created_at",date("Y-m-d"))->forceDelete();
-        $datas = getPresensi();
-        DataPresensi::insert($datas);
-        $now = now();
-        $path = storage_path('app/public/cronjob.txt'); // Path file di direktori storage
-        $content = "$now | Insert Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
-
-        // Menulis ke file
-        File::put($path, $content);
+        if(!Cache::get("presensi-insert-status")){
+            DataPresensi::whereDate("created_at",date("Y-m-d"))->forceDelete();
+            $datas = getPresensi();
+            $insert = DataPresensi::insert($datas);
+            Cache::forever("presensi-insert-status",$insert);
+            $now = now();
+            $path = storage_path('app/public/cronjob.txt'); // Path file di direktori storage
+            $content = "$now | Insert Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
+            // Menulis ke file
+            File::put($path, $content);
+        }
     }
 }

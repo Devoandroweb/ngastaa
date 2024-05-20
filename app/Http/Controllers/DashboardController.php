@@ -17,6 +17,7 @@ use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables;
 // use ZipStream\Bigint;
 
@@ -97,23 +98,26 @@ class DashboardController extends Controller
         // dd($status_kawin_statistic);
         # Presensi Count
         // dd($this->pegawaiRepository->allPegawaiWithRole()->get()->pluck('nip')->toArray());
+        if(!Cache::get("presensi-insert-status")){
+            $presensi = count(getPresensi());
+        }else{
+            $presensi = DataPresensi::whereDate('data_presensi.created_at', date("Y-m-d"))
+                        ->when($role, function ($qr) {
+                            $user = auth()->user()->jabatan_akhir;
+                            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
+                            $skpd = '';
+                            if ($jabatan) {
+                                $skpd = $jabatan->kode_skpd;
+                            }
 
-        $presensi = DataPresensi::whereDate('data_presensi.created_at', date("Y-m-d"))
-                    ->when($role, function ($qr) {
-                        $user = auth()->user()->jabatan_akhir;
-                        $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                        $skpd = '';
-                        if ($jabatan) {
-                            $skpd = $jabatan->kode_skpd;
-                        }
-
-                        $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                            $qt->on('riwayat_jabatan.nip', 'data_presensi.nip')
-                                ->where('riwayat_jabatan.kode_skpd', $skpd)
-                                ->where('riwayat_jabatan.is_akhir', 1);
-                        });
-                    })
-                    ->count();
+                            $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
+                                $qt->on('riwayat_jabatan.nip', 'data_presensi.nip')
+                                    ->where('riwayat_jabatan.kode_skpd', $skpd)
+                                    ->where('riwayat_jabatan.is_akhir', 1);
+                            });
+                        })
+                        ->count();
+        }
 
         $bulan = DataPresensi::whereMonth('data_presensi.created_at', date("m"))
                 ->when($role, function ($qr) {

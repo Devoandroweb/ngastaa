@@ -30,17 +30,17 @@ class Presensi extends Command
      *
      * @return int
      */
-    protected $totalPresensiRepository;
-    function __construct(TotalPresensiRepository $totalPresensiRepository){
-        $this->totalPresensiRepository = $totalPresensiRepository;
-    }
+    // protected $totalPresensiRepository;
+    // function __construct(TotalPresensiRepository $totalPresensiRepository){
+    //     $this->totalPresensiRepository = $totalPresensiRepository;
+    // }
 
     public function handle()
     {
         try {
 
             DB::transaction(function(){
-                $this->totalPresensiRepository->calculatePresensi();
+                // $this->totalPresensiRepository->calculatePresensi();
             });
             DB::commit();
             $file = fopen('cronjob.txt','a');
