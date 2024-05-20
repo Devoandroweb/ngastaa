@@ -209,7 +209,7 @@ class DataPresensiController extends Controller
         $skpd = request()->query('skpd');
         $skpd = ($skpd == 0) ? null : $skpd;
         $role = role('opd');
-        DataPresensi::whereDate("created_at",date("Y-m-d"))->delete();
+        DataPresensi::whereDate("created_at",date("Y-m-d"))->forceDelete();
         $datas = getPresensi();
         DataPresensi::insert($datas);
         // $skpd = 1;
