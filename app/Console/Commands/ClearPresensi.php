@@ -34,7 +34,7 @@ class ClearPresensi extends Command
         Cache::forget("presensi-datang-exist");
         Cache::forget("presensi-datang-not-exist");
         $now = now();
-        $path = storage_path('app/public/cronjob.txt'); // Path file di direktori storage
+        $path = public_path('cronjob.txt'); // Path file di direktori storage
         $content = "$now | Clear Cache Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
 
         // Menulis ke file

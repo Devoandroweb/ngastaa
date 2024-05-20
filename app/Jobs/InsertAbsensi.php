@@ -41,7 +41,7 @@ class InsertAbsensi implements ShouldQueue
             Cache::forever("presensi-insert-status",$insert);
             Artisan::call("command:clear-presensi");
             $now = now();
-            $path = storage_path('app/public/cronjob.txt'); // Path file di direktori storage
+            $path = public_path('cronjob.txt'); // Path file di direktori storage
             $content = "$now | Insert Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
             // Menulis ke file
             File::put($path, $content);
