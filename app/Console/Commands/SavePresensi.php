@@ -5,12 +5,15 @@ namespace App\Console\Commands;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\User;
 use App\Repositories\Pegawai\PegawaiRepository;
+use App\Traits\Whatsapp;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
 class SavePresensi extends Command
 {
+    use Whatsapp;
     /**
      * The name and signature of the console command.
      *
@@ -34,6 +37,7 @@ class SavePresensi extends Command
 
     public function handle()
     {
+        Artisan::call("command:clear-presensi");
         $users = User::whereOwner(0)->pluck('nip')->toArray();
         foreach($users as $nip){
             Cache::forget("home-user-$nip");
@@ -47,8 +51,8 @@ class SavePresensi extends Command
         $now = now();
         $path = public_path('cronjob.txt'); // Path file di direktori storage
         $content = "$now | Save Cache Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
-
         // Menulis ke file
         File::put($path, $content);
+        $this->sendMessage("6285745325535",$content);
     }
 }
