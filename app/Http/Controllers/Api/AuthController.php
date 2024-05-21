@@ -118,7 +118,7 @@ class AuthController extends Controller
         return response()->json(buildResponseSukses($user),200);
     }
     function checkWAVerif(){
-        $user = request()->user();
+        $user = User::whereNoHp(request('nip'))->first('no_wa_verif');
         if($user->no_wa_verif){
             return response()->json(["status"=>true,"message"=>"Nomor Whatsapp ter-verifikasi"],200);
         }
@@ -126,23 +126,24 @@ class AuthController extends Controller
     }
     function sendWAOtp(){
         $noWa = request('no_wa');
+        $noWa = convertToInternationalFormat($noWa);
         $notRegister = json_decode($this->verif($noWa))->not_registered;
         if($notRegister){
             return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak terdaftar"],200);
         }
         $otp = mt_rand(100000, 999999);
-        $user = request()->user();
-        // dd($user);
-        $noWa = convertToInternationalFormat($noWa);
-        $user->no_hp = $noWa;
+        $user = User::whereNoHp($noWa)->first();
         $user->otp = $otp;
         $user->update();
         $this->sendMessage($noWa,"*HRM-BAPAS-69*\nHi! Ini adalah kode OTP Anda: *$otp*. Gunakan kode ini untuk verifikasi akun Anda. Jangan berikan kode ini kepada siapapun untuk menjaga keamanan akun Anda.");
         return response()->json(["status"=>true,"message"=>"OTP Whatsapp sukses terkirim"],200);
     }
     function saveOtp(){
-        $user = request()->user();
+        $user = User::whereNoHp(request('no_wa'))->first('otp');
         $otp = request('otp');
+        if(!$user){
+            return response()->json(["status"=>false,"message"=>"Nomor Whatsapp salah, silahkan masukkan dengan benar."],200);
+        }
         if($user->otp!=$otp){
             return response()->json(["status"=>false,"message"=>"Kode OTP tidak sesuai, silahkan masukkan dengan benar."],200);
         }
@@ -152,18 +153,21 @@ class AuthController extends Controller
         return response()->json(["status"=>true,"message"=>"OTP sukses ter-verifikasi"],200);
     }
     function checkWaSimilar(){
-        $user = request()->user();
         $noWa = request('no_wa');
+        $user = User::whereNoHp($noWa)->first('no_hp');
         if($user->no_hp==convertToInternationalFormat($noWa)){
             return $this->sendWAOtp();
         }
         return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak sesuai, silahkan masukkan dengan benar."],200);
     }
     function changeNewPassword(){
-        $newPassword = request('new-password');
-        $user = request()->user();
-        $user->password = Hash::make($newPassword);
-        $user->update();
-        return response()->json(["status"=>true,"message"=>"Password berhasil di ubah."],200);
+        $user = User::whereNoHp(request('no_wa'))->whereOtp(request('otp'))->count();
+        if($user){
+            $newPassword = request('new-password');
+            $user->password = Hash::make($newPassword);
+            $user->update();
+            return response()->json(["status"=>true,"message"=>"Password berhasil di ubah."],200);
+        }
+        return response()->json(["status"=>false,"message"=>"Nomor Whatsapp atau Otp Salah."],200);
     }
 }

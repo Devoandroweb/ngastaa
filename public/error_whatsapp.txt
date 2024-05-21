@@ -1,0 +1,4 @@
+device disconnected | 2024-05-21 18:29:21{"detail":"success! message in queue","id":["44059586"],"process":"processing","status":true,"target":["6285745325535"]} | 2024-05-21 20:18:50
+{"detail":"success! message in queue","id":["44060851"],"process":"processing","status":true,"target":["6285745325535"]} | 2024-05-21 20:43:57
+{"detail":"success! message in queue","id":["44060996"],"process":"processing","status":true,"target":["6285745325535"]} | 2024-05-21 20:47:09
+{"detail":"success! message in queue","id":["44061050"],"process":"processing","status":true,"target":["6285745325535"]} | 2024-05-21 20:48:22

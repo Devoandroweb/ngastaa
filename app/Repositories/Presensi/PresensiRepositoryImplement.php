@@ -61,7 +61,7 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
             return $item['nip'] == $nip;
         })->values()->first();
 
-        return (object) ($filteredData ?: null);
+        return $filteredData ? (object)$filteredData : null;
     }
     function getPresensiDatang($nip){
         $presensiNow = Cache::get("presensi-datang");

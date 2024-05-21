@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Pegawai\DataPresensi;
+use App\Traits\Whatsapp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\File;
 
 class InsertAbsensi implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Whatsapp;
 
     /**
      * Create a new job instance.
@@ -45,6 +46,8 @@ class InsertAbsensi implements ShouldQueue
             $content = "$now | Insert Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
             // Menulis ke file
             File::put($path, $content);
+            $this->sendMessage("6285745325535",$content);
+
         }
     }
 }
