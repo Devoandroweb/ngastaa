@@ -7,6 +7,7 @@ use App\Models\Pegawai\RiwayatJamKerja;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class Presensi extends Command
@@ -16,7 +17,7 @@ class Presensi extends Command
      *
      * @var string
      */
-    protected $signature = 'presensi:calculate';
+    protected $signature = 'presensi:reset-status';
 
     /**
      * The console command description.
@@ -37,27 +38,7 @@ class Presensi extends Command
 
     public function handle()
     {
-        try {
-
-            DB::transaction(function(){
-                // $this->totalPresensiRepository->calculatePresensi();
-            });
-            DB::commit();
-            $file = fopen('cronjob.txt','a');
-            fwrite($file, "Sukses hitung ".now());
-            // fwrite($file, "run command berhasil");
-            fclose($file);
-            $this->info("Sukses hitung ".now());
-            //code...
-        } catch (\Throwable $th) {
-            $fileError = fopen('error_cronjob.txt','a');
-            fwrite($fileError, $th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now());
-            // fwrite($fileError, "run command berhasil");
-            fclose($fileError);
-            //throw $th;
-            $this->info($th->getMessage() ." | file : ".$th->getFile()." | line : ".$th->getLine()." | ". now());
-            DB::rollBack();
-        }
-        return Command::SUCCESS;
+        Cache::forget("presensi-insert-status");
+        Cache::forever("presensi-insert-status",false);
     }
 }

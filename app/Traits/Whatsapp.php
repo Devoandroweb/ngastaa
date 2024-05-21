@@ -29,6 +29,9 @@ trait Whatsapp {
             $error_msg = $response->body();
             return response()->json(['error_wa' => $error_msg], 500);
         }
+        $fileError = fopen('error_whatsapp.txt','a');
+        fwrite($fileError, $response->body()." | ". now()."\n");
+        fclose($fileError);
         // dd($response->body());
         return $response->body();
     }
