@@ -14,7 +14,7 @@ class InsertPresensi extends Command
      *
      * @var string
      */
-    protected $signature = 'command:insert-presensi';
+    protected $signature = 'presensi:insert-presensi';
 
     /**
      * The console command description.

@@ -56,26 +56,12 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
     }
 
     function getPresensiDay($nip){
-        # ambil absen hari ini
-        // $presensiNip = $this->mDataPresensi->where('nip', $nip);
-        // # cek apakah hari ini ada?
-        // $presensiNow = $presensiNip->whereDate('created_at', now())->first(["tanggal_datang"]);
-        // if(is_null($presensiNow)){
-        //     # jika tidak ada maka cari absen kemaren
-        //     $presensiNow = $presensiNip->whereDate('created_at','=', date('Y-m-d',strtotime("-1 days")))->first();
-        //     // dd($data);
-        //     $jamDatang = date("H:i:s",strtotime($presensiNow?->tanggal_datang));
-        //     # cari shift nya
-        //     # $shift = $data->user->shift->where('is_akhir',1)->first() ?? $data->user->jamKerja->where('is_akhir',1)->first();
-        //     // dd($shift->shift);
-        //     # dd($this->hitungRangeJam($shift->shift->jam_tepat_pulang,"23:59:59"),$shift->shift->jam_tepat_pulang,$shift->shift);
-        //     # hitung apakah shift lebih dari 8 jam dengan perbandingan jam 23:59:59
-        //     # dd($this->hitungRangeJam($jamDatang,"23:59:59"),$jamDatang,$data);
+        $presensi = getPresensi();
+        $filteredData = collect($presensi)->filter(function ($item) use ($nip) {
+            return $item['nip'] == $nip;
+        })->values()->first();
 
-        //     if(hitungRangeJam($jamDatang,"23:59:59") >= 8){
-        //         $presensiNow = null;
-        //     }
-        // }
+        return (object) ($filteredData ?: null);
     }
     function getPresensiDatang($nip){
         $presensiNow = Cache::get("presensi-datang");
