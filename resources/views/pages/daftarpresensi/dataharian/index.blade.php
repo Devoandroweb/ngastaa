@@ -31,6 +31,14 @@
         background-color: auto;
         transition: background-color 0.5s;
     }
+    #foto_datang:hover{
+        height: 380px !important;
+        transition: height 0.5s;
+    }
+    #foto_datang{
+        height: 200px;
+        transition: height 0.5s;
+    }
 </style>
 <table id="data" class="table table-bordered nowrap w-100 mb-5 table-responsive">
     <thead>
@@ -125,15 +133,18 @@
                     </table>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-7">
-                        {{-- maps --}}
-                        <div id="map" class="mb-4" style="height: 500px"></div>
-                        <input type="hidden" value="0" id="radius" >
-                        {{-- end maps --}}
+                    <div class="col">
+                        <div class="position-relative">
+                            {{-- maps --}}
+                            <div id="map" class="mb-4" style="height: 400px"></div>
+                            <input type="hidden" value="0" id="radius" >
+                            {{-- end maps --}}
+                            <div class="position-absolute" style="position: absolute;top: 10px;z-index: 999;right: 10px;">
+                                <img src="" id="foto_datang" class="img-thumbnail" alt="" srcset="">
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-12 col-md-5">
-                        <img src="" id="foto_datang" class="img-fluid" alt="" srcset="">
-                    </div>
+
                 </div>
 			</div>
 			<div class="modal-footer">
@@ -233,7 +244,7 @@
             $(".jam_istirahat").text(data.jam_istirahat)
             $(".tanggal").text(data.tanggal)
             $(".shift").text(data.shift)
-            $("#foto_datang").attr("src","{{url('public')}}/"+data.foto_datang)
+            $("#foto_datang").attr("src","{{url('/')}}/"+data.foto_datang)
             // $("#keterangan").text(data.keterangan)
             if(data.kordinat_datang != null){
                 $(".lokasi").text(checkLokasi(data.kordinat_datang))

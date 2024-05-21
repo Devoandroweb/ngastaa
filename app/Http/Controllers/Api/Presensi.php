@@ -37,10 +37,7 @@ class Presensi extends Controller
         try{
             $presensiPegawai = $this->presensiRepository->getPresensiDay($nip);
             $data['status'] = true;
-
             if($presensiPegawai != null){
-
-
                 if($presensiPegawai->tanggal_datang != null && $presensiPegawai->tanggal_pulang != null){
                     if(shiftMalam(date('H:i:s',strtotime($presensiPegawai->tanggal_datang)), date('H:i:s',strtotime($presensiPegawai->tanggal_pulang)))){
                         $data['absen_status'] = 0;
@@ -69,7 +66,7 @@ class Presensi extends Controller
             $data['absen_status'] = null;
             return response()->json([
                 'status' => false,
-                'message' => "Failed",
+                'message' => "Failed | ".$th->getMessage(),
                 'data' => $data
             ], 400);
         }

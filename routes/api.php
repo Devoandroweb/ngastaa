@@ -33,8 +33,22 @@ Route::controller(CCronjobs::class)
         ->group(function(){
             Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
         });
-
+Route::controller(AuthController::class)
+    ->prefix('whatsapp')
+    ->name('whatsapp.')
+    ->group(function(){
+        Route::post('send-otp', 'sendWAOtp');
+        Route::post('verify-otp', 'saveOtp');
+        Route::post('similar-no-wa', 'checkWaSimilar');
+        Route::post('new-password', 'changeNewPassword');
+    });
 Route::middleware(['auth:sanctum','validateToken'])->group(function(){
+    Route::controller(AuthController::class)
+    ->prefix('whatsapp')
+    ->name('whatsapp.')
+    ->group(function(){
+        Route::get('check-no-wa', 'checkWAVerif');
+    });
 
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('getUser', [AuthController::class, 'getUser']);
@@ -53,16 +67,7 @@ Route::middleware(['auth:sanctum','validateToken'])->group(function(){
     Route::get('check-status-absen/{nip}', [Presensi::class,'checkStatusAbsen']);
     Route::get('list-lokasi-visit', [VisitApiController::class,'list_lokasi_visit']);
 
-    Route::controller(AuthController::class)
-        ->prefix('whatsapp')
-        ->name('whatsapp.')
-        ->group(function(){
-            Route::get('check-no-wa', 'checkWAVerif');
-            Route::post('send-otp', 'sendWAOtp');
-            Route::post('verify-otp', 'saveOtp');
-            Route::post('similar-no-wa', 'checkWaSimilar');
-            Route::post('new-password', 'changeNewPassword');
-        });
+
 
     Route::controller(PegawaiController::class)
         ->prefix('pegawai')

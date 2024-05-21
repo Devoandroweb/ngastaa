@@ -505,4 +505,12 @@ class PresensiApiController extends Controller
         $data = $this->presensiRepository->getStatPresensi(request("nip"));
         return response()->json(buildResponseSukses($data),200);
     }
+    function sendOtpPermitPresensiOutRadius(){
+        $noWa = request('no_wa');
+        $notRegister = json_decode($this->verif($noWa))->not_registered;
+        if($notRegister){
+            return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak terdaftar"],200);
+        }
+        $otp = mt_rand(100000, 999999);
+    }
 }
