@@ -15,6 +15,14 @@
         background-color: auto;
         transition: background-color 0.5s;
     }
+    #foto:hover{
+        height: 380px !important;
+        transition: height 0.5s;
+    }
+    #foto{
+        height: 200px;
+        transition: height 0.5s;
+    }
 </style>
 <table id="data" class="table table-bordered nowrap w-100 mb-5 table-responsive">
     <thead>
@@ -87,17 +95,19 @@
                     </table>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-7">
+                    <div class="col-12">
                         {{-- maps --}}
-                        <div id="map" class="mb-4 img-thumbnail" style="height: 500px"></div>
-                        <div id="none-map" class="mb-4 position-relative img-thumbnail" style="height: 500px; display:none">
-                            <img class="m-auto w-25" src="{{asset('dist/img/route-not-found.png')}}" style="position:absolute;top:35%;left:35%">
+                        <div class="position-relative">
+                            <div id="map" class="mb-4 img-thumbnail" style="height: 400px"></div>
+                            <div id="none-map" class="mb-4 position-relative img-thumbnail" style="height: 500px; display:none">
+                                <img class="m-auto w-25" src="{{asset('dist/img/route-not-found.png')}}" style="position:absolute;top:35%;left:35%">
+                            </div>
+                            <input type="hidden" value="0" id="radius" >
+                            <div class="position-absolute" style="position: absolute;top: 10px;z-index: 999;right: 10px;">
+                                <img src="" id="foto" class="img-fluid img-thumbnail" alt="" srcset="">
+                            </div>
                         </div>
-                        <input type="hidden" value="0" id="radius" >
                         {{-- end maps --}}
-                    </div>
-                    <div class="col-12 col-md-5">
-                        <img src="" id="foto" class="img-fluid img-thumbnail" alt="" srcset="">
                     </div>
                 </div>
 			</div>

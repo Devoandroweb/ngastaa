@@ -15,6 +15,14 @@
         background-color: auto;
         transition: background-color 0.5s;
     }
+    #foto:hover{
+        height: 380px !important;
+        transition: height 0.5s;
+    }
+    #foto{
+        height: 200px;
+        transition: height 0.5s;
+    }
 </style>
 @if(role('owner') || role('admin') || role('finance'))
 <h4>Filter</h4>
@@ -82,7 +90,7 @@
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Lokasi Aktifitas</h5>
+				<h5 class="modal-title">Lokasi Visit</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -125,17 +133,19 @@
                     </table>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-7">
+                    <div class="col-12">
                         {{-- maps --}}
-                        <div id="map" class="mb-4 img-thumbnail" style="height: 500px"></div>
-                        <div id="none-map" class="mb-4 position-relative img-thumbnail" style="height: 500px; display:none">
-                            <img class="m-auto w-25" src="{{asset('dist/img/route-not-found.png')}}" style="position:absolute;top:35%;left:35%">
+                        <div class="position-relative">
+                            <div id="map" class="mb-4 img-thumbnail" style="height: 400px"></div>
+                            <div id="none-map" class="mb-4 position-relative img-thumbnail" style="height: 500px; display:none">
+                                <img class="m-auto w-25" src="{{asset('dist/img/route-not-found.png')}}" style="position:absolute;top:35%;left:35%">
+                            </div>
+                            <input type="hidden" value="0" id="radius" >
+                            <div class="position-absolute" style="position: absolute;top: 10px;z-index: 999;right: 10px;">
+                                <img src="" id="foto" class="img-fluid img-thumbnail" alt="" srcset="">
+                            </div>
                         </div>
-                        <input type="hidden" value="0" id="radius" >
                         {{-- end maps --}}
-                    </div>
-                    <div class="col-12 col-md-5">
-                        <img src="" id="foto" class="img-fluid img-thumbnail" alt="" srcset="">
                     </div>
                 </div>
 			</div>
