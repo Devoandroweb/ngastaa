@@ -19,7 +19,7 @@ class SavePresensi extends Command
      *
      * @var string
      */
-    protected $signature = 'command:save-presensi';
+    protected $signature = 'presensi:save-presensi';
 
     /**
      * The console command description.

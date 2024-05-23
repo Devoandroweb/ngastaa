@@ -13,7 +13,7 @@ class ClearPresensi extends Command
      *
      * @var string
      */
-    protected $signature = 'command:clear-presensi';
+    protected $signature = 'presensi:clear-presensi';
 
     /**
      * The console command description.

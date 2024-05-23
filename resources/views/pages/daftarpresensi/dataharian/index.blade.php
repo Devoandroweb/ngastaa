@@ -72,27 +72,29 @@
                         <tr>
                             <td width="15%" class="fw-bold">Nama Pegawai</td>
                             <td class="nama_pegawai"></td>
-                            <td width="15%" class="fw-bold">Tanggal</td>
-                            <td class="tanggal"></td>
+                            <td class="fw-bold">Shift/Jam Kerja</td>
+                            <td class="shift"></td>
+
                         </tr>
                         <tr>
                             <td class="fw-bold">Jabatan</td>
                             <td class="jabatan"></td>
-                            <td class="fw-bold">Jam Datang</td>
-                            <td class="jam_datang"></td>
+                            <td width="15%" class="fw-bold">Tanggal</td>
+                            <td class="tanggal"></td>
+
 
                         </tr>
                         <tr>
-                            <td class="fw-bold">Shift/Jam Kerja</td>
-                            <td class="shift"></td>
-                            <td class="fw-bold">Jam Istirahat</td>
-                            <td class="jam_istirahat"></td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Lokasi</td>
-                            <td class="lokasi"></td>
+                            <td class="fw-bold">Jam Datang</td>
+                            <td class="jam_datang"></td>
                             <td class="fw-bold">Jam Pulang</td>
                             <td class="jam_pulang"></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Lokasi Datang</td>
+                            <td class="lokasi_datang"></td>
+                            <td class="fw-bold">Lokasi Pulang</td>
+                            <td class="lokasi_pulang"></td>
                         </tr>
                     </table>
                 </div>
@@ -241,13 +243,16 @@
             $(".jabatan").text(data.jabatan)
             $(".jam_datang").text(data.jam_datang)
             $(".jam_pulang").text(data.jam_pulang)
-            $(".jam_istirahat").text(data.jam_istirahat)
+            // $(".jam_istirahat").text(data.jam_istirahat)
             $(".tanggal").text(data.tanggal)
             $(".shift").text(data.shift)
             $("#foto_datang").attr("src","{{url('/')}}/"+data.foto_datang)
             // $("#keterangan").text(data.keterangan)
             if(data.kordinat_datang != null){
-                $(".lokasi").text(checkLokasi(data.kordinat_datang))
+                $(".lokasi_datang").text(checkLokasi(data.kordinat_datang))
+            }
+            if(data.kordinat_pulang != null){
+                $(".lokasi_pulang").text(checkLokasi(data.kordinat_pulang))
             }
         }
         let lokasi = @json($dataLokasi);

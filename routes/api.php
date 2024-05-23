@@ -34,21 +34,14 @@ Route::controller(CCronjobs::class)
             Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
         });
 Route::controller(AuthController::class)
-    ->prefix('whatsapp')
-    ->name('whatsapp.')
+    ->prefix('{type}')
     ->group(function(){
-        Route::post('send-otp', 'sendWAOtp');
+        Route::post('send-otp', 'sendOtp');
         Route::post('verify-otp', 'saveOtp');
-        Route::post('similar-no-wa', 'checkWaSimilar');
-        Route::post('new-password', 'changeNewPassword');
     });
+Route::post('new-password', [AuthController::class,'changeNewPassword']);
+
 Route::middleware(['auth:sanctum','validateToken'])->group(function(){
-    Route::controller(AuthController::class)
-    ->prefix('whatsapp')
-    ->name('whatsapp.')
-    ->group(function(){
-        Route::get('check-no-wa', 'checkWAVerif');
-    });
 
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('getUser', [AuthController::class, 'getUser']);
