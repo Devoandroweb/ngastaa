@@ -3,3 +3,5 @@ ALTER TABLE `total_izin_detail` CHANGE `kode_cuti` `kode_cuti` VARCHAR(20) NOT N
 ALTER TABLE `total_izin_detail` CHANGE `nip` `nip` VARCHAR(20) NOT NULL;
 ALTER TABLE `users` ADD `otp` VARCHAR(6) NULL DEFAULT NULL AFTER `maks_cuti`;
 ALTER TABLE `personal_access_tokens` ADD `expires_at` TIMESTAMP NULL DEFAULT NULL AFTER `abilities`;
+ALTER TABLE `data_presensi` ADD `lokasi_datang` TEXT NULL DEFAULT NULL AFTER `kordinat_datang`;
+ALTER TABLE `data_presensi` ADD `lokasi_pulang` TEXT NULL DEFAULT NULL AFTER `kordinat_pulang`;

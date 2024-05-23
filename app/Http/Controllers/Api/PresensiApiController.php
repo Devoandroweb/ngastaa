@@ -267,7 +267,8 @@ class PresensiApiController extends Controller
                     'kode_tingkat' => $kode_tingkat,
                     'kode_shift' => $kode_shift,
                     'kode_jam_kerja' => $kode_jam_kerja,
-                    'tanggal_datang' => $tanggalIn
+                    'tanggal_datang' => $tanggalIn,
+                    'lokasi_datang' => $location,
                 ];
 
                 $presensiDatang[$nip] = $data;
@@ -345,7 +346,8 @@ class PresensiApiController extends Controller
                     'kode_jam_kerja' => $kode_jam_kerja,
                     'foto_pulang' => $foto,
                     'kordinat_pulang' => $kordinat,
-                    'tanggal_pulang' => $tanggalIn
+                    'tanggal_pulang' => $tanggalIn,
+                    'lokasi_pulang' => $location,
                 ];
                 $presensiPulang[$nip] = $data;
                 $cr = Cache::forever("presensi-pulang",$presensiPulang);
