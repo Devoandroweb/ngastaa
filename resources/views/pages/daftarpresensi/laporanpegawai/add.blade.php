@@ -59,12 +59,9 @@
         </div>
     </div>
     <input type="hidden" name="xl" value="0">
-    <button id="pdf" class="btn btn-custom btn-submit btn-danger icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
-    <button id="excel" class="btn btn-custom btn-submit btn-success icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
-    <button id="show" class="btn btn-custom btn-show btn-info icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-eye"></i> </span><span>Tampilkan</span></span></button>
-    {{-- <button class="btn  btn-custom me-2 btn-danger icon-wthot-bg approv"><span><i class="far fa-file-pdf"></i><span> Download PDF</span></span></button>
-    <button class="btn  btn-custom  btn-success icon-wthot-bg reject"><span><i class="far fa-file-excel"></i><span> Download Excel</span></span></button> --}}
-    {{-- <embed src="{{public_path('document-laporan-presensi-pegawai.pdf')}}" type="application/pdf" width="300px" height="500px"></embed> --}}
+    <button id="pdf" style="height: max-content" class="btn btn-custom btn-submit btn-danger icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
+    <button id="excel" style="height: max-content" class="btn btn-custom btn-submit btn-success icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
+    <button id="show" style="height: max-content" class="btn btn-custom btn-show btn-info icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-eye"></i> </span><span>Tampilkan</span></span></button>
 </form>
 <div id="iframe-pdf" class="text-center mb-2"></div>
 @endsection

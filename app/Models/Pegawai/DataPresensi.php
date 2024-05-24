@@ -2,6 +2,7 @@
 
 namespace App\Models\Pegawai;
 
+use App\Models\HariJamKerja;
 use App\Models\User;
 use App\Traits\LimitOffset;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,9 +16,14 @@ class DataPresensi extends Model
     protected $table = 'data_presensi';
 
     protected $guarded = [];
-
+    protected $casts = [
+        "created_at" => "datetime"
+    ];
     function user(){
         return $this->belongsTo(User::class,'nip','nip');
+    }
+    function hJamKerja($hari){
+        return $this->hasOne(HariJamKerja::class,"kode_jam_kerja","kode_jam_kerja")->whereHari($hari);
     }
 
 }

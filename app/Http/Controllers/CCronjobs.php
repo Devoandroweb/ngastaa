@@ -36,6 +36,7 @@ use App\Models\Pegawai\RiwayatStatus;
 use App\Models\Pegawai\RiwayatTunjangan;
 use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
+use App\Repositories\CalculatePresensi\CalculatePresensiRepository;
 use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
 use Illuminate\Http\Request;
@@ -46,31 +47,30 @@ use Illuminate\Support\Facades\Hash;
 class CCronjobs extends Controller
 {
     protected $totalPresensiRepository;
+    protected $calculatePresensiRepository;
     protected $payrollRepository;
     function __construct(
         TotalPresensiRepository $totalPresensiRepository,
+        CalculatePresensiRepository $calculatePresensiRepository,
         PayrollRepository $payrollRepository,
     )
     {
         $this->totalPresensiRepository = $totalPresensiRepository;
+        $this->calculatePresensiRepository = $calculatePresensiRepository;
         $this->payrollRepository = $payrollRepository;
     }
     function calculatePresensi(){
         try {
             DB::transaction(function(){
-                // $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
                 $startCacl = date("Y-m-d H:i:s");
-                $resultCalculate = $this->totalPresensiRepository->manualCaculate();
+                $resultCalculate = app(CalculatePresensiRepository::class);
+                dd($resultCalculate->manualCalculate());
 
                 if ($resultCalculate != 0) {
                     $endCacl = date("Y-m-d H:i:s");
                     $fileSuccess = fopen('sukses_cronjob.txt','a');
                     fwrite($fileSuccess, "Run calculate absensi in : Start = ".$startCacl."| End = ".$endCacl);
                     fclose($fileSuccess);
-                    // return response()->json([
-                    //     'status' => FALSE,
-                    //     'message' => 'Maaf Perhitungan Presensi untuk hari ini sebelumnya sudah di hitung'
-                    // ]);
                 }
             });
             DB::commit();

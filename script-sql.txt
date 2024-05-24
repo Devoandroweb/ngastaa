@@ -5,3 +5,4 @@ ALTER TABLE `users` ADD `otp` VARCHAR(6) NULL DEFAULT NULL AFTER `maks_cuti`;
 ALTER TABLE `personal_access_tokens` ADD `expires_at` TIMESTAMP NULL DEFAULT NULL AFTER `abilities`;
 ALTER TABLE `data_presensi` ADD `lokasi_datang` TEXT NULL DEFAULT NULL AFTER `kordinat_datang`;
 ALTER TABLE `data_presensi` ADD `lokasi_pulang` TEXT NULL DEFAULT NULL AFTER `kordinat_pulang`;
+ALTER TABLE `total_presensi_detail` CHANGE `kode_cuti` `kode_cuti` VARCHAR(30) NULL DEFAULT NULL COMMENT 'ini terisi jika status 4';

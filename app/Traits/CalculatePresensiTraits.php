@@ -1,28 +1,20 @@
 <?php
 
-namespace App\Repositories\TotalPresensi;
+namespace App\Traits;
 
 use App\Models\AppStatusFunction;
 use App\Models\Master\Shift;
 use App\Models\MJamKerja;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPresensi;
-use App\Models\Presensi\TotalIzinDetail;
 use App\Models\Presensi\TotalIzin;
-use LaravelEasyRepository\Implementations\Eloquent;
+use App\Models\Presensi\TotalIzinDetail;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
-use App\Models\StatusCalculate;
 use App\Repositories\Pegawai\PegawaiRepository;
-use Illuminate\Support\Facades\Auth;
 
-class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensiRepository{
+trait CalculatePresensiTraits {
 
-    /**
-    * Model class to be used in this repository for the common methods inside Eloquent
-    * Don't remove or change $this->model variable name
-    * @property Model|mixed $model;
-    */
     protected $pegawaiRepository;
     protected $mDataPresensi;
     protected $mdTotalPresensi;
@@ -45,9 +37,9 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     protected $totalPresensiDetail = [];
     protected $periodeBulan;
     protected $tanggalDatang = null;
-    public function __construct(
-        PegawaiRepository $pegawaiRepository,
 
+    public function manualCalculate(
+        PegawaiRepository $pegawaiRepository,
         DataPresensi $mDataPresensi,
         TotalPresensi $mdTotalPresensi,
         Shift $mdShifts,
@@ -73,12 +65,6 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         $this->dataTotalIzin = $mdTotalIzin->where('periode_bulan',$this->periodeBulan)->get(['nip','kode_cuti','total','periode_bulan'])->toArray();
         $this->allPengajuanCuti = $mdPengajuanCuti->where('status',1)->get();
         $this->nipMasuk = [];
-
-
-
-    }
-    public function manualCaculate()
-    {
 
         if($this->dataTotalPresensiDetail->get()->count() != 0){
             $this->maxDate = $this->dataTotalPresensiDetail->max('tanggal');
@@ -137,9 +123,9 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $dataInsert = collect($dataInsert)->concat($this->calculatePresensi());
             // dd($dataInsert);
         }
+        TotalPresensiDetail::insert($dataInsert->toArray());
 
-
-        return $dataInsert;
+        return 1;
     }
     function calculatePresensi()
     {
@@ -240,6 +226,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                 }
 
             }
+            // dd($dataInsertTotalPresensiDetail);
             return $dataInsertTotalPresensiDetail;
 
     }
@@ -267,9 +254,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     {
 
         $shift = $this->searchShift($kode_shift);
+
         if($shift != null){
             $jam_tepat_pulang = strtotime($shift->jam_tepat_pulang);
             $jamTepatNToleransi = $this->date." ".date("H:i:s", strtotime("-{$shift->toleransi_pulang} minutes",$jam_tepat_pulang));
+
             if(date("Y-m-d H:i:s", strtotime($tanggal_pulang)) <= date("Y-m-d H:i:s",strtotime($jamTepatNToleransi))){
                 return true;
             }

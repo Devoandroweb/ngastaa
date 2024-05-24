@@ -59,14 +59,7 @@ class RekapAbsensHarianController extends Controller
             new DateTime($date_end."+1 Days")
         );
 
-        // dd($tanggal_awal_akhir->format('Y-m-d'));
-        // foreach ($tanggal_awal_akhir as $tanggal ) {
-        //     echo $tanggal->format("Y-m-d");
-        // }
-        // dd("oke");
         $rawColumn = [];
-        // dd(User::where('name','like','%a%')->get());
-        // dd($kodeSkpd);
 
         $mUsers = User::where('owner',0)->when($search,function($q)use($search){
                         return $q->where('users.name','like','%'.$search.'%');
@@ -76,14 +69,13 @@ class RekapAbsensHarianController extends Controller
                                     $q->where('kode_skpd',$kodeSkpd);
                                 });
                     });
-        // dd($mUsers->get(),$kodeSkpd);
         if($periodeBulan != null){
             $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])
                         ->where('periode_bulan',$periodeBulan)->get();
         }else{
             $this->mTotalPresensiDetail = TotalPresensiDetail::whereBetween('tanggal',[$date_start, $date_end])->get()  ;
         }
-        // dd($this->mTotalPresensiDetail,$periodeBulan,$mUsers->get()->count());
+        $maxDate = $this->mTotalPresensiDetail->max("tanggal");
         if($mUsers->get()->count() == 0){
             $mUsers = User::role('pegawai')->when($search,function($q)use($search){
                         return $q->where('users.name','like','%'.$search.'%');
@@ -100,16 +92,19 @@ class RekapAbsensHarianController extends Controller
                 return 0;
             });
         }else{
-            // dd($mUsers->get());
-
             $dt = DataTables::of($mUsers);
 
             foreach ($tanggal_awal_akhir as $i => $tanggal ) {
 
                 $rawColumn[] = "day_{$tanggal->format('d')}";
                 // $this->hadir = 0;
-                $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal,$i){
+                $dt->addColumn("day_{$tanggal->format('d')}", function($row)use($tanggal,$maxDate){
                     $status = $this->getStatusInmTotalPresensiDetail($tanggal->format('Y-m-d'),$row->nip);
+                    if(strtotime($tanggal->format('Y-m-d')) <= strtotime($maxDate)){
+                        if(is_null($status)){
+                            $status = "3";
+                        }
+                    }
                     $status = explode(",",$status);
                     if($status[0] == ""){
                         $status = [];

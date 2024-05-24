@@ -1,5 +1,6 @@
 @php
     $GLOBALS['dataPresensi'] = \App\Models\Presensi\TotalPresensiDetail::whereNip($pegawai->nip)->whereBetween('tanggal',[$tahun."-".addZero($bulan)."-01",$tahun."-".addZero($bulan)."-".lastDayInThisMonth($tahun,$bulan)])->get();
+    $GLOBALS['maxDate'] = $GLOBALS['dataPresensi']?->max("tanggal");
     // dd(lastDayInThisMonth("2023","06"));
     // dd($jamKerja);
     // dd($GLOBALS['dataPresensi'],$pegawai->nip,[$tahun."-".addZero($bulan)."-01",$tahun."-".addZero($bulan)."-".lastDayInThisMonth($tahun,$bulan)]);
@@ -77,6 +78,7 @@
             font-size: 9pt;
         }
     </style>
+
     <body>
         <center>
             <h3>DRAFT RINCIAN KEHADIRAN</h3>
@@ -122,12 +124,14 @@
                 <th>Pulang Cepat</th>
                 <th>Keterangan</th>
             </tr>
+            {{-- @dd(arrayTanggal("$tahun-$bulan-1","$tahun-$bulan-".lastDayInThisMonth($tahun,$bulan))); --}}
             @foreach (arrayTanggal("$tahun-$bulan-1","$tahun-$bulan-".lastDayInThisMonth($tahun,$bulan)) as $i => $item)
 
                 @php
                     if(date("N", strtotime($item))==7){
                         continue;
                     }
+                    $color = "yellow";
                     $statusName = "-";
                     $presensi = searchDataPresensi($item);
                     $jamDatang = $presensi?->tanggal_datang ? date("H:i",strtotime($presensi?->tanggal_datang)) : "-" ;
@@ -135,25 +139,37 @@
                     $jamPulang = $presensi?->tanggal_pulang ? date("H:i",strtotime($presensi?->tanggal_pulang)) : "-" ;
                     if($presensi){
                         $status = explode(",",$presensi->status);
+                        // if(strtotime($tanggal->format('Y-m-d')) <= strtotime($maxDate)){
+                        //     if(is_null($status)){
+                        //         $status = "3";
+                        //     }
+                        // }
                         if($status[0] == ""){
                             $status = [];
                         }
                         if (count($status) > 0) {
                             $statusName = "";
                             foreach ($status as $iter => $value) {
+                                if($value==4){
+                                    $color = "#16c7d7";
+                                }
                                 $statusName .= convertStatusAbsen($value);
                                 if($iter != (count($status)-1)){
                                     $statusName .= ", ";
                                 }
                             }
                         }
+                    }else{
+                        // dd($GLOBALS['maxDate'],$item);
+                        if(strtotime($item) <= strtotime($GLOBALS['maxDate'])){
+                            $statusName = "Tidak Masuk";
+                            $color = "#FF0000";
+                        }
                     }
                     $hariJamKerja = getJamKerja($jamKerja,$item);
-                    // if(is_null($hariJamKerja)){
-                    //     dd($item,$hariJamKerja);
-                    // };
+
                 @endphp
-                <tr @if(!$presensi) style="background: yellow" @endif>
+                <tr @if(!$presensi) style="background: {{ $color }}" @endif>
                     <td style="text-align: center">{{$i+1}}</td>
                     <td>{{$statusName}}</td>
                     <td>{{convertDateToNameDay($item)}}</td>
