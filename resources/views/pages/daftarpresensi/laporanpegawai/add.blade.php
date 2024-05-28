@@ -12,56 +12,55 @@
 @endif
 <form class="form-laporan mb-2" method="get">
     @csrf
-    <div class="row">
-        <div class="form-group has-validation">
-            <label class="form-label">Pilih Divisi Kerja</label>
-            <select class="form-control @error('kode_divisi') is-invalid @enderror" name="kode_divisi" id="kode_divisi" required>
-                <option selected disabled>Select Divisi Kerja</option>
-                {{-- @foreach($skpd as $s)
-                    <option value="{{$s->kode_skpd}}">{{$s->nama}}</option>
-                @endforeach --}}
-            </select>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group has-validation">
-            <label class="form-label">Pilih Pegawai</label>
-            <select class="form-control @error('pegawai') is-invalid @enderror disabled" name="pegawai" id="select_pegawai" required>
-                <option selected disabled>Select Pegawai</option>
-            </select>
-            <div class="invalid-feedback">
-                {{ $errors->first('pegawai') }}
+    <div id="inputan">
+        <div class="row">
+            <div class="form-group has-validation">
+                <label class="form-label">Pilih Divisi Kerja</label>
+                <select class="form-control @error('kode_divisi') is-invalid @enderror" name="kode_divisi" id="kode_divisi" required>
+                    <option selected disabled>Select Divisi Kerja</option>
+                </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="form-group has-validation">
-            <label class="form-label">Pilih Bulan</label>
-            <select class="form-control select2 @error('bulan') is-invalid @enderror" name="bulan" id="bulan" required>
-                {{-- <option selected disabled>Select Bulan</option> --}}
-                {!!GenerateOptionMont()!!}
-            </select>
-            <div class="invalid-feedback">
-                {{ $errors->first('bulan') }}
+        <div class="row">
+            <div class="form-group has-validation">
+                <label class="form-label">Pilih Pegawai</label>
+                <select class="form-control @error('pegawai') is-invalid @enderror disabled" name="pegawai" id="select_pegawai" required>
+                    <option selected disabled>Select Pegawai</option>
+                </select>
+                <div class="invalid-feedback">
+                    {{ $errors->first('pegawai') }}
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="form-group has-validation">
-            <label class="form-label">Pilih Tahun</label>
-            <select class="form-control select2 @error('tahun') is-invalid @enderror" name="tahun" id="tahun" required>
-                <option selected disabled>Select Tahun</option>
-                {!!GenerateOptionYear()!!}
-            </select>
-            <div class="invalid-feedback">
-                {{ $errors->first('tahun') }}
+        <div class="row">
+            <div class="form-group has-validation">
+                <label class="form-label">Pilih Bulan</label>
+                <select class="form-control select2 @error('bulan') is-invalid @enderror" name="bulan" id="bulan" required>
+                    {{-- <option selected disabled>Select Bulan</option> --}}
+                    {!!GenerateOptionMont()!!}
+                </select>
+                <div class="invalid-feedback">
+                    {{ $errors->first('bulan') }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group has-validation">
+                <label class="form-label">Pilih Tahun</label>
+                <select class="form-control select2 @error('tahun') is-invalid @enderror" name="tahun" id="tahun" required>
+                    <option selected disabled>Select Tahun</option>
+                    {!!GenerateOptionYear()!!}
+                </select>
+                <div class="invalid-feedback">
+                    {{ $errors->first('tahun') }}
+                </div>
             </div>
         </div>
     </div>
     <input type="hidden" name="xl" value="0">
     <button id="pdf" style="height: max-content" class="btn btn-custom btn-submit btn-danger icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
     <button id="excel" style="height: max-content" class="btn btn-custom btn-submit btn-success icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
-    <button id="show" style="height: max-content" class="btn btn-custom btn-show btn-info icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-eye"></i> </span><span>Tampilkan</span></span></button>
+    <button id="show" style="height: max-content" class="btn btn-custom btn-show btn-info icon-wthot-bg" data-show="0" disabled><span><span class="icon"><i class="far fa-eye"></i> </span><span id="label-show">Tampilkan PDF</span></span></button>
 </form>
 <div id="iframe-pdf" class="text-center mb-2"></div>
 @endsection
@@ -141,7 +140,14 @@ $(".btn-submit").on("click", function (e) {
 });
 $("#show").on("click", function (e) {
     e.preventDefault()
-    getPresensiPegawai()
+    console.log($(this).attr("data-show"));
+    if($(this).attr("data-show")==0){
+        getPresensiPegawai()
+    }else{
+        $("#inputan").fadeIn(300);
+        $("#label-show").text("Tampilkan PDF")
+        $(this).attr("data-show",0)
+    }
 });
 // =============================
 function cekPegawai(){
@@ -162,6 +168,9 @@ function getPresensiPegawai(){
         data: $(".form-laporan").serialize(),
         success: function (response) {
             if(response.status){
+                $("#inputan").fadeOut(300);
+                $("#label-show").text("Tampilkan Form")
+                $("#show").attr("data-show",1)
                 $("#iframe-pdf").html(`<embed class="iframe-pdf" src="{{route('pengajuan.presensi.show_pdf')}}?path=${response.file}" type="application/pdf" width="100%" height="800" frameborder="0"></embed>`)
             }else{
                 Swal.fire(

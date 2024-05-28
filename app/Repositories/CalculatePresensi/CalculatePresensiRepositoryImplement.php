@@ -86,7 +86,7 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
         // dd($this->maxDate);
         // $statusCacl = StatusCalculate::first();
         $dateStart = $this->maxDate; # maksimal tanggal total detail presensi
-        $dateEnd = date("Y-m-d",strtotime("-1 days"));
+        $dateEnd = date("Y-m-d");
 
         # Check apakah tanggal nya sama, jika sama jangan hitung
         if($dateStart == $dateEnd){
@@ -95,11 +95,13 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
         $tanggalBulan = [collect($tanggalBulan)->first(),collect($tanggalBulan)->last()];
+        // dd($tanggalBulan);
         #calculate pegawai tidak masuk/izin
         $this->allPengajuanCuti = $this->allPengajuanCuti->whereBetween("tanggal_mulai",$tanggalBulan)->get(["nip","kode_cuti","tanggal_mulai","tanggal_selesai"]);
-        // dd($this->allPengajuanCuti,$tanggalBulan);
 
-        $this->dataPresensi = DataPresensi::whereBetween('created_at', $tanggalBulan)->get(['nip','created_at','tanggal_datang','tanggal_pulang','kode_jam_kerja','kode_shift','tanggal_istirahat']);
+        $this->dataPresensi = DataPresensi::whereBetween('created_at', $tanggalBulan)->orderByDesc("tanggal_datang")->get(['nip','created_at','tanggal_datang','tanggal_pulang','kode_jam_kerja','kode_shift','tanggal_istirahat']);
+
+        // dd($tanggalBulan,$this->dataPresensi->toArray());
         # calculate pegawai masuk/telat/tap
         $this->dataPresensi = clone $this->dataPresensi->map(function($item){
             $hari = $item->created_at->format("N");
@@ -113,10 +115,11 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
             if($item->tanggal_pulang == null){
                 #Tanpa Absen Pulang
                 array_push($status,"5");
-            }
-            if($this->existingPulangCepat($item->hJamKerja($hari)->first(),$item->tanggal_pulang)){
-                #Pulang Cepat
-                array_push($status,"6");
+            }else{
+                if($this->existingPulangCepat($item->hJamKerja($hari)->first(),$item->tanggal_pulang)){
+                    #Pulang Cepat
+                    array_push($status,"6");
+                }
             }
             if(in_array($hari,[6,7])){
                 #piket
@@ -158,10 +161,8 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
     function existingPulangCepat($jamKerja,$tanggal_pulang)
     {
         if($jamKerja != null){
-            $jam_tepat_pulang = strtotime($jamKerja->jam_tepat_pulang);
-            $jamTepatNToleransi = $this->date." ".date("H:i:s", strtotime("+{$jamKerja->toleransi_pulang} minutes",$jam_tepat_pulang));
-            // dd($this->date." ".date("H:i:s", strtotime($tanggal_datang)),$jamTepatNToleransi);
-            if($this->date." ".date("H:i:s", strtotime($tanggal_pulang)) <= $jamTepatNToleransi){
+            $jam_buka_pulang = strtotime(date("Y-m-d ".$jamKerja->jam_buka_pulang));
+            if(strtotime($tanggal_pulang) <= $jam_buka_pulang){
                 return true;
             }
         }

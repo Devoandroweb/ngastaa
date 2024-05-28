@@ -259,6 +259,19 @@
 
 <!-- Apex JS -->
 <script src="{{asset('/')}}vendors/apexcharts/dist/apexcharts.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script>
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('7db08cceaf68e9dddedb', {
+    cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+    alert(JSON.stringify(data));
+    });
+</script>
 <script>
 initDatePickerSingleCL()
 initDatePickerCC()

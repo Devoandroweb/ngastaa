@@ -27,7 +27,7 @@ class CalculatePresensi implements ShouldQueue
         $resultCalculate = app(CalculatePresensiRepository::class);
         $resultCalculate = $resultCalculate->manualCalculate();
         foreach ($resultCalculate as $data) {
-            TotalPresensiDetail::firstOrCreate($data);
+            TotalPresensiDetail::create($data);
         }
     }
 }

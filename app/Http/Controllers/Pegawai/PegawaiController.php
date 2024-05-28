@@ -369,7 +369,7 @@ class PegawaiController extends Controller
                 }
             });
         }
-        
+
         return $dataTables->of($pegawai)
             ->addColumn('checkbox', function ($row) {
                 return '<input type="checkbox" name="nip[]" value="'.$row->nip.'" class="form-check-input checkbox-nip">';
@@ -455,7 +455,6 @@ class PegawaiController extends Controller
 
         if(count($nip) > 0 && $nip[0] != ""){
             $pegawai = $pegawai->whereIn('nip',$nip);
-
         }
         // dd($statusPegawai);
         if($statusPegawai != 0){
