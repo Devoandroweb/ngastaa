@@ -17,6 +17,7 @@ use App\Repositories\Pdf\PdfRepository;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -291,7 +292,7 @@ class DataPresensiController extends Controller
         $tahun = request('tahun') ?? date('Y');
         $nip = request('pegawai');
         $xl = request('xl');
-        // dd($nip);
+
         $pegawai = $this->pegawaiRepository->getFirstPegawai($nip);
         $mJamKerja = $pegawai->jamKerja->where('is_akhir',1)->first()?->jamKerja;
         $jamKerja = $mJamKerja?->hariJamKerja;
@@ -314,13 +315,17 @@ class DataPresensiController extends Controller
         try {
             //code...
             $pdf = $this->pdfRepository->generatePresesiSebulan($bulan, $xl, $tahun, $pegawai,$jamKerja,$mJamKerja);
+
             $pdfLocation = 'show-pdf/presensi-pegawai.pdf';
+            if(Storage::fileExists($pdfLocation)){
+                Storage::delete($pdfLocation);
+            }
             $pdf->save(storage_path($pdfLocation));
 
             return response()->json([
                 'status' => true,
                 'messages' => 'Data Laporan di temukan',
-                'file' => public_path($pdfLocation)
+                'file' => storage_path($pdfLocation)
             ]);
         } catch (\Throwable $th) {
             //throw $th;

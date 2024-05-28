@@ -7,11 +7,19 @@ use App\Models\Master\Skpd;
 use App\Models\Master\Tingkat;
 use App\Models\Master\Visit;
 use App\Models\Pegawai\DataVisit;
+use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class LaporanVisitController extends Controller
 {
+    protected $pegawaiRepository;
+    // protected $pegawaiWithRole;
+    function __construct(
+        PegawaiRepository $pegawaiRepository
+    ){
+        $this->pegawaiRepository = $pegawaiRepository;
+    }
     function index(){
 
         $skpd = Skpd::orderBy("nama")->get();
@@ -22,19 +30,24 @@ class LaporanVisitController extends Controller
         return view("pages.daftarpresensi.laporanvisit.index",compact('skpd','tingkatJabatan'));
     }
     function datatable(DataTables $dataTables){
-        $skpd = request()->query('kode_skpd');
+        $kodeSkpd = request()->query('kode_skpd');
         $namaPegawai = request()->query('nama_pegawai');
-        $skpd = ($skpd == 0) ? null : $skpd;
-        // $skpd = 1;
-        $model = DataVisit::whereHas('pegawai',function($q)use($namaPegawai,$skpd){
-            $q->where("name","like","%$namaPegawai%");
-            if($skpd){
-                $jabatan = $q->jabatan_akhir()->first()?->tingkat;
-            }
-        })->orderByDesc('created_at')->get();
+        $kodeSkpd = ($kodeSkpd == 0) ? null : $kodeSkpd;
+        $nip = request()->query('nip_pegawai');
+        $nip = explode(",",$nip);
 
+        $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
 
-        // dd($model->toQuery()->toSql());
+        if($namaPegawai){
+            $pegawai = $pegawai->where('nama_pegawai','like','%'.$namaPegawai.'%');
+        }
+
+        if(count($nip) > 0 && $nip[0] != ""){
+            $pegawai = $pegawai->whereIn('nip',$nip);
+        }
+        $nip = $pegawai->pluck("nip")->toArray();
+        $model = DataVisit::whereIn("nip",$nip)->orderByDesc('created_at');
+
         return $dataTables->of($model)
             ->editColumn('shift', function ($row) {
                 return $row->nama_shift;

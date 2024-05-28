@@ -110,6 +110,10 @@
                             <td width="15%" class="fw-bold">Jam Mulai</td>
                             <td colspan="3" class="jam_mulai"></td>
                         </tr>
+                        <tr>
+                            <td class="fw-bold">Keterangan</td>
+                            <td colspan="3" class="keterangan"></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="d-block d-md-none">
@@ -129,6 +133,10 @@
                         <tr>
                             <td class="fw-bold">Jabatan</td>
                             <td class="jabatan"></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Keterangan</td>
+                            <td class="keterangan"></td>
                         </tr>
                     </table>
                 </div>
@@ -161,8 +169,6 @@
         var ltlgOld = ('-8.1277966,112.7509655').split(",");
     </script>
     <script src="{{asset('/')}}maps.js"></script>
-    <script src='{{asset('/')}}vendors/turfjs/turf.js'></script>
-    {{-- <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script> --}}
 
     <script >
 
@@ -246,6 +252,7 @@
             $(".jabatan").text(data.jabatan)
             $(".tanggal").text(data.tanggal)
             $(".jam_mulai").text(data.created_at)
+            $(".keterangan").text(data.tujuan_visit)
             $("#foto").attr("src",data.foto)
 
         }

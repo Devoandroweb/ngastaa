@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MyEvent;
+use App\Events\PushAbsensi;
 use App\Models\AppStatusFunction;
 use App\Models\MapLokasiKerja;
 use App\Models\Master\Lokasi;
@@ -36,42 +38,47 @@ use App\Models\Pegawai\RiwayatStatus;
 use App\Models\Pegawai\RiwayatTunjangan;
 use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
+use App\Repositories\CalculatePresensi\CalculatePresensiRepository;
 use App\Repositories\Payroll\PayrollRepository;
 use App\Repositories\TotalPresensi\TotalPresensiRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Pusher\Pusher;
 
 class CCronjobs extends Controller
 {
     protected $totalPresensiRepository;
+    protected $calculatePresensiRepository;
     protected $payrollRepository;
     function __construct(
         TotalPresensiRepository $totalPresensiRepository,
+        CalculatePresensiRepository $calculatePresensiRepository,
         PayrollRepository $payrollRepository,
     )
     {
         $this->totalPresensiRepository = $totalPresensiRepository;
+        $this->calculatePresensiRepository = $calculatePresensiRepository;
         $this->payrollRepository = $payrollRepository;
     }
     function calculatePresensi(){
         try {
             DB::transaction(function(){
-                // $resultCalculate = $this->totalPresensiRepository->calculatePresensi();
                 $startCacl = date("Y-m-d H:i:s");
-                $resultCalculate = $this->totalPresensiRepository->manualCaculate();
-
-                if ($resultCalculate != 0) {
-                    $endCacl = date("Y-m-d H:i:s");
-                    $fileSuccess = fopen('sukses_cronjob.txt','a');
-                    fwrite($fileSuccess, "Run calculate absensi in : Start = ".$startCacl."| End = ".$endCacl);
-                    fclose($fileSuccess);
-                    // return response()->json([
-                    //     'status' => FALSE,
-                    //     'message' => 'Maaf Perhitungan Presensi untuk hari ini sebelumnya sudah di hitung'
-                    // ]);
+                $resultCalculate = app(CalculatePresensiRepository::class)->manualCalculate();
+                // dd($resultCalculate[0]);
+                foreach ($resultCalculate as $data) {
+                    if($data["tanggal"]=="2024-05-27"){
+                        // dd($data);
+                        TotalPresensiDetail::create($data);
+                    }
                 }
+
+                // if ($resultCalculate != 0) {
+                //     $endCacl = date("Y-m-d H:i:s");
+                //     $fileSuccess = fopen('sukses_cronjob.txt','a');
+                //     fwrite($fileSuccess, "Run calculate absensi in : Start = ".$startCacl."| End = ".$endCacl);
+                //     fclose($fileSuccess);
+                // }
             });
             DB::commit();
             return response()->json([
@@ -111,11 +118,20 @@ class CCronjobs extends Controller
         }
 
     }
-    function calculatePayroll(){
-        $this->payrollRepository->hitungPayroll();
-    }
+
     function cobaCronjob(){
-        File::put("run_cronjob.txt", "run cronjob \n".date("Y-m-d H:i:s"));
+        // dd(path("/"));
+        require public_path("../vendor/autoload.php");
+
+        $pusher = new Pusher(
+            "7db08cceaf68e9dddedb",
+            "68cd7feefe07b9473d82",
+            "1808167",
+            array('cluster' => 'ap1')
+        );
+
+        $pusher->trigger('my-channel', 'my-event', array('message' => 'hello world'));
+        // event(new PushAbsensi(request('msg')));
     }
     function updateNip() {
         $data = [

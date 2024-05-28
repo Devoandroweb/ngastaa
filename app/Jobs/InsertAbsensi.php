@@ -45,9 +45,8 @@ class InsertAbsensi implements ShouldQueue
             $path = public_path('cronjob.txt'); // Path file di direktori storage
             $content = "$now | Insert Presensi Succesfully.\n"; // Konten yang akan ditulis ke file
             // Menulis ke file
-            File::put($path, $content);
+            File::append($path, $content);
             $this->sendMessage("6285745325535",$content);
-
         }
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\PushAbsensi;
 use App\Http\Controllers\CAktifitas;
 use App\Http\Controllers\CCronjobs;
 use App\Http\Controllers\DashboardController;
@@ -100,6 +101,7 @@ use Spatie\Permission\Models\Role;
 
 
 Route::get('/', function () {
+
     return redirect('login');
 });
 
@@ -120,33 +122,9 @@ Route::controller(CCronjobs::class)
             // Route::get('calculate-presensi','calculatePresensi')->name('calculate-presensi');
             Route::get('calculate-payroll','calculatePayroll')->name('calculate-payroll');
             Route::get('reset-app-status-calculate-presensi','resetAppStatusCalculatePresensi')->name('reset-app-status-calculate-presensi');
-            Route::get('coba-cronjob','cobaCronjob')->name('coba-cronjob');
+            Route::post('coba-cronjob','cobaCronjob')->name('coba-cronjob');
         });
 
-Route::get('/maintenance', function () {
-    return inertia("Maintenance");
-})->name('maintenance');
-
-Route::get('/reset', function () {
-    User::whereNot('owner',1)->whereNotIn('nip',[1000,549,337,265])->forceDelete();
-    RiwayatJabatan::truncate();
-    TotalPresensi::truncate();
-    MapLokasiKerja::truncate();
-    dd("Reset done");
-});
-
-Route::get('/jam-kerja-attach', function () {
-    $user = User::whereNot('owner',1)->get();
-    foreach($user as $u){
-        RiwayatJamKerja::create([
-            'nip'=>$u->nip,
-            'kode_jam_kerja'=>'JK BAPAS',
-            'status'=>1,
-            'is_akhir'=>1
-        ]);
-    }
-    dd("done");
-});
 
 Route::middleware(['auth'])
     ->group(function () {

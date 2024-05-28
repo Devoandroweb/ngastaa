@@ -22,6 +22,7 @@
         "monolog/monolog": "^3.0",
         "predis/predis": "^2.2",
         "psr/simple-cache": "^2.0",
+        "pusher/pusher-php-server": "^7.2",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-html": "^3.5",
         "spatie/laravel-permission": "^5.5",

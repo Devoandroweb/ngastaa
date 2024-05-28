@@ -123,8 +123,6 @@
         var ltlgOld = ('-8.1277966,112.7509655').split(",");
     </script>
     <script src="{{asset('/')}}maps.js"></script>
-    <script src='{{asset('/')}}vendors/turfjs/turf.js'></script>
-    {{-- <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script> --}}
 
     <script >
 
@@ -219,47 +217,6 @@
             $(".keterangan").html(data.keterangan)
         }
 
-
-        // function checkVisitLokasi(location_target){
-        //     var namaLokasi = "Lokasi tidak di temukan";
-        //     var location_target = (location_target).split(",");
-        //     let lokasi = @json($dataLokasi);
-        //     console.log("data lokasi",lokasi);
-
-        //     lokasi.forEach(lok => {
-        //         if((lok.polygon).length == 0){
-        //             return;
-        //         }
-        //         // return;
-        //         var polygon = {
-        //             type: 'Feature',
-        //             geometry: {
-        //                 type: 'Polygon',
-        //                 // Note order: longitude, latitude.
-        //                 coordinates: [lok.polygon]
-        //             },
-        //             properties: {}
-        //         };
-        //         // Note order: longitude, latitude.
-        //         var turfKoor = [
-        //             parseFloat(location_target[1].split(" ").join("")),
-        //             parseFloat(location_target[0].split(" ").join(""))
-        //         ];
-
-        //         var point = turf.point(turfKoor);
-        //         var isInside = turf.booleanPointInPolygon(point, polygon);
-        //         // console.log(isInside);
-        //         if((lok.polygon).length != 0){
-        //             L.polygon(JSON.parse(lok.polygonAsli), { color: "red" }).addTo(drawnItems);
-        //         }
-
-        //         if(isInside){
-        //             console.log("lokasi ketemu",lok)
-        //             namaLokasi = lok.nama
-        //         }
-        //     });
-        //     return namaLokasi;
-        // }
     </script>
 
 @endpush

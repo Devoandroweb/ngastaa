@@ -33,7 +33,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
     protected $allPegawai;
     protected $dataPresensi;
-    protected $dataPresensi2;
+    protected $dataPresensiChoose;
     protected $dataTotalPresensi;
     protected $dataTotalPresensiDetail;
     protected $dataTotalIzin;
@@ -92,13 +92,10 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             }
         }
         // dd($this->maxDate);
-        $statusCacl = StatusCalculate::first();
-        $dateStart = date("Y-m-d",strtotime("-1 days"));
+        // $statusCacl = StatusCalculate::first();
+        $dateStart = $this->maxDate; # maksimal tanggal total detail presensi
         $dateEnd = date("Y-m-d",strtotime("-1 days"));
-        // $dateStart = "2024-05-02";
-        // $dateEnd = "2024-05-03";
-        $limit = $statusCacl->limits;
-        $offset = $statusCacl->offset;
+
         $nip = request('nip');
         $nip = $nip != "" ? explode(",",$nip) : [];
 
@@ -114,42 +111,35 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         if($nip){
             $this->allPegawai = $this->allPegawai->whereIn("nip",$nip);
         }
-        if($limit){
-            $this->allPegawai = $this->allPegawai->limit($limit)->offset($offset);
-        }
+        // $this->allPegawai = $this->allPegawai
         $this->allPegawai = $this->allPegawai->pluck('nip')->toArray();
         $nipNotCalc = $this->dataTotalPresensiDetail->whereIn('tanggal',$tanggalBulan)->pluck("nip")->toArray();
         $this->allPegawai = array_diff($this->allPegawai,$nipNotCalc);
         // dd($this->allPegawai,$tanggalBulan,$nipNotCalc);
         $dataInsert = collect([]);
 
+        $this->dataPresensi = DataPresensi::whereBetween('created_at', [collect($tanggalBulan)->first(),collect($tanggalBulan)->last()])->get(['nip','created_at','tanggal_datang','tanggal_pulang','kode_jam_kerja','kode_shift','tanggal_istirahat']);
+        $this->dataPresensi = $this->dataPresensi->map(function($item){
+            $item->tanggal = $item->created_at->format("Y-m-d");
+            return $item;
+        });
         foreach ($tanggalBulan as $date) {
 
             # check pegawai yg belum di hitung
-
             $this->date = $date;
             $this->dateNow = $date;
             $this->periodeBulan = date("Y-m",strtotime($date));
-            // $this->dataPresensi =  DataPresensi::where("tanggal_datang","!=",null)->whereDate('created_at', '=', $this->date)->where('hitung',0);
-            $this->dataPresensi2 = DataPresensi::whereDate('created_at', $this->date)->where('hitung',0)->get(['nip','tanggal_datang','tanggal_pulang','kode_jam_kerja','kode_shift','tanggal_istirahat']);
-            $dataInsert = collect($dataInsert)->concat($this->calculatePresensi());
-        }
-        // dd($dataInsert);
-        TotalPresensiDetail::insert($dataInsert->toArray());
-        if($dateStart && $dateEnd){
-            $updateOffset = $statusCacl->offset+$statusCacl->limits;
-            if($updateOffset>$this->pegawaiRepository->allPegawai()->count()){
-                $updateOffset = 0;
+            $this->dataPresensiChoose = $this->dataPresensi->where("tanggal",$date);
+            // dd($this->dataPresensiChoose);
+            if(!$this->dataPresensiChoose){
+                continue;
             }
-            $statusCacl->update([
-                "limits"=>50,
-                "offset"=>$updateOffset,
-                "date_start"=>$dateStart,
-                "date_end"=>$dateEnd,
-                "time"=>date("Y-m-d H:i:s"),
-            ]);
+            $dataInsert = collect($dataInsert)->concat($this->calculatePresensi());
+            // dd($dataInsert);
         }
-        return 1;
+
+
+        return $dataInsert;
     }
     function calculatePresensi()
     {
@@ -250,13 +240,12 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                 }
 
             }
-            // dd($dataInsertTotalPresensiDetail);
             return $dataInsertTotalPresensiDetail;
 
     }
 
     function existingPresensi($nip){
-        return $this->dataPresensi2->where('nip',$nip)->first();
+        return $this->dataPresensiChoose->firstWhere('nip', $nip);
     }
     function existingTelat($tanggal_datang, $kode_shift)
     {
@@ -278,11 +267,9 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     {
 
         $shift = $this->searchShift($kode_shift);
-
         if($shift != null){
             $jam_tepat_pulang = strtotime($shift->jam_tepat_pulang);
             $jamTepatNToleransi = $this->date." ".date("H:i:s", strtotime("-{$shift->toleransi_pulang} minutes",$jam_tepat_pulang));
-
             if(date("Y-m-d H:i:s", strtotime($tanggal_pulang)) <= date("Y-m-d H:i:s",strtotime($jamTepatNToleransi))){
                 return true;
             }

@@ -1,0 +1,12 @@
+{
+    "poppins": {
+        "italic": "poppins_italic_1ad90e53438b9573bebb0fe37dfde87c",
+        "500_italic": "poppins_500_italic_0b33503413d15e2b0c2db57c393906ed",
+        "300": "poppins_300_4a08cccbc2911e3077321a0298f4e093",
+        "200_italic": "poppins_200_italic_8bb47f72cf21c22a52883c46f3f26365",
+        "300_italic": "poppins_300_italic_7b4f1cfe65e96a5a4c603a5cf1d6f896",
+        "600": "poppins_600_272b14b77a21dc5827f4570eff556c8f",
+        "500": "poppins_500_6a6f5e017da7e062546fd806ab3b249c",
+        "normal": "poppins_normal_588febd5a249ad0a4d496b8edefa348c"
+    }
+}
