@@ -36,7 +36,6 @@
                     </div>
                     <div class="ps-3">
                         <h3>{{$presensi}}</h3>
-
                     </div>
                 </div>
             </div>
@@ -75,7 +74,6 @@
                     </div>
                     <div class="ps-3">
                         <h3>{{$tahun}}</h3>
-
                     </div>
                 </div>
             </div>
@@ -92,9 +90,6 @@
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover"  data-bs-toggle="collapse" href="#collapse_4" aria-expanded="true"><span class="icon"><span class="feather-icon"><i data-feather="chevron-down"></i></span></span></a>
                 </div>
             </div>
-            {{-- <div class="hk-ribbon-type-1 hk-ribbon-danger end-over">
-                    <span>Coming Soon</span>
-            </div> --}}
             <div class="card-body p-0">
                 <div id="collapse_2" class="collapse show">
                     <div class="row">
@@ -128,7 +123,57 @@
         </div>
     </div>
 </div>
-<div class="row mb-5 d-none">
+<div class="row mb-3">
+    <div class="col">
+        <div class="card border-danger ">
+            <div class="card-header border-bottom border-danger shadow card-header-action">
+                <h6 class="text-bold py-2"> Daftar Pegawai belum absen atau tidak masuk hari ini </h6>
+                <div class="card-action wrap">
+                    <a href="#" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="data-not-present" class="table mt-2 nowrap w-100 mb-5 table-responsive ">
+                    <thead>
+                        <tr className="fw-bolder text-muted">
+                            <th>{{__('No')}}</th>
+                            <th>{{__('NIP')}}</th>
+                            <th>{{__('Nama Lengkap')}}</th>
+                            <th>{{__('Divisi Kerja')}}</th>
+                            <th>{{__('Jabatan')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($notPresent as $present)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $present->nip }}</td>
+                                <td>{{ $present->fullname() }}</td>
+                                <td>@php
+                                        $skpd = "-";
+                                        $jabatan = array_key_exists('0', $present->jabatan_akhir->toArray()) ? $present->jabatan_akhir[0] : null;
+                                        if($jabatan){
+                                            $skpd = $jabatan?->skpd?->nama;
+                                        }
+                                        echo $skpd;
+                                    @endphp
+                                </td>
+                                <td>
+                                    @php
+                                        $jabatan = array_key_exists('0', $present->jabatan_akhir->toArray()) ? $present->jabatan_akhir[0] : null;
+                                        $nama_jabatan = $jabatan?->tingkat?->nama;
+                                        echo $nama_jabatan ?? "-";
+                                    @endphp
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- <div class="row mb-5 d-none">
     <div class="col-lg-6 col-sm-12 mb-4 mb-md-0">
         <div class="card card-refresh shadow border-primary mb-0  h-100">
             <div class="refresh-container">
@@ -176,7 +221,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="row mb-3">
     <div class="col">
         <div class="card border-danger ">
@@ -601,48 +646,59 @@ responsive: [{
 var chart = new ApexCharts(document.querySelector("#chart_perkawinan"), options);
 chart.render();
 var _TABLE = null;
-        var _URL_DATATABLE = '{{url("dashboard-datatable")}}';
-        // SESUAIKAN COLUMN DATATABLE
-        // SESUAIKAN FIELD EDIT MODAL
-        setDataTable();
-        function setDataTable() {
-            _TABLE = $('#data').DataTable({
-                responsive:true,
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: _URL_DATATABLE,
-                },
-                rowReorder: {
-                    selector: 'td:nth-child(1)'
-                },
-                language:{
-                    searchPlaceholder: "Cari",
-                    search: ""
-                },
-                columns: [{
-                        "data": 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false,
-                    },{
-                        data: 'nip',
-                        name: 'nip',
-                    },{
-                        data: 'name',
-                        name: 'name',
-                    },{
-                        data: 'divisi_kerja',
-                        name: 'divisi_kerja',
-                    },{
-                        data: 'nama_jabatan',
-                        name: 'nama_jabatan',
-                    },{
-                        data: 'tanggal_tmt',
-                        name: 'tanggal_tmt',
-                    }],
+    var _URL_DATATABLE = '{{url("dashboard-datatable")}}';
+    // SESUAIKAN COLUMN DATATABLE
+    // SESUAIKAN FIELD EDIT MODAL
+    setDataTable();
+    function setDataTable() {
+        _TABLE = $('#data').DataTable({
+            responsive:true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: _URL_DATATABLE,
+            },
+            rowReorder: {
+                selector: 'td:nth-child(1)'
+            },
+            language:{
+                searchPlaceholder: "Cari",
+                search: ""
+            },
+            columns: [{
+                    "data": 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false,
+                },{
+                    data: 'nip',
+                    name: 'nip',
+                },{
+                    data: 'name',
+                    name: 'name',
+                },{
+                    data: 'divisi_kerja',
+                    name: 'divisi_kerja',
+                },{
+                    data: 'nama_jabatan',
+                    name: 'nama_jabatan',
+                },{
+                    data: 'tanggal_tmt',
+                    name: 'tanggal_tmt',
+                }],
 
-            });
-        }
-		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
+        });
+    }
+    $('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
+
+
+    $("#data-not-present").DataTable({
+        responsive:true,
+        language:{
+            searchPlaceholder: "Cari",
+            search: ""
+        },
+        pageLength:5,
+        lengthMenu: [5, 10, 25, 50, 100]
+    })
 </script>
 @endpush

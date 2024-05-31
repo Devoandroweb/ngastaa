@@ -95,29 +95,12 @@ class DashboardController extends Controller
             'colors' => $color_status_kawin,
         ];
 
-        // dd($status_kawin_statistic);
-        # Presensi Count
-        // dd($this->pegawaiRepository->allPegawaiWithRole()->get()->pluck('nip')->toArray());
-        if(!Cache::get("presensi-insert-status")){
-            $presensi = count(getPresensi());
-        }else{
-            $presensi = DataPresensi::whereDate('data_presensi.created_at', date("Y-m-d"))
-                        ->when($role, function ($qr) {
-                            $user = auth()->user()->jabatan_akhir;
-                            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                            $skpd = '';
-                            if ($jabatan) {
-                                $skpd = $jabatan->kode_skpd;
-                            }
 
-                            $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                                $qt->on('riwayat_jabatan.nip', 'data_presensi.nip')
-                                    ->where('riwayat_jabatan.kode_skpd', $skpd)
-                                    ->where('riwayat_jabatan.is_akhir', 1);
-                            });
-                        })
-                        ->count();
-        }
+        # Presensi Count Today
+        $presensiToday = getPresensi();
+        $presensi = count($presensiToday);
+        $nipArray = array_column($presensiToday, 'nip');
+
 
         $bulan = DataPresensi::whereMonth('data_presensi.created_at', date("m"))
                 ->when($role, function ($qr) {
@@ -195,8 +178,11 @@ class DashboardController extends Controller
 
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
 
-
-
+        $notPresent = User::selectRaw('users.*, riwayat_jabatan.*')
+                                    ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
+                                    ->where('riwayat_jabatan.is_akhir', 1)
+                                    ->whereNotIn('users.nip',$nipArray)
+                                    ->get();
         $titlePage = "Dashboard ".env('app_name');
 
         return view('dashboard',compact(
@@ -205,6 +191,7 @@ class DashboardController extends Controller
             'titlePage',
             'jumlah_pegawai',
             'presensi',
+            'notPresent',
             'bulan',
             'tahun',
             'selesai_kontrak',
