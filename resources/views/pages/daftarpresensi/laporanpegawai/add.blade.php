@@ -59,7 +59,7 @@
     </div>
     <input type="hidden" name="xl" value="0">
     <button id="pdf" style="height: max-content" class="btn btn-custom btn-submit btn-danger icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-pdf"></i> </span><span>Download PDF</span></span></button>
-    <button id="excel" style="height: max-content" class="btn btn-custom btn-submit btn-success icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button>
+    {{-- <button id="excel" style="height: max-content" class="btn btn-custom btn-submit btn-success icon-wthot-bg" disabled><span><span class="icon"><i class="far fa-file-excel"></i> </span><span>Download Excel</span></span></button> --}}
     <button id="show" style="height: max-content" class="btn btn-custom btn-show btn-info icon-wthot-bg" data-show="0" disabled><span><span class="icon"><i class="far fa-eye"></i> </span><span id="label-show">Tampilkan PDF</span></span></button>
 </form>
 <div id="iframe-pdf" class="text-center mb-2"></div>
