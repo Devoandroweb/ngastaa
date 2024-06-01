@@ -232,7 +232,7 @@
     <div class="col">
         <div class="card border-danger ">
             <div class="card-header border-bottom border-danger shadow card-header-action">
-                <h6 class="text-bold py-2"> Daftar Pegawai Yang Akan Habis Kontrak Pada Bulan ini </h6>
+                <h6 class="text-bold py-2"> Kontrak Habis Pada Bulan ini </h6>
                 <div class="card-action wrap">
                     <a href="#" class="btn btn-custom btn-sm btn-danger icon-wthot-bg btn-rounded"><span><span>Download PDF</span><span class="icon"><i class="far fa-file-pdf"></i> </span></span></a>
                 </div>
@@ -261,7 +261,7 @@
     <div class="col-sm-6">
         <div class="card border-pink ">
             <div class="card-header border-bottom border-pink shadow card-header-action">
-                <h6 class="text-bold py-2"> Kepegawaian Berdasarkan Status Pegawai </h6>
+                <h6 class="text-bold py-2"> Status Pegawai </h6>
                 <div class="card-action-wrap">
                     <div class="d-flex">
                         <input type="text" name="year_payroll" class="form-control form-control-sm datepicker-single-year" value="{{date("d-m-Y")}}" id="">
@@ -279,7 +279,7 @@
     <div class="col-sm-6">
         <div class="card border-pink ">
             <div class="card-header border-bottom border-pink shadow card-header-action">
-                <h6 class="text-bold py-2"> Kepegawaian Berdasarkan Perkawinan </h6>
+                <h6 class="text-bold py-2"> Status Perkawinan </h6>
                 <div class="card-action-wrap">
                     <div class="d-flex">
                         <input type="text" name="year_payroll" class="form-control form-control-sm datepicker-single-year" value="{{date("d-m-Y")}}" id="">
