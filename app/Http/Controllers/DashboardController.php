@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\NotPresentExcel;
 use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Models\Master\Cuti;
@@ -18,17 +19,25 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 // use ZipStream\Bigint;
 
 class DashboardController extends Controller
 {
     protected $pegawaiRepository;
+    protected $presensiToday;
+    protected $notPresent;
     function __construct(PegawaiRepository $pegawaiRepository)
     {
         $this->pegawaiRepository = $pegawaiRepository;
-
-
+        $this->presensiToday = getPresensi();
+        $nipArray = array_column($this->presensiToday, 'nip');
+        $this->notPresent = User::selectRaw('users.*, riwayat_jabatan.*')
+                                    ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
+                                    ->where('riwayat_jabatan.is_akhir', 1)
+                                    ->whereNotIn('users.nip',$nipArray)
+                                    ->get();
     }
     public function __invoke()
     {
@@ -95,29 +104,12 @@ class DashboardController extends Controller
             'colors' => $color_status_kawin,
         ];
 
-        // dd($status_kawin_statistic);
-        # Presensi Count
-        // dd($this->pegawaiRepository->allPegawaiWithRole()->get()->pluck('nip')->toArray());
-        if(!Cache::get("presensi-insert-status")){
-            $presensi = count(getPresensi());
-        }else{
-            $presensi = DataPresensi::whereDate('data_presensi.created_at', date("Y-m-d"))
-                        ->when($role, function ($qr) {
-                            $user = auth()->user()->jabatan_akhir;
-                            $jabatan = array_key_exists('0', $user->toArray()) ? $user[0] : null;
-                            $skpd = '';
-                            if ($jabatan) {
-                                $skpd = $jabatan->kode_skpd;
-                            }
 
-                            $qr->join('riwayat_jabatan', function ($qt) use ($skpd) {
-                                $qt->on('riwayat_jabatan.nip', 'data_presensi.nip')
-                                    ->where('riwayat_jabatan.kode_skpd', $skpd)
-                                    ->where('riwayat_jabatan.is_akhir', 1);
-                            });
-                        })
-                        ->count();
-        }
+        # Presensi Count Today
+
+        $presensi = count($this->presensiToday);
+
+
 
         $bulan = DataPresensi::whereMonth('data_presensi.created_at', date("m"))
                 ->when($role, function ($qr) {
@@ -191,10 +183,9 @@ class DashboardController extends Controller
                                     ->whereMonth('riwayat_jabatan.tanggal_tmt', date("m"))
                                     ->whereYear('riwayat_jabatan.tanggal_tmt', date("Y"))
                                     ->get();
-
+        $notPresent = $this->notPresent;
 
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
-
 
 
         $titlePage = "Dashboard ".env('app_name');
@@ -205,6 +196,7 @@ class DashboardController extends Controller
             'titlePage',
             'jumlah_pegawai',
             'presensi',
+            'notPresent',
             'bulan',
             'tahun',
             'selesai_kontrak',
@@ -285,5 +277,9 @@ class DashboardController extends Controller
             $result .= "0";
         }
         return $result;
+    }
+    function exportNotPresent(){
+        $date = date("d-m-Y");
+        return Excel::download(new NotPresentExcel($this->notPresent), "not-present-$date.xlsx");
     }
 }

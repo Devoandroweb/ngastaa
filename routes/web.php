@@ -133,6 +133,8 @@ Route::middleware(['auth'])
         // Route::post('payrollStatistic', [DashboardController::class,'payrollStatistic'])->name('payrollStatistic');
         Route::get('dashboard-datatable', [DashboardController::class,'datatable'])->name('dashboard_datatable');
         Route::get('dashboard-statstik-payroll', [DashboardController::class,"payrollStatistic"])->name('payrollStatistic');
+        Route::get('export-not-present', [DashboardController::class,"exportNotPresent"])->name('export.not-present');
+
         Route::get('logs', [LogController::class, 'index'])->name('logs');
         Route::get('ubah-password', [UbahPassword::class, 'index'])->name('password.index');
         Route::post('ubah-password-update', [UbahPassword::class, 'update'])->name('ubah.password.update');
@@ -162,7 +164,7 @@ Route::middleware(['auth'])
         Route::prefix('presensi')
             ->name("presensi.")
             ->group(function () {
-
+                Route::get("export-presensi-today",[DataPresensiController::class,'exportPresensiToday'])->name("export-presensi-today");
                 Route::controller(TotalPresensiController::class)
                 ->prefix('total_presensi')
                 ->name("total_presensi.")

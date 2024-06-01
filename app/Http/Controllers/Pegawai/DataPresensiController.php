@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pegawai;
 
 use App\Exports\Laporan\LaporanDivisiExport;
 use App\Exports\Laporan\LaporanPegawaiExport;
+use App\Exports\PresentTodayExcel;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Pegawai\DataPresensiResource;
 use App\Models\Master\Lokasi;
@@ -338,6 +339,10 @@ class DataPresensiController extends Controller
     function showPdf(){
         $path = request()->query('path');
         return response()->file($path);
+    }
+    function exportPresensiToday(){
+        $date = date("d-m-Y");
+        return Excel::download(new PresentTodayExcel, "present-$date.xlsx");
     }
 
 }

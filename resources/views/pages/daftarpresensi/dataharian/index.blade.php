@@ -4,7 +4,7 @@
     {{ Breadcrumbs::render('presensi-harian') }}
 @endsection
 @section('header_action')
-<div class="input-group">
+<div class="input-group me-2">
     <span class="input-affix-wrapper">
         <div class="row w-300p">
             <label for="" class="col-sm-3 col-form-label">Divisi : </label>
@@ -19,6 +19,7 @@
         </div>
     </span>
 </div>
+<a href="{{ route('presensi.export-presensi-today') }}" class="btn btn-success me-3"><span><span class="icon"><i class="far fa-file-excel"></i></span><span>Export</span></span></a>
 @endsection
 @section('content')
 <style>
