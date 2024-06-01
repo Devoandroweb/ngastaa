@@ -7,6 +7,7 @@
     <title>Excel</title>
 </head>
 <body>
+    <h3>PRESENSI PEGAWAI YANG TIDAK HADIR PADA TANGGAL {{ date("d-m-Y") }}</h3>
     <table>
         <thead>
             <tr>
