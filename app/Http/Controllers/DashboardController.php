@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\NotPresentExcel;
 use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Models\Master\Cuti;
@@ -18,17 +19,25 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 // use ZipStream\Bigint;
 
 class DashboardController extends Controller
 {
     protected $pegawaiRepository;
+    protected $presensiToday;
+    protected $notPresent;
     function __construct(PegawaiRepository $pegawaiRepository)
     {
         $this->pegawaiRepository = $pegawaiRepository;
-
-
+        $this->presensiToday = getPresensi();
+        $nipArray = array_column($this->presensiToday, 'nip');
+        $this->notPresent = User::selectRaw('users.*, riwayat_jabatan.*')
+                                    ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
+                                    ->where('riwayat_jabatan.is_akhir', 1)
+                                    ->whereNotIn('users.nip',$nipArray)
+                                    ->get();
     }
     public function __invoke()
     {
@@ -97,9 +106,9 @@ class DashboardController extends Controller
 
 
         # Presensi Count Today
-        $presensiToday = getPresensi();
-        $presensi = count($presensiToday);
-        $nipArray = array_column($presensiToday, 'nip');
+
+        $presensi = count($this->presensiToday);
+
 
 
         $bulan = DataPresensi::whereMonth('data_presensi.created_at', date("m"))
@@ -174,15 +183,11 @@ class DashboardController extends Controller
                                     ->whereMonth('riwayat_jabatan.tanggal_tmt', date("m"))
                                     ->whereYear('riwayat_jabatan.tanggal_tmt', date("Y"))
                                     ->get();
-
+        $notPresent = $this->notPresent;
 
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
 
-        $notPresent = User::selectRaw('users.*, riwayat_jabatan.*')
-                                    ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')
-                                    ->where('riwayat_jabatan.is_akhir', 1)
-                                    ->whereNotIn('users.nip',$nipArray)
-                                    ->get();
+
         $titlePage = "Dashboard ".env('app_name');
 
         return view('dashboard',compact(
@@ -272,5 +277,9 @@ class DashboardController extends Controller
             $result .= "0";
         }
         return $result;
+    }
+    function exportNotPresent(){
+        $date = date("d-m-Y");
+        return Excel::download(new NotPresentExcel($this->notPresent), "not-present-$date.xlsx");
     }
 }

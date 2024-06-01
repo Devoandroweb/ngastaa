@@ -129,7 +129,7 @@
             <div class="card-header border-bottom border-danger shadow card-header-action">
                 <h6 class="text-bold py-2"> Daftar Pegawai belum absen atau tidak masuk hari ini </h6>
                 <div class="card-action wrap">
-                    <a href="#" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
+                    <a href="{{ route('export.not-present') }}" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
                 </div>
             </div>
             <div class="card-body">
