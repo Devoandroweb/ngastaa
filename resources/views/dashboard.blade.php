@@ -127,9 +127,15 @@
     <div class="col">
         <div class="card border-danger ">
             <div class="card-header border-bottom border-danger shadow card-header-action">
-                <h6 class="text-bold py-2"> Daftar Pegawai belum absen atau tidak masuk hari ini </h6>
-                <div class="card-action wrap">
-                    <a href="{{ route('export.not-present') }}" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
+                <div class="row w-100">
+                    <div class="col-12 col-md-8">
+                        <h6 class="text-bold py-2"> Daftar Pegawai belum absen atau tidak masuk hari ini </h6>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card-action text-end">
+                            <a href="{{ route('export.not-present') }}" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
