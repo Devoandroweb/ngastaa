@@ -146,6 +146,7 @@ class AuthController extends Controller
         }elseif($type=="email"){
             $email = request('email');
             $user = User::whereEmail($email)->first();
+
             if(!$user){
                 return response()->json(["status"=>true,"message"=>"Email tidak di temukan"],200);
             }else{
@@ -156,8 +157,9 @@ class AuthController extends Controller
                     $user->otp = $otp;
                     $user->update();
                     Mail::to($user->email)->send(new OTPEmail($user->name,$otp));
+                    File::append("email.log",now() ." | Otp Success Sending | $user->email | $otp");
                 } catch (\Throwable $th) {
-                    File::append("email.log",now() ." | Otp Failed Sending | $user->email | $otp");
+                    File::append("email.log",now() ." | Otp Failed Sending | ".$th->getMessage());
                 }
             }
             return response()->json(["status"=>true,"message"=>"OTP Email sukses terkirim"],200);
