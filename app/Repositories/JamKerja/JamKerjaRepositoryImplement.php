@@ -29,7 +29,7 @@ class JamKerjaRepositoryImplement extends Eloquent implements JamKerjaRepository
         return $this->mJamKerja->where($where);
     }
     function searchHariJamKerja($kodeJamKerja,$hari){
-        $jk = $this->hariJamKerja->where("kode_jam_kerja",$kodeJamKerja)->first();
+        $jk = $this->hariJamKerja->where("kode_jam_kerja",$kodeJamKerja)->where('hari',$hari)->first();
         if($jk){
             $jk = (object)$jk;
             if($jk->tipe==1){
