@@ -583,6 +583,27 @@ function convertStatusAbsen($status)
             break;
     }
 }
+function convertStatusAbsenCode($status)
+{
+    switch ($status) {
+        case "1":
+            return 'H';
+        case "2":
+            return 'T';
+        case "3":
+            return 'A';
+        case "4":
+            return 'I';
+        case "5":
+            return 'TAP';
+        case "6":
+            return 'PC';
+        case "7":
+            return 'P';
+        default:
+            break;
+    }
+}
 function Generatewilayah($t=0)
 {
     $yearOption = "";

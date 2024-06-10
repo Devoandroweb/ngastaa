@@ -442,8 +442,7 @@ class PresensiApiController extends Controller
                 $data = DataPresensi::whereIn('nip',$arrayNip)->limitOffset()
                 ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
                     $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
-                })
-                ->limit(request('limit')??10)
+                })->limitOffset()
                 ->orderByDesc('created_at')
                 // ->get();
                 ->get(["id","nip","tanggal_datang","tanggal_istirahat","tanggal_pulang","created_at"]);

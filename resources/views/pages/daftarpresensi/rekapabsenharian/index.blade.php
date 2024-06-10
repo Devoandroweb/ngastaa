@@ -117,7 +117,6 @@
         var _END_DATE = y+"/"+m+"/"+lastDay;
         var _TABLE_REKAP_HARIAN = null;
         var _KODE_SKPD = $(".divisi").val();
-        console.log("divisi",_KODE_SKPD)
         var _DATERANGE = getDatesRange(_START_DATE,_END_DATE);
 
         // INIT ELEMENT
@@ -144,7 +143,10 @@
               cancelButtonText: 'Tidak',
             }).then((result) => {
               if (result.value) {
-                _TABLE_REKAP_HARIAN.button(0).trigger();
+
+                var urlExport = '{{route("presensi.rekapabsen.export")}}?date_start='+_START_DATE+'&date_end='+_END_DATE+'&length=-1';
+                window.open(urlExport,"_blank")
+                // _TABLE_REKAP_HARIAN.button(0).trigger();
               }
             })
         });

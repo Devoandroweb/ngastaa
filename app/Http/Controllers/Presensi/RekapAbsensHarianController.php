@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Presensi;
 
+use App\Exports\ExportRekapHarian;
 use App\Http\Controllers\Controller;
 use App\Models\Master\Skpd;
 use App\Models\Presensi\TotalPresensiDetail;
@@ -10,6 +11,7 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class RekapAbsensHarianController extends Controller
@@ -36,10 +38,27 @@ class RekapAbsensHarianController extends Controller
         ];
         return view('pages.daftarpresensi.rekapabsenharian.index',compact('skpd','statusPresensi'));
     }
+    function datatable(){
+        return $this->jsonDatatable();
+    }
+    function export(){
+        $kodeSkpd = request()->query('kode_skpd');
+        $date_start = date('Y-m-01');
+        $date_end = date('Y-m-t');
 
-    public function datatable(Request $request)
+        // dd(request()->query('date_start') && request()->query('date_end'));
+        if (request()->query('date_start') && request()->query('date_end') ) {
+            $date_start = date("Y-m-d",strtotime(request()->query('date_start')));
+            $date_end = date("Y-m-d",strtotime(request()->query('date_end')));
+        }
+
+        return Excel::download(new ExportRekapHarian($date_start,$date_end),"export-absensi-bulanan.xlsx");
+
+    }
+    public function jsonDatatable()
     {
-        $search = request()->query('search')['value'];
+        set_time_limit(10000);
+        $search = (request()->query('search')) ? request()->query('search')['value'] : "";
         $kodeSkpd = request()->query('kode_skpd');
 
         $date_start = date('Y-m-01');
@@ -118,7 +137,6 @@ class RekapAbsensHarianController extends Controller
                     }else {
                         $hariSabtuMinggu = cekHariAkhirPekan($tanggal->format('Y-m-d'));
                         $hariLibur = cekHariLibur($tanggal->format('Y-m-d'));
-                        // dd($this->dataPresensi);
                         if($hariLibur || $hariSabtuMinggu){
                             return '<span class="badge badge-warning badge-pill badge-outline">L</span>';
                         }

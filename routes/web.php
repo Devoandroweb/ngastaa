@@ -182,6 +182,7 @@ Route::middleware(['auth'])
                     ->name("rekapabsen.")
                     ->group(function () {
                         Route::get('', 'index')->name('index');
+                        Route::get('export', 'export')->name('export');
                         Route::get('datatable', 'datatable')->name('datatable');
                     });
                 Route::prefix('laporan-visit')
