@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 trait Whatsapp {
     function sendMessage($number,$msg){
         // dd($number);
-
         $response = Http::withHeaders([
             'Authorization' => config('app.wa_token'), // Ganti TOKEN dengan token aktual Anda
         ])->post('https://api.fonnte.com/send', [
@@ -36,8 +35,7 @@ trait Whatsapp {
         return $response->body();
     }
     function verif($number){
-        // dd($number);
-
+        
         $response = Http::withHeaders([
             'Authorization' => config('app.wa_token'), // Ganti TOKEN dengan token aktual Anda
         ])->post('https://api.fonnte.com/validate', [

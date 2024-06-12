@@ -23,7 +23,7 @@ class PegawaiResource extends JsonResource
         $nama_jabatan =  $tingkat?->nama;
         $eselon =  $tingkat?->eselon;
         $nama_eselan = $eselon?->nama;
-        $kode_eselon =  $eselon?->kode_eselon;
+        $kode_eselon =  $this->getEselon();
         $skpd = $jabatan?->skpd?->nama;
 
         $data = [

@@ -61,9 +61,7 @@ class LemburPengajuanController extends Controller
         $komentar = request('komentar');
 
         $no_hp = $lembur?->user?->no_hp;
-        if ($no_hp) {
-            dispatch(new ProcessWaNotif($no_hp, "Pengajuan Lembur Ditolak karena $komentar"));
-        }
+
 
         tambah_log($lembur->nip, "App\Pegawai\DataPengajuanLembur", $lembur->id, 'tolak');
         $up = $lembur->update([
@@ -120,13 +118,6 @@ class LemburPengajuanController extends Controller
         if ($up) {
 
             $no_hp = $lembur?->user?->no_hp;
-            if ($no_hp) {
-                $catatan = "";
-                if ($komentar) {
-                    $catatan = ", Catatan : $komentar";
-                }
-                dispatch(new ProcessWaNotif($no_hp, "Pengajuan Lembur telah diterima $catatan!"));
-            }
 
             return redirect(route('pengajuan.lembur.index'))->with([
                 'type' => 'success',

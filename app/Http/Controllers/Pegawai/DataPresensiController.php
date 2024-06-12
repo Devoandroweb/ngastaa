@@ -212,10 +212,10 @@ class DataPresensiController extends Controller
         $skpd = request()->query('skpd');
         $skpd = ($skpd == 0) ? null : $skpd;
         $role = role('opd');
-
-        if(!Cache::get("presensi-insert-status")){
-            DataPresensi::whereDate("created_at",date("Y-m-d"))->forceDelete();
-            $datas = getPresensi();
+        $dateNow = date("Y-m-d");
+        if(!Cache::get("presensi-insert-status",$dateNow)){
+            DataPresensi::whereDate("created_at",$dateNow)->forceDelete();
+            $datas = getPresensi($dateNow);
             DataPresensi::insert($datas);
         }
         // $skpd = 1;
@@ -224,7 +224,7 @@ class DataPresensiController extends Controller
             ->leftJoin('tingkat', 'tingkat.kode_tingkat', 'data_presensi.kode_tingkat')
             ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift')
             ->leftJoin('m_jam_kerja', 'm_jam_kerja.kode', 'data_presensi.kode_jam_kerja')
-            ->whereDate('data_presensi.created_at',date("Y-m-d"));
+            ->whereDate('data_presensi.created_at',$dateNow);
         if($skpd){
             $model->whereHas('user',function($q)use($skpd){
                 $q->whereHas('riwayat_jabatan',function ($q)use($skpd){

@@ -34,11 +34,11 @@
         z-index: 9999;
     }
 </style>
-@if(role('owner') || role('admin') || role('finance'))
 <h4>Filter</h4>
+{{-- @dd($skpd) --}}
 <div class="row mb-4 m-auto">
     <div class="col-md-4 ps-0">
-        <select name="kode_skpd" class="form-control divisi px-2" id="">
+        <select name="kode_skpd" class="form-control px-2" id="">
             <option selected value="0">Semua Divisi</option>
             @foreach ($skpd as $s)
                 @if((Session::get('current_select_skpd') ?? 0) == $s->kode_skpd)
@@ -50,7 +50,7 @@
         </select>
     </div>
     <div class="col-md-4 ps-0">
-        <select name="kode_lokasi" class="form-control divisi px-2" id="">
+        <select name="kode_lokasi" class="form-control px-2" id="">
             <option selected value="0">Semua Lokasi Kerja</option>
             @foreach ($lokasiKerja as $s)
                 @if((Session::get('current_select_lokasi')?? 0) == $s->kode_lokasi)
@@ -62,7 +62,7 @@
         </select>
     </div>
     <div class="col-md-4 ps-0">
-        <select name="status_pegawai" class="form-control divisi px-2" id="">
+        <select name="status_pegawai" class="form-control px-2" id="">
             <option selected value="0">Semua Status</option>
             @foreach ($statusPegawai as $s)
                 @if((Session::get('current_select_status_pegawai') ?? "") == $s->kode_status)
@@ -76,7 +76,7 @@
 </div>
 <div class="row mb-4 m-auto">
     <div class="col-md-6 ps-0">
-        <select name="kode_eselon" class="form-control divisi px-2" id="">
+        <select name="kode_eselon" class="form-control select-tingkat px-2" id="">
             <option selected value="0">Semua Level Jabatan</option>
             @foreach ($levelJabatan as $l)
                 @if((Session::get('current_select_kode_eselon') ?? 0) == $l->kode_eselon)
@@ -114,7 +114,7 @@
 </div>
 <hr>
 @include('pages.pegawai.pegawai.change-pegawai')
-@endif
+
 @if(session('messages'))
 <div class="alert alert-inv alert-inv-@if(session('type') == 'error'){{'danger'}}@else{{'success'}}@endif alert-wth-icon alert-dismissible fade show" role="alert">
 	<span class="alert-icon-wrap"><i class="zmdi @if(session('type') == 'error') {{'zmdi-bug'}}  @else {{'zmdi-check-circle'}} @endif "></i></span> {{session('messages')}}
@@ -140,7 +140,6 @@
 
     </tbody>
 </table>
-@if(getPermission('pegawai','PK') || role('owner') || role('admin'))
 <div class="modal fade" id="modalKontrak" tabindex="-1" role="dialog" aria-labelledby="modalKontrak" aria-hidden="true">
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
@@ -205,7 +204,7 @@
 		</div>
 	</div>
 </div>
-@endif
+{{-- @dd(auth()->user()->lokasiKerja?->lokasiKerja?->nama) --}}
 @endsection
 @push('js')
     <script >
@@ -213,6 +212,7 @@
         var _URL_DATATABLE = '{{route("pegawai.pegawai.datatable")}}';
         var listPegawai = []
         const btnLoading = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`;
+        const modalKontrak = new bootstrap.Modal(document.getElementById("modalKontrak"),{backdrop:'static',keyboard:true});
 
         /* DATATABLE */
         setDataTable();
@@ -287,18 +287,23 @@
             }
         });
 		$('.dataTables_wrapper .dataTables_filter input').css('width','85% !important');
-        @if(getPermission('pegawai','U') || role('owner') || role('admin'))
-            $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
-                var data = _TABLE.row(this).data();
-                window.open(data.detail,"_blank");
-            });
-        @endif
+        $('#data tbody').on('click', 'tr td:not(:nth-child(-n + 2))', function (e) {
+            var data = _TABLE.row(this).data();
+            window.open(data.detail,"_blank");
+        });
         // _TABLE.ajax.url(_URL_DATATABLE+"?kode_skpd="+data.id).load()
-        $(".divisi").select2();
+        $("select").select2();
         // JS FOR MODAL
-        @if(getPermission('pegawai','PK') || role('owner') || role('admin'))
         initDatePickerSingle();
-        const modalKontrak = new bootstrap.Modal(document.getElementById("modalKontrak"),{backdrop:'static',keyboard:true});
+        initPegawaiNip("{{route('pegawai.pegawai.json')}}?kode_skpd=0")
+
+        @if((int)auth()->user()->getEselon()>1)
+            $('select[name=kode_skpd]').val(`{{ auth()->user()->getDivisi()?->kode_skpd }}`).change()
+            $('select[name=kode_skpd]').prop('disabled',true)
+            $('select[name=kode_lokasi]').val(`{{ auth()->user()->lokasiKerja?->lokasiKerja?->kode_lokasi }}`).change()
+            $('select[name=kode_lokasi]').prop('disabled',true)
+        @endif
+
 
         $(document).on('click',"#btnModalKontrak", function () {
 
@@ -360,7 +365,7 @@
 
         function initDevisi(){
             let getDivisi = (url) => {
-                var element = $('#select-divisi');
+                var element = $('.select-divisi');
                 let loading = loadingProccesText(element)
                 $.ajax({url: url, success: function(data){
                     element.empty()
@@ -386,7 +391,7 @@
             }
             getDivisi("{{route('master.skpd.json')}}")
         }
-        initPegawaiNip("{{route('pegawai.pegawai.json')}}?kode_skpd=0")
+
         function initPegawai(url,value_pegawai = null){
             let getPegawai = (url) => {
                 var element = $('#select-pegawai');
@@ -518,7 +523,6 @@
             _TABLE.ajax.url(_URL_DATATABLE+`?kode_skpd=${kode_skpd}&kode_lokasi=${kode_skpd}&nama_pegawai=${nama_pegawai}&status_pegawai=${status_pegawai}&nip_pegawai=${nip_pegawai}&kode_tingkat=${kode_tingkat}&kode_eselon=${kode_eselon}`).load()
         }
 
-        @endif
     </script>
     <script src="{{asset('/')}}delete.js"></script>
 

@@ -38,11 +38,7 @@
    	<!-- Wrapper -->
 	<div class="hk-wrapper" data-layout="vertical" data-layout-style="default" data-menu="light" data-footer="simple">
 		@include('panels.navbar')
-        @if(role('owner') || role('admin'))
-		@include('panels.sidebar')
-        @else
-		@include('panels.sidebar-new')
-        @endif
+		@include('panels.sidebar_new')
 		<!-- Main Content -->
 		<div class="hk-pg-wrapper">
 			<div class="container-fluid px-4">

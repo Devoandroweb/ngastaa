@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\OrganisasiController;
 use App\Http\Controllers\Api\PayrollApiController;
 use App\Http\Controllers\Api\PegawaiController;
 use App\Http\Controllers\Api\PendidikanController;
+use App\Http\Controllers\Api\PengajuanPermitController;
 use App\Http\Controllers\Api\PengalamanKerjaController;
 use App\Http\Controllers\Api\PenguasaanBahasaController;
 use App\Http\Controllers\Api\PengumumanApiController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Api\ShiftApiController;
 use App\Http\Controllers\Api\User;
 use App\Http\Controllers\Api\VisitApiController;
 use App\Http\Controllers\CCronjobs;
+use App\Models\PengajuanPermit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -97,6 +99,8 @@ Route::middleware(['auth:sanctum','validateToken'])->group(function(){
             Route::get('lokasi', 'lokasi');
             Route::get('existing-presensi-day/{nip}', 'existingAbsenDay');
             Route::post('statistik', 'statistikPresensi');
+            Route::post('{type}/send-otp-out-radius', 'sendOtpPermitPresensiOutRadius');
+            Route::post('unlock', 'unlock');
         });
 
     Route::controller(VisitApiController::class)
@@ -175,6 +179,11 @@ Route::middleware(['auth:sanctum','validateToken'])->group(function(){
                 Route::get('list-master-shift/{nip}', 'listMasterShift');
                 Route::post('ubah-shift', 'storeUbahShift');
 
+            });
+        Route::controller(PengajuanPermitController::class)
+            ->prefix('permit')
+            ->group(function () {
+                Route::post('store', 'store');
             });
     });
 

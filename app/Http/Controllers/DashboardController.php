@@ -31,7 +31,7 @@ class DashboardController extends Controller
     function __construct(PegawaiRepository $pegawaiRepository)
     {
         $this->pegawaiRepository = $pegawaiRepository;
-        $this->presensiToday = getPresensi();
+        $this->presensiToday = getPresensi(date("Y-m-d"));
         $nipArray = array_column($this->presensiToday, 'nip');
         $this->notPresent = User::selectRaw('users.*, riwayat_jabatan.*')
                                     ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')

@@ -177,8 +177,17 @@ class User extends Authenticatable
         }
         return null;
     }
+    function getEselon(){
+        $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
+
+        if($jabatan != null){
+            return  ((is_null($jabatan)) ? null : $jabatan->tingkat?->kode_eselon);
+        }
+        return null;
+    }
     function getDivisi(){
         $jabatan = array_key_exists('0', $this->jabatan_akhir->toArray()) ? $this->jabatan_akhir[0] : null;
+
         if( $jabatan != null){
             $skpd = $jabatan?->skpd;
             return $skpd;
@@ -241,5 +250,7 @@ class User extends Authenticatable
     function dataPresensi(){
         return $this->hasMany(DataPresensi::class,"nip","nip");
     }
-
+    function pengajuanPermit(){
+        return $this->belongToMany(PengajuanPermit::class,"nip","nip");
+    }
 }

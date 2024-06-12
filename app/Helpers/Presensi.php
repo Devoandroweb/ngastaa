@@ -9,9 +9,9 @@ use App\Models\Pegawai\DataPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
 use Illuminate\Support\Facades\Cache;
 
-function getPresensi(){
-    $pd = Cache::get("presensi-datang");
-    $pp = Cache::get("presensi-pulang");
+function getPresensi($date){
+    $pd = Cache::get("presensi-datang-$date");
+    $pp = Cache::get("presensi-pulang-$date");
     // dd($pp["00306"]);
     $datasPd = collect($pd);
     $datasPp = collect($pp);
