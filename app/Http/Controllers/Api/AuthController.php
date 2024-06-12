@@ -132,13 +132,16 @@ class AuthController extends Controller
 
         $otp = mt_rand(100000, 999999);
         if($type=="whatsapp"){
-            $noWa = request('no_wa');
-            $noWa = convertToInternationalFormat($noWa);
-            $notRegister = json_decode($this->verif($noWa))->not_registered;
-            if($notRegister){
+            $noWaOriginal = request('no_wa');
+            $noWa = convertToInternationalFormat($noWaOriginal);
+            $notRegister = json_decode($this->verif($noWa))->status;
+            if(!$notRegister){
                 return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak terdaftar"],200);
             }
-            $user = User::whereNoHp($noWa)->first();
+            $user = User::whereIn("no_hp",[$noWa,$noWaOriginal])->first();
+            if(!$user){
+                return response()->json(["status"=>false,"message"=>"Pengguna/Karyawan tidak di temukan"],200);
+            }
             $user->otp = $otp;
             $user->update();
             $this->sendMessage($noWa,"*HRM-BAPAS-69*\nHi! Ini adalah kode OTP Anda: *$otp*. Gunakan kode ini untuk verifikasi akun Anda. Jangan berikan kode ini kepada siapapun untuk menjaga keamanan akun Anda.");
@@ -150,9 +153,9 @@ class AuthController extends Controller
             if(!$user){
                 return response()->json(["status"=>true,"message"=>"Email tidak di temukan"],200);
             }else{
-                if(!$user->email_verified_at){
-                    return response()->json(["status"=>true,"message"=>"Email belum ter-verifikasi"],200);
-                }
+                // if(!$user->email_verified_at){
+                //     return response()->json(["status"=>true,"message"=>"Email belum ter-verifikasi"],200);
+                // }
                 try {
                     $user->otp = $otp;
                     $user->update();

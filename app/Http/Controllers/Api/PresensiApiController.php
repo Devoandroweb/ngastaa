@@ -11,6 +11,7 @@ use App\Repositories\JamKerja\JamKerjaRepository;
 use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Str;
 use App\Jobs\ProcessWaNotif;
+use App\Mail\OTPEmail;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Shift;
 use App\Models\MJamKerja;
@@ -19,10 +20,14 @@ use App\Models\Pegawai\RiwayatShift;
 use App\Models\User;
 use App\Repositories\Presensi\PresensiRepository;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\Whatsapp;
 
 class PresensiApiController extends Controller
 {
+    use Whatsapp;
     protected $pegawaiRepository;
     protected $presensiRepository;
     protected $jamKerjaRepository;
@@ -212,7 +217,7 @@ class PresensiApiController extends Controller
         $tanggalIn = $date;
         $user = request()->user();
         $nip = $user->nip;
-
+        $dateAbsen = date("Y-m-d",strtotime($date));
         $kode_shift = null;
         $kode_jam_kerja = null;
 
@@ -251,10 +256,11 @@ class PresensiApiController extends Controller
             $tutupSoreTime = strtotime($shift->jam_tutup_pulang);
         }
         // dd($dateSend,$bukaSoreTime,$dateSend,$tutupSoreTime,$jamkerja);
-        $presensiDatang = Cache::get("presensi-datang");
+        $presensiDatang = Cache::get("presensi-datang-$dateAbsen");
+        // dd($presensiDatang);
         if ($dateSend >= $bukaPagiTime && $dateSend <= $tutupPagiTime) { # PAGI
-        // if (true) { # PAGI
-            $presensiNotExist = Cache::get("presensi-datang-not-exist") ?? [];
+            // if (true) { # PAGI
+            $presensiNotExist = Cache::get("presensi-datang-not-exist-$dateAbsen") ?? [];
 
             if (!in_array($nip,$presensiNotExist) || isset($presensiDatang[$nip])) {
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pagi ini!']),200);
@@ -273,7 +279,7 @@ class PresensiApiController extends Controller
                 ];
 
                 $presensiDatang[$nip] = $data;
-                $cr = Cache::forever("presensi-datang",$presensiDatang);
+                $cr = Cache::forever("presensi-datang-$dateAbsen",$presensiDatang);
                 if ($cr) {
                     clearUserHome($nip);
                     return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Datang!', 'keterangan' => 'pagi']),200);
@@ -282,58 +288,10 @@ class PresensiApiController extends Controller
                 }
             }
         }
-        // else if ($dateSend >= $bukaSiangTime && $dateSend <= $tutupSiangTime) {
-        //     $cek = DataPresensi::where('nip', $nip)->whereDate('tanggal_datang', $this->dateAbsen)->first();
-        //     if ($cek) {
-        //         $cekSiang = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', $this->dateAbsen)->count();
-        //         if ($cekSiang > 0) {
-        //             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi siang ini!']),200);
-        //         } else {
-        //             $foto = $this->uploadFotoAbsen($nip);
-        //             $data = [
-        //                 'kordinat_istirahat' => $kordinat,
-        //                 'foto_istirahat' => $foto,
-        //                 'tanggal_istirahat' => $tanggalIn
-        //             ];
-        //             $cr = $cek->update($data);
-        //             if ($cr) {
-        //                 clearUserHome($nip);
-        //                 return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi!', 'keterangan' => 'siang']),200);
-        //             } else {
-        //                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),200);
-        //             }
-        //         }
-        //     } else {
-        //         $cekSiang2 = DataPresensi::where('nip', $nip)->whereDate('tanggal_istirahat', $this->dateAbsen)->count();
-        //         if ($cekSiang2 > 0) {
-        //             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi siang ini!']),200);
-        //         } else {
-        //             $foto = $this->uploadFotoAbsen($nip);
-        //             $data = [
-        //                 'nip' => $nip,
-        //                 'periode_bulan' => date("Y-m"),
-        //                 'kordinat_istirahat' => $kordinat,
-        //                 'foto_istirahat' => $foto,
-        //                 'kode_tingkat' => $kode_tingkat,
-        //                 'kode_shift' => $kode_shift,
-        //                 'kode_jam_kerja' => $kode_jam_kerja,
-        //                 'tanggal_istirahat' => $tanggalIn
-        //             ];
-        //             $cr = DataPresensi::create($data);
-        //             if ($cr) {
-        //                 return response()->json(buildResponseSukses([
-        //                     'status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi!',
-        //                     'keterangan' => 'siang'
-        //                 ]),200);
-        //             } else {
-        //                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),200);
-        //             }
-        //         }
-        //     }
-        // }
         else if ($dateSend >= $bukaSoreTime && $dateSend <= $tutupSoreTime) {
+        // else if (true) {
 
-            $presensiPulang = Cache::get("presensi-pulang");
+            $presensiPulang = Cache::get("presensi-pulang-$dateAbsen");
             $cek = isset($presensiPulang[$nip]);
             if($cek){
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pulang!']),200);
@@ -351,7 +309,7 @@ class PresensiApiController extends Controller
                     'lokasi_pulang' => $location,
                 ];
                 $presensiPulang[$nip] = $data;
-                $cr = Cache::forever("presensi-pulang",$presensiPulang);
+                $cr = Cache::forever("presensi-pulang-$dateAbsen",$presensiPulang);
                 if ($cr) {
                     clearUserHome($nip);
                     return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Pulang!', 'keterangan' => 'sore']),200);
@@ -507,12 +465,60 @@ class PresensiApiController extends Controller
         $data = $this->presensiRepository->getStatPresensi(request("nip"));
         return response()->json(buildResponseSukses($data),200);
     }
-    function sendOtpPermitPresensiOutRadius(){
-        $noWa = request('no_wa');
-        $notRegister = json_decode($this->verif($noWa))->not_registered;
-        if($notRegister){
-            return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak terdaftar"],200);
-        }
+    function sendOtpPermitPresensiOutRadius($type){
         $otp = mt_rand(100000, 999999);
+
+        if($type=="whatsapp"){
+            $noWaOriginal = request('no_wa');
+            $noWa = convertToInternationalFormat($noWaOriginal);
+            $notRegister = json_decode($this->verif($noWa))->status;
+            if(!$notRegister){
+                return response()->json(["status"=>false,"message"=>"Nomor Whatsapp tidak terdaftar"],200);
+            }
+            $user = User::whereIn("no_hp",[$noWa,$noWaOriginal])->first();
+            if(!$user){
+                return response()->json(["status"=>false,"message"=>"Pengguna/Karyawan tidak di temukan"],200);
+            }
+            $user->otp = $otp;
+            $user->update();
+            $this->sendMessage($noWa,"*HRM-BAPAS-69*\nHi! Ini adalah kode OTP Anda: *$otp*. Gunakan kode ini untuk Unlock Absen di luar jangkauan. Jangan berikan kode ini kepada siapapun untuk menjaga keamanan akun Anda.");
+        }elseif($type=="email"){
+            $email = request('email');
+            $user = User::whereEmail($email)->first();
+
+            if(!$user){
+                return response()->json(["status"=>true,"message"=>"Email tidak di temukan"],200);
+            }else{
+                // if(!$user->email_verified_at){
+                //     return response()->json(["status"=>true,"message"=>"Email belum ter-verifikasi"],200);
+                // }
+                try {
+                    $user->otp = $otp;
+                    $user->update();
+                    Mail::to($user->email)->send(new OTPEmail($user->name,$otp));
+                    File::append("email.log",now() ." | Otp Success Sending | $user->email | $otp");
+                } catch (\Throwable $th) {
+                    File::append("email.log",now() ." | Otp Failed Sending | ".$th->getMessage());
+                }
+            }
+            return response()->json(["status"=>true,"message"=>"OTP Email sukses terkirim"],200);
+
+        }else{
+            return response()->json(["status"=>false,"message"=>"Not Url Prefix"],400);
+        }
+        return response()->json(["status"=>true,"message"=>"OTP Whatsapp sukses terkirim"],200);
+    }
+    function unlock(){
+        $user = User::whereOtp(request('otp'))->first();
+        if($user){
+            $noWaOriginal = request('no_wa');
+            $noWa = convertToInternationalFormat($noWaOriginal);
+            if($user->email==request("email")||in_array($user->no_wa,[$noWaOriginal,$noWa])){
+                $user->otp = null;
+                $user->update();
+                return response()->json(["status"=>true,"message"=>"Unlock berhasil"],200);
+            }
+        }
+        return response()->json(["status"=>false,"message"=>"Otp Salah."],200);
     }
 }

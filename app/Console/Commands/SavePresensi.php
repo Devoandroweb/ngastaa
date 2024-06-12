@@ -40,14 +40,15 @@ class SavePresensi extends Command
         Artisan::call("presensi:clear-presensi");
         Artisan::call("presensi:reset-status");
         $users = User::whereOwner(0)->pluck('nip')->toArray();
+        $date = date("Y-m-d");
         foreach($users as $nip){
             Cache::forget("home-user-$nip");
         }
-        $dPresensiExist = DataPresensi::whereIn('nip',$users)->whereDate('tanggal_datang', date("Y-m-d"))->pluck('nip')->toArray();
+        $dPresensiExist = DataPresensi::whereIn('nip',$users)->whereDate('tanggal_datang', $date)->pluck('nip')->toArray();
         $dPresensiNotExist = array_diff($users,$dPresensiExist);
 
-        Cache::forever("presensi-datang-exist",$dPresensiExist);
-        Cache::forever("presensi-datang-not-exist",$dPresensiNotExist);
+        Cache::forever("presensi-datang-exist-$date",$dPresensiExist);
+        Cache::forever("presensi-datang-not-exist-$date",$dPresensiNotExist);
 
         $now = now();
         $path = public_path('cronjob.txt'); // Path file di direktori storage

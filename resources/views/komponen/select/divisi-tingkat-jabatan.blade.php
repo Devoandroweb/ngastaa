@@ -2,7 +2,7 @@
     <div class="col">
         <label class="form-label">Pilih Divisi Kerja</label>
         <div class="form-group has-validation">
-            <select class="form-control jabatanDivisi" id=""  name="kode_skpd" required disabled>
+            <select class="form-control select-divisi" id="" name="kode_skpd" required disabled>
 
             </select>
         </div>
@@ -10,7 +10,7 @@
     <div class="col">
         <label class="form-label">Jabatan</label>
         <div class="form-group">
-            <select class="form-control jabatanTingkat" id="" name="kode_tingkat" required disabled>
+            <select class="form-control select-tingkat" id="" name="kode_tingkat" required disabled>
             </select>
         </div>
     </div>

@@ -66,12 +66,14 @@ class PegawaiController extends Controller
     }
     public function index()
     {
+
         $skpd = Skpd::all();
         $lokasiKerja = Lokasi::orderBy('nama','asc')->get();
         $statusPegawai = StatusPegawai::orderBy('nama','asc')->get();
-        $levelJabatan = Eselon::orderBy('nama')->get();
-        $tingkatJabatan = Tingkat::selectRaw("nama, GROUP_CONCAT(kode_tingkat SEPARATOR ',') AS kode_tingkat")
-        ->groupBy('nama')
+
+        $levelJabatan = Eselon::withFilterUserEselon()->orderBy('nama')->get();
+        $tingkatJabatan = Tingkat::withFilterUserEselon()->selectRaw("nama,kode_eselon, GROUP_CONCAT(kode_tingkat SEPARATOR ',') AS kode_tingkat")
+        ->groupBy('nama','kode_eselon')
         ->get();
 
         return view('pages/pegawai/pegawai/index',compact('skpd','lokasiKerja','statusPegawai','levelJabatan','tingkatJabatan'));

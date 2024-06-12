@@ -6,3 +6,4 @@ ALTER TABLE `personal_access_tokens` ADD `expires_at` TIMESTAMP NULL DEFAULT NUL
 ALTER TABLE `data_presensi` ADD `lokasi_datang` TEXT NULL DEFAULT NULL AFTER `kordinat_datang`;
 ALTER TABLE `data_presensi` ADD `lokasi_pulang` TEXT NULL DEFAULT NULL AFTER `kordinat_pulang`;
 ALTER TABLE `total_presensi_detail` CHANGE `kode_cuti` `kode_cuti` VARCHAR(30) NULL DEFAULT NULL COMMENT 'ini terisi jika status 4';
+CREATE TABLE `hr-attedance`.`pengajuan_permit` ( `id` INT NOT NULL AUTO_INCREMENT , `nip` VARCHAR(30) NOT NULL , `tanggal` DATETIME NOT NULL , `jam_keluar` TIME NOT NULL , `jam_kembali` TIME NOT NULL , `keperluan` TEXT NOT NULL , `ttd` BLOB NULL , `status` TINYINT NOT NULL DEFAULT '0' COMMENT '0:wait,1:approv,2:reject' , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

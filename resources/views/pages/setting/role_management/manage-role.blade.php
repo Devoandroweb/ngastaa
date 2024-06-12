@@ -56,6 +56,11 @@
             </div>
             @endforeach
         </div>
+        <br>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="all_check" id="all_check">
+            <label class="form-check-label" for="all_check">Semua</label>
+        </div>
         <hr>
         <input type="submit" class="btn btn-info" value="Simpan">
         <a href="{{route('setting.role-menu.index')}}" class="btn btn-default">Kembali</a>
@@ -68,6 +73,14 @@
     $(".sub-menu").click(function(){
         checkCrud($(this))
     })
+    $("#all_check").click(function(){
+        if($(this).is(':checked')){
+            $(`input[type="checkbox"]`).prop("checked",true)
+        }else{
+            $(`input[type="checkbox"]`).prop("checked",false)
+        }
+    })
+
     function checkCrud(el){
         // el.closest('.menu').find(".sub-menu").prop('checked',true)
         var menu = el.closest('.menu').find(".kode_menu")

@@ -29,10 +29,11 @@ class ClearPresensi extends Command
      */
     public function handle()
     {
-        Cache::forget("presensi-datang");
-        Cache::forget("presensi-pulang");
-        Cache::forget("presensi-datang-exist");
-        Cache::forget("presensi-datang-not-exist");
+        $date = date("Y-m-d",strtotime("-1 Days"));
+        Cache::forget("presensi-datang-$date");
+        Cache::forget("presensi-pulang-$date");
+        Cache::forget("presensi-datang-exist-$date");
+        Cache::forget("presensi-datang-not-exist-$date");
         $now = now();
         $path = public_path('cronjob.txt'); // Path file di direktori storage
         $content = "$now | Clear Cache Presensi Succesfully.\n"; // Konten yang akan ditulis ke file

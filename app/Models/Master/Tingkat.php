@@ -51,4 +51,10 @@ class Tingkat extends Model
 
         return $parents;
     }
+    function scopeWithFilterUserEselon($eselon=0){
+        $eselon = auth()->user()->getEselon();
+        if($eselon){
+            return $this->where("kode_eselon",">",$eselon);
+        }
+    }
 }
