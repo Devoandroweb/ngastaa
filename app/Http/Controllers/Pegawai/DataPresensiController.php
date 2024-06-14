@@ -213,10 +213,18 @@ class DataPresensiController extends Controller
         $skpd = ($skpd == 0) ? null : $skpd;
         $role = role('opd');
         $dateNow = date("Y-m-d");
-        if(!Cache::get("presensi-insert-status",$dateNow)){
-            DataPresensi::whereDate("created_at",$dateNow)->forceDelete();
+        if(!Cache::get("presensi-insert-status-$dateNow")){
+            // DataPresensi::whereDate("created_at",$dateNow)->forceDelete();
             $datas = getPresensi($dateNow);
-            DataPresensi::insert($datas);
+            foreach ($datas as $data) {
+                $tanggal = date("Y-m-d",strtotime($data["tanggal_datang"]));
+                $dataPresensi = DataPresensi::whereNip($data["nip"])->whereDate("tanggal_datang",$tanggal)->first();
+                if($dataPresensi){
+                    $dataPresensi->update($data);
+                }else{
+                    DataPresensi::create($data);
+                }
+            }
         }
         // $skpd = 1;
         $model = DataPresensi::selectRaw("data_presensi.id as id, users.name as nama, users.nip as nip, data_presensi.tanggal_datang, data_presensi.tanggal_pulang, data_presensi.created_at, tingkat.nama as jabatan, data_presensi.kordinat_datang, data_presensi.foto_datang, data_presensi.kordinat_pulang, data_presensi.foto_pulang, shift.nama as nama_shift, m_jam_kerja.nama as nama_jam_kerja")
@@ -224,7 +232,7 @@ class DataPresensiController extends Controller
             ->leftJoin('tingkat', 'tingkat.kode_tingkat', 'data_presensi.kode_tingkat')
             ->leftJoin('shift', 'shift.kode_shift', 'data_presensi.kode_shift')
             ->leftJoin('m_jam_kerja', 'm_jam_kerja.kode', 'data_presensi.kode_jam_kerja')
-            ->whereDate('data_presensi.created_at',$dateNow);
+            ->whereDate('data_presensi.tanggal_datang',$dateNow);
         if($skpd){
             $model->whereHas('user',function($q)use($skpd){
                 $q->whereHas('riwayat_jabatan',function ($q)use($skpd){

@@ -63,7 +63,7 @@
     <div class="col">
         <table class="table table-bordered">
             @foreach ($statusPresensi as $value)
-            @if (in_array($loop->iteration,[4,5,6]))
+            @if (in_array($loop->iteration,[4,5,6,8]))
                 @continue
             @endif
             <tr>
@@ -77,7 +77,7 @@
     <div class="col">
         <table class="table table-bordered">
             @foreach ($statusPresensi as $value)
-            @if (in_array($loop->iteration,[1,2,3,7]))
+            @if (in_array($loop->iteration,[1,2,3,7,9]))
                 @continue
             @endif
             <tr>

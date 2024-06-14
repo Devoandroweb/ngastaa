@@ -11,6 +11,7 @@ use App\Models\Master\Pendidikan;
 use App\Models\Master\StatusPegawai;
 use App\Models\Payroll\DataPayroll;
 use App\Models\Pegawai\DataPresensi;
+use App\Models\PengajuanPermit;
 use App\Models\Presensi\TotalPresensi;
 use App\Models\Presensi\TotalPresensiDetail;
 use App\Models\User;
@@ -187,6 +188,7 @@ class DashboardController extends Controller
 
         $selesai_kontrak = PegawaiResource::collection($selesai_kontrak);
 
+        $exitPermit = PengajuanPermit::whereIn("nip",$pegawai->pluck("nip"))->whereTanggal(date("Y-m-d"))->get();
 
         $titlePage = "Dashboard ".env('app_name');
 
@@ -202,6 +204,7 @@ class DashboardController extends Controller
             'selesai_kontrak',
             'mapsRadar',
             'lokasiVisit',
+            'exitPermit',
             'dataTotalPresensi',
             'textTotalPresensi',
             'colorTotalPresensi'

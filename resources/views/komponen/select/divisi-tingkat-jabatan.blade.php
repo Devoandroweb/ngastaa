@@ -2,7 +2,7 @@
     <div class="col">
         <label class="form-label">Pilih Divisi Kerja</label>
         <div class="form-group has-validation">
-            <select class="form-control select-divisi" id="" name="kode_skpd" required disabled>
+            <select class="form-control select-tingkat" id="" name="kode_skpd" required disabled>
 
             </select>
         </div>
@@ -21,8 +21,9 @@
     initDevisi();
     /* JABATAN */
     function initDevisi(value_divisi = null,value_tingkat = null){
+
         let getDivisi = (url) => {
-            var element = $('.jabatanDivisi');
+            var element = $('.select-tingkat');
             let loading = loadingProccesText(element)
             $.ajax({url: url, success: function(data){
                 element.empty()
@@ -50,14 +51,13 @@
                     _DIVISI = data[$(this).prop('selectedIndex')].text;
                     $(".btn-save").prop('disable',false)
                     $(".btn-save").removeClass('disabled')
-                    console.log(_DIVISI);
                 })
             }});
         }
         getDivisi("{{route('master.skpd.json')}}")
     }
     let getTingkat = (url,value_tingkat = null) => {
-        let element = $('.jabatanTingkat');
+        let element = $('.select-tingkat');
         element.prop('disabled', true)
         let loading = loadingProccesText(element)
         $.ajax({url: url, success: function(data){

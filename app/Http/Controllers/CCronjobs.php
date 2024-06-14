@@ -63,22 +63,14 @@ class CCronjobs extends Controller
     function calculatePresensi(){
         try {
             DB::transaction(function(){
-                $startCacl = date("Y-m-d H:i:s");
                 $resultCalculate = app(CalculatePresensiRepository::class)->manualCalculate();
                 // dd($resultCalculate[0]);
                 foreach ($resultCalculate as $data) {
-                    if($data["tanggal"]=="2024-05-27"){
-                        // dd($data);
-                        TotalPresensiDetail::create($data);
-                    }
+                    TotalPresensiDetail::updateOrCreate([
+                        "nip"=>$data["nip"],
+                        "tanggal"=>$data["tanggal"],
+                    ],$data);
                 }
-
-                // if ($resultCalculate != 0) {
-                //     $endCacl = date("Y-m-d H:i:s");
-                //     $fileSuccess = fopen('sukses_cronjob.txt','a');
-                //     fwrite($fileSuccess, "Run calculate absensi in : Start = ".$startCacl."| End = ".$endCacl);
-                //     fclose($fileSuccess);
-                // }
             });
             DB::commit();
             return response()->json([

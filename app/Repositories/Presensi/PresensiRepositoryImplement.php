@@ -33,8 +33,9 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
         // $this->date = "2023-08-04";
     }
     function presensiDay($nip){
-        $dataDatang = $this->getPresensiDatang($nip);
-        $dataPulang = $this->getPresensiPulang($nip);
+        $dateNow = date("Y-m-d");
+        $dataDatang = $this->getPresensiDatang($nip,$dateNow);
+        $dataPulang = $this->getPresensiPulang($nip,$dateNow);
         $dataDatang = $dataDatang ? (object)$dataDatang : null;
         $dataPulang = $dataPulang ? (object)$dataPulang : null;
         // dd($data);
@@ -56,19 +57,19 @@ class PresensiRepositoryImplement extends Eloquent implements PresensiRepository
     }
 
     function getPresensiDay($nip){
-        $presensi = getPresensi();
+        $presensi = getPresensi(date("Y-m-d"));
         $filteredData = collect($presensi)->filter(function ($item) use ($nip) {
             return $item['nip'] == $nip;
         })->values()->first();
 
         return $filteredData ? (object)$filteredData : null;
     }
-    function getPresensiDatang($nip){
-        $presensiNow = Cache::get("presensi-datang");
+    function getPresensiDatang($nip,$dateNow){
+        $presensiNow = Cache::get("presensi-datang-$dateNow");
         return isset($presensiNow[$nip]) ? $presensiNow[$nip]: null;
     }
-    function getPresensiPulang($nip){
-        $presensiNow = Cache::get("presensi-pulang");
+    function getPresensiPulang($nip,$dateNow){
+        $presensiNow = Cache::get("presensi-pulang-$dateNow");
         return isset($presensiNow[$nip]) ? $presensiNow[$nip]: null;
     }
     function getStatPresensi($nip){

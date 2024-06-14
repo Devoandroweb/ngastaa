@@ -23,21 +23,19 @@
         $menit = $selisihMenit % 60;
         // dd();
         if($jam != 0){
-            // return date("H",$jam) ." Jam ".$menit." Menit";
-            return $jamDatang;
-            // return "$jamTepatDatang,$jamDatang,$toleransi";
+            return $jam ." Jam ".($menit?$menit." Menit":"");
         }
         if($menit != 0){
             return $menit." Menit";
         }
         return "-";
     }
-    function hitungCepatPulangText($jamTepatPulang,$jamPulang){
-        $selisihMenit = hitungCepatPulang($jamTepatPulang,$jamPulang);
+    function hitungCepatPulangText($jamTepatPulang,$jamPulang,$toleransi){
+        $selisihMenit = hitungCepatPulang($jamTepatPulang,$jamPulang,$toleransi);
         $jam = floor($selisihMenit / 60); // Menghitung jam
         $menit = $selisihMenit % 60;
         if($jam != 0){
-            return $jam ." Jam ".$menit." Menit";
+            return $jam ." Jam ".($menit?$menit." Menit":"");
         }
         if($menit != 0){
             return $menit." Menit";
@@ -133,12 +131,14 @@
                     }
                     $color = "yellow";
                     $statusName = "-";
+                    $statusArray = [];
                     $presensi = searchDataPresensi($item);
                     $jamDatang = $presensi?->tanggal_datang ? date("H:i",strtotime($presensi?->tanggal_datang)) : "-" ;
                     $jamIstirahat = $presensi?->tanggal_istirahat ? date("H:i",strtotime($presensi?->tanggal_istirahat)) : "-" ;
                     $jamPulang = $presensi?->tanggal_pulang ? date("H:i",strtotime($presensi?->tanggal_pulang)) : "-" ;
                     if($presensi){
                         $status = explode(",",$presensi->status);
+                        $statusArray = $status;
                         // if(strtotime($tanggal->format('Y-m-d')) <= strtotime($maxDate)){
                         //     if(is_null($status)){
                         //         $status = "3";
@@ -175,11 +175,15 @@
                     <td>{{convertDateToNameDay($item)}}</td>
                     <td>{{tanggal_indo($item)}}</td>
                     <td>{{$jamDatang}}</td>
-                    <td>{{hitungTelatText($item." ".$hariJamKerja->jam_tepat_datang,$presensi?->tanggal_datang,$hariJamKerja->toleransi_datang)}}</td>
+                    <td>{{hitungTelatText($hariJamKerja->jam_tepat_datang,$presensi?->tanggal_datang->format("H:i:s"),$hariJamKerja->toleransi_datang)}}</td>
                     <td>{{$jamIstirahat}}</td>
                     <td>{{$jamPulang}}</td>
-                    <td>{{hitungCepatPulangText($item." ".$hariJamKerja->jam_tepat_pulang,$presensi?->tanggal_pulang)}}</td>
-                    <td></td>
+                    @if (in_array("9",$statusArray))
+                    <td>-</td>
+                    @else
+                    <td>{{hitungCepatPulangText($hariJamKerja->jam_tepat_pulang,$presensi?->tanggal_pulang?->format("H:i:s"),$hariJamKerja->toleransi_pulang)}}</td>
+                    @endif
+                    <td>{{ (in_array("8",$statusArray)) ? $presensi->keterangan : ""}}</td>
                 </tr>
             @endforeach
         </table>

@@ -58,16 +58,7 @@
         });
         $("#save-update").click(function (e) {
             e.preventDefault();
-            // console.log($("[name=kode_tingkat]").val());
-            // return;
-            // if($("[name=kode_tingkat]").val() == null){
-            //     iziToast.error({
-            //         title: 'Error',
-            //         message: "Divisi Kerja harus di pilih",
-            //         position: 'bottomRight'
-            //     });
-            //     return;
-            // }
+            
             var btn = $(this);
             var rollbackBtn = btn.html();
             btn.html(`<div class="spinner-border spinner-border-sm" role="status">

@@ -256,7 +256,7 @@ function kehadiran($nip, $bulan, $tahun)
     function hitungTelat($jamTepatDatang,$jamDatang,$toleransi){
         // echo "$jamDatang, $jamTepatDatang";
 
-        $jamTepatDatang = strtotime("+".is_null($toleransi) ? "0 minutes" : $toleransi." minutes",strtotime($jamTepatDatang));
+        $jamTepatDatang = strtotime("+".(is_null($toleransi) ? "0 minutes" : $toleransi." minutes"),strtotime($jamTepatDatang));
         $jamDatang = strtotime($jamDatang);
         $result = 0;
         // dd(date("H:i:s", ($jamDatang-$jamTepatDatang)));
@@ -268,10 +268,10 @@ function kehadiran($nip, $bulan, $tahun)
         }
         return $result;
     }
-    function hitungCepatPulang($jamTepatPulang,$jamPulang){
+    function hitungCepatPulang($jamTepatPulang,$jamPulang,$toleransi){
         if($jamPulang){
             // dd($jamPulang, $jamTepatPulang, $jamPulang < $jamTepatPulang);
-            $jamTepatPulang = strtotime($jamTepatPulang);
+            $jamTepatPulang = strtotime("-".(is_null($toleransi) ? "0 minutes" : $toleransi." minutes"),strtotime($jamTepatPulang));;
             $jamPulang = strtotime($jamPulang);
             $result = 0;
 

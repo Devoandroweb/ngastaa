@@ -17,7 +17,7 @@ class PresentTodayExcel implements FromView, ShouldAutoSize, WithStyles, WithEve
 
     public function view(): View
     {
-        $presensiToday = getPresensi();
+        $presensiToday = getPresensi(date("Y-m-d"));
         $nipArray = array_column($presensiToday, 'nip');
         $presensiToday = User::selectRaw('users.*, riwayat_jabatan.*')
                                     ->leftJoin('riwayat_jabatan', 'riwayat_jabatan.nip', 'users.nip')

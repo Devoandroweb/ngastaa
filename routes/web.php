@@ -98,6 +98,7 @@ use App\Models\Presensi\TotalPresensi;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Cache;
 
 
 Route::get('/', function () {
@@ -105,16 +106,30 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('/getroute', function () {
-    $routes = Route::getRoutes();
-    $routeFilter = [];
-    foreach ($routes as $route) {
-        if (strstr($route->uri(), "datatable")) {
-            array_push($routeFilter, $route->uri());
-        }
-    }
-    dd($routeFilter);
+Route::get('/get-data-redis/{key}', function ($key) {
+    $datas = Cache::get($key);
+    return response()->json($datas);
 });
+Route::get('/set-presensi-datang', function () {
+    $json = json_decode(file_get_contents(public_path("presensi-datang.json")),true);
+    $date = date("Y-m-d");
+    Cache::forget("presensi-datang-$date");
+    Cache::forever("presensi-datang-$date",$json);
+    return response()->json($json);
+});
+Route::get('/set-presensi-pulang', function () {
+    $json = json_decode(file_get_contents(public_path("presensi-pulang.json")),true);
+    $date = date("Y-m-d");
+    Cache::forget("presensi-pulang-$date");
+    Cache::forever("presensi-pulang-$date",$json);
+    return response()->json($json);
+});
+Route::get('presensi-insert-status/{date}/forget', function ($date) {
+
+    Cache::forget("presensi-insert-status-$date");
+    return response()->json(Cache::get("presensi-insert-status-$date"));
+});
+
 # CRONJOBS
 Route::controller(CCronjobs::class)
         ->group(function(){
