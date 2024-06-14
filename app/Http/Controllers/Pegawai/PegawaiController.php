@@ -75,7 +75,6 @@ class PegawaiController extends Controller
         $tingkatJabatan = Tingkat::withFilterUserEselon()->selectRaw("nama,kode_eselon, GROUP_CONCAT(kode_tingkat SEPARATOR ',') AS kode_tingkat")
         ->groupBy('nama','kode_eselon')
         ->get();
-
         return view('pages/pegawai/pegawai/index',compact('skpd','lokasiKerja','statusPegawai','levelJabatan','tingkatJabatan'));
     }
 
@@ -343,7 +342,6 @@ class PegawaiController extends Controller
         Session::put('current_select_status_pegawai',$statusPegawai);
         // dd($kodeSkpd);
         $pegawai = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd);
-
         if($namaPegawai){
             $pegawai = $pegawai->where('name','like','%'.$namaPegawai.'%');
         }
@@ -364,7 +362,7 @@ class PegawaiController extends Controller
                 }
             });
         }
-        if($kodeEselon!=0){
+        if($kodeEselon!="null"&&$kodeEselon!=0){
             $pegawai = $pegawai->filter(function($row)use($kodeEselon){
                 if($row->jabatan_akhir()->first()?->tingkat?->kode_eselon==$kodeEselon){
                     return $row;
@@ -437,7 +435,6 @@ class PegawaiController extends Controller
     }
     public function datatable1(DataTables $dataTables)
     {
-
         // dd($kodeSkpd);
         $kodeSkpd = request()->query('kode_skpd');
         $kodeLokasi = request()->query('kode_lokasi');

@@ -38,7 +38,9 @@ class Presensi extends Command
 
     public function handle()
     {
-        Cache::forget("presensi-insert-status");
-        Cache::forever("presensi-insert-status",false);
+        $date = date("Y-m-d",strtotime("-1 Days"));
+
+        Cache::forget("presensi-insert-status-$date");
+        // Cache::forever("presensi-insert-status-$date",false);
     }
 }

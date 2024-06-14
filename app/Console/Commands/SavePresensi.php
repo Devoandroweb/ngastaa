@@ -37,7 +37,6 @@ class SavePresensi extends Command
 
     public function handle()
     {
-        Artisan::call("presensi:clear-presensi");
         Artisan::call("presensi:reset-status");
         $users = User::whereOwner(0)->pluck('nip')->toArray();
         $date = date("Y-m-d");

@@ -132,7 +132,7 @@ class ExportRekapHarian implements FromCollection, ShouldAutoSize, WithStyles, W
                     $detailPresensi = $this->getInmTotalPresensiDetail($tanggal->format('Y-m-d'),$user->nip);
                     $status = $detailPresensi?->status;
                     $status = collect(explode(",",$status));
-                    $statusPresensi = collect(["1","2","5","6","7"]);
+                    $statusPresensi = collect(["1","2","5","6","7","8"]);
                     if ($status->count() != 0) {
                         $intersect = $status->intersect($statusPresensi);
                         if($intersect->isNotEmpty()){

@@ -77,7 +77,6 @@ function status($kode)
         case '2':
             return "Ditolak";
             break;
-
         default:
             return "Err";
             break;
@@ -558,6 +557,10 @@ function generateStatusAbsen($status)
             return '<span tooltip="Pulang Cepat" class="badge badge-primary badge-pill badge-outline">(PC)</span>';
         case "7":
             return '<span tooltip="Piket" class="badge badge-secondary badge-pill badge-outline">P</span>';
+        case "8":
+            return '<span tooltip="Exit Permit" class="badge badge-danger badge-pill badge-outline">EP</span>';
+        case "9":
+            return '<span tooltip="Lembur" class="badge badge-info badge-pill badge-outline">LB</span>';
         default:
             break;
     }
@@ -579,6 +582,10 @@ function convertStatusAbsen($status)
             return 'Pulang Cepat';
         case "7":
             return 'Piket';
+        case "8":
+            return 'Exit Permit';
+        case "9":
+            return 'Lembur';
         default:
             break;
     }
@@ -600,6 +607,10 @@ function convertStatusAbsenCode($status)
             return 'PC';
         case "7":
             return 'P';
+        case "8":
+            return 'EP';
+        case "9":
+            return 'LB';
         default:
             break;
     }
@@ -893,4 +904,8 @@ function convertToInternationalFormat($phoneNumber) {
         $phoneNumber = '62' . substr($phoneNumber, 1);
     }
     return $phoneNumber;
+}
+function dateCustomSistem()
+{
+    return "2024-06-15";
 }

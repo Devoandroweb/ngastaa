@@ -11,7 +11,12 @@ class TotalPresensiDetail extends Model
 {
     use HasFactory;
     protected $table = 'total_presensi_detail';
-    protected $fillable = ['nip', 'tanggal','status','kode_cuti','tanggal_datang', 'kordinat_datang', 'foto_datang', 'tanggal_istirahat', 'kordinat_istirahat', 'foto_istirahat', 'tanggal_pulang', 'kordinat_pulang', 'foto_pulang','periode_bulan'];
+    protected $fillable = ['nip', 'tanggal','status','kode_cuti','tanggal_datang', 'kordinat_datang', 'foto_datang', 'tanggal_istirahat', 'kordinat_istirahat', 'foto_istirahat', 'tanggal_pulang', 'kordinat_pulang', 'foto_pulang','periode_bulan','keterangan'];
+    protected $casts = [
+        "created_at" => "datetime",
+        "tanggal_datang" => "datetime",
+        "tanggal_pulang" => "datetime",
+    ];
     function totalPresensi()
     {
         return $this->hasMany(TotalPresensi::class);

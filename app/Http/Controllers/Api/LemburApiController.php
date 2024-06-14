@@ -20,7 +20,7 @@ class LemburApiController extends Controller
     }
     public function store()
     {
-        $nip = request('nip');
+        $nip = request()->user()->nip;
         $tanggal = request('tanggal') ?? date("Y-m-d");
         $jam_mulai = request('jam_mulai');
         $jam_selesai = request('jam_selesai');
@@ -44,6 +44,7 @@ class LemburApiController extends Controller
                 'jam_selesai' => $jam_selesai,
                 'keterangan' => $keterangan,
                 'file' => "lembur/$nip/".$namaFile,
+                'status'=>1
             ];
             $cek = DataPengajuanLembur::where('nip', $nip)->where('status', 0)->count();
             if($cek > 0){

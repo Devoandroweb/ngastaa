@@ -17,7 +17,8 @@ class DataPresensi extends Model
 
     protected $guarded = [];
     protected $casts = [
-        "created_at" => "datetime"
+        "created_at" => "datetime",
+        "tanggal_datang" => "datetime",
     ];
     function user(){
         return $this->belongsTo(User::class,'nip','nip');

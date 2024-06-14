@@ -24,10 +24,13 @@ class CalculatePresensi implements ShouldQueue
      */
     public function handle(): void
     {
-        $resultCalculate = app(CalculatePresensiRepository::class);
-        $resultCalculate = $resultCalculate->manualCalculate();
+        $resultCalculate = app(CalculatePresensiRepository::class)->manualCalculate();
+        // dd($resultCalculate[0]);
         foreach ($resultCalculate as $data) {
-            TotalPresensiDetail::create($data);
+            TotalPresensiDetail::updateOrCreate([
+                "nip"=>$data["nip"],
+                "tanggal"=>$data["tanggal"],
+            ],$data);
         }
     }
 }

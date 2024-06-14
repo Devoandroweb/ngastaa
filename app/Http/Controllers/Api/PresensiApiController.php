@@ -15,6 +15,7 @@ use App\Mail\OTPEmail;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Shift;
 use App\Models\MJamKerja;
+use App\Models\Pegawai\DataPengajuanLembur;
 use App\Models\Pegawai\DataPresensi;
 use App\Models\Pegawai\RiwayatShift;
 use App\Models\User;
@@ -31,16 +32,19 @@ class PresensiApiController extends Controller
     protected $pegawaiRepository;
     protected $presensiRepository;
     protected $jamKerjaRepository;
+    protected $dataPengajuanLembur;
     protected $dateAbsen;
     // protected $pegawaiWithRole;
     function __construct(
         PegawaiRepository $pegawaiRepository,
         PresensiRepository $presensiRepository,
         JamKerjaRepository $jamKerjaRepository,
+        DataPengajuanLembur $dataPengajuanLembur
     ){
         $this->pegawaiRepository = $pegawaiRepository;
         $this->presensiRepository = $presensiRepository;
         $this->jamKerjaRepository = $jamKerjaRepository;
+        $this->dataPengajuanLembur = $dataPengajuanLembur->whereTanggal(date("Y-m-d"))->get();
         $this->dateAbsen = date("Y-m-d");
         // $this->dateAbsen = "2023-08-09";
     }
@@ -266,7 +270,7 @@ class PresensiApiController extends Controller
                 return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => 'Anda Telah melakukan presensi pagi ini!']),200);
             } else {
                 $foto = $this->uploadFotoAbsen($nip);
-                $data = [
+                $dataAbsen = [
                     'nip' => $nip,
                     'periode_bulan' => date("Y-m"),
                     'kordinat_datang' => $kordinat,
@@ -278,7 +282,7 @@ class PresensiApiController extends Controller
                     'lokasi_datang' => $location,
                 ];
 
-                $presensiDatang[$nip] = $data;
+                $presensiDatang[$nip] = $dataAbsen;
                 $cr = Cache::forever("presensi-datang-$dateAbsen",$presensiDatang);
                 if ($cr) {
                     clearUserHome($nip);
@@ -318,6 +322,42 @@ class PresensiApiController extends Controller
                 }
             }
         } else {
+            #cek lembur
+            $lembur = $this->existingLembur($nip);
+            if($lembur){
+                $foto = $this->uploadFotoAbsen($nip);
+                $data = [
+                    'nip' => $nip,
+                    'periode_bulan' => date("Y-m"),
+                    'kode_tingkat' => $kode_tingkat,
+                    'kode_shift' => $kode_shift,
+                    'kode_jam_kerja' => $kode_jam_kerja,
+                    'foto_pulang' => $foto,
+                    'kordinat_pulang' => $kordinat,
+                    'tanggal_pulang' => $tanggalIn,
+                    'lokasi_pulang' => $location,
+                ];
+                #check beda hari
+                // dd($this->checkDifferentDay($lembur),$lembur);
+                if($this->checkDifferentDay($lembur)){
+                    $dateAbsen = date("Y-m-d",strtotime($dateAbsen." -1 Days"));
+                    $presensiPulang = Cache::get("presensi-pulang-$dateAbsen");
+                    $presensiPulang[$nip] = $data;
+                }else{
+                    $presensiPulang = Cache::get("presensi-pulang-$dateAbsen");
+                    $presensiPulang[$nip] = $data;
+                }
+                $cr = Cache::forever("presensi-pulang-$dateAbsen",$presensiPulang);
+                if ($cr) {
+                    clearUserHome($nip);
+                    return response()->json(buildResponseSukses(['status' => 'Success', 'messages' => 'Berhasil Melakukan Absensi Pulang Lembur!', 'keterangan' => 'sore']),200);
+                } else {
+                    return response()->json(buildResponseGagal(['status' => 'Error', 'messages' => 'Terjadi Kesalahan!']),400);
+                }
+                #masukkan data absen ke cache-presensi tanggal kemaren jika tanggal lebih besar
+
+            }
+
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => "Anda tidak berada diwaktu presensi"]),200);
         }
     }
@@ -465,6 +505,17 @@ class PresensiApiController extends Controller
         $data = $this->presensiRepository->getStatPresensi(request("nip"));
         return response()->json(buildResponseSukses($data),200);
     }
+    function existingLembur($nip){
+        foreach($this->dataPengajuanLembur as $data){
+            if($data->nip==$nip){
+                return $data;
+            }
+        }
+        return null;
+    }
+    function checkDifferentDay($lembur){
+        return date("Y-m-d",strtotime($lembur->tanggal))<date("Y-m-d");
+    }
     function sendOtpPermitPresensiOutRadius($type){
         $otp = mt_rand(100000, 999999);
 
@@ -521,4 +572,5 @@ class PresensiApiController extends Controller
         }
         return response()->json(["status"=>false,"message"=>"Otp Salah."],200);
     }
+
 }

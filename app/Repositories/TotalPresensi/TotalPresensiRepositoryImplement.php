@@ -7,6 +7,7 @@ use App\Models\Master\Shift;
 use App\Models\MJamKerja;
 use App\Models\Pegawai\DataPengajuanCuti;
 use App\Models\Pegawai\DataPresensi;
+use App\Models\PengajuanPermit;
 use App\Models\Presensi\TotalIzinDetail;
 use App\Models\Presensi\TotalIzin;
 use LaravelEasyRepository\Implementations\Eloquent;
@@ -37,6 +38,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
     protected $dataTotalPresensi;
     protected $dataTotalPresensiDetail;
     protected $dataTotalIzin;
+    protected $pengajuanPermit;
     protected $allPengajuanCuti; // cuti / izin
     protected $nipMasuk;
     protected $date;
@@ -54,7 +56,8 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         MJamKerja $mdJamKerja,
         DataPengajuanCuti $mdPengajuanCuti,
         TotalIzin $mdTotalIzin,
-        TotalPresensiDetail $mdTotalPresensiDetail
+        TotalPresensiDetail $mdTotalPresensiDetail,
+        PengajuanPermit $pengajuanPermit,
     )
     {
         $this->pegawaiRepository = $pegawaiRepository;
@@ -73,6 +76,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         $this->dataTotalIzin = $mdTotalIzin->where('periode_bulan',$this->periodeBulan)->get(['nip','kode_cuti','total','periode_bulan'])->toArray();
         $this->allPengajuanCuti = $mdPengajuanCuti->where('status',1)->get();
         $this->nipMasuk = [];
+        $this->pengajuanPermit = $pengajuanPermit;
 
 
 
@@ -105,6 +109,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
         // }
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
+        
         // $tanggalBulan = [date("Y-m-d",strtotime("-1 days"))];
 
         $this->allPegawai = $this->pegawaiRepository->allPegawai();
@@ -130,6 +135,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             $this->dateNow = $date;
             $this->periodeBulan = date("Y-m",strtotime($date));
             $this->dataPresensiChoose = $this->dataPresensi->where("tanggal",$date);
+            $this->pengajuanPermit = $this->pengajuanPermit->where("tanggal",$date)->get(["nip","tanggal","keperluan"]);
             // dd($this->dataPresensiChoose);
             if(!$this->dataPresensiChoose){
                 continue;
@@ -151,7 +157,11 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                 #Cek pegawai di data_presensi
                 $presensi = $this->existingPresensi($pegawai);
                 $status = [];
-
+                # Exit Permit
+                $exitPermit = $this->existingPermit($pegawai);
+                if($exitPermit){
+                    array_push($status,"8");
+                }
                 if($presensi == null){
                     if($this->checkHariLibur()){
                         continue;
@@ -186,6 +196,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                         'tanggal_datang' => null,
                         'tanggal_istirahat' => null,
                         'tanggal_pulang' => null,
+                        'keterangan' => ($exitPermit) ? "[Exit Permit]".$exitPermit?->keperluan:""
                     ]);
 
                 }else{
@@ -197,7 +208,6 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
 
                     if($this->existingTelat($presensi->tanggal_datang,$shift)){
                         #Telat
-
                         if(!$this->existingTotalDetail($this->dateNow,2)){
                             $status = ["2"];
                             if($this->existingPulangCepat($presensi->tanggal_pulang,$shift)){
@@ -235,6 +245,7 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
                             'tanggal_datang' => $presensi->tanggal_datang,
                             'tanggal_istirahat' => $presensi->tanggal_istirahat,
                             'tanggal_pulang' => $presensi->tanggal_pulang,
+                            'keterangan' => ($exitPermit) ? "[Exit Permit]".$exitPermit?->keperluan:""
                         ]);
                     }
                 }
@@ -298,6 +309,14 @@ class TotalPresensiRepositoryImplement extends Eloquent implements TotalPresensi
             }
         });
         return false;
+    }
+    function existingPermit($nip){
+        foreach($this->pengajuanPermit as $permit){
+            if($permit==$nip){
+                return $permit;
+            }
+        }
+        return null;
     }
     function checkHariLibur(){
         $hariSabtuMinggu = cekHariAkhirPekan($this->date);

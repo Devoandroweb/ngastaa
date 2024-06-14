@@ -6,7 +6,9 @@ use App\Models\AppStatusFunction;
 use App\Models\Master\Shift;
 use App\Models\MJamKerja;
 use App\Models\Pegawai\DataPengajuanCuti;
+use App\Models\Pegawai\DataPengajuanLembur;
 use App\Models\Pegawai\DataPresensi;
+use App\Models\PengajuanPermit;
 use App\Models\Presensi\TotalIzinDetail;
 use App\Models\Presensi\TotalIzin;
 use LaravelEasyRepository\Implementations\Eloquent;
@@ -40,6 +42,8 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
     protected $totalPresensiDetail = [];
     protected $periodeBulan;
     protected $tanggalDatang = null;
+    protected $pengajuanPermit;
+    protected $dataPengajuanLembur;
     public function __construct(
         PegawaiRepository $pegawaiRepository,
 
@@ -49,7 +53,10 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
         MJamKerja $mdJamKerja,
         DataPengajuanCuti $mdPengajuanCuti,
         TotalIzin $mdTotalIzin,
-        TotalPresensiDetail $mdTotalPresensiDetail
+        TotalPresensiDetail $mdTotalPresensiDetail,
+        PengajuanPermit $pengajuanPermit,
+        DataPengajuanLembur $dataPengajuanLembur
+
     )
     {
         $this->pegawaiRepository = $pegawaiRepository;
@@ -68,6 +75,10 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
         $this->dataTotalIzin = $mdTotalIzin->where('periode_bulan',$this->periodeBulan)->get(['nip','kode_cuti','total','periode_bulan'])->toArray();
         $this->allPengajuanCuti = $mdPengajuanCuti->where('status',1);
         $this->nipMasuk = [];
+        $this->pengajuanPermit = $pengajuanPermit;
+        $this->dataPengajuanLembur = $dataPengajuanLembur->whereTanggal(date("Y-m-d"))->get(["nip","tanggal"]);
+
+
     }
     public function manualCalculate()
     {
@@ -86,26 +97,29 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
         // dd($this->maxDate);
         // $statusCacl = StatusCalculate::first();
         $dateStart = $this->maxDate; # maksimal tanggal total detail presensi
-        $dateEnd = date("Y-m-d");
+        // $dateEnd = date("Y-m-d");
+        $dateEnd = date("Y-m-d",strtotime("-1 Days"));
 
         # Check apakah tanggal nya sama, jika sama jangan hitung
-        if($dateStart == $dateEnd){
-            return 2; # Tanggal Masih Sama
-        }
+        // dd($dateStart,$dateEnd);
         # hitung
         $tanggalBulan = arrayTanggal($dateStart,$dateEnd);
         $tanggalBulan = [collect($tanggalBulan)->first(),collect($tanggalBulan)->last()];
-        // dd($tanggalBulan);
+
         #calculate pegawai tidak masuk/izin
         $this->allPengajuanCuti = $this->allPengajuanCuti->whereBetween("tanggal_mulai",$tanggalBulan)->get(["nip","kode_cuti","tanggal_mulai","tanggal_selesai"]);
-
-        $this->dataPresensi = DataPresensi::whereBetween('created_at', $tanggalBulan)->orderByDesc("tanggal_datang")->get(['nip','created_at','tanggal_datang','tanggal_pulang','kode_jam_kerja','kode_shift','tanggal_istirahat']);
+        if($dateStart != $dateEnd){
+            $this->dataPresensi = DataPresensi::whereBetween('tanggal_datang', $tanggalBulan)->orderByDesc("tanggal_datang")->get(['nip','created_at','tanggal_datang','tanggal_pulang','kode_jam_kerja','kode_shift','tanggal_istirahat']);
+        }else{
+            $this->dataPresensi = DataPresensi::whereDate('tanggal_datang', $dateStart)->orderByDesc("tanggal_datang")->get(['nip','created_at','tanggal_datang','tanggal_pulang','kode_jam_kerja','kode_shift','tanggal_istirahat']);
+        }
+        $this->pengajuanPermit = $this->pengajuanPermit->get(["nip","tanggal","keperluan"]);
 
         // dd($tanggalBulan,$this->dataPresensi->toArray());
         # calculate pegawai masuk/telat/tap
         $this->dataPresensi = clone $this->dataPresensi->map(function($item){
-            $hari = $item->created_at->format("N");
-            $tanggal = $item->created_at->format("Y-m-d");
+            $hari = $item->tanggal_datang->format("N");
+            $tanggal = $item->tanggal_datang->format("Y-m-d");
             $status = ["1"];
             $kodeCuti = null;
             if($this->existingTelat($item->hJamKerja($hari)->first(),$item->tanggal_datang)){
@@ -130,21 +144,38 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
                 $kodeCuti = $pegawaiCuti->kode_cuti;
                 array_push($status,"4");
             }
+            # Exit Permit
+            $exitPermit = $this->existingPermit($item->nip,$tanggal);
+            if($exitPermit){
+                array_push($status,"8");
+            }
+            #Lembur
+            if($this->existingLembur($item->nip,$tanggal)){
+                array_push($status,"9");
+            }
             $data = [
                 'nip' => $item->nip,
                 'tanggal' => $tanggal,
                 'status' => implode(",",$status),
                 'kode_cuti' => $kodeCuti,
                 'periode_bulan' => $item->created_at->format("Y-m"),
-                'tanggal_datang' => $item->tanggal_datang,
+                'tanggal_datang' => $item->tanggal_datang->format("Y-m-d H:i:s"),
                 'tanggal_pulang' => $item->tanggal_pulang,
+                'keterangan' => ($exitPermit) ? "[Exit Permit]".$exitPermit?->keperluan:""
             ];
             return $data;
         });
         // dd($this->dataPresensi);
         return $this->dataPresensi;
     }
-
+    function existingPermit($nip,$tanggal){
+        foreach($this->pengajuanPermit as $permit){
+            if($permit->nip==$nip&&$permit->tanggal==$tanggal){
+                return $permit;
+            }
+        }
+        return null;
+    }
     function existingTelat($jamKerja,$tanggal_datang)
     {
 
@@ -183,5 +214,13 @@ class CalculatePresensiRepositoryImplement extends Eloquent implements Calculate
         $currentMonth = date("Y-m-d");
 
         return ["$lastMonth","$currentMonth"];
+    }
+    function existingLembur($nip,$tanggal){
+        foreach($this->dataPengajuanLembur as $data){
+            if($data->nip==$nip&&$data->tanggal==$tanggal){
+                return $data;
+            }
+        }
+        return null;
     }
 }
