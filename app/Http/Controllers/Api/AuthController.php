@@ -151,7 +151,7 @@ class AuthController extends Controller
             $user = User::whereEmail($email)->first();
 
             if(!$user){
-                return response()->json(["status"=>true,"message"=>"Email tidak di temukan"],200);
+                return response()->json(["status"=>false,"message"=>"Email tidak di temukan"],200);
             }else{
                 // if(!$user->email_verified_at){
                 //     return response()->json(["status"=>true,"message"=>"Email belum ter-verifikasi"],200);
