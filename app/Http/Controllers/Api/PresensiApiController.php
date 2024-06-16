@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Master\LokasiController;
 use App\Http\Resources\Api\PresensiLaporanApiResource;
 use App\Http\Resources\Api\PresensiListOpdApiResource;
 use App\Http\Resources\Api\ShiftApiResource;
@@ -33,17 +34,20 @@ class PresensiApiController extends Controller
     protected $presensiRepository;
     protected $jamKerjaRepository;
     protected $dataPengajuanLembur;
+    protected $lokasiController;
     protected $dateAbsen;
     // protected $pegawaiWithRole;
     function __construct(
         PegawaiRepository $pegawaiRepository,
         PresensiRepository $presensiRepository,
         JamKerjaRepository $jamKerjaRepository,
-        DataPengajuanLembur $dataPengajuanLembur
+        DataPengajuanLembur $dataPengajuanLembur,
+        LokasiController $lokasiController
     ){
         $this->pegawaiRepository = $pegawaiRepository;
         $this->presensiRepository = $presensiRepository;
         $this->jamKerjaRepository = $jamKerjaRepository;
+        $this->lokasiController = $lokasiController;
         $this->dataPengajuanLembur = $dataPengajuanLembur->whereTanggal(date("Y-m-d"))->get();
         $this->dateAbsen = date("Y-m-d");
         // $this->dateAbsen = "2023-08-09";
@@ -52,7 +56,6 @@ class PresensiApiController extends Controller
     {
         try{
             $user = request()->user();
-            // $user = User::where('nip', $nip)->first();
 
             if ($user && $user->kordinat != "" && $user->longitude != "" && $user->latitude != "" && $user->jarak > 0) {
                 return response()->json([
@@ -71,6 +74,7 @@ class PresensiApiController extends Controller
             $divisi = $rwJabatan?->skpd;
             $kode_skpd = $divisi?->kode_skpd;
 
+            $lokasi = Lokasi::all();
             if ($rwJabatan) {
                 // Jabatan
                 if ($tingkat && $tingkat->kordinat != "" && $tingkat->longitude != "" && $tingkat->latitude != "" && $tingkat->jarak > 0) {
@@ -79,7 +83,9 @@ class PresensiApiController extends Controller
                         'latitude' => $tingkat->latitude,
                         'longitude' => $tingkat->longitude,
                         'jarak' => $tingkat->jarak,
-                        'keterangan' => 'Jabatan'
+                        'keterangan' => 'Jabatan',
+                        'lokasi_unlock'=>$lokasi
+
                     ]),200);
                 }
 
@@ -90,7 +96,9 @@ class PresensiApiController extends Controller
                         'latitude' => $level->latitude,
                         'longitude' => $level->longitude,
                         'jarak' => $level->jarak,
-                        'keterangan' => 'Level'
+                        'keterangan' => 'Level',
+                        'lokasi_unlock'=>$lokasi
+
                     ]),200);
                 }
 
@@ -101,7 +109,8 @@ class PresensiApiController extends Controller
                         'latitude' => $divisi->latitude,
                         'longitude' => $divisi->longitude,
                         'jarak' => $divisi->jarak,
-                        'keterangan' => 'Divisi'
+                        'keterangan' => 'Divisi',
+                        'lokasi_unlock'=>$lokasi
                     ]),200);
                 }
             }
