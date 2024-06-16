@@ -174,7 +174,9 @@ class AuthController extends Controller
     function saveOtp($type){
 
         if($type=="whatsapp"){
-            $user = User::whereNoHp(request('no_wa'))->first('otp');
+            $noWaOriginal = request('no_wa');
+            $noWa = convertToInternationalFormat($noWaOriginal);
+            $user = User::whereIn("no_hp",[$noWa,$noWaOriginal])->first('otp');
             $otp = request('otp');
             if(!$user){
                 return response()->json(["status"=>false,"message"=>"Nomor Whatsapp salah, silahkan masukkan dengan benar."],200);
