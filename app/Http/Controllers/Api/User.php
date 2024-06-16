@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Pegawai\PegawaiResource;
 use App\Http\Resources\Pegawai\PosisiResource;
 use App\Http\Resources\Pegawai\RiwayatPendidikanResource;
 use App\Models\Pegawai\RiwayatBahasa;
@@ -17,9 +18,26 @@ class User extends Controller
 {
     function index($nip){
             try{
+                Cache::forget("data-user-001000");
             $data = Cache::get("data-user-$nip",function(){
-                return request()->user();
+                $user = request()->user();
+                $jabatan = $user->jabatan_akhir->first();
+
+                // dd($jabatan);
+                $tingkat = $jabatan?->tingkat;
+                $nama_jabatan =  $tingkat?->nama;
+                $kode_eselon =  $user->getEselon();
+                $skpd = $jabatan?->skpd?->nama;
+
+                $user->kode_eselon = $kode_eselon;
+                $user->divisi = $skpd;
+                $user->nama_jabatan = $nama_jabatan;
+
+
+                return $user;
             });
+            unset($data->jabatan_akhir);
+
             return response()->json([
                 'status' => TRUE,
                 'message' => "Success",

@@ -15,6 +15,7 @@ class PegawaiResource extends JsonResource
     public function toArray($request)
     {
         $jabatan = $this->jabatan_akhir->load('tingkat','skpd')->first();
+        
         $shift = $this->shift_akhir->first();
         $shift = $shift?->kode_shift;
 
@@ -40,6 +41,7 @@ class PegawaiResource extends JsonResource
             'status_password' => $this->status_password,
             'image' => $this->foto(),
             'tanggal_tmt' => tanggal_indo($this->tanggal_tmt),
+
         ];
 
         return $data;
