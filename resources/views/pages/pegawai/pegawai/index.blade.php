@@ -38,7 +38,7 @@
 {{-- @dd($skpd) --}}
 <div class="row mb-4 m-auto">
     <div class="col-md-4 ps-0">
-        <select name="kode_skpd" class="form-control px-2" id="">
+        <select name="kode_skpd" class="form-control px-2 filter" id="">
             <option selected value="0">Semua Divisi</option>
             @foreach ($skpd as $s)
                 @if((Session::get('current_select_skpd') ?? 0) == $s->kode_skpd)
@@ -50,7 +50,7 @@
         </select>
     </div>
     <div class="col-md-4 ps-0">
-        <select name="kode_lokasi" class="form-control px-2" id="">
+        <select name="kode_lokasi" class="form-control px-2 filter" id="">
             <option selected value="0">Semua Lokasi Kerja</option>
             @foreach ($lokasiKerja as $s)
                 @if((Session::get('current_select_lokasi')?? 0) == $s->kode_lokasi)
@@ -62,7 +62,7 @@
         </select>
     </div>
     <div class="col-md-4 ps-0">
-        <select name="status_pegawai" class="form-control px-2" id="">
+        <select name="status_pegawai" class="form-control px-2 filter" id="">
             <option selected value="0">Semua Status</option>
             @foreach ($statusPegawai as $s)
                 @if((Session::get('current_select_status_pegawai') ?? "") == $s->kode_status)
@@ -76,7 +76,7 @@
 </div>
 <div class="row mb-4 m-auto">
     <div class="col-md-6 ps-0">
-        <select name="kode_eselon" class="form-control select-tingkat px-2" id="">
+        <select name="kode_eselon" class="form-control px-2 filter" id="">
             <option selected value="0">Semua Level Jabatan</option>
             @foreach ($levelJabatan as $l)
                 @if((Session::get('current_select_kode_eselon') ?? 0) == $l->kode_eselon)
@@ -88,7 +88,7 @@
         </select>
     </div>
     <div class="col-md-6 ps-0">
-        <select name="kode_tingkat" class="form-control divisi px-2" id="">
+        <select name="kode_tingkat" class="form-control px-2 filter" id="">
             <option selected value="0">Semua Tingkat Jabatan</option>
             @foreach ($tingkatJabatan as $t)
                 @if((Session::get('current_select_kode_tingkat') ?? 0) == $t->kode_tingkat)
@@ -102,10 +102,10 @@
 </div>
 <div class="row mx-auto">
     <div class="col-md-5 ps-0">
-        <select class="form-control form-control-lg" name="nip_pegawai[]" id="select-pegawai-nip" multiple size="1"></select>
+        <select class="form-control form-control-lg filter" name="nip_pegawai[]" id="select-pegawai-nip" multiple size="1"></select>
     </div>
     <div class="col-md-4 ps-0">
-        <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100">
+        <input type="text" name="nama_pegawai" placeholder="Ketik Nama Pegawai" class="form-control h-100 filter">
     </div>
     <div class="col-md-3 ps-0 d-flex align-items-center">
         <button type="button" class="btn btn-warning w-100 me-2 text-center text-nowrap btn-cari"><i class="fas fa-search"></i> Cari</button>
@@ -298,20 +298,19 @@
         initPegawaiNip("{{route('pegawai.pegawai.json')}}?kode_skpd=0")
 
         @if((int)auth()->user()->getEselon()>1)
-            $('select[name=kode_skpd]').val(`{{ auth()->user()->getDivisi()?->kode_skpd }}`).change()
-            $('select[name=kode_skpd]').prop('disabled',true)
-            $('select[name=kode_lokasi]').val(`{{ auth()->user()->lokasiKerja?->lokasiKerja?->kode_lokasi }}`).change()
-            $('select[name=kode_lokasi]').prop('disabled',true)
+            $('.filter[name=kode_skpd]').val(`{{ auth()->user()->getDivisi()?->kode_skpd }}`).change()
+            $('.filter[name=kode_skpd]').prop('disabled',true)
+            $('.filter[name=kode_lokasi]').val(`{{ auth()->user()->lokasiKerja?->lokasiKerja?->kode_lokasi }}`).change()
+            $('.filter[name=kode_lokasi]').prop('disabled',true)
         @endif
 
 
         $(document).on('click',"#btnModalKontrak", function () {
-
             modalKontrak.show();
             $("#sp").prop('checked',true)
             $("#pegawai-tertentu").hide();
             $("#modalKontrak").find("#select-pegawai").attr('disabled');
-            initDevisi()
+            initFilterDevisi()
         });
         $(".btn-simpan").click(function (e) {
             e.preventDefault();
@@ -326,7 +325,7 @@
             }
         })
         $(".btn-cari").click(function(e){
-            filterPegawai($("[name=kode_skpd]").val(),$('[name=kode_lokas]').val(),$('[name=nama_pegawai]').val(),$('[name=status_pegawai]').val(),$('select[name="nip_pegawai[]"]').val(),$('select[name="kode_tingkat"]').val(),$('select[name="kode_eselon"]').val())
+            filterPegawai($(".filter[name=kode_skpd]").val(),$('.filter[name=kode_lokas]').val(),$('.filter[name=nama_pegawai]').val(),$('.filter[name=status_pegawai]').val(),$('.filter[name="nip_pegawai[]"]').val(),$('.filter[name="kode_tingkat"]').val(),$('.filter[name="kode_eselon"]').val())
         })
         $('#select-pegawai').on('select2:select',function(e){
             var data = e.params.data;
@@ -363,7 +362,7 @@
             console.log(listPegawai);
         })
 
-        function initDevisi(){
+        function initFilterDevisi(){
             let getDivisi = (url) => {
                 var element = $('.select-divisi');
                 let loading = loadingProccesText(element)
@@ -389,7 +388,7 @@
                     }).trigger('change');
                 }});
             }
-            getDivisi("{{route('master.skpd.json')}}")
+            // getDivisi("{{route('master.skpd.json')}}")
         }
 
         function initPegawai(url,value_pegawai = null){

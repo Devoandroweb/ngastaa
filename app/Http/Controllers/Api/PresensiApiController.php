@@ -85,7 +85,6 @@ class PresensiApiController extends Controller
                         'jarak' => $tingkat->jarak,
                         'keterangan' => 'Jabatan',
                         'lokasi_unlock'=>$lokasi
-
                     ]),200);
                 }
 
@@ -221,6 +220,7 @@ class PresensiApiController extends Controller
 
         $kordinat = request('kordinat');
         $location = request('location');
+        $keterangan = request('keterangan');
         $kode_shift = request('kode_shift');
         $kode_tingkat = request('kode_tingkat');
         $numberDay = date('N');
@@ -289,6 +289,8 @@ class PresensiApiController extends Controller
                     'kode_jam_kerja' => $kode_jam_kerja,
                     'tanggal_datang' => $tanggalIn,
                     'lokasi_datang' => $location,
+                    'keterangan' => $keterangan
+
                 ];
 
                 $presensiDatang[$nip] = $dataAbsen;
@@ -320,6 +322,7 @@ class PresensiApiController extends Controller
                     'kordinat_pulang' => $kordinat,
                     'tanggal_pulang' => $tanggalIn,
                     'lokasi_pulang' => $location,
+                    'keterangan' => $keterangan
                 ];
                 $presensiPulang[$nip] = $data;
                 $cr = Cache::forever("presensi-pulang-$dateAbsen",$presensiPulang);
@@ -345,6 +348,7 @@ class PresensiApiController extends Controller
                     'kordinat_pulang' => $kordinat,
                     'tanggal_pulang' => $tanggalIn,
                     'lokasi_pulang' => $location,
+                    'keterangan' => $keterangan
                 ];
                 #check beda hari
                 // dd($this->checkDifferentDay($lembur),$lembur);
@@ -370,7 +374,6 @@ class PresensiApiController extends Controller
             return response()->json(buildResponseSukses(['status' => 'Error', 'messages' => "Anda tidak berada diwaktu presensi"]),200);
         }
     }
-
     public function index()
     {
         try{

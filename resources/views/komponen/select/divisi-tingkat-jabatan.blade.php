@@ -2,7 +2,7 @@
     <div class="col">
         <label class="form-label">Pilih Divisi Kerja</label>
         <div class="form-group has-validation">
-            <select class="form-control select-tingkat" id="" name="kode_skpd" required disabled>
+            <select class="form-control select-skpd" id="" name="kode_skpd" required disabled>
 
             </select>
         </div>
@@ -23,7 +23,7 @@
     function initDevisi(value_divisi = null,value_tingkat = null){
 
         let getDivisi = (url) => {
-            var element = $('.select-tingkat');
+            var element = $('.select-skpd');
             let loading = loadingProccesText(element)
             $.ajax({url: url, success: function(data){
                 element.empty()
@@ -35,9 +35,9 @@
                     }
                 })
 
-                // if(value_divisi == null && data.length != 0){
-                //     value_divisi = data[0].id;
-                // }
+                if(value_divisi == null && data.length != 0){
+                    value_divisi = data[0].id;
+                }
 
                 element.removeAttr("disabled")
                 element.select2({
