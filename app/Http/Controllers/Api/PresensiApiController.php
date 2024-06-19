@@ -456,6 +456,7 @@ class PresensiApiController extends Controller
                 ->orderByDesc('created_at')
                 // ->get();
                 ->get(["id","nip","tanggal_datang","tanggal_istirahat","tanggal_pulang","created_at"]);
+
                 $data = PresensiListOpdApiResource::collection($data);
 
                 if($data){
