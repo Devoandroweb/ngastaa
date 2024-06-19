@@ -67,9 +67,9 @@
 													<div class="input-group password-check">
 														<span class="input-affix-wrapper affix-wth-text">
 															<input class="form-control" placeholder="Enter your password" value="" name="password" type="password" autocomplete="off">
-															<a href="#" class="input-suffix text-primary text-uppercase fs-8 fw-medium">
+															<a id="show-pass" href="#" class="input-suffix text-primary text-uppercase fs-8 fw-medium">
 																<span>Show</span>
-																<span class="d-none">Hide</span>
+																<span style="display: none">Hide</span>
 															</a>
 														</span>
 													</div>
@@ -137,6 +137,19 @@
         $(".btn-login").click(function (e) {
             e.preventDefault();
             submit()
+        });
+        $("#show-pass").click(function (e) {
+            e.preventDefault();
+            console.log($("[name=password]").attr("type"));
+            if($("[name=password]").attr("type")=="password"){
+                $("[name=password]").attr("type","text")
+                $("#show-pass span:first-child").hide();
+                $("#show-pass span:last-child").show();
+            }else{
+                $("[name=password]").attr("type","password")
+                $("#show-pass span:first-child").show();
+                $("#show-pass span:last-child").hide();
+            }
         });
         function submit(){
             var loading = `<span class="spinner-grow spinner-grow-sm me-4" role="status" aria-hidden="true"></span>Wait for Moment...`;
