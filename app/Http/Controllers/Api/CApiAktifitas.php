@@ -41,8 +41,8 @@ class CApiAktifitas extends Controller
             }
             $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd,true)->pluck('nip')->toArray();
             // dd($arrayNip);
-            $data = MAktifitas::whereIn('nip',$arrayNip)->with('pegawai')->orderBy('created_at','desc')->get();
-            // dd($data);
+            $data = MAktifitas::whereIn('nip',$arrayNip)->with('user')->orderBy('created_at','desc')->get();
+
             $data = AktifitasResource::collection($data);
             // $data->{"foto"} = url('public/'.$data->foto);
             return response()->json(buildResponseSukses($data),200);

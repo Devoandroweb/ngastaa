@@ -14,11 +14,13 @@ class AktifitasResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user = $this->user;
+        // dd($user->riwayat_jabatan);
         return [
-            'nama' => $this->pegawai->getFullName(),
+            'nama' => $user->fullname(),
             'koordinat' => $this->koordinat,
-            'jabatan' => $this->pegawai->riwayat_jabatan?->first()?->tingkat?->first()->nama,
-            'divisi' => $this->pegawai->riwayat_jabatan?->first()?->skpd?->first()->nama,
+            'jabatan' => $user->riwayat_jabatan?->first()?->tingkat?->nama,
+            'divisi' => $user->riwayat_jabatan?->first()?->skpd?->nama,
             'foto' => url('public/'.$this->foto),
             'created_at' => hari(date("w",strtotime($this->created_at))).", ".tanggal_indo($this->created_at),
             'dimulai_pada' => date("H:i:s",strtotime($this->created_at)),

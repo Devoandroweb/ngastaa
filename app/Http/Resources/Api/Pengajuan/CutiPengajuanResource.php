@@ -14,7 +14,10 @@ class CutiPengajuanResource extends JsonResource
      */
     public function toArray($request)
     {
-        $file = fn() => (file_exists(public_path($this->file))) ? url("public/$this->file") : url("public/no-file.png");
+        $file = url("public/no-file.png");
+        if($this->file){
+            $file = (file_exists(public_path($this->file))) ? url("public/$this->file") : url("public/no-file.png");
+        }
         $user = $this->user;
         return [
             'id' => $this->id,
@@ -26,7 +29,7 @@ class CutiPengajuanResource extends JsonResource
             'keterangan' => $this->keterangan ?? "",
             'status' => status($this->status),
             'komentar' => $this->komentar ?? "",
-            'file' => $file(),
+            'file' => $file,
         ];
     }
 }

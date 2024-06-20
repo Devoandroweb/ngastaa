@@ -81,7 +81,7 @@
     </div>
 </div>
 <div class="row mb-2">
-    <div class="col-md-12 mb-md-4 mb-3">
+    <div class="col-md-6 mb-md-4 mb-3">
         <div class="card card-border border-info mb-0 h-100">
             <div class="card-header  border-bottom border-info shadow card-header-action">
                 <h6 class="text-bold">Lokasi Kerja</h6>
@@ -93,10 +93,10 @@
             <div class="card-body p-0">
                 <div id="collapse_2" class="collapse show">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div id="anim_map_2" class="h-300p"></div>
                         </div>
-                        <div class="col-md-4 p-4">
+                        <div class="col-md-5 p-4">
                             <div data-simplebar class="nicescroll-bar" style="height:40vh;">
                                 @foreach($lokasiVisit as $lokasi)
                                 <div class="media align-items-center mb-3">
@@ -119,6 +119,50 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-md-4 mb-3">
+        <div class="card border-danger ">
+            <div class="card-header border-bottom border-danger shadow card-header-action">
+                <div class="row w-100">
+                    <div class="col-12 col-md-8">
+                        <h6 class="text-bold py-2"> Exit Permit </h6>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card-action text-end">
+                            <a href="{{ route('export.not-present') }}" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="data-exit-permit" class="table mt-2 nowrap w-100 mb-5 table-responsive ">
+                    <thead>
+                        <tr className="fw-bolder text-muted">
+                            <th>{{__('No')}}</th>
+                            <th>{{__('NIP')}}</th>
+                            <th>{{__('Nama Lengkap')}}</th>
+                            <th>{{__('Jabatan')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($notPresent as $present)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $present->nip }}</td>
+                                <td>{{ $present->fullname() }}</td>
+                                <td>
+                                    @php
+                                        $jabatan = array_key_exists('0', $present->jabatan_akhir->toArray()) ? $present->jabatan_akhir[0] : null;
+                                        $nama_jabatan = $jabatan?->tingkat?->nama;
+                                        echo $nama_jabatan ?? "-";
+                                    @endphp
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -698,6 +742,15 @@ var _TABLE = null;
 
 
     $("#data-not-present").DataTable({
+        responsive:true,
+        language:{
+            searchPlaceholder: "Cari",
+            search: ""
+        },
+        pageLength:5,
+        lengthMenu: [5, 10, 25, 50, 100]
+    })
+    $("#data-exit-permit").DataTable({
         responsive:true,
         language:{
             searchPlaceholder: "Cari",
