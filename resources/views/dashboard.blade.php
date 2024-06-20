@@ -80,8 +80,8 @@
         </div>
     </div>
 </div>
-<div class="row mb-2">
-    <div class="col-md-6 mb-md-4 mb-3">
+<div class="row mb-3">
+    <div class="col-md">
         <div class="card card-border border-info mb-0 h-100">
             <div class="card-header  border-bottom border-info shadow card-header-action">
                 <h6 class="text-bold">Lokasi Kerja</h6>
@@ -122,7 +122,10 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 mb-md-4 mb-3">
+
+</div>
+<div class="row mb-3">
+    <div class="col-md">
         <div class="card border-danger ">
             <div class="card-header border-bottom border-danger shadow card-header-action">
                 <div class="row w-100">
@@ -141,20 +144,18 @@
                     <thead>
                         <tr className="fw-bolder text-muted">
                             <th>{{__('No')}}</th>
-                            <th>{{__('NIP')}}</th>
                             <th>{{__('Nama Lengkap')}}</th>
-                            <th>{{__('Jabatan')}}</th>
+                            <th>{{__('Keterangan')}}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($notPresent as $present)
+                        @foreach ($exitPermit as $permit)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $present->nip }}</td>
-                                <td>{{ $present->fullname() }}</td>
+                                <td>{{ $permit->user->fullname() }}</td>
                                 <td>
                                     @php
-                                        $jabatan = array_key_exists('0', $present->jabatan_akhir->toArray()) ? $present->jabatan_akhir[0] : null;
+                                        $jabatan = array_key_exists('0', $permit->user->jabatan_akhir->toArray()) ? $permit->user->jabatan_akhir[0] : null;
                                         $nama_jabatan = $jabatan?->tingkat?->nama;
                                         echo $nama_jabatan ?? "-";
                                     @endphp
