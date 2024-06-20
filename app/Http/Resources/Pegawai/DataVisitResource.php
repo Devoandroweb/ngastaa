@@ -21,7 +21,7 @@ class DataVisitResource extends JsonResource
             'visit' => $this->visit?->nama ?? "-",
             'alamat' => $this->visit?->alamat ?? "-",
             'kordinat' => $this->kordinat,
-            'tanggal' => tanggal_indo($this->tanggal),
+            'tanggal' => tanggal_indo($this->check_in),
             'jam' => get_jam($this->check_in),
             'check_out' => $this->check_out != null ? get_jam($this->check_out) : null,
             'foto' => url("public/".$this->foto),
