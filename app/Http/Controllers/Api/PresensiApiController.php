@@ -449,12 +449,11 @@ class PresensiApiController extends Controller
                 // dd($opd);
             $arrayNip = $this->pegawaiRepository->allPegawaiWithRole($kodeSkpd, true)->pluck('users.nip')->toArray();
             if($user){
-                $data = DataPresensi::whereIn('nip',$arrayNip)->limitOffset()
+                $data = DataPresensi::whereIn('nip',$arrayNip)
                 ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
                     $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
-                })->limitOffset()
+                })->limit(request('limit')??10)
                 ->orderByDesc('created_at')
-                // ->get();
                 ->get(["id","nip","tanggal_datang","tanggal_istirahat","tanggal_pulang","created_at"]);
 
                 $data = PresensiListOpdApiResource::collection($data);

@@ -69,11 +69,6 @@ class CutiPengajuanController extends Controller
     {
         $komentar = request('komentar');
 
-        $no_hp = $cuti?->user?->no_hp;
-        if ($no_hp) {
-            dispatch(new ProcessWaNotif($no_hp, "Pengajuan {$cuti?->cuti?->nama} Ditolak karena $komentar"));
-        }
-
         tambah_log($cuti->nip, "App\Pegawai\DataPengajuanCuti", $cuti->id, 'tolak');
         $up = $cuti->update([
             'komentar' => $komentar,
@@ -146,14 +141,7 @@ class CutiPengajuanController extends Controller
             $pegawai = User::where("nip",$cuti->nip)->first();
             $pegawai->maks_cuti = (int)$pegawai->maks_cuti - 1;
             $pegawai->update();
-            $no_hp = $cuti?->user?->no_hp;
-            if ($no_hp) {
-                $catatan = "";
-                if ($komentar) {
-                    $catatan = ", Catatan : $komentar";
-                }
-                dispatch(new ProcessWaNotif($no_hp, "Pengajuan {$cuti?->cuti?->nama} telah diterima $catatan!"));
-            }
+    
             tambah_log($cuti->nip, "App\Pegawai\DataPengajuanCuti", $id, 'terima');
             return redirect(route('pengajuan.cuti.index'))->with([
                 'type' => 'success',
