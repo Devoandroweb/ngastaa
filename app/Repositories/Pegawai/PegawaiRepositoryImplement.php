@@ -94,11 +94,12 @@ class PegawaiRepositoryImplement extends Eloquent implements PegawaiRepository{
         // dd($kodeSkpd);
         if($forApi){
             # FOR WEB_SERVICES
+            $maksLevelJabatan = Eselon::max('kode_eselon');
             $user = request()->user();
             $role = false;
             $tingkat = $user->jabatan_akhir->first()?->tingkat;
             $levelJabatanUser = $tingkat?->eselon->kode_eselon;
-            if((int)$levelJabatanUser > 1){
+            if((int)$levelJabatanUser == $maksLevelJabatan){
                 $kodeSkpd = $tingkat?->kode_skpd;
             }
         }else{
