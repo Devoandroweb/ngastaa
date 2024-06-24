@@ -8,3 +8,7 @@ ALTER TABLE `data_presensi` ADD `lokasi_pulang` TEXT NULL DEFAULT NULL AFTER `ko
 ALTER TABLE `total_presensi_detail` CHANGE `kode_cuti` `kode_cuti` VARCHAR(30) NULL DEFAULT NULL COMMENT 'ini terisi jika status 4';
 CREATE TABLE `hr-attedance`.`pengajuan_permit` ( `id` INT NOT NULL AUTO_INCREMENT , `nip` VARCHAR(30) NOT NULL , `tanggal` DATETIME NOT NULL , `jam_keluar` TIME NOT NULL , `jam_kembali` TIME NOT NULL , `keperluan` TEXT NOT NULL , `ttd` MEDIUMBLOB NULL , `status` TINYINT NOT NULL DEFAULT '0' COMMENT '0:wait,1:approv,2:reject' , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `total_presensi_detail` ADD `keterangan` TEXT NULL DEFAULT NULL AFTER `periode_bulan`;
+
+ALTER TABLE `data_visit` ADD `kategori` ENUM('PROSPEK','FOLLOW UP','PENAGIHAN','KUNJUNGAN DINAS / TUGAS','TUGAS LAIN') NOT NULL AFTER `tujuan_visit`, ADD `nama_lokasi` TEXT NULL AFTER `kategori`, ADD `keterangan` TEXT NULL DEFAULT NULL AFTER `nama_lokasi`, ADD `probabilitas` TEXT NULL DEFAULT NULL AFTER `keterangan`;
+ALTER TABLE `data_visit` ADD `no_hp` VARCHAR(15) NULL DEFAULT NULL AFTER `tanggal`;
+ALTER TABLE `data_visit` ADD `nama_visit` VARCHAR(200) NOT NULL AFTER `kategori`;

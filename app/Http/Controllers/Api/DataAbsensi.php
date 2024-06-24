@@ -14,22 +14,24 @@ class DataAbsensi extends Controller
     {
 
         try {
-            $dataPresensi = DataPresensi::where("nip",$nip)->limitOffset();
+            $dataPresensi = new DataPresensi;
             if(request('start_date') && request('start_date')){
                 $dataPresensi = $dataPresensi->whereBetween('created_at',[request('start_date'),request('end_date')]);
             }
-            $dataPresensi = $dataPresensi->orderByDesc('created_at')->get();
+            $dataPresensi = $dataPresensi->where("nip",$nip)->limitOffset()->orderByDesc('created_at')->get();
+            // dd($dataPresensi->toSql());
             $data = [];
             foreach ($dataPresensi as $p) {
-                $hari = date("w",strtotime($p->created_at));
-                $tanggal = date("Y-m-d",strtotime($p->created_at));
+                $hari = date("w",strtotime($p->tanggal_datang));
+                $tanggalDatang = date("Y-m-d",strtotime($p->tanggal_datang));
+                $tanggalPulang = date("Y-m-d",strtotime($p->tanggal_pulang));
                 $data[] = [
-                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggal),
+                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalDatang),
                     'absen' => date("H:i",strtotime($p->tanggal_datang)),
                     'status' => 1,
                 ];
                 $data[] = [
-                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggal),
+                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalPulang),
                     'absen' => date("H:i",strtotime($p->tanggal_pulang)),
                     'status' => 2,
                 ];

@@ -18,12 +18,15 @@ class VisitApiController extends Controller
         try {
             $nip = request('nip');
             $kordinat = request('kordinat');
-            $kode_visit = request('kode_visit');
-
-            #$newOrOld = request('new_old'); # 1 : new | 2 : old
+            $kodeVisit = request('kode_visit');
             $newOrOld = request('new_old'); # 1 : new | 2 : old
-
             $timeZone = request('timezone') ?? 'WITA';
+            $kategori = request('kategori');
+            $namaLokasi = request('nama_lokasi');
+            $probabilitas = request('probabilitas');
+            $keterangan = request('keterangan');
+            $namaVisit = request('nama_visit');
+            $noHp = request('no_hp');
 
             if ($timeZone == 'WIB') {
                 $tanggalIn = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')) - (60 * 60));
@@ -56,15 +59,20 @@ class VisitApiController extends Controller
                     # tambah visit lama
                     $data = [
                         'nip' => $nip,
-                        'kode_visit' => $kode_visit,
+                        'kode_visit' => $kodeVisit,
                         'kordinat' => $kordinat,
                         'foto' => $foto,
-                        'tanggal' => $tanggalIn
+                        'tanggal' => $tanggalIn,
+                        'kategori' => $kategori,
+                        'nama_visit' => $namaVisit,
+                        'nama_lokasi' => $namaLokasi,
+                        'probabilitas' => $probabilitas,
+                        'keterangan' => $keterangan,
+                        'no_hp' => $noHp,
                     ];
                 }else{
                     # tambah visit baru
                     $tujuanVisit = request('tujuan_visit');
-                    $namaLokasi = request('nama_lokasi');
                     $alamat = request('alamat');
                     $kode_visit = (string) Str::uuid();
                     // $qrName = (string) Str::uuid().".svg";
@@ -84,7 +92,13 @@ class VisitApiController extends Controller
                         'kode_visit' => $kode_visit,
                         'kordinat' => $kordinat,
                         'foto' => $foto,
-                        'tanggal' => $tanggalIn
+                        'tanggal' => $tanggalIn,
+                        'kategori' => $kategori,
+                        'nama_lokasi' => $namaLokasi,
+                        'nama_visit' => $namaVisit,
+                        'keterangan' => $keterangan,
+                        'probabilitas' => $probabilitas,
+                        'no_hp' => $noHp,
                     ];
                 }
                 $cr = DataVisit::create($data);

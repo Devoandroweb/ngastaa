@@ -125,11 +125,8 @@ class PegawaiController extends Controller
     public function detailPribadi(User $pegawai)
     {
         $pegawai->tlahir = tanggal_indo($pegawai->tanggal_lahir);
-        // dd($pegawai);
         $view = view("pages.pegawai.pegawai.datautama.pribadi",compact("pegawai"))->render();
         return response()->json(["view"=>$view]);
-        // return view('Pages/Pegawai/Pegawai/detail', compact('pegawai'));
-        // return inertia('Pegawai/Pegawai/detail', compact('pegawai'));
     }
 
 

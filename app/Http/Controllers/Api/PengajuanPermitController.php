@@ -31,32 +31,34 @@ class PengajuanPermitController extends Controller
                     $data["nip"] = $user->nip;
                     $data["ttd"] = base64_encode($content);
                     PengajuanPermit::create($data);
-                    $kode_jam_kerja = null;
-                    $kode_shift = null;
-                    $jadwalShiftUser = $user->jadwalShift->where('tanggal',date('Y-m-d',strtotime($date)))->first();
-                    if ($jadwalShiftUser) {
-                        $kode_shift = $jadwalShiftUser->kode_shift;
-                    } else {
-                        $kode_jam_kerja = $user->jamKerja->where('is_akhir', 1)->first()?->kode_jam_kerja;
-                        if (!$kode_jam_kerja) {
-                            $kode_shift = $user->riwayat_shift->where('is_akhir', 1)->first()?->kode_shift;
-                        }
-                    }
-                    $lokasiKerja = $user->lokasiKerja?->lokasiKerja;
-                    $dataAbsen = [
-                        'nip' => $user->nip,
-                        'periode_bulan' => date("Y-m"),
-                        'kordinat_datang' => $lokasiKerja->kordinat,
-                        'kode_shift' => $kode_shift,
-                        'kode_jam_kerja' => $kode_jam_kerja,
-                        'tanggal_datang' => $date." ".$data["jam_kembali"],
-                        'lokasi_datang' => $lokasiKerja->nama,
-                    ];
-                    DataPresensi::create($dataAbsen);
                     $presensiDatang = Cache::get("presensi-datang-$date");
-                    $presensiDatang[$user->nip] = $dataAbsen;
-                    Cache::forever("presensi-datang-$date",$presensiDatang);
-                    clearUserHome($user->nip);
+                    if(!$presensiDatang[$user->nip]){
+                        $kode_jam_kerja = null;
+                        $kode_shift = null;
+                        $jadwalShiftUser = $user->jadwalShift->where('tanggal',date('Y-m-d',strtotime($date)))->first();
+                        if ($jadwalShiftUser) {
+                            $kode_shift = $jadwalShiftUser->kode_shift;
+                        } else {
+                            $kode_jam_kerja = $user->jamKerja->where('is_akhir', 1)->first()?->kode_jam_kerja;
+                            if (!$kode_jam_kerja) {
+                                $kode_shift = $user->riwayat_shift->where('is_akhir', 1)->first()?->kode_shift;
+                            }
+                        }
+                        $lokasiKerja = $user->lokasiKerja?->lokasiKerja;
+                        $dataAbsen = [
+                            'nip' => $user->nip,
+                            'periode_bulan' => date("Y-m"),
+                            'kordinat_datang' => $lokasiKerja->kordinat,
+                            'kode_shift' => $kode_shift,
+                            'kode_jam_kerja' => $kode_jam_kerja,
+                            'tanggal_datang' => $date." ".$data["jam_kembali"],
+                            'lokasi_datang' => $lokasiKerja->nama,
+                        ];
+                        $presensiDatang[$user->nip] = $dataAbsen;
+                        Cache::forever("presensi-datang-$date",$presensiDatang);
+                        DataPresensi::create($dataAbsen);
+                        clearUserHome($user->nip);
+                    }
                 }
             });
             DB::commit();
