@@ -13,6 +13,7 @@ use App\Repositories\Pegawai\PegawaiRepository;
 use Illuminate\Support\Str;
 use App\Jobs\ProcessWaNotif;
 use App\Mail\OTPEmail;
+use App\Models\MapLokasiKerja;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Shift;
 use App\Models\MJamKerja;
@@ -56,112 +57,28 @@ class PresensiApiController extends Controller
     {
         try{
             $user = request()->user();
-
-            if ($user && $user->kordinat != "" && $user->longitude != "" && $user->latitude != "" && $user->jarak > 0) {
-                return response()->json([
-                    'kordinat' => $user->kordinat,
-                    'latitude' => $user->latitude,
-                    'longitude' => $user->longitude,
-                    'jarak' => $user->jarak,
-                    'keterangan' => 'Pegawai'
-                ]);
-            }
-
-            $rwJabatan = $user->jabatan_akhir()->first();
-            $tingkat = $rwJabatan?->tingkat;
-            $kode_tingkat = $tingkat?->kode_tingkat ?? 0;
-            $level = $tingkat?->eselon;
-            $divisi = $rwJabatan?->skpd;
-            $kode_skpd = $divisi?->kode_skpd;
-
             $lokasi = Lokasi::all();
-            if ($rwJabatan) {
-                // Jabatan
-                if ($tingkat && $tingkat->kordinat != "" && $tingkat->longitude != "" && $tingkat->latitude != "" && $tingkat->jarak > 0) {
-                    return response()->json(buildResponseSukses([
-                        'kordinat' => $tingkat->kordinat,
-                        'latitude' => $tingkat->latitude,
-                        'longitude' => $tingkat->longitude,
-                        'jarak' => $tingkat->jarak,
-                        'keterangan' => 'Jabatan',
-                        'lokasi_unlock'=>$lokasi
-                    ]),200);
-                }
 
-                // Level
-                if ($level && $level->kordinat != "" && $level->longitude != "" && $level->latitude != "" && $level->jarak > 0) {
-                    return response()->json(buildResponseSukses([
-                        'kordinat' => $level->kordinat,
-                        'latitude' => $level->latitude,
-                        'longitude' => $level->longitude,
-                        'jarak' => $level->jarak,
-                        'keterangan' => 'Level',
-                        'lokasi_unlock'=>$lokasi
-
-                    ]),200);
-                }
-
-                // Divisi
-                if ($divisi && $divisi->kordinat != "" && $divisi->longitude != "" && $divisi->latitude != "" && $divisi->jarak > 0) {
-                    return response()->json(buildResponseSukses([
-                        'kordinat' => $divisi->kordinat,
-                        'latitude' => $divisi->latitude,
-                        'longitude' => $divisi->longitude,
-                        'jarak' => $divisi->jarak,
-                        'keterangan' => 'Divisi',
-                        'lokasi_unlock'=>$lokasi
-                    ]),200);
-                }
-            }
 
             // Lokasi Pegawai
-            $lokasiPegawai = Lokasi::select('*')
-                ->leftJoin('lokasi_detail', 'lokasi_detail.kode_lokasi', 'lokasi.kode_lokasi')
-                ->whereRaw("(lokasi.keterangan = 1 AND lokasi_detail.keterangan_id = '$user->nip')")
-                ->whereNull('lokasi_detail.deleted_at')
-                ->first();
-            if ($lokasiPegawai && $lokasiPegawai->kordinat != "" && $lokasiPegawai->longitude != "" && $lokasiPegawai->latitude != "" && $lokasiPegawai->jarak > 0) {
+            $mapLokasi = MapLokasiKerja::whereNip($user->nip)->first();
+            if(!$mapLokasi){
+                return response()->json(buildResponseGagal("Pegawai tidak memiliki Lokasi kerja"), 200);
+            }else{
+                $lokasiPegawai = $mapLokasi->lokasiKerja;
+                if ($lokasiPegawai && $lokasiPegawai->kordinat != "" && $lokasiPegawai->longitude != "" && $lokasiPegawai->latitude != "" && $lokasiPegawai->jarak > 0) {
 
-                return response()->json(buildResponseSukses([
-                    'kordinat' => $lokasiPegawai->kordinat,
-                    'latitude' => $lokasiPegawai->latitude,
-                    'longitude' => $lokasiPegawai->longitude,
-                    'jarak' => $lokasiPegawai->jarak,
-                    'keterangan' => 'Lokasi Pegawai'
-                ]),200);
+                    return response()->json(buildResponseSukses([
+                        'kordinat' => $lokasiPegawai->kordinat,
+                        'latitude' => $lokasiPegawai->latitude,
+                        'longitude' => $lokasiPegawai->longitude,
+                        'jarak' => $lokasiPegawai->jarak,
+                        'keterangan' => 'Lokasi Pegawai',
+                        'lokasi_unlock'=>$lokasi
+                    ]),200);
+                }
             }
 
-            // Lokasi Tingkat
-            $lokasiTingkat = Lokasi::select('*')
-                ->leftJoin('lokasi_detail', 'lokasi_detail.kode_lokasi', 'lokasi.kode_lokasi')
-                ->whereRaw("(lokasi.keterangan = 2 AND lokasi_detail.keterangan_id = '$kode_tingkat')")
-                ->whereNull('lokasi_detail.deleted_at')
-                ->first();
-            if ($lokasiTingkat && $lokasiTingkat->kordinat != "" && $lokasiTingkat->longitude != "" && $lokasiTingkat->latitude != "" && $lokasiTingkat->jarak > 0) {
-                return response()->json(buildResponseSukses([
-                    'kordinat' => $lokasiTingkat->kordinat,
-                    'latitude' => $lokasiTingkat->latitude,
-                    'longitude' => $lokasiTingkat->longitude,
-                    'jarak' => $lokasiTingkat->jarak,
-                    'keterangan' => 'Lokasi Tingkat'
-                ]),200);
-            }
-
-            // Lokasi Divisi
-            $lokasiDivisi = Lokasi::select('*')
-                ->leftJoin('lokasi_detail', 'lokasi_detail.kode_lokasi', 'lokasi.kode_lokasi')
-                ->whereRaw("(lokasi.keterangan = 3 AND lokasi_detail.keterangan_id = '$kode_skpd')")
-                ->whereNull('lokasi_detail.deleted_at')
-                ->first();
-            if ($lokasiDivisi && $lokasiDivisi->kordinat != "" && $lokasiDivisi->longitude != "" && $lokasiDivisi->latitude != "" && $lokasiDivisi->jarak > 0) {
-                return response()->json(buildResponseSukses([
-                    'kordinat' => $lokasiDivisi->kordinat,
-                    'latitude' => $lokasiDivisi->latitude,
-                    'longitude' => $lokasiDivisi->longitude,
-                    'jarak' => $lokasiDivisi->jarak,
-                    'keterangan' => 'Lokasi Divisi'
-                ]),200);
-            }
 
             $data = [
                 'kordinat' => 0,

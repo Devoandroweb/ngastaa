@@ -4,7 +4,7 @@
 
 <div class="row gx-3 mb-3">
     <div class="col-md-3">
-        <div class="card shadow border-info contact-card">
+        <div class="card shadow contact-card">
             <div class="card-body">
                 <h5 class="card-title pb-2">Jumlah Pegawai</h5>
                 <div class="d-flex align-items-center ">
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card shadow border-success contact-card">
+        <div class="card shadow contact-card">
             <div class="card-body">
                 <h5 class="card-title pb-2">Presensi Hari Ini</h5>
                 <div class="d-flex align-items-center">
@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card shadow border-danger contact-card">
+        <div class="card shadow contact-card">
             <div class="card-body">
                 <h5 class="card-title pb-2">Presensi Bulan Ini</h5>
                 <div class="d-flex align-items-center">
@@ -61,7 +61,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card shadow border-warning contact-card">
+        <div class="card shadow contact-card">
             <div class="card-body">
                 <h5 class="card-title pb-2">Presensi Tahun Ini</h5>
                 <div class="d-flex align-items-center">
@@ -82,8 +82,8 @@
 </div>
 <div class="row mb-3">
     <div class="col-md">
-        <div class="card card-border border-info mb-0 h-100">
-            <div class="card-header  border-bottom border-info shadow card-header-action">
+        <div class="card card-border shadow mb-0 h-100">
+            <div class="card-header  border-bottom card-header-action">
                 <h6 class="text-bold">Lokasi Kerja</h6>
                 <div class="card-action-wrap">
                     <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover full-screen"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="maximize"></i></span><span class="feather-icon d-none"><i data-feather="minimize"></i></span></span></a>
@@ -122,65 +122,56 @@
             </div>
         </div>
     </div>
-
-</div>
-<div class="row mb-3">
     <div class="col-md">
-        <div class="card border-danger ">
-            <div class="card-header border-bottom border-danger shadow card-header-action">
-                <div class="row w-100">
-                    <div class="col-12 col-md-8">
-                        <h6 class="text-bold py-2"> Exit Permit </h6>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card-action text-end">
-                            <a href="{{ route('export.not-present') }}" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
-                        </div>
-                    </div>
+        <div class="card ">
+            <div class="card-header border-bottom card-header-action">
+                <h6 class="text-bold">Exit Permit</h6>
+                <div class="card-action-wrap">
+                    <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover full-screen"  href="#"><span class="icon"><span class="feather-icon"><i data-feather="maximize"></i></span><span class="feather-icon d-none"><i data-feather="minimize"></i></span></span></a>
+                    <a class="btn btn-xs btn-icon btn-rounded btn-flush-dark flush-soft-hover"  data-bs-toggle="collapse" href="#collapse_4" aria-expanded="true"><span class="icon"><span class="feather-icon"><i data-feather="chevron-down"></i></span></span></a>
                 </div>
             </div>
             <div class="card-body">
-                <table id="data-exit-permit" class="table mt-2 nowrap w-100 mb-5 table-responsive ">
-                    <thead>
-                        <tr className="fw-bolder text-muted">
-                            <th>{{__('No')}}</th>
-                            <th>{{__('Nama Lengkap')}}</th>
-                            <th>{{__('Keterangan')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($exitPermit as $permit)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $permit->user->fullname() }}</td>
-                                <td>
-                                    @php
-                                        $jabatan = array_key_exists('0', $permit->user->jabatan_akhir->toArray()) ? $permit->user->jabatan_akhir[0] : null;
-                                        $nama_jabatan = $jabatan?->tingkat?->nama;
-                                        echo $nama_jabatan ?? "-";
-                                    @endphp
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <ul id="todo_list" class="advance-list">
+                    @forelse ($exitPermit as $permit)
+                    <li class="advance-list-item single-task-list active-todo">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <span class="badge badge-danger badge-indicator badge-indicator-xl"></span>
+                                    <span class="todo-text text-dark text-truncate">{{ $permit->keperluan }}</span>
+                                    <span class="badge badge-sm badge-outline badge-danger badge-wth-indicator badge-wth-icon ms-3 d-lg-inline-block d-none"><span><i class="badge-dot ri-checkbox-blank-circle-fill"></i>
+                                        {{ $permit->jam_keluar."-".$permit->jam_kembali }}
+                                    </span></span>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-shrink-0 align-items-center ms-3">
+                                <span class="todo-time d-lg-inline-block d-none text-primary me-3">{{ $permit->user->fullname() }}</span>
+                                <div class="avatar avatar-xs avatar-rounded d-md-inline-block d-none">
+                                    <img src="{{ $permit->user->foto() }}" alt="user" class="avatar-img">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    @empty
+                    <li class="advance-list-item single-task-list active-todo">
+                        <div class="text-center">
+                            <p class="text-muted">Tidak ada yang Exit Permit</p>
+                        </div>
+                    </li>
+                    @endforelse
+                </ul>
             </div>
         </div>
     </div>
 </div>
 <div class="row mb-3">
     <div class="col">
-        <div class="card border-danger ">
-            <div class="card-header border-bottom border-danger shadow card-header-action">
-                <div class="row w-100">
-                    <div class="col-12 col-md-8">
-                        <h6 class="text-bold py-2"> Daftar Pegawai belum absen atau tidak masuk hari ini </h6>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card-action text-end">
-                            <a href="{{ route('export.not-present') }}" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
-                        </div>
-                    </div>
+        <div class="card ">
+            <div class="card-header border-bottom shadow card-header-action">
+                <h6 class="text-bold py-2"> Daftar Pegawai belum absen atau tidak masuk hari ini </h6>
+                <div class="card-action text-end">
+                    <a href="{{ route('export.not-present') }}" class="btn btn-custom btn-sm btn-success icon-wthot-bg btn-rounded"><span><span>Download Excel</span><span class="icon"><i class="far fa-file-excel"></i> </span></span></a>
                 </div>
             </div>
             <div class="card-body">
@@ -275,8 +266,8 @@
 </div> --}}
 <div class="row mb-3">
     <div class="col">
-        <div class="card border-danger ">
-            <div class="card-header border-bottom border-danger shadow card-header-action">
+        <div class="card ">
+            <div class="card-header border-bottom shadow card-header-action">
                 <h6 class="text-bold py-2"> Kontrak Habis Pada Bulan ini </h6>
                 <div class="card-action wrap">
                     <a href="#" class="btn btn-custom btn-sm btn-danger icon-wthot-bg btn-rounded"><span><span>Download PDF</span><span class="icon"><i class="far fa-file-pdf"></i> </span></span></a>
@@ -304,8 +295,8 @@
 </div>
 <div class="row ">
     <div class="col-sm-6">
-        <div class="card border-pink ">
-            <div class="card-header border-bottom border-pink shadow card-header-action">
+        <div class="card ">
+            <div class="card-header border-bottom shadow card-header-action">
                 <h6 class="text-bold py-2"> Status Pegawai </h6>
                 <div class="card-action-wrap">
                     <div class="d-flex">
@@ -322,8 +313,8 @@
         </div>
     </div>
     <div class="col-sm-6">
-        <div class="card border-pink ">
-            <div class="card-header border-bottom border-pink shadow card-header-action">
+        <div class="card ">
+            <div class="card-header border-bottom shadow card-header-action">
                 <h6 class="text-bold py-2"> Status Perkawinan </h6>
                 <div class="card-action-wrap">
                     <div class="d-flex">
@@ -743,15 +734,6 @@ var _TABLE = null;
 
 
     $("#data-not-present").DataTable({
-        responsive:true,
-        language:{
-            searchPlaceholder: "Cari",
-            search: ""
-        },
-        pageLength:5,
-        lengthMenu: [5, 10, 25, 50, 100]
-    })
-    $("#data-exit-permit").DataTable({
         responsive:true,
         language:{
             searchPlaceholder: "Cari",
