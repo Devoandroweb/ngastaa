@@ -15,12 +15,30 @@ class DataAbsensi extends Controller
 
         try {
             $dataPresensi = new DataPresensi;
+            $dataPresensi = $dataPresensi->whereDate("tanggal_datang",date("Y-m-d",strtotime("-1 Days")));
             if(request('start_date') && request('start_date')){
-                $dataPresensi = $dataPresensi->whereBetween('created_at',[request('start_date'),request('end_date')]);
+                $dataPresensi = $dataPresensi->whereBetween('tanggal_datang',[request('start_date'),request('end_date')]);
             }
-            $dataPresensi = $dataPresensi->where("nip",$nip)->limitOffset()->orderByDesc('created_at')->get();
+            $dataPresensi = $dataPresensi->where("nip",$nip)->limitOffset()->orderByDesc('tanggal_datang')->get();
             // dd($dataPresensi->toSql());
             $data = [];
+
+            $dataPresensiNow = getPresensi(date("Y-m-d"));
+            foreach ($dataPresensiNow as $dn) {
+                $hari = date("w",strtotime($dn["tanggal_datang"]));
+                $tanggalDatang = date("Y-m-d",strtotime($dn["tanggal_datang"]));
+                $tanggalPulang = date("Y-m-d",strtotime($dn["tanggal_pulang"]));
+                $data[] = [
+                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalDatang),
+                    'absen' => date("H:i",strtotime($dn["tanggal_datang"])),
+                    'status' => 1,
+                ];
+                $data[] = [
+                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalPulang),
+                    'absen' => date("H:i",strtotime($dn["tanggal_pulang"])),
+                    'status' => 2,
+                ];
+            }
             foreach ($dataPresensi as $p) {
                 $hari = date("w",strtotime($p->tanggal_datang));
                 $tanggalDatang = date("Y-m-d",strtotime($p->tanggal_datang));
@@ -35,7 +53,6 @@ class DataAbsensi extends Controller
                     'absen' => date("H:i",strtotime($p->tanggal_pulang)),
                     'status' => 2,
                 ];
-
             }
             return response()->json([
                 'status' => TRUE,

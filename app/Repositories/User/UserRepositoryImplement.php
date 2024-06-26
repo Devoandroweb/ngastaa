@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Models\Master\Eselon;
 use App\Models\MJadwalShift;
 use App\Models\Pegawai\RiwayatJamKerja;
 use App\Models\Pegawai\RiwayatShift;
@@ -92,9 +93,17 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
             'nama_shift' => $namaShift,
             'jam_shift' => $jamShift,
             'waktu_server' => hari(date('N')).", ".tanggal_indo(date("Y-m-d")),
-            'status_password'=>!Hash::check($nip, $user->password)
+            'status_password'=>!Hash::check($nip, $user->password),
+            'access_opd'=>$this->eselonVeryLow($user)
         ];
         return $data;
+    }
+    function eselonVeryLow($user){
+        $maksLevelJabatan = Eselon::max('kode_eselon');
+        if((int)$user->getEselon() < (int)$maksLevelJabatan){
+            return true;
+        }
+        return false;
     }
     // Write something awesome :)
 }

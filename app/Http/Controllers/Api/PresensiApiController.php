@@ -329,16 +329,12 @@ class PresensiApiController extends Controller
                 $dateStart = request('start_date');
                 $dateEnd = request('end_date');
                 $data = $user->dataPresensi()
-                // ->with('user')
                 ->when($dateStart&&$dateEnd,function($q)use($dateStart,$dateEnd){
                     return $q->whereBetween('created_at',[$dateStart,date("Y-m-d",strtotime($dateEnd."+1 Days"))]);
                 })
                 ->orderByDesc('created_at')
-                // ->limitOffset()
                 ->limit(request('limit'))
-                // ->get();
                 ->get(["id","nip","tanggal_datang","tanggal_istirahat","tanggal_pulang","created_at"]);
-                // dd($data);
                 $data = PresensiLaporanApiResource::collection($data);
                 if($data){
                     return response()->json(buildResponseSukses($data),200);

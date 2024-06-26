@@ -35,6 +35,7 @@ class HomeUser extends Controller
             $data = Cache::remember("home-user-$user->nip",now()->addMinutes(System::CACHE_DURATION),function()use($user){
                 $data['user'] = $this->userRepository->getUserWithIndentity($user);
                 $data['presensi_today'] = $this->presensiRepository->presensiDay($data['user']['nip']);
+                
                 return $data;
             });
             return response()->json([
