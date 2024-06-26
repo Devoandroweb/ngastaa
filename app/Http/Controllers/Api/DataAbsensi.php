@@ -15,7 +15,7 @@ class DataAbsensi extends Controller
 
         try {
             $dataPresensi = new DataPresensi;
-            $dataPresensi = $dataPresensi->whereDate("tanggal_datang",date("Y-m-d",strtotime("-1 Days")));
+            $dataPresensi = $dataPresensi->whereDate("tanggal_datang","!=",date("Y-m-d"));
             if(request('start_date') && request('start_date')){
                 $dataPresensi = $dataPresensi->whereBetween('tanggal_datang',[request('start_date'),request('end_date')]);
             }
@@ -24,7 +24,11 @@ class DataAbsensi extends Controller
             $data = [];
 
             $dataPresensiNow = getPresensi(date("Y-m-d"));
+            // dd($dataPresensiNow);
             foreach ($dataPresensiNow as $dn) {
+                if($dn["nip"]!=$nip){
+                    continue;
+                }
                 $hari = date("w",strtotime($dn["tanggal_datang"]));
                 $tanggalDatang = date("Y-m-d",strtotime($dn["tanggal_datang"]));
                 $tanggalPulang = date("Y-m-d",strtotime($dn["tanggal_pulang"]));
@@ -33,11 +37,19 @@ class DataAbsensi extends Controller
                     'absen' => date("H:i",strtotime($dn["tanggal_datang"])),
                     'status' => 1,
                 ];
-                $data[] = [
-                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalPulang),
-                    'absen' => date("H:i",strtotime($dn["tanggal_pulang"])),
-                    'status' => 2,
-                ];
+                if($dn["tanggal_pulang"]){
+                    $data[] = [
+                        'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalPulang),
+                        'absen' => date("H:i",strtotime($dn["tanggal_pulang"])),
+                        'status' => 2,
+                    ];
+                }else{
+                    $data[] = [
+                        'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalDatang),
+                        'absen' => "Tidak Absen",
+                        'status' => 2,
+                    ];
+                }
             }
             foreach ($dataPresensi as $p) {
                 $hari = date("w",strtotime($p->tanggal_datang));
@@ -48,11 +60,21 @@ class DataAbsensi extends Controller
                     'absen' => date("H:i",strtotime($p->tanggal_datang)),
                     'status' => 1,
                 ];
-                $data[] = [
-                    'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalPulang),
-                    'absen' => date("H:i",strtotime($p->tanggal_pulang)),
-                    'status' => 2,
-                ];
+
+                if($p->tanggal_pulang){
+                    $data[] = [
+                        'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalPulang),
+                        'absen' => date("H:i",strtotime($p->tanggal_pulang)),
+                        'status' => 2,
+                    ];
+                }else{
+                    $data[] = [
+                        'tanggal' => hari($hari) . ", " .tanggal_indo($tanggalDatang),
+                        'absen' => "Tidak Absen",
+                        'status' => 2,
+                    ];
+                }
+
             }
             return response()->json([
                 'status' => TRUE,

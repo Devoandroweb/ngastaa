@@ -161,6 +161,9 @@
                 <li>
                     Masukkan kode 8 karakter dari perangkat pendamping di telepon utama Anda untuk menautkan perangkat.
                 </li>
+                <li>
+                    Jika Code tidak sesuai silahkan klik tombol ini <button id="get-code" class="btn btn-secondary">Dapatkan Kode</button>
+                </li>
             </ol>
         </div>
 	</div>
@@ -173,32 +176,65 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script type="text/javascript">
     const _WA_HOST = `{{ config('app.go_wa_host') }}`
-
     checkServer()
+    checkAuth()
     $("#connect-wa").click(function (e) {
         e.preventDefault();
-        if(checkServer()){
-            const thisHtml = $(this).html();
-            $("#loadingConnect").show();
-            $("#buttonConnect").hide();
-            $("#connect-wa").attr("disabled","disabled")
-            var waNumber = $("input[name=wa_number]").val();
-            waNumber = waNumber.replace(/[^0-9]/g, '')
+        const thisHtml = $(this).html();
+        $("#loadingConnect").show();
+        $("#buttonConnect").hide();
+        $("#connect-wa").attr("disabled","disabled")
+        var waNumber = $("input[name=wa_number]").val();
+        waNumber = waNumber.replace(/[^0-9]/g, '')
 
-            $.ajax({
-                type: "post",
-                url: `${_WA_HOST}/create-devices`,
-                data: {key:waNumber,number:waNumber},
-                dataType: "JSON",
-                success: function (response) {
-                    console.log(response);
-                    $("#loadingConnect").hide();
-                    $("#buttonConnect").show();
-                    $("#info-wa").show()
-                    $("#code-wa").text(response.code)
+        $.ajax({
+            type: "post",
+            url: `${_WA_HOST}/create-devices`,
+            data: {key:waNumber,number:waNumber},
+            dataType: "JSON",
+            success: function (response) {
+                console.log(response);
+                showInfo()
+                $("#code-wa").text(response.code)
+            }
+        });
+    });
+    $("#logout-wa").click(function (e) {
+        e.preventDefault();
+        var waNumber = $("input[name=wa_number]").val();
+            waNumber = waNumber.replace(/[^0-9]/g, '')
+        $.ajax({
+            type: "get",
+            url: `${_WA_HOST}/logout-devices?key=${waNumber}`,
+            dataType: "JSON",
+            success: function (response) {
+                if(response.status){
+                    Swal.fire(
+                        'Whatsapp has been logouded',
+                        'success'
+                    )
                 }
-            });
-        }
+            }
+        });
+    });
+    $("#get-code").click(function (e) {
+        e.preventDefault();
+        var waNumber = $("input[name=wa_number]").val();
+            waNumber = waNumber.replace(/[^0-9]/g, '')
+        $.ajax({
+            type: "get",
+            url: `${_WA_HOST}/code?key=${waNumber}`,
+            dataType: "JSON",
+            success: function (response) {
+                if(response.status){
+                    Swal.fire(
+                        'Berikut Kode baru anda',
+                        response.code,
+                        'success'
+                    )
+                }
+            }
+        });
     });
     function checkServer(){
         $.ajax({
@@ -208,9 +244,7 @@
                 $("#indicate-server-loading").hide()
                 $("#indicate-server-off").hide()
                 $("#indicate-server-on").show()
-                $("#connect-wa").removeAttr("disabled")
                 checkAuth()
-                return true;
             },
             error: function() {
                 $("#indicate-server-off").show()
@@ -221,25 +255,21 @@
                     'silahkan hubungi Developer',
                     'error'
                 )
-                return false;
             }
         });
     }
     function checkAuth(){
-        $("#connect-wa").attr("disabled","disabled")
-        $("input[name=wa_number]").attr("disabled","disabled")
-        $("#loadingConnect").show();
-        $("#buttonConnect").hide();
         var waNumber = $("input[name=wa_number]").val();
         waNumber = waNumber.replace(/[^0-9]/g, '')
         if(waNumber){
+            $("#loadingConnect").show();
+            $("#buttonConnect").hide();
             $.ajax({
                 type: "get",
                 url: _WA_HOST+"/check-auth?key="+waNumber,
                 success: function (response) {
                     if(response.auth){
                         buttonIsConnect()
-                        feather.replace();
                     }else{
                         buttonIsNotConnect()
                     }
@@ -250,19 +280,31 @@
     function buttonIsConnect(){
         $("#status").addClass("text-info")
         $("#status").text("Connected")
-        $("#buttonConnect").html(`<span class="feather-icon"><i data-feather="git-pull-request"></i></span><span> Connected</span>`)
         $("#connect-wa").attr("disabled","disabled")
         $("#logout-wa").removeAttr("disabled")
         $("input[name=wa_number]").attr("disabled","disabled")
         $("#loadingConnect").hide();
         $("#buttonConnect").show();
+        $("#buttonConnect").html(`<span class="feather-icon"><i data-feather="git-pull-request"></i></span><span> Connected</span>`)
+        feather.replace();
     }
     function buttonIsNotConnect(){
         $("#status").addClass("text-danger")
         $("#status").text("Not Connected")
+        $("#connect-wa").removeClass("disabled")
         $("#connect-wa").removeAttr("disabled")
+        $("#loadingConnect").hide();
+        $("#buttonConnect").show();
+        $("#buttonConnect").html(`<span class="feather-icon"><i data-feather="git-pull-request"></i></span><span> Connect</span>`)
         $("#logout-wa").attr("disabled","disabled")
         $("input[name=wa_number]").removeAttr("disabled")
+        feather.replace();
+    }
+    function showInfo(){
+        $("#info-wa").show()
+    }
+    function hideInfo(){
+        $("#info-wa").hide()
     }
     /* PUSHER */
     var pusher = new Pusher('b0a89d4911a784081887', {
@@ -272,13 +314,17 @@
     var channel = pusher.subscribe('my-channel');
     channel.bind('my-event', function(data) {
         if(data.message=="server-on"){
-            checkServer();
+            hideInfo()
+            checkServer()
+            checkAuth()
         }
         if(data.message=="login"){
             buttonIsConnect()
+            hideInfo()
         }
         if(data.message=="logout"){
             buttonIsNotConnect()
+            hideInfo()
         }
 
     });
