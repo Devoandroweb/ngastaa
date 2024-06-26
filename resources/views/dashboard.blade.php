@@ -1,7 +1,13 @@
 
 @extends('app',["dashboard"=>true])
 @section('content')
-
+@push('style')
+<style>
+    .hk-pg-wrapper{
+        background-color: #e2e0ff;
+    }
+</style>
+@endpush
 <div class="row gx-3 mb-3">
     <div class="col-md-3">
         <div class="card shadow contact-card">
