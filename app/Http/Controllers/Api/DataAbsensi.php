@@ -16,8 +16,8 @@ class DataAbsensi extends Controller
         try {
             $dataPresensi = new DataPresensi;
             $dataPresensi = $dataPresensi->whereDate("tanggal_datang","!=",date("Y-m-d"));
-            if(request('start_date') && request('start_date')){
-                $dataPresensi = $dataPresensi->whereBetween('tanggal_datang',[request('start_date'),request('end_date')]);
+            if(request('month') && request('year')){
+                $dataPresensi = $dataPresensi->whereMonth('tanggal_datang',request('month'))->whereYear("tanggal_datang",request('year'));
             }
             $dataPresensi = $dataPresensi->where("nip",$nip)->limitOffset()->orderByDesc('tanggal_datang')->get();
             // dd($dataPresensi->toSql());
