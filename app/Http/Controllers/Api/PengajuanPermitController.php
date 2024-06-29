@@ -18,6 +18,9 @@ class PengajuanPermitController extends Controller
         $data = request()->all();
         $date = $data["tanggal"];
         $user = request()->user();
+        if(strtotime($date)<strtotime(date("Y-m-d"))){
+            return response()->json(["status"=>false,"message"=>"Tanggal harus lebih minimal hari ini."],200);
+        }
         if(PengajuanPermit::whereDate("tanggal",$date)->whereNip($user->nip)->first()){
             $date = date("d-m-Y",strtotime($date));
             return response()->json(["status"=>false,"message"=>"Anda sudah melakukan Pengajuan Exit Permit dengan tanggal $date."],200);
